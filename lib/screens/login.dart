@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:school_app/screens/home.dart';
 import 'package:school_app/screens/register.dart'; // Add this import for TapGestureRecognizer
 
 void main() {
@@ -88,7 +89,12 @@ class _LoginPageState extends State<LoginPage> {
                         width: double.infinity, // Full width button
                         child: ElevatedButton(
                           onPressed: () {
-                            // Add login functionality here
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HomePage(),
+                              ),
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black,
