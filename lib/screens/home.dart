@@ -1,6 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:school_app/screens/duties.dart';
+// Import the DutiesPage class
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 0; // Track the selected index
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+      if (index == 1) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => DutiesPage()),
+        );
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // Get screen width and height
@@ -101,16 +122,17 @@ class HomePage extends StatelessWidget {
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        currentIndex: 0, // Set the currently selected index
+        currentIndex: _selectedIndex, // Set the currently selected index
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.grey,
         iconSize: screenWidth * 0.07, // Responsive icon size
         selectedFontSize: screenWidth * 0.04, // Responsive selected font size
         unselectedFontSize:
             screenWidth * 0.035, // Responsive unselected font size
+        onTap: _onItemTapped, // Handle item taps
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.qr_code),
+            icon: Icon(Icons.home),
             label: 'Home',
           ),
           BottomNavigationBarItem(
