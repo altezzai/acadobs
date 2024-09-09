@@ -3,19 +3,6 @@ import 'package:flutter/gestures.dart';
 import 'package:school_app/screens/home.dart';
 import 'package:school_app/screens/register.dart'; // Add this import for TapGestureRecognizer
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: LoginPage(),
-      debugShowCheckedModeBanner: false, // Hides the debug banner
-    );
-  }
-}
 
 class LoginPage extends StatefulWidget {
   @override

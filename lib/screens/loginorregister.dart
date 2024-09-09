@@ -2,19 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:school_app/screens/login.dart';
 import 'package:school_app/screens/register.dart';
 
-void main() {
-  runApp(MyApp());
-}
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: LoginOrRegisterPage(),
-      debugShowCheckedModeBanner: false, // Hides the debug banner
-    );
-  }
-}
 
 class LoginOrRegisterPage extends StatelessWidget {
   @override
