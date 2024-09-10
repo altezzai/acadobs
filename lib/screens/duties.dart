@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:school_app/screens/addDutyPage.dart';
 import 'package:school_app/screens/home.dart'; // Import the HomePage class
 
 class DutiesPage extends StatelessWidget {
@@ -32,72 +33,78 @@ class DutiesPage extends StatelessWidget {
           ),
         ],
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: screenHeight * 0.02),
-            // Add Duty Button
-            Center(
-              child: ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black, // background color
-                  padding: EdgeInsets.symmetric(
-                      vertical: screenHeight * 0.03,
-                      horizontal: screenWidth * 0.08),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+      body: SingleChildScrollView(
+        // Wrap the body in a SingleChildScrollView
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: screenHeight * 0.02),
+              // Add Duty Button
+              Center(
+                child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black, // background color
+                    padding: EdgeInsets.symmetric(
+                        vertical: screenHeight * 0.03,
+                        horizontal: screenWidth * 0.08),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AddDutyPage()),
+                    );
+                  },
+                  icon: Icon(Icons.add, color: Colors.white),
+                  label: Text(
+                    'Add Duty',
+                    style: TextStyle(
+                        color: Colors.white, fontSize: screenWidth * 0.05),
                   ),
                 ),
-                onPressed: () {
-                  // Handle Add Duty Button
-                },
-                icon: Icon(Icons.add, color: Colors.white),
-                label: Text(
-                  'Add Duty',
-                  style: TextStyle(
-                      color: Colors.white, fontSize: screenWidth * 0.05),
+              ),
+              SizedBox(height: screenHeight * 0.03),
+              // Today Section
+              Text(
+                'Today',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: screenWidth * 0.05,
                 ),
               ),
-            ),
-            SizedBox(height: screenHeight * 0.03),
-            // Today Section
-            Text(
-              'Today',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-                fontSize: screenWidth * 0.05,
+              SizedBox(height: screenHeight * 0.01),
+              // Duty Card (Today)
+              _buildDutyCard(
+                  context, "PTA meeting class XII", "15-06-24", "09:00 am"),
+              SizedBox(height: screenHeight * 0.03),
+              // Yesterday Section
+              Text(
+                'Yesterday',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: screenWidth * 0.05,
+                ),
               ),
-            ),
-            SizedBox(height: screenHeight * 0.01),
-            // Duty Card (Today)
-            _buildDutyCard(
-                context, "PTA meeting class XII", "15-06-24", "09:00 am"),
-            SizedBox(height: screenHeight * 0.03),
-            // Yesterday Section
-            Text(
-              'Yesterday',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-                fontSize: screenWidth * 0.05,
-              ),
-            ),
-            SizedBox(height: screenHeight * 0.01),
-            // Duty Cards (Yesterday)
-            _buildDutyCard(
-                context, "PTA meeting class 09", "15-06-24", "09:00 am"),
-            _buildDutyCard(
-                context, "PTA meeting class 02", "15-06-24", "09:00 am"),
-            _buildDutyCard(
-                context, "PTA meeting class VII", "15-06-24", "09:00 am"),
-            _buildDutyCard(
-                context, "PTA meeting class XII", "15-06-24", "09:00 am"),
-            _buildDutyCard(
-                context, "PTA meeting class XII", "15-06-24", "09:00 am"),
-          ],
+              SizedBox(height: screenHeight * 0.01),
+              // Duty Cards (Yesterday)
+              _buildDutyCard(
+                  context, "PTA meeting class 09", "15-06-24", "09:00 am"),
+              _buildDutyCard(
+                  context, "PTA meeting class 02", "15-06-24", "09:00 am"),
+              _buildDutyCard(
+                  context, "PTA meeting class VII", "15-06-24", "09:00 am"),
+              _buildDutyCard(
+                  context, "PTA meeting class XII", "15-06-24", "09:00 am"),
+              _buildDutyCard(
+                  context, "PTA meeting class XII", "15-06-24", "09:00 am"),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(

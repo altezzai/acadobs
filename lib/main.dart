@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:school_app/screens/splashscreen.dart';
+import 'package:school_app/theme/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,12 +14,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      themeMode: ThemeMode.light,
+      
       title: '',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: AppTheme.lightTheme(context),
       home: SplashScreen(), // Set LoginPage as the home
     );
   }

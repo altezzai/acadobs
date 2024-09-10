@@ -34,6 +34,7 @@ class AddDutyPage extends StatelessWidget {
               TextField(
                 decoration: InputDecoration(
                   labelText: 'Title',
+                  prefixIcon: Icon(Icons.title),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -45,6 +46,7 @@ class AddDutyPage extends StatelessWidget {
                 maxLines: 4,
                 decoration: InputDecoration(
                   labelText: 'Description',
+                  prefixIcon: Icon(Icons.description),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -96,9 +98,9 @@ class AddDutyPage extends StatelessWidget {
                 spacing: 8.0,
                 runSpacing: 4.0,
                 children: [
-                  _buildStaffChip('Kaiya Mango'),
-                  _buildStaffChip('Lindsey Calzoni'),
-                  _buildStaffChip('Adison Rhiel Madsen'),
+                  _buildStaffChip('Kaiya Mango', 'assets/staff1.png'),
+                  _buildStaffChip('Lindsey Calzoni', 'assets/staff2.png'),
+                  _buildStaffChip('Adison Rhiel Madsen', 'assets/staff3.png'),
                 ],
               ),
               SizedBox(height: 20),
@@ -125,7 +127,7 @@ class AddDutyPage extends StatelessWidget {
                     // Handle form submission
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor:  Colors.black, // background color
+                    backgroundColor: Colors.black, // background color
                     padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -144,11 +146,14 @@ class AddDutyPage extends StatelessWidget {
     );
   }
 
-  // Build Staff Chip Widget
-  Widget _buildStaffChip(String staffName) {
+  // Build Staff Chip Widget with Image
+  Widget _buildStaffChip(String staffName, String avatarPath) {
     return Chip(
+      avatar: CircleAvatar(
+        backgroundImage: AssetImage(avatarPath),
+      ),
       label: Text(staffName),
-      deleteIcon: Icon(Icons.cancel),
+      deleteIcon: Icon(Icons.cancel, color: Colors.red),
       onDeleted: () {
         // Handle delete staff action
       },
