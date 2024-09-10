@@ -1,38 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:school_app/screens/addDutyPage.dart';
-import 'package:school_app/screens/home.dart'; // Import the HomePage class
 
-class DutiesPage extends StatelessWidget {
+class DutiesPage extends StatefulWidget {
+  @override
+  _DutiesPageState createState() => _DutiesPageState();
+}
+
+class _DutiesPageState extends State<DutiesPage> {
   @override
   Widget build(BuildContext context) {
-    // Get screen width and height
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        title: Text(
-          'Duties',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: screenWidth * 0.06, // Responsive font size
-          ),
-        ),
-        actions: [
-          Padding(
-            padding: EdgeInsets.all(screenWidth * 0.02), // Responsive padding
-            child: CircleAvatar(
-              radius: screenWidth * 0.07, // Responsive radius
-              backgroundImage: AssetImage('assets/admin.png'),
-            ),
-          ),
-        ],
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.transparent,
+      //   elevation: 0,
+      //   centerTitle: true,
+      //   title: Text(
+      //     'Duties',
+      //     style: TextStyle(
+      //       color: Colors.black,
+      //       fontWeight: FontWeight.bold,
+      //       fontSize: screenWidth * 0.06, // Responsive font size
+      //     ),
+      //   ),
+      //   actions: [
+      //     Padding(
+      //       padding: EdgeInsets.all(screenWidth * 0.02), // Responsive padding
+      //       child: CircleAvatar(
+      //         radius: screenWidth * 0.07, // Responsive radius
+      //         backgroundImage: AssetImage('assets/admin.png'),
+      //       ),
+      //     ),
+      //   ],
+      // ),
       body: SingleChildScrollView(
         // Wrap the body in a SingleChildScrollView
         child: Padding(
@@ -45,7 +48,7 @@ class DutiesPage extends StatelessWidget {
               Center(
                 child: ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black, // background color
+                    backgroundColor: Colors.black, // Background color
                     padding: EdgeInsets.symmetric(
                         vertical: screenHeight * 0.03,
                         horizontal: screenWidth * 0.08),
@@ -106,48 +109,6 @@ class DutiesPage extends StatelessWidget {
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: 1, // Set the currently selected index
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey,
-        iconSize: screenWidth * 0.07, // Responsive icon size
-        selectedFontSize: screenWidth * 0.04, // Responsive selected font size
-        unselectedFontSize:
-            screenWidth * 0.035, // Responsive unselected font size
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => HomePage()),
-              (route) => false,
-            );
-          }
-          // Handle other indices if needed
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.work_outline),
-            label: 'Duties',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.article_outlined),
-            label: 'Reports',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications_outlined),
-            label: 'Notice',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.payment_outlined),
-            label: 'Payments',
-          ),
-        ],
       ),
     );
   }

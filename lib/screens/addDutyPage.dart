@@ -1,6 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:school_app/widgets/custom_button.dart';
+import 'package:school_app/widgets/custom_textfield.dart';
 
-class AddDutyPage extends StatelessWidget {
+class AddDutyPage extends StatefulWidget {
+  @override
+  _AddDutyPageState createState() => _AddDutyPageState();
+}
+
+class _AddDutyPageState extends State<AddDutyPage> {
+  List<String> staffList = [
+    'Kaiya Mango',
+    'Lindsey Calzoni',
+    'Adison Rhiel Madsen'
+  ];
+  String? selectedStaff;
+  List<String> selectedStaffs = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,112 +46,94 @@ class AddDutyPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Title Input
-              TextField(
-                decoration: InputDecoration(
-                  labelText: 'Title',
-                  prefixIcon: Icon(Icons.title),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
+              CustomTextfield(
+                hintText: 'Title',
+                iconData: Icon(Icons.title),
               ),
               SizedBox(height: 20),
+
               // Description Input
-              TextField(
-                maxLines: 4,
-                decoration: InputDecoration(
-                  labelText: 'Description',
-                  prefixIcon: Icon(Icons.description),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
+              CustomTextfield(
+                hintText: 'Description',
+                iconData: Icon(Icons.description),
+                keyBoardtype: TextInputType.multiline,
               ),
               SizedBox(height: 20),
+
               // Date Inputs (Start and End Date)
               Row(
                 children: [
                   Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Start date',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        suffixIcon: Icon(Icons.calendar_today),
-                      ),
+                    child: CustomTextfield(
+                      hintText: 'Start date',
+                      iconData: Icon(Icons.calendar_today),
                     ),
                   ),
                   SizedBox(width: 10),
                   Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        labelText: 'End date',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        suffixIcon: Icon(Icons.calendar_today),
-                      ),
+                    child: CustomTextfield(
+                      hintText: 'End date',
+                      iconData: Icon(Icons.calendar_today),
                     ),
                   ),
                 ],
               ),
               SizedBox(height: 20),
+
               // Select Staffs Dropdown
-              TextField(
+              DropdownButtonFormField<String>(
                 decoration: InputDecoration(
                   labelText: 'Select Staffs...',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  suffixIcon: Icon(Icons.arrow_drop_down),
                 ),
+                value: selectedStaff,
+                icon: Icon(Icons.arrow_drop_down),
+                items: staffList.map((String staff) {
+                  return DropdownMenuItem<String>(
+                    value: staff,
+                    child: Text(staff),
+                  );
+                }).toList(),
+                onChanged: (newValue) {
+                  setState(() {
+                    selectedStaff = newValue;
+                    if (newValue != null &&
+                        !selectedStaffs.contains(newValue)) {
+                      selectedStaffs.add(newValue);
+                    }
+                  });
+                },
               ),
               SizedBox(height: 20),
+
               // Selected Staffs Display
               Wrap(
                 spacing: 8.0,
                 runSpacing: 4.0,
-                children: [
-                  _buildStaffChip('Kaiya Mango', 'assets/staff1.png'),
-                  _buildStaffChip('Lindsey Calzoni', 'assets/staff2.png'),
-                  _buildStaffChip('Adison Rhiel Madsen', 'assets/staff3.png'),
-                ],
+                children: selectedStaffs.map((staff) {
+                  return _buildStaffChip(staff);
+                }).toList(),
               ),
               SizedBox(height: 20),
+
               // Add Documents Button
-              OutlinedButton.icon(
+              CustomButton(
+                text: 'Add Documents',
                 onPressed: () {
                   // Handle document upload
                 },
-                icon: Icon(Icons.attach_file),
-                label: Text('Add Documents'),
-                style: OutlinedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(vertical: 15),
-                  side: BorderSide(color: Colors.black),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
               ),
               SizedBox(height: 30),
+
               // Submit Button
               Center(
-                child: ElevatedButton(
+                child: CustomButton(
+                  text: 'Submit',
                   onPressed: () {
                     // Handle form submission
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black, // background color
-                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: Text(
-                    'Submit',
-                    style: TextStyle(color: Colors.white, fontSize: 18),
-                  ),
                 ),
               ),
             ],
@@ -146,16 +143,15 @@ class AddDutyPage extends StatelessWidget {
     );
   }
 
-  // Build Staff Chip Widget with Image
-  Widget _buildStaffChip(String staffName, String avatarPath) {
+  // Build Staff Chip Widget with delete functionality
+  Widget _buildStaffChip(String staffName) {
     return Chip(
-      avatar: CircleAvatar(
-        backgroundImage: AssetImage(avatarPath),
-      ),
       label: Text(staffName),
       deleteIcon: Icon(Icons.cancel, color: Colors.red),
       onDeleted: () {
-        // Handle delete staff action
+        setState(() {
+          selectedStaffs.remove(staffName);
+        });
       },
     );
   }
