@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
     HomeContentPage(), // Home content
     DutiesPage(), // Duties page
     ReportPage(), // Reports page
-    NoticePage(), // Notice page
+    NoticeEventPage(), // Notice page
     PaymentsPage(), // Payments page
   ];
 
@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
       case 2:
         return 'Reports';
       case 3:
-        return 'Notices';
+        return 'Notice / Events';
       case 4:
         return 'Payments';
       default:

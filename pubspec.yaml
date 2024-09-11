@@ -74,6 +74,9 @@ flutter:
     - assets/staff1.png
     - assets/staff2.png
     - assets/staff3.png
+    - assets/sports_day.png
+    - assets/cycle.png
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
