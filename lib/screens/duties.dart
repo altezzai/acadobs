@@ -13,7 +13,7 @@ class _DutiesPageState extends State<DutiesPage> {
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white,
       // appBar: AppBar(
       //   backgroundColor: Colors.transparent,
       //   elevation: 0,
