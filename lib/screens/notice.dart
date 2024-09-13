@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:school_app/widgets/custom_button.dart'; // Import your CustomButton
+import 'package:school_app/widgets/custom_button.dart'; 
 
 class NoticeEventPage extends StatefulWidget {
   @override
@@ -48,6 +48,7 @@ class _NoticeEventPageState extends State<NoticeEventPage>
                   child: CustomButton(
                     text: 'Add Events',
                     onPressed: () {},
+                    
                   ),
                 ),
               ],

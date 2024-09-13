@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:school_app/screens/duties.dart'; // Import DutiesPage class
-import 'package:school_app/screens/notice.dart'; // Import NoticePage class
-import 'package:school_app/screens/payment.dart'; // Import PaymentsPage class
-import 'package:school_app/screens/reports.dart'; // Import ReportsPage class
-import 'package:school_app/widgets/button_navigation.dart'; // Import CustomBottomNavigationBar widget
+import 'package:school_app/screens/duties.dart';
+import 'package:school_app/screens/notice.dart'; 
+import 'package:school_app/screens/payment.dart';
+import 'package:school_app/screens/reports.dart'; 
+import 'package:school_app/widgets/button_navigation.dart'; 
 
 class HomePage extends StatefulWidget {
   @override
@@ -24,11 +24,10 @@ class _HomePageState extends State<HomePage> {
     PaymentsPage(), // Payments page
   ];
 
-  // This method is called when a navigation item is tapped
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index; // Update the selected index to switch pages
-      _pageController.jumpToPage(index); // Navigate to the selected page
+      _selectedIndex = index;
+      _pageController.jumpToPage(index);
     });
   }
 
@@ -41,10 +40,9 @@ class _HomePageState extends State<HomePage> {
         elevation: 0,
         title: Center(
           child: Text(
-            _getAppBarTitle(
-                _selectedIndex), // Update title based on selected page
+            _getAppBarTitle(_selectedIndex),
             style: TextStyle(
-              fontSize: 24.0, // Increase font size here
+              fontSize: 24.0,
               fontWeight: FontWeight.bold,
               color: Colors.black,
             ),
@@ -52,33 +50,33 @@ class _HomePageState extends State<HomePage> {
         ),
         actions: [
           Padding(
-            padding: EdgeInsets.all(16.0), // Static padding
+            padding: EdgeInsets.all(10.0), // static padding
             child: CircleAvatar(
-              radius: 20.0, // Static radius for avatar
+              radius: 20.0,
               backgroundImage: AssetImage('assets/admin.png'),
             ),
           ),
         ],
-        automaticallyImplyLeading: false, // Disable back arrow
+        automaticallyImplyLeading: false,
       ),
-      // PageView to switch between pages
+      // pageview to switch between pages
       body: PageView(
         controller: _pageController,
         onPageChanged: (index) {
           setState(() {
-            _selectedIndex = index; // Update selected index on page change
+            _selectedIndex = index;
           });
         },
         children: _pages,
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
-        selectedIndex: _selectedIndex, // Pass selected index
-        onItemTapped: _onItemTapped, // Pass function to handle taps
+        selectedIndex: _selectedIndex,
+        onItemTapped: _onItemTapped,
       ),
     );
   }
 
-  // Method to get the AppBar title based on the selected index
+  // method to get the AppBar title based on the selected index
   String _getAppBarTitle(int index) {
     switch (index) {
       case 0:
@@ -97,7 +95,7 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-// Home content placeholder
+// home content
 class HomeContentPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -112,7 +110,7 @@ class HomeContentPage extends StatelessWidget {
           Text(
             'Hi,',
             style: TextStyle(
-              fontSize: screenWidth * 0.09, // Scaled text size
+              fontSize: screenWidth * 0.10,
               fontWeight: FontWeight.bold,
               color: Colors.black,
             ),
@@ -120,7 +118,7 @@ class HomeContentPage extends StatelessWidget {
           Text(
             'Vincent',
             style: TextStyle(
-              fontSize: screenWidth * 0.09, // Scaled text size
+              fontSize: screenWidth * 0.10,
               fontWeight: FontWeight.bold,
               color: Colors.grey[600],
             ),
@@ -132,11 +130,11 @@ class HomeContentPage extends StatelessWidget {
               Expanded(
                 child: OutlinedButton(
                   onPressed: () {
-                    // Handle student button click
+                    // handle student button
                   },
                   style: OutlinedButton.styleFrom(
                     padding: EdgeInsets.symmetric(
-                        vertical: screenHeight * 0.03), // Responsive padding
+                        vertical: screenHeight * 0.03), // responsive padding
                     side: BorderSide(color: Colors.black),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -145,7 +143,7 @@ class HomeContentPage extends StatelessWidget {
                   child: Text(
                     'Student',
                     style: TextStyle(
-                      fontSize: screenWidth * 0.05, // Scaled button text size
+                      fontSize: screenWidth * 0.05,
                       color: Colors.black,
                     ),
                   ),
@@ -155,11 +153,11 @@ class HomeContentPage extends StatelessWidget {
               Expanded(
                 child: OutlinedButton(
                   onPressed: () {
-                    // Handle teacher button click
+                    // handle teacher button click
                   },
                   style: OutlinedButton.styleFrom(
                     padding: EdgeInsets.symmetric(
-                        vertical: screenHeight * 0.03), // Responsive padding
+                        vertical: screenHeight * 0.03), // responsive padding
                     side: BorderSide(color: Colors.black),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -168,7 +166,7 @@ class HomeContentPage extends StatelessWidget {
                   child: Text(
                     'Teacher',
                     style: TextStyle(
-                      fontSize: screenWidth * 0.05, // Scaled button text size
+                      fontSize: screenWidth * 0.05,
                       color: Colors.black,
                     ),
                   ),

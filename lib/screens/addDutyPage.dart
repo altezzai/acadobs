@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart'; // imported for date formatting
 import 'package:school_app/widgets/custom_button.dart';
 import 'package:school_app/widgets/custom_textfield.dart';
 
@@ -16,6 +17,36 @@ class _AddDutyPageState extends State<AddDutyPage> {
   String? selectedStaff;
   List<String> selectedStaffs = [];
 
+  // Variables to hold selected dates
+  DateTime? selectedStartDate;
+  DateTime? selectedEndDate;
+
+  // Function to format date
+  String formatDate(DateTime? date) {
+    if (date == null) return 'Select date';
+    return DateFormat('dd/MM/yyyy').format(date);
+  }
+
+  // Function to show the date picker and set the selected date
+  Future<void> _selectDate(BuildContext context,
+      {required bool isStartDate}) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+    if (pickedDate != null) {
+      setState(() {
+        if (isStartDate) {
+          selectedStartDate = pickedDate;
+        } else {
+          selectedEndDate = pickedDate;
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +57,7 @@ class _AddDutyPageState extends State<AddDutyPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Navigator.pop(context); // Navigate back
+            Navigator.pop(context);
           },
         ),
         centerTitle: true,
@@ -49,6 +80,7 @@ class _AddDutyPageState extends State<AddDutyPage> {
               CustomTextfield(
                 hintText: 'Title',
                 iconData: Icon(Icons.title),
+                hintStyle: TextStyle(fontSize: 14.0),
               ),
               SizedBox(height: 20),
 
@@ -57,23 +89,74 @@ class _AddDutyPageState extends State<AddDutyPage> {
                 hintText: 'Description',
                 iconData: Icon(Icons.description),
                 keyBoardtype: TextInputType.multiline,
+                hintStyle: TextStyle(fontSize: 14.0),
               ),
               SizedBox(height: 20),
 
-              // Date Inputs (Start and End Date)
+              // Date Inputs (Start and End Date) with DatePicker
               Row(
                 children: [
+                  // Start Date Field with a more professional style
                   Expanded(
-                    child: CustomTextfield(
-                      hintText: 'Start date',
-                      iconData: Icon(Icons.calendar_today),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Start Date',
+                        hintText: formatDate(selectedStartDate),
+                        prefixIcon: Icon(Icons.calendar_today, size: 20),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(
+                              8), // Smaller rounded corners
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 12.0,
+                            horizontal:
+                                15.0), // Slimmer padding for professional look
+                        labelStyle: TextStyle(
+                          fontSize: 14.0,
+                          color: Colors.black54, // Soft label color
+                        ),
+                        hintStyle: TextStyle(
+                          fontSize: 14.0,
+                          color: Colors.grey, // Hint text style
+                        ),
+                      ),
+                      style: TextStyle(
+                        fontSize: 14.0,
+                        color: Colors.black87, // Text field font size and color
+                      ),
+                      readOnly: true,
+                      onTap: () => _selectDate(context, isStartDate: true),
                     ),
                   ),
                   SizedBox(width: 10),
+
+                  // End Date Field
                   Expanded(
-                    child: CustomTextfield(
-                      hintText: 'End date',
-                      iconData: Icon(Icons.calendar_today),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'End Date',
+                        hintText: formatDate(selectedEndDate),
+                        prefixIcon: Icon(Icons.calendar_today, size: 20),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 12.0, horizontal: 15.0),
+                        labelStyle: TextStyle(
+                          fontSize: 14.0,
+                          color: Colors.black54,
+                        ),
+                        hintStyle: TextStyle(
+                          fontSize: 14.0,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      style: TextStyle(
+                        fontSize: 14.0,
+                        color: Colors.black87,
+                      ),
+                      readOnly: true,
+                      onTap: () => _selectDate(context, isStartDate: false),
                     ),
                   ),
                 ],
@@ -85,15 +168,21 @@ class _AddDutyPageState extends State<AddDutyPage> {
                 decoration: InputDecoration(
                   labelText: 'Select Staffs...',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(8),
                   ),
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 12.0, horizontal: 15.0),
                 ),
                 value: selectedStaff,
-                icon: Icon(Icons.arrow_drop_down),
+                icon: Icon(Icons.arrow_drop_down, size: 20),
                 items: staffList.map((String staff) {
                   return DropdownMenuItem<String>(
                     value: staff,
-                    child: Text(staff),
+                    child: Text(
+                      staff,
+                      style: TextStyle(
+                          fontSize: 14.0), // Text inside dropdown items
+                    ),
                   );
                 }).toList(),
                 onChanged: (newValue) {

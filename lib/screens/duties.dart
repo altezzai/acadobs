@@ -13,29 +13,6 @@ class _DutiesPageState extends State<DutiesPage> {
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      // backgroundColor: Colors.white,
-      // appBar: AppBar(
-      //   backgroundColor: Colors.transparent,
-      //   elevation: 0,
-      //   centerTitle: true,
-      //   title: Text(
-      //     'Duties',
-      //     style: TextStyle(
-      //       color: Colors.black,
-      //       fontWeight: FontWeight.bold,
-      //       fontSize: screenWidth * 0.06, // Responsive font size
-      //     ),
-      //   ),
-      //   actions: [
-      //     Padding(
-      //       padding: EdgeInsets.all(screenWidth * 0.02), // Responsive padding
-      //       child: CircleAvatar(
-      //         radius: screenWidth * 0.07, // Responsive radius
-      //         backgroundImage: AssetImage('assets/admin.png'),
-      //       ),
-      //     ),
-      //   ],
-      // ),
       body: SingleChildScrollView(
         // Wrap the body in a SingleChildScrollView
         child: Padding(
@@ -44,11 +21,11 @@ class _DutiesPageState extends State<DutiesPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: screenHeight * 0.02),
-              // Add Duty Button
+              // add duty button
               Center(
                 child: ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black, // Background color
+                    backgroundColor: Colors.black,
                     padding: EdgeInsets.symmetric(
                         vertical: screenHeight * 0.03,
                         horizontal: screenWidth * 0.08),
@@ -71,7 +48,7 @@ class _DutiesPageState extends State<DutiesPage> {
                 ),
               ),
               SizedBox(height: screenHeight * 0.03),
-              // Today Section
+              // Today section
               Text(
                 'Today',
                 style: TextStyle(

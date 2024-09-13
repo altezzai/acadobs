@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:school_app/widgets/custom_button.dart';
 
 class PaymentsPage extends StatefulWidget {
   @override
@@ -18,15 +19,7 @@ class _PaymentsPageState extends State<PaymentsPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('Payments'),
-      //   actions: [
-      //     CircleAvatar(
-      //       backgroundImage: AssetImage('assets/profile_image.png'),
-      //     ),
-      //     SizedBox(width: 10),
-      //   ],
-      // ),
+      
       body: Column(
         children: [
           Padding(
@@ -34,26 +27,16 @@ class _PaymentsPageState extends State<PaymentsPage>
             child: Row(
               children: [
                 Expanded(
-                  child: ElevatedButton.icon(
-                    icon: Icon(Icons.add),
-                    label: Text('Add Payment'),
+                  child: CustomButton(
+                    text: 'Add Notice',
                     onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Colors.black,
-                    ),
                   ),
                 ),
                 SizedBox(width: 10),
                 Expanded(
-                  child: ElevatedButton.icon(
-                    icon: Icon(Icons.favorite),
-                    label: Text('Add Donation'),
+                  child: CustomButton(
+                    text: 'Add Donation',
                     onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Colors.black,
-                    ),
                   ),
                 ),
               ],
