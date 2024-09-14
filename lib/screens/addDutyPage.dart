@@ -23,7 +23,7 @@ class _AddDutyPageState extends State<AddDutyPage> {
 
   // Function to format date
   String formatDate(DateTime? date) {
-    if (date == null) return 'Select date';
+    if (date == null) return 'Select Date';
     return DateFormat('dd/MM/yyyy').format(date);
   }
 
@@ -96,35 +96,16 @@ class _AddDutyPageState extends State<AddDutyPage> {
               // Date Inputs (Start and End Date) with DatePicker
               Row(
                 children: [
-                  // Start Date Field with a more professional style
+                  // Start Date Field
                   Expanded(
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        labelText: 'Start Date',
-                        hintText: formatDate(selectedStartDate),
-                        prefixIcon: Icon(Icons.calendar_today, size: 20),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(
-                              8), // Smaller rounded corners
-                        ),
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 12.0,
-                            horizontal:
-                                15.0), // Slimmer padding for professional look
-                        labelStyle: TextStyle(
-                          fontSize: 14.0,
-                          color: Colors.black54, // Soft label color
-                        ),
-                        hintStyle: TextStyle(
-                          fontSize: 14.0,
-                          color: Colors.grey, // Hint text style
-                        ),
-                      ),
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        color: Colors.black87, // Text field font size and color
-                      ),
-                      readOnly: true,
+                    child: CustomTextfield(
+                      hintText: formatDate(selectedStartDate),
+                      iconData: Icon(Icons.calendar_today),
+                      hintStyle: TextStyle(fontSize: 14.0),
+                      textStyle:
+                          TextStyle(fontSize: 14.0, color: Colors.black87),
+                      isPasswordField: false,
+                      keyBoardtype: TextInputType.none,
                       onTap: () => _selectDate(context, isStartDate: true),
                     ),
                   ),
@@ -132,30 +113,14 @@ class _AddDutyPageState extends State<AddDutyPage> {
 
                   // End Date Field
                   Expanded(
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        labelText: 'End Date',
-                        hintText: formatDate(selectedEndDate),
-                        prefixIcon: Icon(Icons.calendar_today, size: 20),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 12.0, horizontal: 15.0),
-                        labelStyle: TextStyle(
-                          fontSize: 14.0,
-                          color: Colors.black54,
-                        ),
-                        hintStyle: TextStyle(
-                          fontSize: 14.0,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        color: Colors.black87,
-                      ),
-                      readOnly: true,
+                    child: CustomTextfield(
+                      hintText: formatDate(selectedEndDate),
+                      iconData: Icon(Icons.calendar_today),
+                      hintStyle: TextStyle(fontSize: 14.0),
+                      textStyle:
+                          TextStyle(fontSize: 14.0, color: Colors.black87),
+                      isPasswordField: false,
+                      keyBoardtype: TextInputType.none,
                       onTap: () => _selectDate(context, isStartDate: false),
                     ),
                   ),
@@ -164,36 +129,50 @@ class _AddDutyPageState extends State<AddDutyPage> {
               SizedBox(height: 20),
 
               // Select Staffs Dropdown
-              DropdownButtonFormField<String>(
-                decoration: InputDecoration(
-                  labelText: 'Select Staffs...',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
+              Container(
+                child: DropdownButtonFormField<String>(
+                  decoration: InputDecoration(
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 12.0, horizontal: 15.0),
+                    border: InputBorder.none,
+                    prefixIcon: Icon(Icons.person, size: 20),
+                    hintText: 'Select Staffs...',
+                    hintStyle: TextStyle(fontSize: 14.0, color: Colors.grey),
                   ),
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 12.0, horizontal: 15.0),
+                  value: selectedStaff,
+                  icon: Icon(Icons.arrow_drop_down, size: 20),
+                  items: staffList.map((String staff) {
+                    return DropdownMenuItem<String>(
+                      value: staff,
+                      child: Text(
+                        staff,
+                        style: TextStyle(
+                            fontSize: 14.0), // Text inside dropdown items
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) {
+                    setState(() {
+                      selectedStaff = newValue;
+                      if (newValue != null &&
+                          !selectedStaffs.contains(newValue)) {
+                        selectedStaffs.add(newValue);
+                      }
+                    });
+                  },
+                  onTap: () {
+                    // Optionally clear the dropdown selection when it's opened
+                    // setState(() {
+                    //   selectedStaff = null;
+                    // });
+                  },
+                  onSaved: (value) {
+                    // Optionally clear the dropdown selection when the dropdown is closed
+                    setState(() {
+                      selectedStaff = null;
+                    });
+                  },
                 ),
-                value: selectedStaff,
-                icon: Icon(Icons.arrow_drop_down, size: 20),
-                items: staffList.map((String staff) {
-                  return DropdownMenuItem<String>(
-                    value: staff,
-                    child: Text(
-                      staff,
-                      style: TextStyle(
-                          fontSize: 14.0), // Text inside dropdown items
-                    ),
-                  );
-                }).toList(),
-                onChanged: (newValue) {
-                  setState(() {
-                    selectedStaff = newValue;
-                    if (newValue != null &&
-                        !selectedStaffs.contains(newValue)) {
-                      selectedStaffs.add(newValue);
-                    }
-                  });
-                },
               ),
               SizedBox(height: 20),
 

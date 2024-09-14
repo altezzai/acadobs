@@ -48,28 +48,56 @@ class StudentsPage extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: Row(
               children: [
+                // Adjust the width based on screen size
                 Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Search for students',
-                      prefixIcon: Icon(Icons.search),
-                      suffixIcon: Icon(Icons.tune),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
+                  flex: 3, // Allow more space for the search bar
+                  child: Container(
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Search for students',
+                        prefixIcon: Icon(Icons.search, color: Colors.grey),
+                        suffixIcon: Icon(Icons.tune, color: Colors.grey),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide(color: Colors.grey.shade300),
+                        ),
+                        filled: true,
+                        fillColor:
+                            Colors.grey.shade100, // Light background color
+                        contentPadding: EdgeInsets.symmetric(vertical: 12),
                       ),
+                      style: TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.normal),
                     ),
                   ),
                 ),
-                SizedBox(width: 5),
-                DropdownButton<String>(
-                  value: "XIII",
-                  items: <String>['XIII', 'XII', 'XI', 'X'].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  onChanged: (newValue) {},
+                SizedBox(width: 8),
+                // Use Flexible to make sure dropdown adapts to available space
+                Flexible(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 12),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade100,
+                      borderRadius: BorderRadius.circular(30),
+                      border: Border.all(color: Colors.grey.shade300),
+                    ),
+                    child: DropdownButton<String>(
+                      value: "XIII",
+                      underline: SizedBox(),
+                      isExpanded: true, // Ensure dropdown uses available width
+                      items: <String>['XIII', 'XII', 'XI', 'X']
+                          .map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                            value,
+                            overflow: TextOverflow.ellipsis, // Prevent overflow
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (newValue) {},
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -89,8 +117,18 @@ class StudentsPage extends StatelessWidget {
                       backgroundImage:
                           AssetImage('assets/${students[index]['image']}'),
                     ),
-                    title: Text(students[index]['name']!),
-                    subtitle: Text(students[index]['class']!),
+                    title: Text(
+                      students[index]['name']!,
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                      overflow: TextOverflow
+                          .ellipsis, // Ensure title does not overflow
+                    ),
+                    subtitle: Text(
+                      students[index]['class']!,
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                    ),
                     trailing: TextButton(
                       child: Text('View'),
                       onPressed: () {
@@ -113,33 +151,6 @@ class StudentsPage extends StatelessWidget {
         backgroundColor: Colors.black,
         foregroundColor: Colors.white,
       ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   type: BottomNavigationBarType.fixed,
-      //   selectedItemColor: Colors.black,
-      //   unselectedItemColor: Colors.grey,
-      //   items: [
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.home),
-      //       label: 'Home',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.assignment),
-      //       label: 'Duties',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.report),
-      //       label: 'Reports',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.notifications),
-      //       label: 'Notice',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.payment),
-      //       label: 'Payments',
-      //     ),
-      //   ],
-      // ),
     );
   }
 }

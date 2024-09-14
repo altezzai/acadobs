@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:school_app/utils/constants.dart';
 
 class CustomTextfield extends StatelessWidget {
   final String hintText;
@@ -7,7 +6,9 @@ class CustomTextfield extends StatelessWidget {
   final ValueNotifier<bool> isObscure;
   final bool isPasswordField;
   final Icon? iconData;
-  final TextStyle? hintStyle; // Add hintStyle parameter
+  final TextStyle? hintStyle;
+  final TextStyle? textStyle; // Text style for the input text
+  final VoidCallback? onTap; // Callback function for onTap
 
   CustomTextfield({
     super.key,
@@ -15,44 +16,57 @@ class CustomTextfield extends StatelessWidget {
     required this.iconData,
     this.keyBoardtype,
     this.isPasswordField = false,
-    this.hintStyle, // Initialize hintStyle
+    this.hintStyle,
+    this.textStyle, // New parameter for input text styling
+    this.onTap, // Initialize onTap callback
   }) : isObscure = ValueNotifier<bool>(isPasswordField);
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: isObscure,
-      builder: (context, value, child) {
-        return TextFormField(
-          style: Theme.of(context)
-              .textTheme
-              .bodySmall!
-              .copyWith(color: blackColor),
-          obscureText: isPasswordField ? isObscure.value : false,
-          keyboardType: keyBoardtype,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.all(16),
-            isDense: true,
-            prefixIcon: iconData,
-            hintText: hintText,
-            hintStyle: hintStyle ?? // Apply custom hintStyle if provided
-                TextStyle(
-                    fontSize: 14.0, color: Colors.grey), // Default hint style
-            suffixIcon: isPasswordField
-                ? Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: IconButton(
+    return GestureDetector(
+      onTap: onTap,
+      child: ValueListenableBuilder(
+        valueListenable: isObscure,
+        builder: (context, value, child) {
+          return TextFormField(
+            style: textStyle ??
+                Theme.of(context).textTheme.bodySmall!.copyWith(
+                    color: Colors.black87,
+                    fontSize: 14.0), // Default text style
+            obscureText: isPasswordField ? isObscure.value : false,
+            keyboardType: keyBoardtype,
+            decoration: InputDecoration(
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 12.0, horizontal: 15.0),
+              isDense: true,
+              prefixIcon: iconData,
+              hintText: hintText,
+              hintStyle: hintStyle ??
+                  TextStyle(
+                    fontSize: 14.0,
+                    color: Colors.grey,
+                  ), // Default hint style if not provided
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide(color: Colors.grey),
+              ),
+              suffixIcon: isPasswordField
+                  ? Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: IconButton(
                         onPressed: () {
                           isObscure.value = !isObscure.value;
                         },
                         icon: isObscure.value
                             ? Icon(Icons.visibility_off)
-                            : Icon(Icons.visibility)),
-                  )
-                : null,
-          ),
-        );
-      },
+                            : Icon(Icons.visibility),
+                      ),
+                    )
+                  : null,
+            ),
+          );
+        },
+      ),
     );
   }
 }
