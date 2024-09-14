@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:school_app/screens/duties.dart';
-import 'package:school_app/screens/notice.dart'; 
+import 'package:school_app/screens/notice.dart';
 import 'package:school_app/screens/payment.dart';
-import 'package:school_app/screens/reports.dart'; 
-import 'package:school_app/widgets/button_navigation.dart'; 
+import 'package:school_app/screens/reports.dart';
+import 'package:school_app/screens/studentpage.dart';
+import 'package:school_app/widgets/button_navigation.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -21,7 +22,8 @@ class _HomePageState extends State<HomePage> {
     DutiesPage(), // Duties page
     ReportPage(), // Reports page
     NoticeEventPage(), // Notice page
-    PaymentsPage(), // Payments page
+    PaymentsPage(),
+    StudentsPage() // Student page
   ];
 
   void _onItemTapped(int index) {
@@ -89,6 +91,8 @@ class _HomePageState extends State<HomePage> {
         return 'Notice / Events';
       case 4:
         return 'Payments';
+      case 5:
+        return 'Students';
       default:
         return 'Home';
     }
@@ -130,7 +134,12 @@ class HomeContentPage extends StatelessWidget {
               Expanded(
                 child: OutlinedButton(
                   onPressed: () {
-                    // handle student button
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => StudentsPage(),
+                      ),
+                    );
                   },
                   style: OutlinedButton.styleFrom(
                     padding: EdgeInsets.symmetric(
