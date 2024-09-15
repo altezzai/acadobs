@@ -1,9 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:school_app/screens/home.dart';
-import 'package:school_app/screens/login.dart';
-import 'package:school_app/widgets/custom_button.dart';
-import 'package:school_app/widgets/custom_textfield.dart';
+import 'package:school_app/admin/screens/home.dart';
+import 'package:school_app/admin/screens/login.dart';
+import 'package:school_app/admin/widgets/custom_button.dart';
+import 'package:school_app/admin/widgets/custom_textfield.dart';
 
 class RegisterPage extends StatelessWidget {
   @override
@@ -55,7 +55,7 @@ class RegisterPage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => HomePage(),
+                            builder: (context) => AdminHomePage(),
                           ),
                         );
                       }),

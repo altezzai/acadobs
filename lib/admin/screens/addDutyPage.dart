@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // imported for date formatting
-import 'package:school_app/widgets/custom_button.dart';
-import 'package:school_app/widgets/custom_textfield.dart';
+import 'package:school_app/admin/widgets/custom_button.dart';
+import 'package:school_app/admin/widgets/custom_textfield.dart';
 
 class AddDutyPage extends StatefulWidget {
   @override

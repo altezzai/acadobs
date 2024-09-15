@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:school_app/screens/addDutyPage.dart';
+import 'package:school_app/admin/screens/addDutyPage.dart';
 
 class DutiesPage extends StatefulWidget {
   @override

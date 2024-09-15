@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:school_app/utils/constants.dart';
+import 'package:school_app/admin/utils/constants.dart';
 
 TextTheme textThemeData = const TextTheme(
   bodyMedium: TextStyle(color: blackColor, fontSize: 24),

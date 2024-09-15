@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:school_app/widgets/custom_button.dart';
+import 'package:school_app/admin/widgets/custom_button.dart';
 
 class PaymentsPage extends StatefulWidget {
   @override

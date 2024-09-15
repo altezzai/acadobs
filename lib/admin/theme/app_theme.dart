@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:school_app/theme/button_theme.dart';
-import 'package:school_app/theme/input_decoration.dart';
-import 'package:school_app/theme/text_theme.dart';
-import 'package:school_app/theme/theme_data.dart';
+import 'package:school_app/admin/theme/button_theme.dart';
+import 'package:school_app/admin/theme/input_decoration.dart';
+import 'package:school_app/admin/theme/text_theme.dart';
+import 'package:school_app/admin/theme/theme_data.dart';
 
 import '../utils/constants.dart';
 

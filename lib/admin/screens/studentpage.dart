@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:school_app/admin/screens/newstudent.dart';
 
 class StudentsPage extends StatelessWidget {
   final List<Map<String, String>> students = [
@@ -82,11 +83,20 @@ class StudentsPage extends StatelessWidget {
                       border: Border.all(color: Colors.grey.shade300),
                     ),
                     child: DropdownButton<String>(
-                      value: "XIII",
+                      value: "V", // Set the initial value
                       underline: SizedBox(),
                       isExpanded: true, // Ensure dropdown uses available width
-                      items: <String>['XIII', 'XII', 'XI', 'X']
-                          .map((String value) {
+                      items: <String>[
+                        'V',
+                        'VI',
+                        'VII',
+                        'VIII',
+                        'IX',
+                        'X',
+                        'XI',
+                        'XII',
+                        'XIII'
+                      ].map((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(
@@ -95,7 +105,9 @@ class StudentsPage extends StatelessWidget {
                           ),
                         );
                       }).toList(),
-                      onChanged: (newValue) {},
+                      onChanged: (newValue) {
+                        // Handle dropdown selection change
+                      },
                     ),
                   ),
                 ),
@@ -144,7 +156,10 @@ class StudentsPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          // Handle add new student
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddStudentPage()),
+          );
         },
         label: Text('Add New Student'),
         icon: Icon(Icons.add),

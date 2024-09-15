@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:school_app/screens/duties.dart';
-import 'package:school_app/screens/notice.dart';
-import 'package:school_app/screens/payment.dart';
-import 'package:school_app/screens/reports.dart';
-import 'package:school_app/screens/studentpage.dart';
-import 'package:school_app/widgets/button_navigation.dart';
+import 'package:school_app/admin/screens/duties.dart';
+import 'package:school_app/admin/screens/notice.dart';
+import 'package:school_app/admin/screens/payment.dart';
+import 'package:school_app/admin/screens/reports.dart';
+import 'package:school_app/admin/screens/studentpage.dart';
+import 'package:school_app/admin/widgets/button_navigation.dart';
 
-class HomePage extends StatefulWidget {
+class AdminHomePage extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _AdminHomePageState createState() => _AdminHomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _AdminHomePageState extends State<AdminHomePage> {
   int _selectedIndex = 0; // Track the selected index
   final PageController _pageController =
       PageController(); // PageController for PageView
