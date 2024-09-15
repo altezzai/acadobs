@@ -40,6 +40,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   lottie: ^1.1.0
+  intl: ^0.19.0
+  
   
 
   # The "flutter_lints" package below contains a set of recommended lints to
@@ -71,6 +73,19 @@ flutter:
     - assets/student.png
     - assets/school_1.png
     - assets/admin.png
+    - assets/staff1.png
+    - assets/staff2.png
+    - assets/staff3.png
+    - assets/sports_day.png
+    - assets/cycle.png
+    - assets/student1.png
+    - assets/student2.png
+    - assets/student3.png
+    - assets/student4.png
+    - assets/student5.png
+    - assets/student6.png
+    - assets/student7.png
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
