@@ -9,7 +9,9 @@ ElevatedButtonThemeData elevatedButtonThemeData = ElevatedButtonThemeData(
     foregroundColor: Colors.white,
     minimumSize: const Size(double.infinity, 32),
     shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(defaultBorderRadius),),
+      borderRadius: BorderRadius.all(
+        Radius.circular(defaultBorderRadius),
+      ),
     ),
   ),
 );
@@ -20,9 +22,9 @@ OutlinedButtonThemeData outlinedButtonTheme(
     style: OutlinedButton.styleFrom(
       padding: const EdgeInsets.all(defaultPadding),
       // minimumSize: const Size(double.infinity, 32),
-      side: BorderSide(width: 1.5, color: borderColor),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(defaultBorderRadius)),
+      side: BorderSide(color: Colors.black),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
       ),
     ),
   );
