@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:school_app/admin/utils/responsive.dart';
+import 'package:school_app/utils/responsive.dart';
 
 class TeacherScreen extends StatelessWidget {
   const TeacherScreen({super.key});

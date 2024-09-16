@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:school_app/admin/screens/splashscreen.dart';
-import 'package:school_app/admin/theme/app_theme.dart';
-import 'package:school_app/admin/utils/responsive.dart';
+import 'package:school_app/theme/app_theme.dart';
+import 'package:school_app/utils/responsive.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
