@@ -4,7 +4,8 @@ import 'package:school_app/admin/screens/home.dart';
 import 'package:school_app/admin/screens/register.dart';
 import 'package:school_app/admin/widgets/custom_button.dart';
 import 'package:school_app/admin/widgets/custom_textfield.dart';
-import 'package:school_app/teacherhome.dart';
+import 'package:school_app/navbar/screens/bottom_navbar.dart';
+import 'package:school_app/teacher/screens/homescreen.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -25,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
     } else if (_username == 'soorya' && _password == '1234') {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => TeacherScreen()),
+        MaterialPageRoute(builder: (context) => BottomNavbar()),
       );
     } else {
       // Show an error message if the login credentials are incorrect
