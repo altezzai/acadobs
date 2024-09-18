@@ -19,7 +19,6 @@ class _PaymentsPageState extends State<PaymentsPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       body: Column(
         children: [
           Padding(
@@ -110,7 +109,7 @@ class _PaymentsPageState extends State<PaymentsPage>
       padding: const EdgeInsets.all(8.0),
       child: Text(
         date,
-        style: TextStyle(fontWeight: FontWeight.bold),
+        style: TextStyle(fontWeight: FontWeight.normal),
       ),
     );
   }
@@ -121,9 +120,18 @@ class _PaymentsPageState extends State<PaymentsPage>
         backgroundColor: Colors.green[100],
         child: Icon(Icons.currency_rupee, color: Colors.green),
       ),
-      title: Text(amount),
-      subtitle: Text(name),
-      trailing: Text(time),
+      title: Text(
+        amount,
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+      ),
+      subtitle: Text(
+        name,
+        style: TextStyle(fontSize: 20),
+      ),
+      trailing: Text(
+        time,
+        style: TextStyle(fontSize: 15),
+      ),
     );
   }
 }
