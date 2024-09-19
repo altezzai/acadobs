@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+
+import 'package:flutter/widgets.dart';
+import 'package:school_app/homework/screens/screens/work.dart';
+
 import 'package:school_app/admin/screens/studentpage.dart';
+
 import 'package:school_app/utils/responsive.dart';
 
 class TeacherScreen extends StatelessWidget {
@@ -33,11 +38,11 @@ class TeacherScreen extends StatelessWidget {
                         style: Theme.of(context)
                             .textTheme
                             .headlineLarge!
-                            .copyWith(color: Color(0xff555555)),
+                            .copyWith(color: const Color(0xff555555)),
                       ),
                     ],
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 30),
                     child: Image.asset('assets/admin.png'),
@@ -47,11 +52,18 @@ class TeacherScreen extends StatelessWidget {
               SizedBox(
                 height: Responsive.height * 20,
               ),
-              _customContainer(color: Colors.green, text: 'Homework'),
-              SizedBox(
+              _customContainer(
+                  color: Colors.green,
+                  text: 'Homework',
+                  ontap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => HomeWork()));
+                  }),
+              const SizedBox(
                 height: 10,
               ),
-              _customContainer(color: Colors.red, text: 'Leave Request'),
+              _customContainer(
+                  color: Colors.red, text: 'Leave Request', ontap: () {}),
               SizedBox(
                 height: Responsive.height * 2,
               ),
@@ -74,7 +86,7 @@ class TeacherScreen extends StatelessWidget {
                     child: Text(
                       'Student',
                       style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            color: Color(0xff555555),
+                            color: const Color(0xff555555),
                             fontWeight: FontWeight.w700,
                           ),
                     ),
@@ -92,7 +104,7 @@ class TeacherScreen extends StatelessWidget {
                     child: Text(
                       'Teacher',
                       style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            color: Color(0xff555555),
+                            color: const Color(0xff555555),
                             fontWeight: FontWeight.w700,
                           ),
                     ),
@@ -106,30 +118,35 @@ class TeacherScreen extends StatelessWidget {
     );
   }
 
-  Widget _customContainer(
-      {required Color color,
-      required String text,
-      IconData icon = Icons.dashboard_customize_outlined}) {
-    return Container(
-      padding: EdgeInsets.all(Responsive.height * 3),
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: Responsive.width * 3),
-            child: Icon(
-              icon,
-              color: Colors.white,
+  Widget _customContainer({
+    required Color color,
+    required String text,
+    IconData icon = Icons.dashboard_customize_outlined,
+    required VoidCallback ontap,
+  }) {
+    return InkWell(
+      onTap: ontap,
+      child: Container(
+        padding: EdgeInsets.all(Responsive.height * 3),
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: Responsive.width * 3),
+              child: Icon(
+                icon,
+                color: Colors.white,
+              ),
             ),
-          ),
-          Text(
-            text,
-            style: TextStyle(color: Colors.white, fontSize: 18),
-          ),
-        ],
+            Text(
+              text,
+              style: const TextStyle(color: Colors.white, fontSize: 18),
+            ),
+          ],
+        ),
       ),
     );
   }
