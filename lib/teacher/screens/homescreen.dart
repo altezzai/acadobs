@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter/widgets.dart';
 import 'package:school_app/homework/screens/screens/work.dart';
+
+import 'package:school_app/admin/screens/studentpage.dart';
+
 import 'package:school_app/utils/responsive.dart';
 
 class TeacherScreen extends StatelessWidget {
@@ -67,7 +71,14 @@ class TeacherScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                       Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => StudentsPage(), //Navigation to the student page
+                      ),
+                    );
+                    },
                     style: OutlinedButton.styleFrom(
                         padding: EdgeInsets.symmetric(
                             vertical: Responsive.height * 3,

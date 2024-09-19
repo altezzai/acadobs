@@ -4,7 +4,7 @@ import '../utils/constants.dart';
 
 ElevatedButtonThemeData elevatedButtonThemeData = ElevatedButtonThemeData(
   style: ElevatedButton.styleFrom(
-    padding: const EdgeInsets.all(defaultPadding),
+    padding: const EdgeInsets.all(20),
     backgroundColor: blackColor,
     foregroundColor: Colors.white,
     minimumSize: const Size(double.infinity, 32),

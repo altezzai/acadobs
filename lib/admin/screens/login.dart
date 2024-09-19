@@ -4,7 +4,7 @@ import 'package:school_app/admin/screens/home.dart';
 import 'package:school_app/admin/screens/register.dart';
 import 'package:school_app/admin/widgets/custom_button.dart';
 import 'package:school_app/admin/widgets/custom_textfield.dart';
-import 'package:school_app/navbar/screens/bottom_navbar.dart';
+import 'package:school_app/teacher/navbar/screens/bottom_navbar.dart';
 import 'package:school_app/teacher/screens/homescreen.dart';
 
 class LoginPage extends StatefulWidget {
