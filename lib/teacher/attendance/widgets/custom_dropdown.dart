@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 class CustomDropdown extends StatelessWidget {
   final String title;
   final IconData icon;
-  const CustomDropdown({super.key, required this.title, required this.icon, });
+  const CustomDropdown({
+    super.key,
+    required this.title,
+    required this.icon,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +19,10 @@ class CustomDropdown extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
             borderSide: const BorderSide(color: Colors.grey),
           ),
-          prefixIcon: Icon(icon),
+          prefixIcon: Padding(
+            padding: const EdgeInsets.only(left: 6),
+            child: Icon(icon),
+          ),
         ),
         hint: Padding(
           padding: const EdgeInsets.only(left: 8.0),
