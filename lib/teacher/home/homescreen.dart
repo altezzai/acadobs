@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-
-import 'package:flutter/widgets.dart';
-import 'package:school_app/homework/screens/screens/work.dart';
-
 import 'package:school_app/admin/screens/studentpage.dart';
-
+import 'package:school_app/teacher/homework/screens/work.dart';
+import 'package:school_app/teacher/leave_request/leave_request.dart';
 import 'package:school_app/utils/responsive.dart';
 
 class TeacherScreen extends StatelessWidget {
@@ -56,14 +53,26 @@ class TeacherScreen extends StatelessWidget {
                   color: Colors.green,
                   text: 'Homework',
                   ontap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomeWork()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomeWork()));
                   }),
               const SizedBox(
                 height: 10,
               ),
               _customContainer(
-                  color: Colors.red, text: 'Leave Request', ontap: () {}),
+                  color: Colors.red,
+                  text: 'Leave Request',
+                  ontap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            const LeaveRequest(), //Navigation to the student page
+                      ),
+                    );
+                  }),
               SizedBox(
                 height: Responsive.height * 2,
               ),
@@ -72,12 +81,13 @@ class TeacherScreen extends StatelessWidget {
                 children: [
                   OutlinedButton(
                     onPressed: () {
-                       Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => StudentsPage(), //Navigation to the student page
-                      ),
-                    );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              StudentsPage(), //Navigation to the student page
+                        ),
+                      );
                     },
                     style: OutlinedButton.styleFrom(
                         padding: EdgeInsets.symmetric(

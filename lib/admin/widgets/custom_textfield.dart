@@ -40,7 +40,7 @@ class CustomTextfield extends StatelessWidget {
             onChanged: onChanged, // Call the onChanged callback
             decoration: InputDecoration(
               contentPadding:
-                  EdgeInsets.symmetric(vertical: 12.0, horizontal: 15.0),
+                  EdgeInsets.symmetric(vertical: 18.0, horizontal: 15.0),
               isDense: true,
               prefixIcon: iconData,
               hintText: hintText,

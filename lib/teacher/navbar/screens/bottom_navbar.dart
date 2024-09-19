@@ -4,7 +4,7 @@ import 'package:school_app/teacher/navbar/controller/navbar_provider.dart';
 import 'package:school_app/teacher/attendance/screens/attendance.dart';
 import 'package:school_app/teacher/marks/screens/marks.dart';
 import 'package:school_app/teacher/screens/duties.dart';
-import 'package:school_app/teacher/screens/homescreen.dart';
+import 'package:school_app/teacher/home/homescreen.dart';
 import 'package:school_app/teacher/screens/payments.dart';
 import 'package:school_app/utils/responsive.dart';
 
