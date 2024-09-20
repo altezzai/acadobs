@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:school_app/admin/screens/studentpage.dart';
-import 'package:school_app/teacher/homework/screens/work.dart';
 import 'package:school_app/teacher/leave_request/leave_request.dart';
 import 'package:school_app/utils/responsive.dart';
+import 'package:school_app/workscreen/work_screen.dart';
 
 class TeacherScreen extends StatelessWidget {
   const TeacherScreen({super.key});
@@ -56,7 +56,7 @@ class TeacherScreen extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const HomeWork()));
+                            builder: (context) => const WorkScreen()));
                   }),
               const SizedBox(
                 height: 10,
