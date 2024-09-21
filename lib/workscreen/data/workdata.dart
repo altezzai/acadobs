@@ -3,13 +3,6 @@ import 'package:school_app/workscreen/models/work.dart';
 
 List<Work> workList = [
   Work(
-    workType: 'Homework',
-    subject: 'Maths',
-    backgroundColor: const Color(0xffFFFCCE),
-    iconColor: const Color(0xffBCB54F),
-    icon: Icons.business_center_outlined,
-  ),
-  Work(
     workType: 'Imposition',
     subject: 'Hindi',
     backgroundColor: const Color(0xffFFCEDE),

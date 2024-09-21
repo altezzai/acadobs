@@ -53,10 +53,8 @@ class TeacherScreen extends StatelessWidget {
                   color: Colors.green,
                   text: 'Homework',
                   ontap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const WorkScreen()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => WorkScreen()));
                   }),
               const SizedBox(
                 height: 10,

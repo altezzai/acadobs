@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:school_app/teacher/homework/screens/work.dart';
 import 'package:school_app/theme/text_theme.dart';
 import 'package:school_app/utils/responsive.dart';
+import 'package:school_app/workscreen/data/workdata.dart';
 import 'package:school_app/workscreen/work_container.dart';
 
 class WorkScreen extends StatelessWidget {
-  const WorkScreen({super.key});
+  WorkScreen({super.key});
+
+  // List<Work> work = workList;
 
   @override
   Widget build(BuildContext context) {
@@ -51,43 +54,19 @@ class WorkScreen extends StatelessWidget {
             SizedBox(
               height: Responsive.height * 2,
             ),
-            const WorkContainer(
-              bcolor: Color(0xffFFCEDE),
-              icolor: Color(0xffB14F6F),
-              icon: Icons.text_snippet_outlined,
-              work: 'Imposition',
-              sub: 'Hindi',
-            ),
-            const WorkContainer(
-              bcolor: Color(0xffFFFCCE),
-              icolor: Color(0xffBCB54F),
-              icon: Icons.business_center_outlined,
-              work: 'Homework',
-              sub: 'Maths',
-              brad: 0,
-            ),
-            const WorkContainer(
-              bcolor: Color(0xffFFCEDE),
-              icolor: Color(0xffB14F6F),
-              icon: Icons.text_snippet_outlined,
-              work: 'Imposition',
-              sub: 'Malayalam',
-              brad: 0,
-            ),
-            const WorkContainer(
-              bcolor: Color(0xffFFCEDE),
-              icolor: Color(0xffB14F6F),
-              icon: Icons.text_snippet_outlined,
-              work: 'Imposition',
-              sub: 'Social Science',
-              brad: 0,
-            ),
-            const WorkContainer(
-              bcolor: Color(0xffFFCEDE),
-              icolor: Color(0xffB14F6F),
-              icon: Icons.text_snippet_outlined,
-              work: 'Imposition',
-              sub: 'Malayalam',
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: workList.length,
+              itemBuilder: (context, index) {
+                final workItem = workList[index];
+                return WorkContainer(
+                  bcolor: workItem.backgroundColor,
+                  icolor: workItem.iconColor,
+                  icon: workItem.icon,
+                  work: workItem.workType,
+                  sub: workItem.subject,
+                );
+              },
             ),
           ],
         ),
