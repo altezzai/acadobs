@@ -14,6 +14,9 @@ class DropdownProvider extends ChangeNotifier {
   String? _selectedSubject;
   String? get selectedSubject=> _selectedSubject;
 
+  String? _selectedPeriod;
+  String? get selectedPeriod=> _selectedPeriod;
+
 
   void setSelectedClass(String? value) {
     _selectedClass = value;
@@ -32,6 +35,11 @@ class DropdownProvider extends ChangeNotifier {
 
   void setSelectedSubject(String? value) {
     _selectedSubject = value;
+    notifyListeners();
+  }
+
+   void setSelectedPeriod(String? value) {
+    _selectedPeriod = value;
     notifyListeners();
   }
 

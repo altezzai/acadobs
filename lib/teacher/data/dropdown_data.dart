@@ -46,4 +46,14 @@ class DropdownData {
     DropdownMenuItem(value: 'economics', child: Text('Economics')),
   ];
 
+  static List<DropdownMenuItem<String>> periods = const [
+    DropdownMenuItem(value: 'first', child: Text('First Hour')),
+    DropdownMenuItem(value: 'second', child: Text('Second Hour')),
+    DropdownMenuItem(value: 'third', child: Text('Third Hour')),
+    DropdownMenuItem(value: 'fourth', child: Text('Fourth Hour')),
+    DropdownMenuItem(value: 'fifth', child: Text('Fifth Hour')),
+    DropdownMenuItem(value: 'sixth', child: Text('Sixth Hour')),
+   
+  ];
+
 }

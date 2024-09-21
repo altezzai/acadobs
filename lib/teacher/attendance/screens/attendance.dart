@@ -21,7 +21,7 @@ class Attendance extends StatelessWidget {
 
   List<DropdownMenuItem<String>> allClasses = DropdownData.allClasses;
   List<DropdownMenuItem<String>> allDivisions = DropdownData.allDivisions;
-  
+  List<DropdownMenuItem<String>> periods = DropdownData.periods;
 
   @override
   Widget build(BuildContext context) {
@@ -89,6 +89,17 @@ class Attendance extends StatelessWidget {
                 iconData: const Icon(Icons.calendar_month),
               ),
               SizedBox(height: Responsive.height * 2),
+              CustomDropdown(
+                title: 'Select Period',
+                icon: Icons.book_outlined,
+                items: periods,
+                selectedValue: dropdownProvider.selectedPeriod,
+                onChanged: (value) {
+                  dropdownProvider.setSelectedPeriod(
+                      value); // Update the state using provider
+                },
+              ),
+              SizedBox(height: Responsive.height * 2),
               Container(
                 padding: const EdgeInsets.all(2),
                 decoration: BoxDecoration(
@@ -115,7 +126,8 @@ class Attendance extends StatelessWidget {
                   title: "Take Attendance",
                   icon: Icons.my_library_books_outlined),
               SizedBox(height: Responsive.height * 3),
-              CustomButton(text: "Submit", onPressed: () {})
+              CustomButton(text: "Submit", onPressed: () {}),
+              SizedBox(height: Responsive.height * 3),
             ],
           ),
         )),
