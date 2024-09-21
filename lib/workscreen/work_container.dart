@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:school_app/theme/text_theme.dart';
 import 'package:school_app/utils/responsive.dart';
+import 'package:school_app/workscreen/work_view.dart';
 
 class WorkContainer extends StatelessWidget {
   final Color bcolor;
@@ -63,9 +64,19 @@ class WorkContainer extends StatelessWidget {
             ],
           ),
           Spacer(),
-          Text(
-            'View',
-            style: textThemeData.headlineMedium!.copyWith(fontSize: 16),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => WorkView(),
+                ),
+              );
+            },
+            child: Text(
+              'View',
+              style: textThemeData.headlineMedium!.copyWith(fontSize: 16),
+            ),
           ),
           SizedBox(
             width: Responsive.width * 4,
