@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:school_app/admin/widgets/custom_button.dart';
 import 'package:school_app/admin/widgets/custom_textfield.dart';
+import 'package:school_app/controller/dropdown_controller.dart';
 import 'package:school_app/teacher/attendance/widgets/custom_dropdown.dart';
+import 'package:school_app/teacher/data/dropdown_data.dart';
 import 'package:school_app/teacher/homework/widgets/date_picker.dart';
 import 'package:school_app/theme/text_theme.dart';
 import 'package:school_app/utils/responsive.dart';
 
+// ignore: must_be_immutable
 class LeaveRequest extends StatelessWidget {
-  const LeaveRequest({super.key});
+   LeaveRequest({super.key});
+
+    List<DropdownMenuItem<String>> leaveTypes = DropdownData.leaveTypes;
+
 
   @override
   Widget build(BuildContext context) {
+    final dropdownProvider = Provider.of<DropdownProvider>(context);
+    
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -53,8 +62,17 @@ class LeaveRequest extends StatelessWidget {
               SizedBox(
                 height: Responsive.height * 1,
               ),
-              const CustomDropdown(
-                  title: "Leave Type", icon: Icons.text_fields),
+
+               CustomDropdown(
+                      title: 'Select LeaveType',
+                      icon: Icons.school,
+                      items: leaveTypes,
+                      selectedValue: dropdownProvider.selectedLeaveType,
+                      onChanged: (value) {
+                        dropdownProvider.setSelectedLeaveType(
+                            value); // Update the state using provider
+                      },
+                    ),
               SizedBox(
                 height: Responsive.height * 1,
               ),

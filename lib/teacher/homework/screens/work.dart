@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:school_app/admin/widgets/custom_button.dart';
 import 'package:school_app/admin/widgets/custom_textfield.dart';
+import 'package:school_app/controller/dropdown_controller.dart';
 import 'package:school_app/teacher/attendance/widgets/custom_dropdown.dart';
+import 'package:school_app/teacher/data/dropdown_data.dart';
 import 'package:school_app/teacher/homework/widgets/date_picker.dart';
 import 'package:school_app/theme/text_theme.dart';
 import 'package:school_app/utils/responsive.dart';
 
+// ignore: must_be_immutable
 class HomeWork extends StatelessWidget {
-  const HomeWork({super.key});
+   HomeWork({super.key});
+
+    List<DropdownMenuItem<String>> allClasses = DropdownData.allClasses;
+    List<DropdownMenuItem<String>> allDivisions = DropdownData.allDivisions;
+
 
   @override
   Widget build(BuildContext context) {
+    final dropdownProvider = Provider.of<DropdownProvider>(context);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -38,20 +47,37 @@ class HomeWork extends StatelessWidget {
               ),
               Row(
                 children: [
-                  const Expanded(
-                    child: CustomDropdown(title: "Class", icon: Icons.school),
+                  Expanded(
+                    child: CustomDropdown(
+                      title: 'Select  Class',
+                      icon: Icons.school,
+                      items: allClasses,
+                      selectedValue: dropdownProvider.selectedClass,
+                      onChanged: (value) {
+                        dropdownProvider.setSelectedClass(
+                            value); // Update the state using provider
+                      },
+                    ),
                   ),
                   SizedBox(width: Responsive.width * 6),
-                  const Expanded(
+                  Expanded(
                     child: CustomDropdown(
-                        title: "Division", icon: Icons.filter_list),
+                      title: 'Select Division',
+                      icon: Icons.school,
+                      items: allDivisions,
+                      selectedValue: dropdownProvider.selectedDivision,
+                      onChanged: (value) {
+                        dropdownProvider.setSelectedDivision(
+                            value); // Update the state using provider
+                      },
+                    ),
                   ),
                 ],
               ),
-              SizedBox(height: Responsive.height * 2),
-              const CustomDropdown(title: "Select Student", icon: Icons.person),
-              SizedBox(height: Responsive.height * 2),
-              const CustomDropdown(title: "Select Subject", icon: Icons.note),
+              // SizedBox(height: Responsive.height * 2),
+              // const CustomDropdown(title: "Select Student", icon: Icons.person),
+              // SizedBox(height: Responsive.height * 2),
+              // const CustomDropdown(title: "Select Subject", icon: Icons.note),
               SizedBox(height: Responsive.height * 2),
               Row(
                 children: [
