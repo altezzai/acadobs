@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:school_app/theme/text_theme.dart';
 import 'package:school_app/utils/responsive.dart';
-import 'package:school_app/workscreen/work_view.dart';
+import 'package:school_app/teacher/homework/screens/work_view.dart';
 
 class WorkContainer extends StatelessWidget {
   final Color bcolor;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:school_app/workscreen/models/work.dart';
+import 'package:school_app/teacher/homework/models/work.dart';
 
 List<Work> workList = [
   Work(

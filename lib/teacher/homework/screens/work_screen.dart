@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:school_app/teacher/homework/screens/work.dart';
 import 'package:school_app/theme/text_theme.dart';
 import 'package:school_app/utils/responsive.dart';
-import 'package:school_app/workscreen/data/workdata.dart';
-import 'package:school_app/workscreen/work_container.dart';
+import 'package:school_app/teacher/homework/data/workdata.dart';
+import 'package:school_app/teacher/homework/widgets/work_container.dart';
 
 class WorkScreen extends StatelessWidget {
   WorkScreen({super.key});
@@ -14,6 +14,11 @@ class WorkScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back_ios)),
         title: Center(
             child: Text(
           'Home Works',
@@ -81,9 +86,12 @@ class WorkScreen extends StatelessWidget {
           );
         },
         backgroundColor: Colors.black,
-        child: Text(
-          '+',
-          style: textThemeData.headlineLarge!.copyWith(color: Colors.white),
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 14),
+          child: Text(
+            '+',
+            style: textThemeData.headlineLarge!.copyWith(color: Colors.white),
+          ),
         ),
       ),
     );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:school_app/theme/text_theme.dart';
 import 'package:school_app/utils/responsive.dart';
-import 'package:school_app/workscreen/view_container.dart';
+import 'package:school_app/teacher/homework/widgets/view_container.dart';
 
 class WorkView extends StatelessWidget {
   const WorkView({super.key});
