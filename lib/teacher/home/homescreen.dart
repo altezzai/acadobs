@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:school_app/admin/screens/studentpage.dart';
-import 'package:school_app/teacher/homework/screens/work.dart';
 import 'package:school_app/teacher/leave_request/leave_request.dart';
 import 'package:school_app/utils/responsive.dart';
+import 'package:school_app/teacher/homework/screens/work_screen.dart';
 
 class TeacherScreen extends StatelessWidget {
   const TeacherScreen({super.key});
@@ -53,10 +53,10 @@ class TeacherScreen extends StatelessWidget {
                   color: Colors.green,
                   text: 'Homework',
                   ontap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>  HomeWork()));
+
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => WorkScreen()));
+
                   }),
               const SizedBox(
                 height: 10,
