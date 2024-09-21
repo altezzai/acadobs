@@ -56,7 +56,7 @@ class TeacherScreen extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const HomeWork()));
+                            builder: (context) =>  HomeWork()));
                   }),
               const SizedBox(
                 height: 10,
@@ -69,7 +69,7 @@ class TeacherScreen extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            const LeaveRequest(), //Navigation to the student page
+                            LeaveRequest(), //Navigation to the student page
                       ),
                     );
                   }),

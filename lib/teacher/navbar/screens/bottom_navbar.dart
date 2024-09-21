@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:school_app/teacher/navbar/controller/navbar_provider.dart';
+import 'package:school_app/admin/screens/payment.dart';
 import 'package:school_app/teacher/attendance/screens/attendance.dart';
-import 'package:school_app/teacher/marks/screens/marks.dart';
-import 'package:school_app/teacher/screens/duties.dart';
 import 'package:school_app/teacher/home/homescreen.dart';
-import 'package:school_app/teacher/screens/payments.dart';
+import 'package:school_app/teacher/marks/marks.dart';
+import 'package:school_app/teacher/navbar/controller/navbar_provider.dart';
+import 'package:school_app/teacher/duties/duties.dart';
 import 'package:school_app/utils/responsive.dart';
 
 class BottomNavbar extends StatelessWidget {
@@ -21,9 +21,9 @@ class BottomNavbar extends StatelessWidget {
         children: [
           const TeacherScreen(),
           Attendance(),
-          const ProgressReport(),
+          ProgressReport(),
           const DutiesScreen(),
-          const PaymentsScreen(),
+          PaymentsPage(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

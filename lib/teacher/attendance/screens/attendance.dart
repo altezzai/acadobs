@@ -1,23 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:school_app/admin/widgets/custom_button.dart';
 import 'package:school_app/admin/widgets/custom_textfield.dart';
+import 'package:school_app/controller/dropdown_controller.dart';
 import 'package:school_app/teacher/attendance/widgets/attendance_tile.dart';
 import 'package:school_app/teacher/attendance/widgets/custom_dropdown.dart';
+import 'package:school_app/teacher/data/dropdown_data.dart';
 import 'package:school_app/utils/responsive.dart';
 
 // ignore: must_be_immutable
 class Attendance extends StatelessWidget {
   Attendance({super.key});
 
-  List<String> titles = [
-    "Set Holiday",
-    "Set All Present",
-    "Set All Absent",
-    "Set All Leave"
-  ];
+  final Map<String, IconData> titleIconMap = {
+    "Set Holiday": Icons.beach_access, // Holiday-related icon
+    "Set All Present": Icons.check_circle, // Present icon
+    "Set All Absent": Icons.cancel, // Absent icon
+    "Set All Leave": Icons.airline_seat_flat_angled, // Leave icon
+  };
+
+  List<DropdownMenuItem<String>> allClasses = DropdownData.allClasses;
+  List<DropdownMenuItem<String>> allDivisions = DropdownData.allDivisions;
+  
 
   @override
   Widget build(BuildContext context) {
+    final dropdownProvider = Provider.of<DropdownProvider>(context);
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(
@@ -48,13 +56,30 @@ class Attendance extends StatelessWidget {
               SizedBox(height: Responsive.height * 5),
               Row(
                 children: [
-                  const Expanded(
-                    child: CustomDropdown(title: "Class", icon: Icons.school),
+                  Expanded(
+                    child: CustomDropdown(
+                      title: 'Select  Class',
+                      icon: Icons.school,
+                      items: allClasses,
+                      selectedValue: dropdownProvider.selectedClass,
+                      onChanged: (value) {
+                        dropdownProvider.setSelectedClass(
+                            value); // Update the state using provider
+                      },
+                    ),
                   ),
                   SizedBox(width: Responsive.width * 6),
-                  const Expanded(
-                    child:  CustomDropdown(
-                        title: "Division", icon: Icons.filter_list),
+                  Expanded(
+                    child: CustomDropdown(
+                      title: 'Select Division',
+                      icon: Icons.school,
+                      items: allDivisions,
+                      selectedValue: dropdownProvider.selectedDivision,
+                      onChanged: (value) {
+                        dropdownProvider.setSelectedDivision(
+                            value); // Update the state using provider
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -72,15 +97,23 @@ class Attendance extends StatelessWidget {
                 child: ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: titles.length,
+                    itemCount: titleIconMap.length,
                     itemBuilder: (context, index) {
-                      return AttendanceTile(title: titles[index]);
+                      // Get the title and icon from the map
+                      String title = titleIconMap.keys.elementAt(index);
+                      IconData icon = titleIconMap.values.elementAt(index);
+                      return AttendanceTile(
+                        title: title,
+                        icon: icon,
+                      );
                     }),
               ),
               SizedBox(height: Responsive.height * 2),
               const Text("Or"),
               SizedBox(height: Responsive.height * 2),
-              const AttendanceTile(title: "Take Attendance"),
+              const AttendanceTile(
+                  title: "Take Attendance",
+                  icon: Icons.my_library_books_outlined),
               SizedBox(height: Responsive.height * 3),
               CustomButton(text: "Submit", onPressed: () {})
             ],
