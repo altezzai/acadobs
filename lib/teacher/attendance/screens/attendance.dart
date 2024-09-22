@@ -3,7 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:school_app/admin/widgets/custom_button.dart';
 import 'package:school_app/admin/widgets/custom_textfield.dart';
 import 'package:school_app/controller/dropdown_controller.dart';
+import 'package:school_app/teacher/attendance/screens/take_attendance.dart';
 import 'package:school_app/teacher/attendance/widgets/attendance_tile.dart';
+import 'package:school_app/global%20widgets/custom_appbar.dart';
 import 'package:school_app/teacher/attendance/widgets/custom_dropdown.dart';
 import 'package:school_app/teacher/data/dropdown_data.dart';
 import 'package:school_app/utils/responsive.dart';
@@ -33,27 +35,10 @@ class Attendance extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             children: [
-              SizedBox(height: Responsive.height * 5),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: Responsive.width * 30,
-                  ),
-                  Text(
-                    "Attendance",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium!
-                        .copyWith(fontWeight: FontWeight.w600),
-                  ),
-                  const Spacer(),
-                  const CircleAvatar(
-                    backgroundImage: AssetImage('assets/admin.png'),
-                  ),
-                ],
+              CustomAppbar(
+                title: "Attendance",
+                isBackButton: false,
               ),
-              SizedBox(height: Responsive.height * 5),
               Row(
                 children: [
                   Expanded(
@@ -88,7 +73,7 @@ class Attendance extends StatelessWidget {
                 hintText: "dd/mm/yyyy",
                 iconData: const Icon(Icons.calendar_month),
               ),
-              SizedBox(height: Responsive.height * 2),
+              SizedBox(height: Responsive.height * 1),
               CustomDropdown(
                 title: 'Select Period',
                 icon: Icons.book_outlined,
@@ -126,7 +111,12 @@ class Attendance extends StatelessWidget {
                   title: "Take Attendance",
                   icon: Icons.my_library_books_outlined),
               SizedBox(height: Responsive.height * 3),
-              CustomButton(text: "Submit", onPressed: () {}),
+              CustomButton(
+                  text: "Submit",
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (ctx) => TakeAttendance()));
+                  }),
               SizedBox(height: Responsive.height * 3),
             ],
           ),
