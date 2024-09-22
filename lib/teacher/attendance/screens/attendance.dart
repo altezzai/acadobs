@@ -4,9 +4,9 @@ import 'package:school_app/admin/widgets/custom_button.dart';
 import 'package:school_app/admin/widgets/custom_textfield.dart';
 import 'package:school_app/controller/dropdown_controller.dart';
 import 'package:school_app/teacher/attendance/screens/take_attendance.dart';
-import 'package:school_app/teacher/attendance/widgets/attendance_tile.dart';
+import 'package:school_app/teacher/attendance/widgets/title_tile.dart';
 import 'package:school_app/global%20widgets/custom_appbar.dart';
-import 'package:school_app/teacher/attendance/widgets/custom_dropdown.dart';
+import 'package:school_app/global%20widgets/custom_dropdown.dart';
 import 'package:school_app/teacher/data/dropdown_data.dart';
 import 'package:school_app/utils/responsive.dart';
 
@@ -98,7 +98,7 @@ class Attendance extends StatelessWidget {
                       // Get the title and icon from the map
                       String title = titleIconMap.keys.elementAt(index);
                       IconData icon = titleIconMap.values.elementAt(index);
-                      return AttendanceTile(
+                      return TitleTile(
                         title: title,
                         icon: icon,
                       );
@@ -107,7 +107,7 @@ class Attendance extends StatelessWidget {
               SizedBox(height: Responsive.height * 2),
               const Text("Or"),
               SizedBox(height: Responsive.height * 2),
-              const AttendanceTile(
+              const TitleTile(
                   title: "Take Attendance",
                   icon: Icons.my_library_books_outlined),
               SizedBox(height: Responsive.height * 3),

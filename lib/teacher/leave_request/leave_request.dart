@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:school_app/admin/widgets/custom_button.dart';
 import 'package:school_app/admin/widgets/custom_textfield.dart';
 import 'package:school_app/controller/dropdown_controller.dart';
-import 'package:school_app/teacher/attendance/widgets/custom_dropdown.dart';
+import 'package:school_app/global%20widgets/custom_dropdown.dart';
 import 'package:school_app/teacher/data/dropdown_data.dart';
 import 'package:school_app/teacher/homework/widgets/date_picker.dart';
 import 'package:school_app/theme/text_theme.dart';
