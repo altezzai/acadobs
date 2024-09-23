@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:school_app/teacher/mark_work/screens/mark_star.dart';
 import 'package:school_app/theme/text_theme.dart';
 import 'package:school_app/utils/responsive.dart';
 import 'package:school_app/teacher/homework/widgets/view_container.dart';
@@ -68,10 +69,20 @@ class WorkView extends StatelessWidget {
                   SizedBox(
                     width: Responsive.width * 20,
                   ),
-                  Text(
-                    'Mark Homework',
-                    style: textThemeData.bodyMedium!.copyWith(
-                      fontSize: 14,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MarkStar(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'Mark Homework',
+                      style: textThemeData.bodyMedium!.copyWith(
+                        fontSize: 14,
+                      ),
                     ),
                   )
                 ],
