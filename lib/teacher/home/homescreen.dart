@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:school_app/admin/screens/studentpage.dart';
 import 'package:school_app/teacher/leave_request/leave_request.dart';
+import 'package:school_app/teacher/parent/screens/parents.dart';
 import 'package:school_app/utils/responsive.dart';
 import 'package:school_app/teacher/homework/screens/work_screen.dart';
 
@@ -105,14 +106,17 @@ class TeacherScreen extends StatelessWidget {
                   //   width: 5,
                   // ),
                   OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                       Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => ParentsScreen()));
+                    },
                     style: OutlinedButton.styleFrom(
                       padding: EdgeInsets.symmetric(
                           vertical: Responsive.height * 3,
                           horizontal: Responsive.width * 12),
                     ),
                     child: Text(
-                      'Teacher',
+                      'Parents',
                       style: Theme.of(context).textTheme.bodySmall!.copyWith(
                             color: const Color(0xff555555),
                             fontWeight: FontWeight.w700,

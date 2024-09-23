@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:school_app/utils/responsive.dart';
 
-// ignore: must_be_immutable
-class CustomAppbar extends StatelessWidget {
+class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   final bool isBackButton;
   final bool isProfileIcon;
   final String title;
@@ -27,6 +26,7 @@ class CustomAppbar extends StatelessWidget {
               ? GestureDetector(
                   onTap: onTap,
                   child: const CircleAvatar(
+                    backgroundColor: Color(0xFFD9D9D9),
                     child: Icon(Icons.arrow_back_ios_new),
                   ),
                 )
@@ -54,4 +54,7 @@ class CustomAppbar extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  Size get preferredSize => Size.fromHeight(Responsive.height * 10); // Set height as per your requirement
 }
