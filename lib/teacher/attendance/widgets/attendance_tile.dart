@@ -43,6 +43,7 @@ class AttendanceTile extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 15,
+                  backgroundColor: Color(0xFFD9D9D9),
                   child: Text(
                     studentId.toString(),
                     style: Theme.of(context)
