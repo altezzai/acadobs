@@ -5,7 +5,7 @@ import 'package:school_app/controller/dropdown_controller.dart';
 import 'package:school_app/global%20widgets/custom_appbar.dart';
 import 'package:school_app/global%20widgets/custom_dropdown.dart';
 import 'package:school_app/teacher/data/dropdown_data.dart';
-import 'package:school_app/teacher/home/homescreen.dart';
+import 'package:school_app/teacher/navbar/screens/bottom_navbar.dart';
 import 'package:school_app/teacher/parent/data/parent_data.dart';
 import 'package:school_app/teacher/parent/widgets/parent_tile.dart';
 import 'package:school_app/utils/responsive.dart';
@@ -28,8 +28,10 @@ class ParentsScreen extends StatelessWidget {
             CustomAppbar(
               title: "Parents",
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => TeacherScreen()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const BottomNavbar()));
               },
             ),
             CustomTextfield(
