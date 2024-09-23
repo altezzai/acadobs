@@ -50,7 +50,7 @@ class TakeAttendance extends StatelessWidget {
                     .bodySmall!
                     .copyWith(fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: Responsive.height * 1),
+              SizedBox(height: Responsive.height * 2),
               Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: List.generate(
@@ -71,7 +71,7 @@ class TakeAttendance extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final student = students[index];
                       return Padding(
-                        padding: EdgeInsets.only(bottom: Responsive.height * 2),
+                        padding: EdgeInsets.only(bottom: Responsive.height * 1),
                         child: AttendanceTile(
                           studentId: student['id'] as int,
                           studentName: student['name'] as String,
@@ -90,19 +90,22 @@ class TakeAttendance extends StatelessWidget {
   Widget _periodBox(context, {required int period}) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 2), // Space between boxes
-      padding:
-          const EdgeInsets.symmetric(vertical: 10), // Padding inside the box
+      padding: const EdgeInsets.symmetric(
+        vertical: 4,
+      ), // Padding inside the box
       decoration: BoxDecoration(
         color: Colors.blue, // Box color
         borderRadius: BorderRadius.circular(4),
         border: Border.all(color: Colors.black26, width: 1), // Optional border
       ),
       child: Center(
-        child: Text('P$period', // Display period number
-            style: Theme.of(context)
-                .textTheme
-                .bodySmall!
-                .copyWith(color: whiteColor)),
+        child: Text(
+          'P$period', // Display period number
+          style: Theme.of(context)
+              .textTheme
+              .bodySmall!
+              .copyWith(color: whiteColor, fontSize: 12),
+        ),
       ),
     );
   }
