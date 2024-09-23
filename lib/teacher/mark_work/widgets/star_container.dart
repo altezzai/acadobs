@@ -4,7 +4,9 @@ import 'package:school_app/theme/text_theme.dart';
 import 'package:school_app/utils/responsive.dart';
 
 class StarContainer extends StatelessWidget {
-  const StarContainer({super.key});
+  final String name;
+  final String rollNo;
+  const StarContainer({super.key, required this.name, required this.rollNo,});
 
   @override
   Widget build(BuildContext context) {
@@ -28,13 +30,13 @@ class StarContainer extends StatelessWidget {
               CircleAvatar(
                 radius: 25,
                 backgroundColor: const Color(0xffF4F4F4),
-                child: Text('01', style: textThemeData.labelSmall),
+                child: Text(rollNo, style: textThemeData.labelSmall),
               ),
               SizedBox(
                 width: Responsive.width * 3,
               ),
               Text(
-                'Theodore T.C',
+                name,
                 style: textThemeData.labelSmall!.copyWith(
                   color: Colors.black,
                 ),

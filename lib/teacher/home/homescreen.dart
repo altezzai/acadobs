@@ -112,7 +112,7 @@ class TeacherScreen extends StatelessWidget {
                           horizontal: Responsive.width * 12),
                     ),
                     child: Text(
-                      'Teacher',
+                      'Parents',
                       style: Theme.of(context).textTheme.bodySmall!.copyWith(
                             color: const Color(0xff555555),
                             fontWeight: FontWeight.w700,

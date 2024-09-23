@@ -1,8 +1,9 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:school_app/admin/widgets/custom_button.dart';
-import 'package:school_app/teacher/mark_work/screens/widgets/star_container.dart';
+import 'package:school_app/teacher/mark_work/widgets/star_container.dart';
 import 'package:school_app/theme/text_theme.dart';
 import 'package:school_app/utils/responsive.dart';
 
@@ -30,6 +31,18 @@ class _MarkStarState extends State<MarkStar> {
       currentDate = formattedDate;
     });
   }
+
+  final students = [
+    {"id": 1, "name": "Theodore T.C. Calvin"},
+    {"id": 2, "name": "Rick Wright"},
+    {"id": 3, "name": "Tom Selleck"},
+    {"id": 4, "name": "Theodore T.C. Calvin"},
+    {"id": 5, "name": "Rick Wright"},
+    {"id": 6, "name": "Tom Selleck"},
+    {"id": 7, "name": "Theodore T.C. Calvin"},
+    {"id": 8, "name": "Rick Wright"},
+    {"id": 9, "name": "Tom Selleck"},
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -76,11 +89,14 @@ class _MarkStarState extends State<MarkStar> {
             Expanded(
               child: ListView.builder(
                 shrinkWrap: true,
-                itemCount: 6,
+                itemCount: students.length,
                 itemBuilder: (context, index) {
                   return Padding(
-                    padding: EdgeInsets.all(Responsive.height * .2),
-                    child: StarContainer(),
+                    padding: EdgeInsets.all(Responsive.height * .5),
+                    child: StarContainer(
+                      rollNo: students[index]['id']!.toString(),
+                      name: students[index]['name']!.toString(),
+                    ),
                   );
                 },
               ),
