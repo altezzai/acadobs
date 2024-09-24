@@ -1,7 +1,5 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:school_app/admin/screens/home.dart';
-import 'package:school_app/admin/screens/register.dart';
 import 'package:school_app/admin/widgets/custom_button.dart';
 import 'package:school_app/admin/widgets/custom_textfield.dart';
 import 'package:school_app/navbar/screens/bottom_navbar.dart';
@@ -59,24 +57,24 @@ class _LoginPageState extends State<LoginPage> {
                   CustomTextfield(
                     hintText: "Username",
                     iconData: Icon(Icons.person_outline),
-                    onTap: () {}, // Can add tap action if needed
                     onChanged: (value) {
                       setState(() {
                         _username = value; // Capture username input
                       });
                     },
+                    onTap: null, // No tap event required for username input
                   ),
                   const SizedBox(height: 20),
                   CustomTextfield(
                     hintText: "Password",
                     iconData: Icon(Icons.lock_outline),
                     isPasswordField: true,
-                    onTap: () {}, // Can add tap action if needed
                     onChanged: (value) {
                       setState(() {
                         _password = value; // Capture password input
                       });
                     },
+                    onTap: null, // No tap event required for password input
                   ),
                   SizedBox(height: 20),
                   CustomButton(
@@ -89,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       RichText(
                         text: TextSpan(
-                          text: "Login Credentials are provided by ",
+                          text: "Login credentials are provied by  ",
                           style: TextStyle(color: Colors.grey[600]),
                           children: [
                             TextSpan(
@@ -98,15 +96,15 @@ class _LoginPageState extends State<LoginPage> {
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
                               ),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => RegisterPage(),
-                                    ),
-                                  );
-                                },
+                              // recognizer: TapGestureRecognizer()
+                              //   ..onTap = () {
+                              //     Navigator.push(
+                              //       context,
+                              //       MaterialPageRoute(
+                              //         builder: (context) => RegisterPage(),
+                              //       ),
+                              //     );
+                              //   },
                             ),
                           ],
                         ),
