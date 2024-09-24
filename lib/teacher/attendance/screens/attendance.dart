@@ -35,7 +35,7 @@ class Attendance extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             children: [
-              CustomAppbar(
+              const CustomAppbar(
                 title: "Attendance",
                 isBackButton: false,
               ),

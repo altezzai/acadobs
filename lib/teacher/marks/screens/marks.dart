@@ -6,6 +6,7 @@ import 'package:school_app/controller/dropdown_controller.dart';
 import 'package:school_app/global%20widgets/custom_appbar.dart';
 import 'package:school_app/global%20widgets/custom_dropdown.dart';
 import 'package:school_app/teacher/data/dropdown_data.dart';
+import 'package:school_app/teacher/marks/screens/student_marklist.dart';
 import 'package:school_app/utils/responsive.dart';
 
 // ignore: must_be_immutable
@@ -86,7 +87,16 @@ class ProgressReport extends StatelessWidget {
               iconData: Icon(Icons.book),
             ),
             SizedBox(height: Responsive.height * 3),
-            CustomButton(text: "Enter Mark", onPressed: () {})
+            CustomButton(
+                text: "Enter Mark",
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (ctx) => StudentMarklist(),
+                    ),
+                  );
+                })
           ],
         ),
       ),
