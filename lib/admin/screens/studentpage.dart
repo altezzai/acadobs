@@ -9,38 +9,63 @@ class StudentsPage extends StatefulWidget {
 
 class _StudentsPageState extends State<StudentsPage> {
   final List<Map<String, String>> students = [
-    {"name": "Muhammad Rafasl N", "class": "XIII", "image": "student1.png"},
-    {"name": "Livie Kenter", "class": "XIII", "image": "student2.png"},
-    {"name": "Kaiya Siphron", "class": "XIII", "image": "student3.png"},
-    {"name": "Abram Bator", "class": "XIII", "image": "student4.png"},
-    {"name": "Allison Lipshulz", "class": "XIII", "image": "student5.png"},
-    {"name": "Diana Lipshulz", "class": "XIII", "image": "student6.png"},
-    {"name": "Justin Levin", "class": "XIII", "image": "student7.png"},
-    {"name": "Miracle Bator", "class": "XIII", "image": "student1.png"},
+    {"name": "Muhammad Rafasl", "class": "VI", "image": "student1.png"},
+    {"name": "Midlej O P", "class": "V", "image": "student2.png"},
+    {"name": "Saleem Riyaz", "class": "VIII", "image": "student3.png"},
+    {"name": "Abram Bator", "class": "IX", "image": "student4.png"},
+    {"name": "Allison Lipshulz", "class": "VII", "image": "student5.png"},
+    {"name": "Rayees Ibrahim", "class": "VII", "image": "student6.png"},
+    {"name": "Khalid Mustafa", "class": "XI", "image": "student7.png"},
+    {"name": "Bilal Rifad", "class": "X", "image": "student1.png"},
+    {"name": "Hamem Fahad", "class": "VI", "image": "student6.png"},
+    {"name": "Sajad K V", "class": "X", "image": "student5.png"},
   ];
 
   List<Map<String, String>> filteredStudents = [];
   String searchQuery = "";
+  String selectedClass = "All"; // Initial class selected
 
   @override
   void initState() {
     super.initState();
+    // Sort the students by name in alphabetical order
+    students.sort((a, b) => a['name']!.compareTo(b['name']!));
     filteredStudents = students; // Initialize with all students
   }
 
   void _filterStudents(String query) {
-    if (query.isEmpty) {
-      setState(() {
-        filteredStudents = students; // Reset to all students
-      });
-    } else {
-      setState(() {
-        filteredStudents = students
-            .where((student) =>
-                student['name']!.toLowerCase().contains(query.toLowerCase()))
-            .toList();
-      });
-    }
+    setState(() {
+      searchQuery = query;
+      filteredStudents = students.where((student) {
+        final matchesSearchQuery =
+            student['name']!.toLowerCase().contains(query.toLowerCase());
+        final matchesClass = student['class'] == selectedClass;
+        return matchesSearchQuery && matchesClass;
+      }).toList();
+    });
+  }
+
+  void _filterByClass(String newClass) {
+    setState(() {
+      selectedClass = newClass; // Update the selected class
+
+      // If "All" is selected, show all students, else filter by class
+      if (selectedClass == "All") {
+        filteredStudents = students.where((student) {
+          return student['name']!
+              .toLowerCase()
+              .contains(searchQuery.toLowerCase());
+        }).toList();
+      } else {
+        filteredStudents = students.where((student) {
+          final matchesSearchQuery = student['name']!
+              .toLowerCase()
+              .contains(searchQuery.toLowerCase());
+          final matchesClass = student['class'] == selectedClass;
+          return matchesSearchQuery && matchesClass;
+        }).toList();
+      }
+    });
   }
 
   @override
@@ -83,8 +108,7 @@ class _StudentsPageState extends State<StudentsPage> {
                   flex: 3,
                   child: TextField(
                     onChanged: (value) {
-                      searchQuery = value;
-                      _filterStudents(searchQuery);
+                      _filterStudents(value);
                     },
                     decoration: InputDecoration(
                       hintText: 'Search for students',
@@ -111,19 +135,17 @@ class _StudentsPageState extends State<StudentsPage> {
                       border: Border.all(color: Colors.grey.shade300),
                     ),
                     child: DropdownButton<String>(
-                      value: "V",
+                      value: selectedClass,
                       underline: SizedBox(),
                       isExpanded: true,
                       items: <String>[
+                        'All',
                         'V',
                         'VI',
                         'VII',
                         'VIII',
                         'IX',
                         'X',
-                        'XI',
-                        'XII',
-                        'XIII'
                       ].map((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
@@ -134,7 +156,9 @@ class _StudentsPageState extends State<StudentsPage> {
                         );
                       }).toList(),
                       onChanged: (newValue) {
-                        // Handle dropdown selection change
+                        if (newValue != null) {
+                          _filterByClass(newValue);
+                        }
                       },
                     ),
                   ),
@@ -173,7 +197,7 @@ class _StudentsPageState extends State<StudentsPage> {
                       title: Text(
                         filteredStudents[index]['name']!,
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
+                            fontWeight: FontWeight.bold, fontSize: 16),
                         overflow: TextOverflow.ellipsis,
                       ),
                       subtitle: Text(
@@ -184,7 +208,7 @@ class _StudentsPageState extends State<StudentsPage> {
                       trailing: TextButton(
                         child: Text(
                           'View',
-                          style: TextStyle(fontSize: 15),
+                          style: TextStyle(fontSize: 14),
                         ),
                         onPressed: () {
                           Navigator.push(
