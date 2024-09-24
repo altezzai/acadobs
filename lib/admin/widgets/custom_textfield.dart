@@ -9,7 +9,7 @@ class CustomTextfield extends StatelessWidget {
   final TextStyle? hintStyle;
   final TextStyle? textStyle; // Text style for the input text
   final VoidCallback? onTap; // Callback function for onTap
-  final ValueChanged<String>? onChanged; // New onChanged callback
+  final ValueChanged<String>? onChanged; // Callback for text input
 
   CustomTextfield({
     super.key,
@@ -18,9 +18,9 @@ class CustomTextfield extends StatelessWidget {
     this.keyBoardtype,
     this.isPasswordField = false,
     this.hintStyle,
-    this.textStyle, // New parameter for input text styling
-    this.onTap, // Initialize onTap callback
-    this.onChanged, // Initialize onChanged callback
+    this.textStyle, // Text style for the text input
+    this.onTap, // Handle onTap event (for date picker, etc.)
+    this.onChanged, // Handle text changes
   }) : isObscure = ValueNotifier<bool>(isPasswordField);
 
   @override
@@ -38,6 +38,8 @@ class CustomTextfield extends StatelessWidget {
             obscureText: isPasswordField ? isObscure.value : false,
             keyboardType: keyBoardtype,
             onChanged: onChanged, // Call the onChanged callback
+            readOnly: onTap !=
+                null, // Make the field read-only if onTap is provided (for date picker)
             decoration: InputDecoration(
               contentPadding:
                   EdgeInsets.symmetric(vertical: 12.0, horizontal: 15.0),
@@ -45,13 +47,13 @@ class CustomTextfield extends StatelessWidget {
               prefixIcon: iconData,
               hintText: hintText,
               hintStyle: hintStyle ??
-                  TextStyle(
+                  const TextStyle(
                     fontSize: 14.0,
                     color: Colors.grey,
-                  ), // Default hint style if not provided
+                  ), // Default hint style
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: Colors.grey),
+                borderSide: const BorderSide(color: Colors.grey),
               ),
               suffixIcon: isPasswordField
                   ? Padding(
@@ -61,8 +63,8 @@ class CustomTextfield extends StatelessWidget {
                           isObscure.value = !isObscure.value;
                         },
                         icon: isObscure.value
-                            ? Icon(Icons.visibility_off)
-                            : Icon(Icons.visibility),
+                            ? const Icon(Icons.visibility_off)
+                            : const Icon(Icons.visibility),
                       ),
                     )
                   : null,

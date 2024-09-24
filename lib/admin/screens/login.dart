@@ -5,7 +5,6 @@ import 'package:school_app/admin/screens/register.dart';
 import 'package:school_app/admin/widgets/custom_button.dart';
 import 'package:school_app/admin/widgets/custom_textfield.dart';
 import 'package:school_app/navbar/screens/bottom_navbar.dart';
-import 'package:school_app/teacher/screens/homescreen.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -90,11 +89,11 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       RichText(
                         text: TextSpan(
-                          text: "Don't have an account? ",
+                          text: "Login Credentials are provided by ",
                           style: TextStyle(color: Colors.grey[600]),
                           children: [
                             TextSpan(
-                              text: 'Register here',
+                              text: 'Administration',
                               style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,

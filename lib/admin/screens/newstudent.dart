@@ -87,7 +87,10 @@ class _AddStudentPageState extends State<AddStudentPage> {
                         prefixIcon: Icon(Icons.school),
                       ),
                       value: selectedClass,
-                      hint: Text('Class'),
+                      hint: Text(
+                        'Class',
+                        style: TextStyle(fontSize: 14),
+                      ),
                       items: classList.map((String className) {
                         return DropdownMenuItem<String>(
                           value: className,
@@ -116,7 +119,10 @@ class _AddStudentPageState extends State<AddStudentPage> {
                         prefixIcon: Icon(Icons.filter_list),
                       ),
                       value: selectedDivision,
-                      hint: Text('Division'),
+                      hint: Text(
+                        'Division',
+                        style: TextStyle(fontSize: 14),
+                      ),
                       items: divisionList.map((String division) {
                         return DropdownMenuItem<String>(
                           value: division,
