@@ -37,10 +37,8 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
             child: Text(
               title,
               textAlign: TextAlign.center,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium!
-                  .copyWith(fontWeight: FontWeight.w600),
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                  fontWeight: FontWeight.w600, overflow: TextOverflow.ellipsis),
             ),
           ),
 
@@ -56,5 +54,6 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(Responsive.height * 10); // Set height as per your requirement
+  Size get preferredSize => Size.fromHeight(
+      Responsive.height * 10); // Set height as per your requirement
 }
