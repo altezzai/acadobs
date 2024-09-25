@@ -5,6 +5,7 @@ import 'package:school_app/teacher/marks/widgets/mark_tile.dart';
 import 'package:school_app/utils/constants.dart';
 import 'package:school_app/utils/responsive.dart';
 
+// ignore: must_be_immutable
 class StudentMarklist extends StatelessWidget {
   StudentMarklist({super.key});
 

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:school_app/theme/text_theme.dart';
-import 'package:school_app/utils/responsive.dart';
 import 'package:school_app/teacher/homework/screens/work_view.dart';
+import 'package:school_app/theme/text_theme.dart';
+import 'package:school_app/utils/constants.dart';
+import 'package:school_app/utils/responsive.dart';
 
 class WorkContainer extends StatelessWidget {
   final Color bcolor;
@@ -10,6 +11,9 @@ class WorkContainer extends StatelessWidget {
   final String work;
   final String sub;
   final double brad;
+  final String prefixText;
+  final Color prefixColor;
+  final VoidCallback? onTap;
 
   const WorkContainer({
     super.key,
@@ -19,6 +23,10 @@ class WorkContainer extends StatelessWidget {
     required this.sub,
     required this.work,
     this.brad = 0,
+    this.prefixText = "View",
+    this.prefixColor = blackColor,
+    this.onTap
+
   });
 
   @override
@@ -73,9 +81,12 @@ class WorkContainer extends StatelessWidget {
                 ),
               );
             },
-            child: Text(
-              'View',
-              style: textThemeData.headlineMedium!.copyWith(fontSize: 16),
+            child: GestureDetector(
+              onTap: onTap,
+              child: Text(
+                prefixText,
+                style: textThemeData.headlineMedium!.copyWith(fontSize: 16,color: prefixColor),
+              ),
             ),
           ),
           SizedBox(
