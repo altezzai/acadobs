@@ -4,8 +4,8 @@ import 'package:school_app/admin/screens/home.dart';
 import 'package:school_app/admin/screens/register.dart';
 import 'package:school_app/admin/widgets/custom_button.dart';
 import 'package:school_app/admin/widgets/custom_textfield.dart';
-import 'package:school_app/teacher/navbar/screens/bottom_navbar.dart';
-import 'package:school_app/teacher/home/homescreen.dart';
+import 'package:school_app/teacher_section/navbar/screens/bottom_navbar.dart';
+import 'package:school_app/teacher_section/home/homescreen.dart';
 
 class LoginPage extends StatefulWidget {
   @override
