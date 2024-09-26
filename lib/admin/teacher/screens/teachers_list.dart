@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:school_app/admin/teacher/screens/add_teacher.dart';
 import 'package:school_app/admin/widgets/custom_button.dart';
 import 'package:school_app/admin/widgets/custom_textfield.dart';
 import 'package:school_app/global%20widgets/custom_appbar.dart';
@@ -55,7 +56,17 @@ class TeachersListScreen extends StatelessWidget {
               SizedBox(
                 height: Responsive.height * 3,
               ),
-              CustomButton(text: "Add Teacher", onPressed: () {})
+              CustomButton(
+                text: "Add Teacher",
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (ctx) => const AddTeacher(),
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),
