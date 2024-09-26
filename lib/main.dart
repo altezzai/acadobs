@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:school_app/admin/screens/splashscreen.dart';
+// import 'package:school_app/admin/screens/splashscreen.dart';
 import 'package:school_app/controller/dropdown_controller.dart';
 import 'package:school_app/teacher/attendance/controller/attendance_controller.dart';
 import 'package:school_app/teacher/navbar/controller/navbar_provider.dart';
+import 'package:school_app/teacher/routes/app_route_config.dart';
 import 'package:school_app/theme/app_theme.dart';
 import 'package:school_app/utils/responsive.dart';
 
@@ -24,16 +25,20 @@ class MyApp extends StatelessWidget {
           Responsive().init(constraints, orientation);
           return MultiProvider(
             providers: [
-              ChangeNotifierProvider(create: (_)=>BottomNavProvider()),
+              ChangeNotifierProvider(create: (_) => BottomNavProvider()),
               ChangeNotifierProvider(create: (_) => DropdownProvider()),
               ChangeNotifierProvider(create: (_) => AttendanceController()),
             ],
-            child: MaterialApp(
+            child: MaterialApp.router(
               themeMode: ThemeMode.light,
               title: '',
               debugShowCheckedModeBanner: false,
               theme: AppTheme.lightTheme(context),
-              home: SplashScreen(), // Set LoginPage as the home
+              routeInformationParser: Approuter().router.routeInformationParser,
+              routerDelegate: Approuter().router.routerDelegate,
+              routeInformationProvider:
+                  Approuter().router.routeInformationProvider,
+              // home: SplashScreen(),
             ),
           );
         },
