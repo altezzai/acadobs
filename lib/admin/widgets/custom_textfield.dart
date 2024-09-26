@@ -8,8 +8,10 @@ class CustomTextfield extends StatelessWidget {
   final Icon? iconData;
   final TextStyle? hintStyle;
   final TextStyle? textStyle; // Text style for the input text
+  final TextStyle? errorStyle; // New parameter for error message style
   final VoidCallback? onTap; // Callback function for onTap
   final ValueChanged<String>? onChanged; // Callback for text input
+  final FormFieldValidator<String>? validator; // Validator for input
 
   CustomTextfield({
     super.key,
@@ -19,8 +21,10 @@ class CustomTextfield extends StatelessWidget {
     this.isPasswordField = false,
     this.hintStyle,
     this.textStyle, // Text style for the text input
+    this.errorStyle, // Added parameter for error message style
     this.onTap, // Handle onTap event (for date picker, etc.)
     this.onChanged, // Handle text changes
+    this.validator, // Validator function
   }) : isObscure = ValueNotifier<bool>(isPasswordField);
 
   @override
@@ -33,11 +37,13 @@ class CustomTextfield extends StatelessWidget {
           return TextFormField(
             style: textStyle ??
                 Theme.of(context).textTheme.bodySmall!.copyWith(
-                    color: Colors.black87,
-                    fontSize: 14.0), // Default text style
+                      color: Colors.black87,
+                      fontSize: 14.0,
+                    ), // Default text style
             obscureText: isPasswordField ? isObscure.value : false,
             keyboardType: keyBoardtype,
             onChanged: onChanged, // Call the onChanged callback
+            validator: validator, // Apply the validator
             readOnly: onTap !=
                 null, // Make the field read-only if onTap is provided (for date picker)
             decoration: InputDecoration(
@@ -51,6 +57,11 @@ class CustomTextfield extends StatelessWidget {
                     fontSize: 14.0,
                     color: Colors.grey,
                   ), // Default hint style
+              errorStyle: errorStyle ?? // Use the new errorStyle parameter
+                  const TextStyle(
+                    fontSize: 12.0, // Smaller font size for error messages
+                    color: Colors.red, // Optional: change color if needed
+                  ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
                 borderSide: const BorderSide(color: Colors.grey),

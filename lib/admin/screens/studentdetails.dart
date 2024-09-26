@@ -522,7 +522,7 @@ class StudentDetailPage extends StatelessWidget {
                 ),
               );
             },
-            child: Text('Add Home work'),
+            child: Text('Add Homework'),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.black,
               foregroundColor: Colors.white,
@@ -605,9 +605,13 @@ class StudentDetailPage extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancel',
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold)),
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
             TextButton(
               onPressed: () {
@@ -618,9 +622,13 @@ class StudentDetailPage extends StatelessWidget {
                   ),
                 );
               },
-              child: Text('Add',
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold)),
+              child: Text(
+                'Add',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ],
         );
