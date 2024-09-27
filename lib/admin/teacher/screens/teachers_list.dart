@@ -12,6 +12,16 @@ class TeachersListScreen extends StatelessWidget {
 
   List<Map<String, String>> teachers = [
     {
+      'name': 'Ms. Kaiya Mango',
+      'subject': 'Mathematics',
+    },
+    {
+      'name': 'Ms. Jane Doe',
+      'subject': 'Science',
+    },
+    {'name': 'Mr. John Doe', 'subject': 'Physics'},
+    {'name': 'Mr. Calvin', 'subject': 'Chemistry'},
+    {
       'name': 'Mr. John Doe',
       'subject': 'Mathematics',
     },
@@ -20,55 +30,121 @@ class TeachersListScreen extends StatelessWidget {
       'subject': 'Science',
     },
     {'name': 'Mr. John Doe', 'subject': 'Physics'},
-    {'name': 'Mr. Calvin', 'subject': 'Chemistry'}
+    {'name': 'Mr. Calvin', 'subject': 'Chemistry'},
+    {
+      'name': 'Mr. John Doe',
+      'subject': 'Mathematics',
+    },
+    {
+      'name': 'Ms. Jane Doe',
+      'subject': 'Science',
+    },
+    {'name': 'Mr. John Doe', 'subject': 'Physics'},
+    {'name': 'Mr. Calvin', 'subject': 'Chemistry'},
+    {
+      'name': 'Mr. John Doe',
+      'subject': 'Mathematics',
+    },
+    {
+      'name': 'Ms. Jane Doe',
+      'subject': 'Science',
+    },
+    {'name': 'Mr. John Doe', 'subject': 'Physics'},
+    {'name': 'Mr. Calvin', 'subject': 'Chemistry'},
+    {
+      'name': 'Mr. John Doe',
+      'subject': 'Mathematics',
+    },
+    {
+      'name': 'Ms. Jane Doe',
+      'subject': 'Science',
+    },
+    {'name': 'Mr. John Doe', 'subject': 'Physics'},
+    {'name': 'Mr. Calvin', 'subject': 'Chemistry'},
+    {
+      'name': 'Mr. John Doe',
+      'subject': 'Mathematics',
+    },
+    {
+      'name': 'Ms. Jane Doe',
+      'subject': 'Science',
+    },
+    {'name': 'Mr. John Doe', 'subject': 'Physics'},
+    {'name': 'Mr. Calvin', 'subject': 'Chemistry'},
+    {
+      'name': 'Mr. John Doe',
+      'subject': 'Mathematics',
+    },
+    {
+      'name': 'Ms. Jane Doe',
+      'subject': 'Science',
+    },
+    {'name': 'Mr. John Doe', 'subject': 'Physics'},
+    {'name': 'Mr. Calvin', 'subject': 'Chemistry'},
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            children: [
-              const CustomAppbar(title: "Teachers"),
-              CustomTextfield(
-                hintText: "Search",
-                iconData: const Icon(Icons.search),
-              ),
-              SizedBox(
-                height: Responsive.height * 3,
-              ),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: teachers.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: Responsive.height * 1),
-                    child: ProfileTile(
-                        name: teachers[index]['name'] ?? "",
-                        description: teachers[index]['subject'] ?? "",
-                        icon: Icons.class_),
-                  );
-                },
-              ),
-              SizedBox(
-                height: Responsive.height * 3,
-              ),
-              CustomButton(
-                text: "Add Teacher",
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (ctx) => const AddTeacher(),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          children: [
+            CustomAppbar(
+              title: "Teachers",
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            CustomTextfield(
+              hintText: "Search",
+              iconData: const Icon(Icons.search),
+            ),
+            SizedBox(
+              height: Responsive.height * 3,
+            ),
+            Expanded(
+              child: CustomScrollView(
+                slivers: [
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                        childCount: teachers.length, (context, index) {
+                      return Padding(
+                        padding: EdgeInsets.only(bottom: Responsive.height * 1),
+                        child: ProfileTile(
+                            name: teachers[index]['name'] ?? "",
+                            description: teachers[index]['subject'] ?? "",
+                            icon: Icons.class_),
+                      );
+                    }),
+                  ),
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: Responsive.height * 3,
                     ),
-                  );
-                },
+                  ),
+                  SliverToBoxAdapter(
+                    child: CustomButton(
+                      text: "Add Teacher",
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (ctx) => const AddTeacher(),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: Responsive.height * 5,
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            )
+          ],
         ),
       ),
     );
