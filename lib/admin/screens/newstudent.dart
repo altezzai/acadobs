@@ -68,6 +68,12 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 CustomTextfield(
                   hintText: 'Roll Number',
                   iconData: Icon(Icons.badge),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Roll Number Required';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(height: 20),
 
@@ -223,22 +229,46 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 CustomTextfield(
                   hintText: 'Father\'s Name',
                   iconData: Icon(Icons.person_outline),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Father\'s Name is required';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(height: 20),
                 CustomTextfield(
                   hintText: 'Father\'s Phone Number',
                   iconData: Icon(Icons.phone),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Father\'s Phone Number is required';
+                    }
+                    return null;
+                  },
                   keyBoardtype: TextInputType.phone,
                 ),
                 SizedBox(height: 20),
                 CustomTextfield(
                   hintText: 'Mother\'s Name',
                   iconData: Icon(Icons.person_outline),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Mother\'s Name is required';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(height: 20),
                 CustomTextfield(
                   hintText: 'Mother\'s Phone Number',
                   iconData: Icon(Icons.phone),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Mother\'s Phone Number is required';
+                    }
+                    return null;
+                  },
                   keyBoardtype: TextInputType.phone,
                 ),
                 SizedBox(height: 20),
@@ -272,6 +302,76 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 ),
                 SizedBox(height: 20),
 
+                _sectionTitle('Pervious School Details'),
+                SizedBox(height: 10),
+
+                CustomTextfield(
+                  hintText: 'Category',
+                  iconData: Icon(Icons.category),
+                ),
+                SizedBox(height: 20),
+
+                CustomTextfield(
+                  hintText: 'Sibblings Name',
+                  iconData: Icon(Icons.group),
+                ),
+
+                SizedBox(height: 20),
+
+                CustomTextfield(
+                  hintText: 'Transportation Required',
+                  iconData: Icon(Icons.car_crash_rounded),
+                ),
+
+                SizedBox(height: 20),
+
+                CustomTextfield(
+                  hintText: 'Hostel Required',
+                  iconData: Icon(Icons.house_rounded),
+                ),
+                SizedBox(height: 20),
+
+                _sectionTitle('Documents'),
+                SizedBox(height: 10),
+
+                CustomTextfield(
+                  hintText: 'Student Photo',
+                  iconData: Icon(Icons.attachment_rounded),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Mother\'s Phone Number is required';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 20),
+
+                CustomTextfield(
+                  hintText: 'father Or Mother Photo',
+                  iconData: Icon(Icons.attachment_rounded),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Mother\'s Phone Number is required';
+                    }
+                    return null;
+                  },
+                ),
+
+                SizedBox(height: 20),
+
+                CustomTextfield(
+                  hintText: 'Aadhar Photo',
+                  iconData: Icon(Icons.attachment_rounded),
+                ),
+
+                SizedBox(height: 20),
+
+                CustomTextfield(
+                  hintText: 'Aadhar Photo',
+                  iconData: Icon(Icons.attachment_rounded),
+                ),
+
+                SizedBox(height: 40),
                 // Submit Button
                 Center(
                   child: CustomButton(
