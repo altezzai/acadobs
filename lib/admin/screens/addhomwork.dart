@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:school_app/admin/widgets/custom_dropdown';
+import 'package:school_app/admin/widgets/custom_dropdown.dart';
 import 'package:school_app/admin/widgets/custom_textfield.dart';
 
 class AddHomeworkPage extends StatefulWidget {

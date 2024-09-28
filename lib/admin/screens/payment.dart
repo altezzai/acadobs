@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:school_app/admin/screens/add_donation.dart';
+import 'package:school_app/admin/screens/add_payment.dart';
 import 'package:school_app/admin/widgets/custom_button.dart';
 
 class PaymentsPage extends StatefulWidget {
@@ -27,15 +29,29 @@ class _PaymentsPageState extends State<PaymentsPage>
               children: [
                 Expanded(
                   child: CustomButton(
-                    text: 'Add Notice',
-                    onPressed: () {},
+                    text: 'Add Payment',
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AddPaymentPage(),
+                        ),
+                      );
+                    },
                   ),
                 ),
                 SizedBox(width: 10),
                 Expanded(
                   child: CustomButton(
                     text: 'Add Donation',
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AddDonationPage(),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],

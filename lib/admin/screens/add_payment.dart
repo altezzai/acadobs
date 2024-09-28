@@ -1,19 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:school_app/admin/widgets/custom_textfield.dart';
+import 'package:school_app/admin/widgets/custom_dropdown.dart';
 
-
-
-class AddPaymentPage extends StatelessWidget {
+class AddPaymentPage extends StatefulWidget {
   const AddPaymentPage({super.key});
+
+  @override
+  _AddPaymentPageState createState() => _AddPaymentPageState();
+}
+
+class _AddPaymentPageState extends State<AddPaymentPage> {
+  String? selectedClass;
+  String? selectedDivision;
+  String? selectedStudent;
+  String? selectedFile;
+
+  Future<void> pickFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.any,
+    );
+
+    if (result != null) {
+      setState(() {
+        selectedFile = result.files.single.name;
+      });
+    } else {
+      print('No file selected');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white, // Match background with the design
-        elevation: 0, // Remove shadow to match design
+        backgroundColor: Colors.white,
+        elevation: 0,
         title: const Text(
           'Add Payment',
-          style: TextStyle(color: Colors.black), // Match text color to design
+          style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,
         leading: Padding(
@@ -21,13 +46,12 @@ class AddPaymentPage extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.white, // Circle background color
+              color: Colors.white,
             ),
             child: IconButton(
-              icon: const Icon(Icons.arrow_back,
-                  color: Colors.black), // Icon styling
+              icon: const Icon(Icons.arrow_back, color: Colors.black),
               onPressed: () {
-                // Handle back action
+                Navigator.pop(context);
               },
             ),
           ),
@@ -41,156 +65,138 @@ class AddPaymentPage extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: DropdownButtonFormField<String>(
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.school), // Built-in icon for school
-                      labelText: 'Class',
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0)),
-                    ),
-                    items: ['Class 1', 'Class 2', 'Class 3']
-                        .map((className) => DropdownMenuItem(
-                              value: className,
-                              child: Text(className),
-                            ))
-                        .toList(),
+                  child: CustomDropdown(
+                    hintText: 'Class',
+                    value: selectedClass,
+                    items: ['Class 1', 'Class 2', 'Class 3'],
                     onChanged: (value) {
-                      // Handle class selection
+                      setState(() {
+                        selectedClass = value;
+                      });
                     },
+                    iconData: const Icon(Icons.school),
                   ),
                 ),
-                const SizedBox(width: 16), // Space between Class and Division
+                const SizedBox(width: 16),
                 Expanded(
-                  child: DropdownButtonFormField<String>(
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.account_circle), // Built-in icon for division
-                      labelText: 'Division',
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0)),
-                    ),
-                    items: ['Division A', 'Division B', 'Division C']
-                        .map((divisionName) => DropdownMenuItem(
-                              value: divisionName,
-                              child: Text(divisionName),
-                            ))
-                        .toList(),
+                  child: CustomDropdown(
+                    hintText: 'Division',
+                    value: selectedDivision,
+                    items: ['Division A', 'Division B', 'Division C'],
                     onChanged: (value) {
-                      // Handle division selection
+                      setState(() {
+                        selectedDivision = value;
+                      });
                     },
+                    iconData: const Icon(Icons.account_circle),
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 16),
-            DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.person), // Built-in icon for person
-                labelText: 'Select Student',
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30.0)),
-              ),
-              items: ['Student 1', 'Student 2', 'Student 3']
-                  .map((studentName) => DropdownMenuItem(
-                        value: studentName,
-                        child: Text(studentName),
-                      ))
-                  .toList(),
+            CustomDropdown(
+              hintText: 'Select Student',
+              value: selectedStudent,
+              items: ['Student 1', 'Student 2', 'Student 3'],
               onChanged: (value) {
-                // Handle student selection
+                setState(() {
+                  selectedStudent = value;
+                });
               },
+              iconData: const Icon(Icons.person),
             ),
             const SizedBox(height: 16),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Title field
-                Text(
+                const Text(
                   'Payment details',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Row(
                   children: [
                     Expanded(
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          labelText: 'Year',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30.0)),
-                          prefixIcon: Icon(Icons.calendar_today), // Year icon
-                        ),
-                        keyboardType: TextInputType.number,
+                      child: CustomTextfield(
+                        hintText: 'Year',
+                        iconData: const Icon(Icons.calendar_today),
+                        keyBoardtype: TextInputType.number,
+                        onChanged: (value) {
+                          // Handle year input
+                        },
                       ),
                     ),
-                    SizedBox(width: 16), // Space between the fields
+                    const SizedBox(width: 16),
                     Expanded(
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          labelText: 'Month',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30.0)),
-                          prefixIcon: Icon(Icons.date_range), // Month icon
-                        ),
-                        keyboardType: TextInputType.number,
+                      child: CustomTextfield(
+                        hintText: 'Month',
+                        iconData: const Icon(Icons.date_range),
+                        keyBoardtype: TextInputType.number,
+                        onChanged: (value) {
+                          // Handle month input
+                        },
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 16), // Space between the two fields
-
-                // Amount field
-
-                TextFormField(
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.currency_rupee), // Built-in currency icon
-                    labelText: 'Amount',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                    ),
-                  ),
+                const SizedBox(height: 16),
+                CustomTextfield(
+                  hintText: 'Amount',
+                  iconData: const Icon(Icons.currency_rupee),
+                  keyBoardtype: TextInputType.number,
+                  onChanged: (value) {
+                    // Handle amount input
+                  },
                 ),
               ],
             ),
             const SizedBox(height: 16),
-            TextFormField(
-              readOnly:
-                  true, // Prevents user input, making it act like a button
-              onTap: () {
-                // Action for adding receipt (e.g., opening a file picker)
-              },
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.receipt), // Receipt icon on the left
-                suffixIcon: Icon(Icons.attach_file), // Attachment icon on the right
-                labelText: 'Add Receipt', // Label for the field
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(
-                      30), // Border radius for rounded corners
+            GestureDetector(
+              onTap: pickFile,
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(25.0),
+                ),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 10.0, vertical: 12.0),
+                child: Row(
+                  children: [
+                    Icon(Icons.attach_file, color: Colors.black),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        selectedFile ?? 'Add Receipt',
+                        style: TextStyle(
+                            color: selectedFile != null
+                                ? Colors.black
+                                : Colors.grey,
+                            fontSize: 16),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-            Spacer(),
-
-            // Submit button
+            const Spacer(),
             Container(
-              width: double.infinity, // Full width
+              width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
                   // Submit action
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black, // Background color black
-                  foregroundColor: Colors.white, // Text color white
-                  minimumSize: Size(double.infinity,
-                      60), // Full width button with fixed height
+                  backgroundColor: Colors.black,
+                  foregroundColor: Colors.white,
+                  minimumSize: const Size(double.infinity, 60),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30), // Rounded corners
+                    borderRadius: BorderRadius.circular(15),
                   ),
                 ),
-                child: Text(
+                child: const Text(
                   'Submit',
                   style: TextStyle(fontSize: 18),
                 ),

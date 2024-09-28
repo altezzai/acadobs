@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:school_app/admin/widgets/custom_dropdown';
-
+import 'package:school_app/admin/widgets/custom_dropdown.dart'
+    as custom_widgets;
 import 'package:school_app/admin/widgets/custom_textfield.dart';
 import 'package:school_app/admin/widgets/custom_button.dart';
-import 'package:intl/intl.dart';
 import 'package:file_picker/file_picker.dart';
+import '../widgets/custom_calendar.dart';
 
 class AddAchievementPage extends StatefulWidget {
   @override
@@ -17,35 +17,18 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
   String? selectedDivision;
   String? studentName;
   String? selectedLevel;
-  String? certificatePath; // Path for selected certificate
+  String? certificatePath;
 
-  // Sample dropdown items
   final List<String> classes = ['V', 'VI', 'VII', 'VIII', 'IX', 'X'];
   final List<String> divisions = ['A', 'B', 'C'];
   final List<String> levels = ['Beginner', 'Intermediate', 'Advanced'];
 
-  // Function to format date
-  String formatDate(DateTime? date) {
-    if (date == null) return 'mm/dd/yyyy';
-    return DateFormat('MM/dd/yyyy').format(date);
+  void _handleDateSelection(DateTime date) {
+    setState(() {
+      selectedDate = date; // Update the selected date
+    });
   }
 
-  // Function to show the date picker and set the selected date
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
-    if (pickedDate != null) {
-      setState(() {
-        selectedDate = pickedDate;
-      });
-    }
-  }
-
-  // Function to select a file for the certificate
   Future<void> _selectCertificate() async {
     final result = await FilePicker.platform.pickFiles(
       allowMultiple: false,
@@ -53,9 +36,27 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
     );
     if (result != null) {
       setState(() {
-        certificatePath = result.files.single.path; // Store the file path
+        certificatePath = result.files.single.path;
       });
     }
+  }
+
+  void _showCalendar() {
+    // Show the calendar dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: CustomCalendar(
+            onSelectDate: (date) {
+              _handleDateSelection(date);
+              Navigator.of(context)
+                  .pop(); // Close the dialog after selecting a date
+            },
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -78,8 +79,7 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Class dropdown
-            CustomDropdown(
+            custom_widgets.CustomDropdown(
               hintText: 'Class',
               value: selectedClass,
               items: classes,
@@ -92,8 +92,7 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
             ),
             SizedBox(height: 16),
 
-            // Division dropdown
-            CustomDropdown(
+            custom_widgets.CustomDropdown(
               hintText: 'Division',
               value: selectedDivision,
               items: divisions,
@@ -106,19 +105,17 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
             ),
             SizedBox(height: 16),
 
-            // Student Name input as CustomTextfield
             CustomTextfield(
               hintText: 'Student Name',
               iconData: Icon(Icons.person),
               onChanged: (value) {
                 setState(() {
-                  studentName = value; // Set studentName value
+                  studentName = value;
                 });
               },
             ),
             SizedBox(height: 24),
 
-            // Achievement details
             Text(
               'Achievement details',
               style: TextStyle(
@@ -129,15 +126,13 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
             ),
             SizedBox(height: 16),
 
-            // Title input
             CustomTextfield(
               hintText: 'Title',
               iconData: Icon(Icons.title),
             ),
             SizedBox(height: 16),
 
-            // Level dropdown
-            CustomDropdown(
+            custom_widgets.CustomDropdown(
               hintText: 'Level',
               value: selectedLevel,
               items: levels,
@@ -150,37 +145,19 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
             ),
             SizedBox(height: 16),
 
-            // Date picker button
+            // Date field styled similarly to the other text fields
             GestureDetector(
-              onTap: () => _selectDate(context),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25),
-                  border: Border.all(color: Colors.grey),
-                ),
-                padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 15.0),
-                child: Row(
-                  children: [
-                    Icon(Icons.calendar_today),
-                    SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        formatDate(selectedDate),
-                        style: TextStyle(
-                          fontSize: 14.0,
-                          color: selectedDate != null
-                              ? Colors.black87
-                              : Colors.grey,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+              onTap: _showCalendar, // Show calendar on tap
+              child: CustomTextfield(
+                hintText: selectedDate != null
+                    ? "${selectedDate!.toLocal()}".split(' ')[0]
+                    : 'Select Date',
+                iconData: Icon(Icons.calendar_today),
+                // Disable editing
               ),
             ),
             SizedBox(height: 16),
 
-            // Certificate input button
             GestureDetector(
               onTap: _selectCertificate,
               child: Container(
@@ -194,28 +171,28 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
                     Icon(Icons.attach_file),
                     SizedBox(width: 12),
                     Expanded(
-                        child: Text(
-                      certificatePath != null
-                          ? certificatePath!.split('/').last
-                          : 'Select Certificate',
-                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            fontSize: 14.0,
-                            color: Colors
-                                .grey, // Ensure it matches the desired color
-                          ),
-                    )),
+                      child: Text(
+                        certificatePath != null
+                            ? certificatePath!.split('/').last
+                            : 'Select Certificate',
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                              fontSize: 14.0,
+                              color: Colors.grey,
+                            ),
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
             SizedBox(height: 32),
 
-            // Submit button using CustomButton
             CustomButton(
               text: 'Submit',
               onPressed: () {
                 // Implement submit logic here
                 print('Submit button pressed');
+                // You can also validate inputs here before submission
               },
             ),
           ],

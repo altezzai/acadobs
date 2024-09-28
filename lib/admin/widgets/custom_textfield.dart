@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart'; // Import the file picker package
 
 class CustomTextfield extends StatelessWidget {
   final String hintText;
@@ -12,6 +13,8 @@ class CustomTextfield extends StatelessWidget {
   final VoidCallback? onTap; // Callback function for onTap
   final ValueChanged<String>? onChanged; // Callback for text input
   final FormFieldValidator<String>? validator; // Validator for input
+  final bool enabled; // New enabled parameter
+  final double borderRadius; // New parameter for border radius
 
   CustomTextfield({
     super.key,
@@ -25,12 +28,18 @@ class CustomTextfield extends StatelessWidget {
     this.onTap, // Handle onTap event (for date picker, etc.)
     this.onChanged, // Handle text changes
     this.validator, // Validator function
+    this.enabled = true, // By default, the field is enabled
+    this.borderRadius = 8.0, // Default border radius
   }) : isObscure = ValueNotifier<bool>(isPasswordField);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        if (onTap != null) {
+          onTap!(); // Call the onTap callback if it is provided
+        }
+      },
       child: ValueListenableBuilder(
         valueListenable: isObscure,
         builder: (context, value, child) {
@@ -44,8 +53,10 @@ class CustomTextfield extends StatelessWidget {
             keyboardType: keyBoardtype,
             onChanged: onChanged, // Call the onChanged callback
             validator: validator, // Apply the validator
-            readOnly: onTap !=
-                null, // Make the field read-only if onTap is provided (for date picker)
+            readOnly:
+                onTap != null, // Make field read-only if onTap is provided
+            enabled:
+                enabled, // Use the enabled parameter to control field behavior
             decoration: InputDecoration(
               contentPadding:
                   EdgeInsets.symmetric(vertical: 12.0, horizontal: 15.0),
@@ -63,7 +74,8 @@ class CustomTextfield extends StatelessWidget {
                     color: Colors.red, // Optional: change color if needed
                   ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(
+                    borderRadius), // Use the borderRadius parameter
                 borderSide: const BorderSide(color: Colors.grey),
               ),
               suffixIcon: isPasswordField
@@ -84,5 +96,22 @@ class CustomTextfield extends StatelessWidget {
         },
       ),
     );
+  }
+
+  /// Method to pick a file using the file_picker package
+  Future<void> selectFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.any, // Adjust file type as needed
+    );
+
+    if (result != null) {
+      // If a file is picked, you can handle the selected file here
+      String filePath = result.files.single.path ?? 'No file selected';
+      // You can perform actions with the selected file path
+      print('Selected file path: $filePath');
+    } else {
+      // User canceled the picker
+      print('No file selected');
+    }
   }
 }
