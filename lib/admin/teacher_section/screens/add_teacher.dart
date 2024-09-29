@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:school_app/admin/teacher/screens/teachers_list.dart';
+import 'package:school_app/admin/teacher_section/screens/teachers_list.dart';
 import 'package:school_app/admin/widgets/custom_button.dart';
 import 'package:school_app/admin/widgets/custom_textfield.dart';
 import 'package:school_app/global%20widgets/custom_appbar.dart';

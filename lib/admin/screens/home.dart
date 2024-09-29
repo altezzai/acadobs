@@ -4,7 +4,7 @@ import 'package:school_app/admin/screens/notice.dart';
 import 'package:school_app/admin/screens/payment.dart';
 import 'package:school_app/admin/screens/reports.dart';
 import 'package:school_app/admin/screens/studentpage.dart';
-import 'package:school_app/admin/teacher/screens/teachers_list.dart';
+import 'package:school_app/admin/teacher_section/screens/teachers_list.dart';
 import 'package:school_app/admin/widgets/button_navigation.dart';
 
 class AdminHomePage extends StatefulWidget {
