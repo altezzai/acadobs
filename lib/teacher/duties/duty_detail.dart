@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:school_app/global%20widgets/custom_appbar.dart';
 import 'package:school_app/teacher/homework/widgets/date_picker.dart';
 import 'package:school_app/teacher/homework/widgets/view_container.dart';
-import 'package:school_app/teacher/navbar/screens/bottom_navbar.dart';
+import 'package:school_app/teacher/routes/app_route_const.dart';
 import 'package:school_app/theme/text_theme.dart';
 import 'package:school_app/utils/constants.dart';
 import 'package:school_app/utils/responsive.dart';
@@ -23,8 +24,7 @@ class DutyDetailScreen extends StatelessWidget {
                 title: '12th  class New student Registration of 2024',
                 isProfileIcon: false,
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (ctx) => BottomNavbar()));
+                  context.pushReplacementNamed(AppRouteConst.homeRouteName);
                 },
               ),
               const ViewContainer(

@@ -15,7 +15,7 @@ class WorkView extends StatelessWidget {
         backgroundColor: Colors.transparent,
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            context.pushReplacementNamed(AppRouteConst.homeworkRouteName);
           },
           icon: const Icon(Icons.keyboard_arrow_left),
         ),

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/global%20widgets/custom_appbar.dart';
 import 'package:school_app/teacher/attendance/controller/attendance_controller.dart';
 import 'package:school_app/teacher/attendance/widgets/attendance_tile.dart';
-import 'package:school_app/teacher/navbar/screens/bottom_navbar.dart';
+import 'package:school_app/teacher/routes/app_route_const.dart';
 import 'package:school_app/utils/constants.dart';
 import 'package:school_app/utils/responsive.dart';
 
@@ -35,12 +36,7 @@ class TakeAttendance extends StatelessWidget {
               CustomAppbar(
                 title: "9th B",
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (ctx) => BottomNavbar(),
-                    ),
-                  );
+                  context.pushReplacementNamed(AppRouteConst.homeRouteName);
                 },
               ),
               Text(

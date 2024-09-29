@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/admin/widgets/custom_button.dart';
 import 'package:school_app/admin/widgets/custom_textfield.dart';
@@ -6,25 +7,25 @@ import 'package:school_app/controller/dropdown_controller.dart';
 import 'package:school_app/global%20widgets/custom_dropdown.dart';
 import 'package:school_app/teacher/data/dropdown_data.dart';
 import 'package:school_app/teacher/homework/widgets/date_picker.dart';
+import 'package:school_app/teacher/routes/app_route_const.dart';
 import 'package:school_app/theme/text_theme.dart';
 import 'package:school_app/utils/responsive.dart';
 
 // ignore: must_be_immutable
 class LeaveRequest extends StatelessWidget {
-   LeaveRequest({super.key});
+  LeaveRequest({super.key});
 
-    List<DropdownMenuItem<String>> leaveTypes = DropdownData.leaveTypes;
-
+  List<DropdownMenuItem<String>> leaveTypes = DropdownData.leaveTypes;
 
   @override
   Widget build(BuildContext context) {
     final dropdownProvider = Provider.of<DropdownProvider>(context);
-    
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              context.pushReplacementNamed(AppRouteConst.homeRouteName);
             },
             icon: const Icon(Icons.arrow_back_ios)),
         title: Center(
@@ -62,17 +63,16 @@ class LeaveRequest extends StatelessWidget {
               SizedBox(
                 height: Responsive.height * 1,
               ),
-
-               CustomDropdown(
-                      title: 'Select LeaveType',
-                      icon: Icons.school,
-                      items: leaveTypes,
-                      selectedValue: dropdownProvider.selectedLeaveType,
-                      onChanged: (value) {
-                        dropdownProvider.setSelectedLeaveType(
-                            value); // Update the state using provider
-                      },
-                    ),
+              CustomDropdown(
+                title: 'Select LeaveType',
+                icon: Icons.school,
+                items: leaveTypes,
+                selectedValue: dropdownProvider.selectedLeaveType,
+                onChanged: (value) {
+                  dropdownProvider.setSelectedLeaveType(
+                      value); // Update the state using provider
+                },
+              ),
               SizedBox(
                 height: Responsive.height * 1,
               ),

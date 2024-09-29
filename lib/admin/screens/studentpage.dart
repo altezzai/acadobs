@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:school_app/admin/screens/newstudent.dart';
+import 'package:school_app/teacher/routes/app_route_const.dart';
 
 class StudentsPage extends StatelessWidget {
   final List<Map<String, String>> students = [
@@ -31,7 +33,7 @@ class StudentsPage extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Navigator.pop(context);
+            context.pushReplacementNamed(AppRouteConst.homeRouteName);
           },
         ),
         actions: [

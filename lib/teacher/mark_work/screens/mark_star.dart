@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:school_app/admin/widgets/custom_button.dart';
 import 'package:school_app/teacher/mark_work/widgets/star_container.dart';
+import 'package:school_app/teacher/routes/app_route_const.dart';
 import 'package:school_app/theme/text_theme.dart';
 import 'package:school_app/utils/responsive.dart';
 
@@ -51,7 +53,7 @@ class _MarkStarState extends State<MarkStar> {
         backgroundColor: Colors.transparent,
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            context.pushReplacementNamed(AppRouteConst.workviewRouteName);
           },
           icon: const Icon(Icons.keyboard_arrow_left),
         ),

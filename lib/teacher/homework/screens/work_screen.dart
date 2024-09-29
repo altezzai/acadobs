@@ -17,7 +17,7 @@ class WorkScreen extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              context.pushReplacementNamed(AppRouteConst.homeRouteName);
             },
             icon: const Icon(Icons.arrow_back_ios)),
         title: Center(

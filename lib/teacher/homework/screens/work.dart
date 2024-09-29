@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/admin/widgets/custom_button.dart';
 import 'package:school_app/admin/widgets/custom_textfield.dart';
@@ -6,16 +7,16 @@ import 'package:school_app/controller/dropdown_controller.dart';
 import 'package:school_app/global%20widgets/custom_dropdown.dart';
 import 'package:school_app/teacher/data/dropdown_data.dart';
 import 'package:school_app/teacher/homework/widgets/date_picker.dart';
+import 'package:school_app/teacher/routes/app_route_const.dart';
 import 'package:school_app/theme/text_theme.dart';
 import 'package:school_app/utils/responsive.dart';
 
 // ignore: must_be_immutable
 class HomeWork extends StatelessWidget {
-   HomeWork({super.key});
+  HomeWork({super.key});
 
-    List<DropdownMenuItem<String>> allClasses = DropdownData.allClasses;
-    List<DropdownMenuItem<String>> allDivisions = DropdownData.allDivisions;
-
+  List<DropdownMenuItem<String>> allClasses = DropdownData.allClasses;
+  List<DropdownMenuItem<String>> allDivisions = DropdownData.allDivisions;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class HomeWork extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              context.pushReplacementNamed(AppRouteConst.homeworkRouteName);
             },
             icon: const Icon(Icons.arrow_back_ios)),
         title: Center(

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:school_app/admin/widgets/custom_button.dart';
 import 'package:school_app/global%20widgets/custom_appbar.dart';
 import 'package:school_app/teacher/marks/widgets/mark_tile.dart';
+import 'package:school_app/teacher/routes/app_route_const.dart';
 import 'package:school_app/utils/constants.dart';
 import 'package:school_app/utils/responsive.dart';
 
@@ -20,9 +22,12 @@ class StudentMarklist extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           children: [
-            const CustomAppbar(
+            CustomAppbar(
               title: "9th B",
-              isBackButton: false,
+              isBackButton: true,
+              onTap: () {
+                context.pushReplacementNamed(AppRouteConst.homeRouteName);
+              },
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

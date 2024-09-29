@@ -6,7 +6,6 @@ import 'package:school_app/admin/widgets/custom_textfield.dart';
 import 'package:school_app/controller/dropdown_controller.dart';
 import 'package:school_app/global%20widgets/custom_appbar.dart';
 import 'package:school_app/global%20widgets/custom_dropdown.dart';
-import 'package:school_app/teacher/attendance/screens/take_attendance.dart';
 import 'package:school_app/teacher/attendance/widgets/title_tile.dart';
 import 'package:school_app/teacher/data/dropdown_data.dart';
 import 'package:school_app/teacher/routes/app_route_const.dart';
@@ -112,12 +111,8 @@ class Attendance extends StatelessWidget {
               SizedBox(height: Responsive.height * 2),
               TitleTile(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (ctx) => TakeAttendance(),
-                      ),
-                    );
+                    context.pushReplacementNamed(
+                        AppRouteConst.attendanceRouteName);
                   },
                   title: "Take Attendance",
                   icon: Icons.my_library_books_outlined),
