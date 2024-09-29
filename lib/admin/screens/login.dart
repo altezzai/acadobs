@@ -1,10 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:school_app/admin/screens/home.dart';
 import 'package:school_app/admin/screens/register.dart';
 import 'package:school_app/admin/widgets/custom_button.dart';
 import 'package:school_app/admin/widgets/custom_textfield.dart';
-import 'package:school_app/teacher/navbar/screens/bottom_navbar.dart';
+import 'package:school_app/teacher/routes/app_route_const.dart';
 // import 'package:school_app/teacher/home/homescreen.dart';
 
 class LoginPage extends StatefulWidget {
@@ -24,10 +25,7 @@ class _LoginPageState extends State<LoginPage> {
         MaterialPageRoute(builder: (context) => AdminHomePage()),
       );
     } else if (_username == 'soorya' && _password == '1234') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => BottomNavbar()),
-      );
+      context.pushReplacementNamed(AppRouteConst.homeRouteName);
     } else {
       // Show an error message if the login credentials are incorrect
       ScaffoldMessenger.of(context).showSnackBar(

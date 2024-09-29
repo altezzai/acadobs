@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:school_app/admin/screens/login.dart';
+import 'package:go_router/go_router.dart';
+import 'package:school_app/teacher/routes/app_route_const.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -29,10 +30,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   _navigateToLogin() async {
     await Future.delayed(const Duration(seconds: 3), () {});
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => LoginPage()),
-    );
+    context.pushReplacementNamed(AppRouteConst.loginRouteName);
   }
 
   @override

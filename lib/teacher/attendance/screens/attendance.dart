@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/admin/widgets/custom_button.dart';
 import 'package:school_app/admin/widgets/custom_textfield.dart';
@@ -8,6 +9,7 @@ import 'package:school_app/global%20widgets/custom_dropdown.dart';
 import 'package:school_app/teacher/attendance/screens/take_attendance.dart';
 import 'package:school_app/teacher/attendance/widgets/title_tile.dart';
 import 'package:school_app/teacher/data/dropdown_data.dart';
+import 'package:school_app/teacher/routes/app_route_const.dart';
 import 'package:school_app/utils/responsive.dart';
 
 // ignore: must_be_immutable
@@ -123,8 +125,8 @@ class Attendance extends StatelessWidget {
               CustomButton(
                   text: "Submit",
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (ctx) => TakeAttendance()));
+                    context.pushReplacementNamed(
+                        AppRouteConst.attendanceRouteName);
                   }),
               SizedBox(height: Responsive.height * 3),
             ],

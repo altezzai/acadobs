@@ -9,23 +9,35 @@ import 'package:school_app/teacher/duties/duties.dart';
 import 'package:school_app/utils/responsive.dart';
 
 class BottomNavbar extends StatelessWidget {
-  const BottomNavbar({
+  BottomNavbar({
     super.key,
   });
+
+  final List<Widget> _screens = [
+    const TeacherScreen(),
+    Attendance(),
+    ProgressReport(),
+    const DutiesScreen(),
+    PaymentsPage(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     final bottomNavProvider = Provider.of<BottomNavProvider>(context);
+    final int currentIndex =
+        Provider.of<BottomNavProvider>(context).currentIndex;
     return Scaffold(
-      body: IndexedStack(
-        index: bottomNavProvider.currentIndex,
-        children: [
-          const TeacherScreen(),
-          Attendance(),
-          ProgressReport(),
-          const DutiesScreen(),
-          PaymentsPage(),
-        ],
-      ),
+      body: _screens[currentIndex],
+      // IndexedStack(
+      //   index: bottomNavProvider.currentIndex,
+      //   children: [
+      //     const TeacherScreen(),
+      //     Attendance(),
+      //     ProgressReport(),
+      //     const DutiesScreen(),
+      //     PaymentsPage(),
+      //   ],
+      // ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: bottomNavProvider.currentIndex,

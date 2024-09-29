@@ -8,14 +8,24 @@ import 'package:school_app/teacher/routes/app_route_config.dart';
 import 'package:school_app/theme/app_theme.dart';
 import 'package:school_app/utils/responsive.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+// void main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(const MyApp());
+//   runApp(const MyApp());
+// }
+void main() {
+  Approuter appRouter = Approuter();
+  runApp(MyApp(
+    appRouter: appRouter,
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final Approuter appRouter;
+  const MyApp({
+    super.key,
+    required this.appRouter,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +44,10 @@ class MyApp extends StatelessWidget {
               title: '',
               debugShowCheckedModeBanner: false,
               theme: AppTheme.lightTheme(context),
-              routeInformationParser: Approuter().router.routeInformationParser,
-              routerDelegate: Approuter().router.routerDelegate,
+              routeInformationParser: appRouter.router.routeInformationParser,
+              routerDelegate: appRouter.router.routerDelegate,
               routeInformationProvider:
-                  Approuter().router.routeInformationProvider,
+                  appRouter.router.routeInformationProvider,
               // home: SplashScreen(),
             ),
           );

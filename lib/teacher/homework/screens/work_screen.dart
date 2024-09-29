@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:school_app/teacher/homework/screens/work.dart';
+import 'package:go_router/go_router.dart';
+import 'package:school_app/teacher/routes/app_route_const.dart';
 import 'package:school_app/theme/text_theme.dart';
 import 'package:school_app/utils/responsive.dart';
 import 'package:school_app/teacher/homework/data/workdata.dart';
@@ -78,12 +79,7 @@ class WorkScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => HomeWork(),
-            ),
-          );
+          context.pushReplacementNamed(AppRouteConst.addworkRouteName);
         },
         backgroundColor: Colors.black,
         child: Padding(
