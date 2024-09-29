@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/admin/widgets/custom_button.dart';
 import 'package:school_app/admin/widgets/custom_textfield.dart';
@@ -6,7 +7,7 @@ import 'package:school_app/controller/dropdown_controller.dart';
 import 'package:school_app/global%20widgets/custom_appbar.dart';
 import 'package:school_app/global%20widgets/custom_dropdown.dart';
 import 'package:school_app/teacher/data/dropdown_data.dart';
-import 'package:school_app/teacher/marks/screens/student_marklist.dart';
+import 'package:school_app/teacher/routes/app_route_const.dart';
 import 'package:school_app/utils/responsive.dart';
 
 // ignore: must_be_immutable
@@ -90,12 +91,7 @@ class ProgressReport extends StatelessWidget {
             CustomButton(
                 text: "Enter Mark",
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (ctx) => StudentMarklist(),
-                    ),
-                  );
+                  context.pushReplacementNamed(AppRouteConst.marksRouteName);
                 })
           ],
         ),

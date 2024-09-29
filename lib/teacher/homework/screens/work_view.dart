@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:school_app/teacher/mark_work/screens/mark_star.dart';
+import 'package:go_router/go_router.dart';
+import 'package:school_app/teacher/routes/app_route_const.dart';
 import 'package:school_app/theme/text_theme.dart';
 import 'package:school_app/utils/responsive.dart';
 import 'package:school_app/teacher/homework/widgets/view_container.dart';
@@ -71,12 +72,8 @@ class WorkView extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MarkStar(),
-                        ),
-                      );
+                      context.pushReplacementNamed(
+                          AppRouteConst.markstarRouteName);
                     },
                     child: Text(
                       'Mark Homework',

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:school_app/global%20widgets/custom_appbar.dart';
-import 'package:school_app/teacher/duties/duty_detail.dart';
 import 'package:school_app/teacher/homework/widgets/work_container.dart';
+import 'package:school_app/teacher/routes/app_route_const.dart';
 import 'package:school_app/theme/text_theme.dart';
 import 'package:school_app/utils/constants.dart';
 import 'package:school_app/utils/responsive.dart';
@@ -36,12 +37,7 @@ class DutiesScreen extends StatelessWidget {
             work: '12th Class',
             sub: 'Maths',
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (ctx) => const DutyDetailScreen(),
-                ),
-              );
+              context.pushReplacementNamed(AppRouteConst.dutiesRouteName);
             },
           ),
           SizedBox(height: Responsive.height * 2),

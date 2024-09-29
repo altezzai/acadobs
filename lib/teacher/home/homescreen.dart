@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:school_app/admin/screens/studentpage.dart';
-import 'package:school_app/teacher/leave_request/leave_request.dart';
-import 'package:school_app/teacher/parent/screens/parents.dart';
+import 'package:go_router/go_router.dart';
+import 'package:school_app/teacher/routes/app_route_const.dart';
 import 'package:school_app/utils/responsive.dart';
-import 'package:school_app/teacher/homework/screens/work_screen.dart';
 
 class TeacherScreen extends StatelessWidget {
   const TeacherScreen({super.key});
@@ -51,14 +49,12 @@ class TeacherScreen extends StatelessWidget {
                 height: Responsive.height * 20,
               ),
               _customContainer(
-                  color: Colors.green,
-                  text: 'Homework',
-                  ontap: () {
-
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => WorkScreen()));
-
-                  }),
+                color: Colors.green,
+                text: 'Homework',
+                ontap: () {
+                  context.pushReplacementNamed(AppRouteConst.homeworkRouteName);
+                },
+              ),
               const SizedBox(
                 height: 10,
               ),
@@ -66,13 +62,7 @@ class TeacherScreen extends StatelessWidget {
                   color: Colors.red,
                   text: 'Leave Request',
                   ontap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            LeaveRequest(), //Navigation to the student page
-                      ),
-                    );
+                    context.pushReplacementNamed(AppRouteConst.leaveRouteName);
                   }),
               SizedBox(
                 height: Responsive.height * 2,
@@ -82,13 +72,8 @@ class TeacherScreen extends StatelessWidget {
                 children: [
                   OutlinedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              StudentsPage(), //Navigation to the student page
-                        ),
-                      );
+                      context
+                          .pushReplacementNamed(AppRouteConst.studentRouteName);
                     },
                     style: OutlinedButton.styleFrom(
                         padding: EdgeInsets.symmetric(
@@ -107,8 +92,8 @@ class TeacherScreen extends StatelessWidget {
                   // ),
                   OutlinedButton(
                     onPressed: () {
-                       Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => ParentsScreen()));
+                      context
+                          .pushReplacementNamed(AppRouteConst.parentRouteName);
                     },
                     style: OutlinedButton.styleFrom(
                       padding: EdgeInsets.symmetric(
