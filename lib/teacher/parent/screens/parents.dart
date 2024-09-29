@@ -9,6 +9,7 @@ import 'package:school_app/teacher/data/dropdown_data.dart';
 import 'package:school_app/teacher/parent/data/parent_data.dart';
 import 'package:school_app/teacher/parent/widgets/parent_tile.dart';
 import 'package:school_app/teacher/routes/app_route_const.dart';
+import 'package:school_app/global%20widgets/profile_tile.dart';
 import 'package:school_app/utils/responsive.dart';
 
 // ignore: must_be_immutable
@@ -77,9 +78,10 @@ class ParentsScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: EdgeInsets.only(bottom: Responsive.height * 1),
-                    child: ParentTile(
+                    child: ProfileTile(
                         name: parentStudentList[index]['parentName']!,
-                        studentName: parentStudentList[index]['studentName']!),
+                        icon: Icons.person_outline,
+                        description: parentStudentList[index]['studentName']!),
                   );
                 }),
           ],

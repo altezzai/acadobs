@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:school_app/utils/constants.dart';
 
-class ParentTile extends StatelessWidget {
+// ignore: must_be_immutable
+class ProfileTile extends StatelessWidget {
   final String name;
-  final String studentName;
-  const ParentTile({super.key, required this.name, required this.studentName,});
+  final String description;
+  final VoidCallback? onPressed;
+  final IconData icon;
+   const ProfileTile({super.key, required this.name, required this.description, this.onPressed, required this.icon});
 
   @override
   Widget build(BuildContext context) {
@@ -33,12 +36,12 @@ class ParentTile extends StatelessWidget {
               ),
               Row(
                 children: [
-                  const Icon(
-                    Icons.person_outline,
+                   Icon(
+                    icon,
                     size: 18,
                   ),
                   Text(
-                    studentName,
+                    description,
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall!
@@ -57,7 +60,7 @@ class ParentTile extends StatelessWidget {
                   .bodySmall!
                   .copyWith(color: blackColor, fontSize: 16),
             ),
-            onPressed: () {},
+            onPressed: onPressed,
           )
         ],
       ),

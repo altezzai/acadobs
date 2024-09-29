@@ -4,6 +4,7 @@ import 'package:school_app/admin/screens/notice.dart';
 import 'package:school_app/admin/screens/payment.dart';
 import 'package:school_app/admin/screens/reports.dart';
 import 'package:school_app/admin/screens/studentpage.dart';
+import 'package:school_app/admin/teacher_section/screens/teachers_list.dart';
 import 'package:school_app/admin/widgets/button_navigation.dart';
 
 class AdminHomePage extends StatefulWidget {
@@ -162,7 +163,11 @@ class HomeContentPage extends StatelessWidget {
               Expanded(
                 child: OutlinedButton(
                   onPressed: () {
-                    // handle teacher button click
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TeachersListScreen(),
+                      ),);
                   },
                   style: OutlinedButton.styleFrom(
                     padding: EdgeInsets.symmetric(
