@@ -1,19 +1,75 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/admin/screens/newstudent.dart';
+import 'package:school_app/admin/screens/studentdetails.dart';
 import 'package:school_app/teacher/routes/app_route_const.dart';
 
-class StudentsPage extends StatelessWidget {
+
+class StudentsPage extends StatefulWidget {
+  @override
+  _StudentsPageState createState() => _StudentsPageState();
+}
+
+class _StudentsPageState extends State<StudentsPage> {
   final List<Map<String, String>> students = [
-    {"name": "Muhammad Rafasl N", "class": "XIII", "image": "student1.png"},
-    {"name": "Livie Kenter", "class": "XIII", "image": "student2.png"},
-    {"name": "Kaiya Siphron", "class": "XIII", "image": "student3.png"},
-    {"name": "Abram Bator", "class": "XIII", "image": "student4.png"},
-    {"name": "Allison Lipshulz", "class": "XIII", "image": "student5.png"},
-    {"name": "Diana Lipshulz", "class": "XIII", "image": "student6.png"},
-    {"name": "Justin Levin", "class": "XIII", "image": "student7.png"},
-    {"name": "Miracle Bator", "class": "XIII", "image": "student1.png"},
+    {"name": "Muhammad Rafasl", "class": "VI", "image": "student1.png"},
+    {"name": "Midlej O P", "class": "V", "image": "student2.png"},
+    {"name": "Saleem Riyaz", "class": "VIII", "image": "student3.png"},
+    {"name": "Abram Bator", "class": "IX", "image": "student4.png"},
+    {"name": "Allison Lipshulz", "class": "VII", "image": "student5.png"},
+    {"name": "Rayees Ibrahim", "class": "VII", "image": "student6.png"},
+    {"name": "Khalid Mustafa", "class": "XI", "image": "student7.png"},
+    {"name": "Bilal Rifad", "class": "X", "image": "student1.png"},
+    {"name": "Hamem Fahad", "class": "VI", "image": "student6.png"},
+    {"name": "Sajad K V", "class": "X", "image": "student5.png"},
   ];
+
+  List<Map<String, String>> filteredStudents = [];
+  String searchQuery = "";
+  String selectedClass = "All"; // Initial class selected
+
+  @override
+  void initState() {
+    super.initState();
+    // Sort the students by name in alphabetical order
+    students.sort((a, b) => a['name']!.compareTo(b['name']!));
+    filteredStudents = students; // Initialize with all students
+  }
+
+  void _filterStudents(String query) {
+    setState(() {
+      searchQuery = query;
+      filteredStudents = students.where((student) {
+        final matchesSearchQuery =
+            student['name']!.toLowerCase().contains(query.toLowerCase());
+        final matchesClass = student['class'] == selectedClass;
+        return matchesSearchQuery && matchesClass;
+      }).toList();
+    });
+  }
+
+  void _filterByClass(String newClass) {
+    setState(() {
+      selectedClass = newClass; // Update the selected class
+
+      // If "All" is selected, show all students, else filter by class
+      if (selectedClass == "All") {
+        filteredStudents = students.where((student) {
+          return student['name']!
+              .toLowerCase()
+              .contains(searchQuery.toLowerCase());
+        }).toList();
+      } else {
+        filteredStudents = students.where((student) {
+          final matchesSearchQuery = student['name']!
+              .toLowerCase()
+              .contains(searchQuery.toLowerCase());
+          final matchesClass = student['class'] == selectedClass;
+          return matchesSearchQuery && matchesClass;
+        }).toList();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,31 +107,28 @@ class StudentsPage extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: Row(
               children: [
-                // Adjust the width based on screen size
                 Expanded(
-                  flex: 3, // Allow more space for the search bar
-                  child: Container(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Search for students',
-                        prefixIcon: Icon(Icons.search, color: Colors.grey),
-                        suffixIcon: Icon(Icons.tune, color: Colors.grey),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide(color: Colors.grey.shade300),
-                        ),
-                        filled: true,
-                        fillColor:
-                            Colors.grey.shade100, // Light background color
-                        contentPadding: EdgeInsets.symmetric(vertical: 12),
+                  flex: 3,
+                  child: TextField(
+                    onChanged: (value) {
+                      _filterStudents(value);
+                    },
+                    decoration: InputDecoration(
+                      hintText: 'Search for students',
+                      prefixIcon: Icon(Icons.search, color: Colors.grey),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(color: Colors.grey.shade300),
                       ),
-                      style: TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.normal),
+                      filled: true,
+                      fillColor: Colors.grey.shade100,
+                      contentPadding: EdgeInsets.symmetric(vertical: 12),
                     ),
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
                   ),
                 ),
                 SizedBox(width: 8),
-                // Use Flexible to make sure dropdown adapts to available space
                 Flexible(
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 12),
@@ -85,30 +138,30 @@ class StudentsPage extends StatelessWidget {
                       border: Border.all(color: Colors.grey.shade300),
                     ),
                     child: DropdownButton<String>(
-                      value: "V", // Set the initial value
+                      value: selectedClass,
                       underline: SizedBox(),
-                      isExpanded: true, // Ensure dropdown uses available width
+                      isExpanded: true,
                       items: <String>[
+                        'All',
                         'V',
                         'VI',
                         'VII',
                         'VIII',
                         'IX',
                         'X',
-                        'XI',
-                        'XII',
-                        'XIII'
                       ].map((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(
                             value,
-                            overflow: TextOverflow.ellipsis, // Prevent overflow
+                            overflow: TextOverflow.ellipsis,
                           ),
                         );
                       }).toList(),
                       onChanged: (newValue) {
-                        // Handle dropdown selection change
+                        if (newValue != null) {
+                          _filterByClass(newValue);
+                        }
                       },
                     ),
                   ),
@@ -118,7 +171,7 @@ class StudentsPage extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: students.length,
+              itemCount: filteredStudents.length,
               itemBuilder: (context, index) {
                 return Card(
                   margin:
@@ -126,28 +179,53 @@ class StudentsPage extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      backgroundImage:
-                          AssetImage('assets/${students[index]['image']}'),
-                    ),
-                    title: Text(
-                      students[index]['name']!,
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                      overflow: TextOverflow
-                          .ellipsis, // Ensure title does not overflow
-                    ),
-                    subtitle: Text(
-                      students[index]['class']!,
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                    ),
-                    trailing: TextButton(
-                      child: Text('View'),
-                      onPressed: () {
-                        // Handle view button press
-                      },
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => StudentDetailPage(
+                            name: filteredStudents[index]['name']!,
+                            studentClass: filteredStudents[index]['class']!,
+                            image: filteredStudents[index]['image']!,
+                          ),
+                        ),
+                      );
+                    },
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        backgroundImage: AssetImage(
+                            'assets/${filteredStudents[index]['image']}'),
+                      ),
+                      title: Text(
+                        filteredStudents[index]['name']!,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      subtitle: Text(
+                        filteredStudents[index]['class']!,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15),
+                      ),
+                      trailing: TextButton(
+                        child: Text(
+                          'View',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => StudentDetailPage(
+                                name: filteredStudents[index]['name']!,
+                                studentClass: filteredStudents[index]['class']!,
+                                image: filteredStudents[index]['image']!,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 );

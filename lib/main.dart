@@ -21,11 +21,13 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+
   final Approuter appRouter;
   const MyApp({
     super.key,
     required this.appRouter,
   });
+
 
   @override
   Widget build(BuildContext context) {

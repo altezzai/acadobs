@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.example.school_app"
-    compileSdk = 33 // Replace with your desired SDK version
+    compileSdk = 34 // Replace with your desired SDK version
 
     ndkVersion = "23.1.7779620" // Specify the NDK version if needed, or remove if not required
 

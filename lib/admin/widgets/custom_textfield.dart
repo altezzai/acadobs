@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart'; // Import the file picker package
 
 class CustomTextfield extends StatelessWidget {
   final String hintText;
@@ -8,8 +9,13 @@ class CustomTextfield extends StatelessWidget {
   final Icon? iconData;
   final TextStyle? hintStyle;
   final TextStyle? textStyle; // Text style for the input text
+  final TextStyle? errorStyle; // New parameter for error message style
   final VoidCallback? onTap; // Callback function for onTap
-  final ValueChanged<String>? onChanged; // New onChanged callback
+  final ValueChanged<String>? onChanged; // Callback for text input
+  final FormFieldValidator<String>? validator; // Validator for input
+  final bool enabled; // New enabled parameter
+  final double borderRadius; // New parameter for border radius
+   // Add controller parameter
 
   CustomTextfield({
     super.key,
@@ -18,26 +24,40 @@ class CustomTextfield extends StatelessWidget {
     this.keyBoardtype,
     this.isPasswordField = false,
     this.hintStyle,
-    this.textStyle, // New parameter for input text styling
-    this.onTap, // Initialize onTap callback
-    this.onChanged, // Initialize onChanged callback
+    this.textStyle, // Text style for the text input
+    this.errorStyle, // Added parameter for error message style
+    this.onTap, // Handle onTap event (for date picker, etc.)
+    this.onChanged, // Handle text changes
+    this.validator, // Validator function
+    this.enabled = true, // By default, the field is enabled
+    this.borderRadius = 8.0, // Default border radius
+     // Make controller required
   }) : isObscure = ValueNotifier<bool>(isPasswordField);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        if (onTap != null) {
+          onTap!(); // Call the onTap callback if it is provided
+        }
+      },
       child: ValueListenableBuilder(
         valueListenable: isObscure,
         builder: (context, value, child) {
           return TextFormField(
+             // Pass the controller to the TextFormField
             style: textStyle ??
                 Theme.of(context).textTheme.bodySmall!.copyWith(
-                    color: Colors.black87,
-                    fontSize: 14.0), // Default text style
+                      color: Colors.black87,
+                      fontSize: 14.0,
+                    ), // Default text style
             obscureText: isPasswordField ? isObscure.value : false,
             keyboardType: keyBoardtype,
             onChanged: onChanged, // Call the onChanged callback
+            validator: validator, // Apply the validator
+            readOnly: onTap != null, // Make field read-only if onTap is provided
+            enabled: enabled, // Use the enabled parameter to control field behavior
             decoration: InputDecoration(
               contentPadding:
                   EdgeInsets.symmetric(vertical: 18.0, horizontal: 15.0),
@@ -45,13 +65,18 @@ class CustomTextfield extends StatelessWidget {
               prefixIcon: iconData,
               hintText: hintText,
               hintStyle: hintStyle ??
-                  TextStyle(
+                  const TextStyle(
                     fontSize: 14.0,
                     color: Colors.grey,
-                  ), // Default hint style if not provided
+                  ), // Default hint style
+              errorStyle: errorStyle ?? // Use the new errorStyle parameter
+                  const TextStyle(
+                    fontSize: 12.0, // Smaller font size for error messages
+                    color: Colors.red, // Optional: change color if needed
+                  ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: Colors.grey),
+                borderRadius: BorderRadius.circular(borderRadius), // Use the borderRadius parameter
+                borderSide: const BorderSide(color: Colors.grey),
               ),
               suffixIcon: isPasswordField
                   ? Padding(
@@ -61,8 +86,8 @@ class CustomTextfield extends StatelessWidget {
                           isObscure.value = !isObscure.value;
                         },
                         icon: isObscure.value
-                            ? Icon(Icons.visibility_off)
-                            : Icon(Icons.visibility),
+                            ? const Icon(Icons.visibility_off)
+                            : const Icon(Icons.visibility),
                       ),
                     )
                   : null,
@@ -71,5 +96,22 @@ class CustomTextfield extends StatelessWidget {
         },
       ),
     );
+  }
+
+  /// Method to pick a file using the file_picker package
+  Future<void> selectFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.any, // Adjust file type as needed
+    );
+
+    if (result != null) {
+      // If a file is picked, you can handle the selected file here
+      String filePath = result.files.single.path ?? 'No file selected';
+      // You can perform actions with the selected file path
+      print('Selected file path: $filePath');
+    } else {
+      // User canceled the picker
+      print('No file selected');
+    }
   }
 }

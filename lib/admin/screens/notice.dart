@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:school_app/admin/widgets/custom_button.dart'; 
+import 'package:school_app/admin/screens/add_event.dart';
+import 'package:school_app/admin/screens/add_notice.dart';
+import 'package:school_app/admin/widgets/custom_button.dart';
 
 class NoticeEventPage extends StatefulWidget {
   @override
@@ -37,7 +39,13 @@ class _NoticeEventPageState extends State<NoticeEventPage>
                 Expanded(
                   child: CustomButton(
                     text: 'Add Notice',
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddNoticePage()),
+                      );
+                    },
                   ),
                 ),
                 SizedBox(
@@ -47,8 +55,12 @@ class _NoticeEventPageState extends State<NoticeEventPage>
                 Expanded(
                   child: CustomButton(
                     text: 'Add Events',
-                    onPressed: () {},
-                    
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => AddEventPage()),
+                      );
+                    },
                   ),
                 ),
               ],
