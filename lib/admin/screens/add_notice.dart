@@ -1,21 +1,5 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: AddNoticePage(),
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Color(0xFFE0F7FA), // Light blue background color
-      ),
-    );
-  }
-}
 
 class AddNoticePage extends StatefulWidget {
   @override
