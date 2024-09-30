@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:school_app/admin/screens/teacherdetails.dart';
 
 class TeachersPage extends StatefulWidget {
   @override
@@ -7,11 +8,7 @@ class TeachersPage extends StatefulWidget {
 
 class _TeachersPageState extends State<TeachersPage> {
   final List<Map<String, String>> teachers = [
-    {
-      "name": "Muhammad Rafasl",
-      "class": "VI Class Teacher",
-      "image": "student1.png"
-    },
+    {"name": "Muhammad Rafasl", "class": "VI", "image": "student1.png"},
     {"name": "Midlej O P", "class": "V", "image": "student2.png"},
     {"name": "Saleem Riyaz", "class": "VIII", "image": "student3.png"},
     {"name": "Abram Bator", "class": "IX", "image": "student4.png"},
@@ -25,14 +22,13 @@ class _TeachersPageState extends State<TeachersPage> {
 
   List<Map<String, String>> filteredTeachers = [];
   String searchQuery = "";
-  String selectedClass = "All"; // Initial class selected
+  String selectedClass = "All";
 
   @override
   void initState() {
     super.initState();
-    // Sort the students by name in alphabetical order
     teachers.sort((a, b) => a['name']!.compareTo(b['name']!));
-    filteredTeachers = teachers; // Initialize with all students
+    filteredTeachers = teachers;
   }
 
   void _filterTeachers(String query) {
@@ -41,33 +37,20 @@ class _TeachersPageState extends State<TeachersPage> {
       filteredTeachers = teachers.where((teacher) {
         final matchesSearchQuery =
             teacher['name']!.toLowerCase().contains(query.toLowerCase());
-        final matchesClass = teacher['class'] == selectedClass;
+        final matchesClass =
+            selectedClass == "All" || teacher['class'] == selectedClass;
         return matchesSearchQuery && matchesClass;
       }).toList();
     });
   }
 
-  void _filterByClass(String newClass) {
-    setState(() {
-      selectedClass = newClass; // Update the selected class
-
-      // If "All" is selected, show all students, else filter by class
-      if (selectedClass == "All") {
-        filteredTeachers = teachers.where((teacher) {
-          return teacher['name']!
-              .toLowerCase()
-              .contains(searchQuery.toLowerCase());
-        }).toList();
-      } else {
-        filteredTeachers = teachers.where((teacher) {
-          final matchesSearchQuery = teacher['name']!
-              .toLowerCase()
-              .contains(searchQuery.toLowerCase());
-          final matchesClass = teacher['class'] == selectedClass;
-          return matchesSearchQuery && matchesClass;
-        }).toList();
-      }
-    });
+  void _filterByClass(String? newClass) {
+    if (newClass != null) {
+      setState(() {
+        selectedClass = newClass;
+        _filterTeachers(searchQuery);
+      });
+    }
   }
 
   @override
@@ -80,48 +63,42 @@ class _TeachersPageState extends State<TeachersPage> {
         title: Text(
           'Teachers',
           style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 25,
-            color: Colors.black,
-          ),
+              fontWeight: FontWeight.bold, fontSize: 25, color: Colors.black),
         ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () => Navigator.pop(context),
         ),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
             child: CircleAvatar(
-              backgroundImage: AssetImage('assets/student1.png'),
-            ),
+                backgroundImage: AssetImage('assets/student1.png')),
           ),
         ],
       ),
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0), // Reduced overall padding
             child: Row(
               children: [
                 Expanded(
                   flex: 3,
                   child: TextField(
-                    onChanged: (value) {
-                      _filterTeachers(value);
-                    },
+                    onChanged: _filterTeachers,
                     decoration: InputDecoration(
                       hintText: 'Search for Teachers',
                       prefixIcon: Icon(Icons.search, color: Colors.grey),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
+                        borderRadius:
+                            BorderRadius.circular(30), // Smaller radius
                         borderSide: BorderSide(color: Colors.grey.shade300),
                       ),
                       filled: true,
                       fillColor: Colors.grey.shade100,
-                      contentPadding: EdgeInsets.symmetric(vertical: 12),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 12), // Reduced height
                     ),
                     style:
                         TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
@@ -172,58 +149,28 @@ class _TeachersPageState extends State<TeachersPage> {
             child: ListView.builder(
               itemCount: filteredTeachers.length,
               itemBuilder: (context, index) {
+                final teacher = filteredTeachers[index];
                 return Card(
                   margin:
                       const EdgeInsets.symmetric(horizontal: 1, vertical: 5),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
+                      borderRadius: BorderRadius.circular(15)),
                   child: GestureDetector(
-                    onTap: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => StudentDetailPage(
-                      //       name: filteredTeachers[index]['name']!,
-                      //       studentClass: filteredTeachers[index]['class']!,
-                      //       image: filteredTeachers[index]['image']!,
-                      //     ),
-                      //   ),
-                      // );
-                    },
+                    onTap: () => _navigateToTeacherDetails(context, teacher),
                     child: ListTile(
                       leading: CircleAvatar(
-                        backgroundImage: AssetImage(
-                            'assets/${filteredTeachers[index]['image']}'),
-                      ),
-                      title: Text(
-                        filteredTeachers[index]['name']!,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      subtitle: Text(
-                        filteredTeachers[index]['class']!,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15),
-                      ),
+                          backgroundImage:
+                              AssetImage('assets/${teacher['image']}')),
+                      title: Text(teacher['name']!,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16)),
+                      subtitle: Text(teacher['class']!,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15)),
                       trailing: TextButton(
-                        child: Text(
-                          'View',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        onPressed: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => StudentDetailPage(
-                          //       name: filteredTeachers[index]['name']!,
-                          //       studentClass: filteredTeachers[index]['class']!,
-                          //       image: filteredTeachers[index]['image']!,
-                          //     ),
-                          //   ),
-                          // );
-                        },
+                        child: Text('View'),
+                        onPressed: () =>
+                            _navigateToTeacherDetails(context, teacher),
                       ),
                     ),
                   ),
@@ -233,17 +180,19 @@ class _TeachersPageState extends State<TeachersPage> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => AddStudentPage()),
-          // );
-        },
-        label: Text('Add New Teacher'),
-        icon: Icon(Icons.add),
-        backgroundColor: Colors.black,
-        foregroundColor: Colors.white,
+    );
+  }
+
+  void _navigateToTeacherDetails(
+      BuildContext context, Map<String, String> teacher) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TeacherDetailsPage(
+          name: teacher['name']!,
+          studentClass: teacher['class']!,
+          image: teacher['image']!,
+        ),
       ),
     );
   }
