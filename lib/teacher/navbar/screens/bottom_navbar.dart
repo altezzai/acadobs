@@ -1,30 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:school_app/navbar/controller/navbar_provider.dart';
-import 'package:school_app/teacher/screens/attendance.dart';
-import 'package:school_app/teacher/screens/duties.dart';
-import 'package:school_app/teacher/screens/homescreen.dart';
-import 'package:school_app/teacher/screens/marks.dart';
-import 'package:school_app/teacher/screens/payments.dart';
+import 'package:school_app/admin/screens/payment.dart';
+import 'package:school_app/teacher/attendance/screens/attendance.dart';
+import 'package:school_app/teacher/home/homescreen.dart';
+import 'package:school_app/teacher/marks/screens/marks.dart';
+import 'package:school_app/teacher/navbar/controller/navbar_provider.dart';
+import 'package:school_app/teacher/duties/duties.dart';
 import 'package:school_app/utils/responsive.dart';
 
 class BottomNavbar extends StatelessWidget {
-   BottomNavbar({super.key,});
+  BottomNavbar({
+    super.key,
+  });
+
+  final List<Widget> _screens = [
+    const TeacherScreen(),
+    Attendance(),
+    ProgressReport(),
+    const DutiesScreen(),
+    PaymentsPage(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     final bottomNavProvider = Provider.of<BottomNavProvider>(context);
+    final int currentIndex =
+        Provider.of<BottomNavProvider>(context).currentIndex;
     return Scaffold(
-      body: IndexedStack(
-        index: bottomNavProvider.currentIndex,
-        children: [
-          TeacherScreen(),
-          Attendance(),
-          MarksScreen(),
-          DutiesScreen(),
-          PaymentsScreen(),
-        ],
-      ),
-      bottomNavigationBar:  BottomNavigationBar(
+      body: _screens[currentIndex],
+      // IndexedStack(
+      //   index: bottomNavProvider.currentIndex,
+      //   children: [
+      //     const TeacherScreen(),
+      //     Attendance(),
+      //     ProgressReport(),
+      //     const DutiesScreen(),
+      //     PaymentsPage(),
+      //   ],
+      // ),
+      bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: bottomNavProvider.currentIndex,
         selectedItemColor: Colors.black,
@@ -32,7 +46,7 @@ class BottomNavbar extends StatelessWidget {
         iconSize: Responsive.radius * 7,
         selectedFontSize: 15,
         unselectedFontSize: 13,
-        onTap: (index){
+        onTap: (index) {
           bottomNavProvider.setIndex(index);
         },
         items: const [
