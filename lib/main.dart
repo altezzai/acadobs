@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-// import 'package:school_app/admin/screens/splashscreen.dart';
 import 'package:school_app/controller/dropdown_controller.dart';
 import 'package:school_app/teacher/attendance/controller/attendance_controller.dart';
 import 'package:school_app/teacher/navbar/controller/navbar_provider.dart';

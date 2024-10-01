@@ -4,7 +4,6 @@ import 'package:school_app/admin/screens/newstudent.dart';
 import 'package:school_app/admin/screens/studentdetails.dart';
 import 'package:school_app/teacher/routes/app_route_const.dart';
 
-
 class StudentsPage extends StatefulWidget {
   @override
   _StudentsPageState createState() => _StudentsPageState();
@@ -200,13 +199,13 @@ class _StudentsPageState extends State<StudentsPage> {
                       title: Text(
                         filteredStudents[index]['name']!,
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16),
+                            fontWeight: FontWeight.normal, fontSize: 16),
                         overflow: TextOverflow.ellipsis,
                       ),
                       subtitle: Text(
                         filteredStudents[index]['class']!,
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15),
+                            fontWeight: FontWeight.normal, fontSize: 15),
                       ),
                       trailing: TextButton(
                         child: Text(

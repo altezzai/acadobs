@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:school_app/admin/screens/home.dart';
 import 'package:school_app/admin/widgets/custom_button.dart';
 import 'package:school_app/admin/widgets/custom_textfield.dart';
-import 'package:school_app/navbar/screens/bottom_navbar.dart';
 import 'package:school_app/teacher/routes/app_route_const.dart';
 // import 'package:school_app/teacher/home/homescreen.dart';
 

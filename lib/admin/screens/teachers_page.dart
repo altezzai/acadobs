@@ -163,10 +163,10 @@ class _TeachersPageState extends State<TeachersPage> {
                               AssetImage('assets/${teacher['image']}')),
                       title: Text(teacher['name']!,
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16)),
+                              fontWeight: FontWeight.normal, fontSize: 16)),
                       subtitle: Text(teacher['class']!,
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 15)),
+                              fontWeight: FontWeight.normal, fontSize: 15)),
                       trailing: TextButton(
                         child: Text('View'),
                         onPressed: () =>
