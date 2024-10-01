@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:school_app/teacher/homework/models/work.dart';
+import 'package:school_app/teacher/routes/app_route_const.dart';
 
 List<Work> workList = [
   Work(
@@ -8,6 +10,9 @@ List<Work> workList = [
     backgroundColor: const Color(0xffFFCEDE),
     iconColor: const Color(0xffB14F6F),
     icon: Icons.text_snippet_outlined,
+    onTap: (BuildContext context) {
+      context.pushReplacementNamed(AppRouteConst.workviewRouteName);
+    },
   ),
   Work(
     workType: 'Imposition',
@@ -15,6 +20,9 @@ List<Work> workList = [
     backgroundColor: const Color(0xffFFCEDE),
     iconColor: const Color(0xffB14F6F),
     icon: Icons.text_snippet_outlined,
+    onTap: (BuildContext context) {
+      context.pushReplacementNamed(AppRouteConst.workviewRouteName);
+    },
   ),
   Work(
     workType: 'Imposition',
@@ -22,6 +30,9 @@ List<Work> workList = [
     backgroundColor: const Color(0xffFFCEDE),
     iconColor: const Color(0xffB14F6F),
     icon: Icons.text_snippet_outlined,
+    onTap: (BuildContext context) {
+      context.pushReplacementNamed(AppRouteConst.workviewRouteName);
+    },
   ),
   Work(
     workType: 'Homework',
@@ -29,5 +40,8 @@ List<Work> workList = [
     backgroundColor: const Color(0xffFFFCCE),
     iconColor: const Color(0xffBCB54F),
     icon: Icons.business_center_outlined,
+    onTap: (BuildContext context) {
+      context.pushReplacementNamed(AppRouteConst.workviewRouteName);
+    },
   ),
 ];
