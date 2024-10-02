@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:school_app/admin/screens/addAchivement.dart';
 import 'package:school_app/admin/screens/addhomwork.dart';
+import 'package:school_app/admin/screens/homeworkdetail.dart';
 
 class StudentDetailPage extends StatelessWidget {
   final String name;
@@ -525,6 +526,7 @@ Widget _buildScrollableHomeWorksContent(BuildContext context) {
           final String subject = homework['subject']!;
           final String date = homework['date']!;
 
+          // Check if the date has changed for the header
           if (index > 1 && date != homeworks[index - 2]['date']) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -540,12 +542,12 @@ Widget _buildScrollableHomeWorksContent(BuildContext context) {
                     ),
                   ),
                 ),
-                _buildHomeworkItem(title, subject),
+                _buildHomeworkItem(context, title, subject),
               ],
             );
           }
 
-          return _buildHomeworkItem(title, subject);
+          return _buildHomeworkItem(context, title, subject);
         },
       ),
       Positioned(
@@ -575,7 +577,7 @@ Widget _buildScrollableHomeWorksContent(BuildContext context) {
   );
 }
 
-Widget _buildHomeworkItem(String title, String subject) {
+Widget _buildHomeworkItem(BuildContext context, String title, String subject) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
     child: Container(
@@ -610,7 +612,12 @@ Widget _buildHomeworkItem(String title, String subject) {
         ),
         trailing: TextButton(
           onPressed: () {
-            // TODO: Implement view functionality
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) =>
+                    HomeworkDetails(title: '$title - $subject'),
+              ),
+            );
           },
           child: Text(
             'View',
