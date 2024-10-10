@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:school_app/admin/screens/home.dart';
 import 'package:school_app/admin/widgets/custom_button.dart';
 import 'package:school_app/admin/widgets/custom_textfield.dart';
-import 'package:school_app/navbar/screens/bottom_navbar.dart';
 import 'package:school_app/teacher/routes/app_route_const.dart';
 // import 'package:school_app/teacher/home/homescreen.dart';
-
 
 class LoginPage extends StatefulWidget {
   @override
@@ -20,10 +17,7 @@ class _LoginPageState extends State<LoginPage> {
   // Function to handle login action
   void _login(BuildContext context) {
     if (_username == 'ajay' && _password == '1234') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => AdminHomePage()),
-      );
+      context.pushReplacementNamed(AppRouteConst.AdminHomeRouteName);
     } else if (_username == 'soorya' && _password == '1234') {
       context.pushReplacementNamed(AppRouteConst.homeRouteName);
     } else {

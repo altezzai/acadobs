@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:school_app/teacher/homework/data/workdata.dart';
+import 'package:school_app/teacher/homework/widgets/work_container.dart';
 import 'package:school_app/teacher/routes/app_route_const.dart';
 import 'package:school_app/theme/text_theme.dart';
 import 'package:school_app/utils/responsive.dart';
-import 'package:school_app/teacher/homework/data/workdata.dart';
-import 'package:school_app/teacher/homework/widgets/work_container.dart';
 
 class WorkScreen extends StatelessWidget {
   WorkScreen({super.key});
@@ -43,12 +43,15 @@ class WorkScreen extends StatelessWidget {
             SizedBox(
               height: Responsive.height * 2,
             ),
-            const WorkContainer(
+            WorkContainer(
               bcolor: Color(0xffFFFCCE),
               icolor: Color(0xffBCB54F),
               icon: Icons.business_center_outlined,
               work: 'Homework',
               sub: 'Maths',
+              onTap: () {
+                context.pushReplacementNamed(AppRouteConst.workviewRouteName);
+              },
             ),
             SizedBox(
               height: Responsive.height * 3,
@@ -71,6 +74,7 @@ class WorkScreen extends StatelessWidget {
                   icon: workItem.icon,
                   work: workItem.workType,
                   sub: workItem.subject,
+                  onTap: ()=>workItem.onTap(context),
                 );
               },
             ),

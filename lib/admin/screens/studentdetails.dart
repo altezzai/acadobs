@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pie_chart/pie_chart.dart';
-import 'package:school_app/admin/screens/addAchivement.dart';
-import 'package:school_app/admin/screens/addhomwork.dart';
+import 'package:school_app/admin/screens/homeworkdetail.dart';
+import 'package:school_app/teacher/routes/app_route_const.dart';
 
 class StudentDetailPage extends StatelessWidget {
   final String name;
@@ -35,7 +36,7 @@ class StudentDetailPage extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Navigator.pop(context);
+            context.pushReplacementNamed(AppRouteConst.AdminstudentRouteName);
           },
         ),
       ),
@@ -131,7 +132,8 @@ class StudentDetailPage extends StatelessWidget {
                               right: 16,
                               child: FloatingActionButton(
                                 onPressed: () {
-                                  _showAddAchievementDialog(context);
+                                  context.pushReplacementNamed(
+                                      AppRouteConst.AddAchivementsRouteName);
                                 },
                                 child: Icon(Icons.add),
                                 backgroundColor: Colors.black,
@@ -302,7 +304,7 @@ Widget _buildAchievementsContent() {
               child: Text(
                 date,
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.normal,
                   fontSize: 16,
                   color: Colors.black87, // Match with StudentDetailPage
                 ),
@@ -313,7 +315,7 @@ Widget _buildAchievementsContent() {
             title: Text(
               position,
               style: TextStyle(
-                fontSize: 18,
+                fontSize: 16,
                 fontWeight: FontWeight.w600,
                 color: Colors.black87, // Match with StudentDetailPage
               ),
@@ -359,18 +361,18 @@ Widget _buildScrollableExamsContent() {
 Widget _buildExamCard(String grade, String semester, String examName,
     List<Map<String, String>> subjects) {
   return Card(
-    elevation: 4,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    elevation: 2,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: EdgeInsets.all(16),
+          padding: EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: Colors.black,
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(12),
-              topRight: Radius.circular(12),
+              topLeft: Radius.circular(8),
+              topRight: Radius.circular(8),
             ),
           ),
           child: Row(
@@ -382,25 +384,25 @@ Widget _buildExamCard(String grade, String semester, String examName,
                   children: [
                     Text(
                       "$grade : $semester",
-                      style: TextStyle(color: Colors.white70, fontSize: 14),
+                      style: TextStyle(color: Colors.white70, fontSize: 12),
                     ),
-                    SizedBox(height: 4),
+                    SizedBox(height: 2),
                     Text(
                       examName,
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 20),
+                          fontSize: 16),
                     ),
                   ],
                 ),
               ),
-              Icon(Icons.assessment, color: Colors.white),
+              Icon(Icons.assessment, color: Colors.white, size: 20),
             ],
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(12.0),
           child: Column(
             children: [
               Row(
@@ -410,6 +412,7 @@ Widget _buildExamCard(String grade, String semester, String examName,
                     child: Text("Subject",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
+                            fontSize: 12,
                             color: Colors.grey[600])),
                   ),
                   Expanded(
@@ -417,6 +420,7 @@ Widget _buildExamCard(String grade, String semester, String examName,
                     child: Text("Mark",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
+                            fontSize: 12,
                             color: Colors.grey[600]),
                         textAlign: TextAlign.center),
                   ),
@@ -425,6 +429,7 @@ Widget _buildExamCard(String grade, String semester, String examName,
                     child: Text("Total",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
+                            fontSize: 12,
                             color: Colors.grey[600]),
                         textAlign: TextAlign.center),
                   ),
@@ -433,7 +438,7 @@ Widget _buildExamCard(String grade, String semester, String examName,
               Divider(),
               ...subjects
                   .map((subject) => Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        padding: const EdgeInsets.symmetric(vertical: 4.0),
                         child: Row(
                           children: [
                             Expanded(
@@ -441,14 +446,14 @@ Widget _buildExamCard(String grade, String semester, String examName,
                               child: Text(subject["subject"]!,
                                   style: TextStyle(
                                       fontWeight: FontWeight.w500,
-                                      fontSize: 20)),
+                                      fontSize: 16)),
                             ),
                             Expanded(
                               flex: 1,
                               child: Text(subject["mark"]!,
                                   style: TextStyle(
                                       color: Colors.green[700],
-                                      fontSize: 20,
+                                      fontSize: 16,
                                       fontWeight: FontWeight.bold),
                                   textAlign: TextAlign.center),
                             ),
@@ -456,7 +461,7 @@ Widget _buildExamCard(String grade, String semester, String examName,
                               flex: 1,
                               child: Text(subject["total"]!,
                                   style: TextStyle(
-                                      fontSize: 20,
+                                      fontSize: 16,
                                       fontWeight: FontWeight.bold),
                                   textAlign: TextAlign.center),
                             ),
@@ -464,16 +469,19 @@ Widget _buildExamCard(String grade, String semester, String examName,
                         ),
                       ))
                   .toList(),
-              SizedBox(height: 16),
+              SizedBox(height: 12),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Total Score",
-                      style: TextStyle(fontWeight: FontWeight.bold)),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
                   Text(
                     "${subjects.fold(0, (sum, subject) => sum + int.parse(subject["mark"]!))}/${subjects.fold(0, (sum, subject) => sum + int.parse(subject["total"]!))}",
                     style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.blue[700]),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        color: Colors.blue[700]),
                   ),
                 ],
               ),
@@ -507,7 +515,7 @@ Widget _buildScrollableHomeWorksContent(BuildContext context) {
               child: Text(
                 "Today",
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.normal,
                   fontSize: 16,
                 ),
               ),
@@ -519,6 +527,7 @@ Widget _buildScrollableHomeWorksContent(BuildContext context) {
           final String subject = homework['subject']!;
           final String date = homework['date']!;
 
+          // Check if the date has changed for the header
           if (index > 1 && date != homeworks[index - 2]['date']) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -529,17 +538,17 @@ Widget _buildScrollableHomeWorksContent(BuildContext context) {
                   child: Text(
                     date,
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.normal,
                       fontSize: 16,
                     ),
                   ),
                 ),
-                _buildHomeworkItem(title, subject),
+                _buildHomeworkItem(context, title, subject),
               ],
             );
           }
 
-          return _buildHomeworkItem(title, subject);
+          return _buildHomeworkItem(context, title, subject);
         },
       ),
       Positioned(
@@ -548,11 +557,7 @@ Widget _buildScrollableHomeWorksContent(BuildContext context) {
         right: 16,
         child: ElevatedButton(
           onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => AddHomeworkPage(),
-              ),
-            );
+            context.pushReplacementNamed(AppRouteConst.addworkRouteName);
           },
           child: Text('Add Homework'),
           style: ElevatedButton.styleFrom(
@@ -569,7 +574,7 @@ Widget _buildScrollableHomeWorksContent(BuildContext context) {
   );
 }
 
-Widget _buildHomeworkItem(String title, String subject) {
+Widget _buildHomeworkItem(BuildContext context, String title, String subject) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
     child: Container(
@@ -596,7 +601,7 @@ Widget _buildHomeworkItem(String title, String subject) {
         ),
         title: Text(
           title,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
         subtitle: Text(
           subject,
@@ -604,7 +609,12 @@ Widget _buildHomeworkItem(String title, String subject) {
         ),
         trailing: TextButton(
           onPressed: () {
-            // TODO: Implement view functionality
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) =>
+                    HomeworkDetails(title: '$title - $subject'),
+              ),
+            );
           },
           child: Text(
             'View',
@@ -616,54 +626,5 @@ Widget _buildHomeworkItem(String title, String subject) {
         ),
       ),
     ),
-  );
-}
-
-void _showAddAchievementDialog(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text(
-          'Add Achievement',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        content: Text(
-          'Would you like to add an achievement?',
-          style: TextStyle(fontSize: 20),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text(
-              'Cancel',
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => AddAchievementPage(),
-                ),
-              );
-            },
-            child: Text(
-              'Add',
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ],
-      );
-    },
   );
 }

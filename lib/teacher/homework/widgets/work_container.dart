@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:school_app/teacher/routes/app_route_const.dart';
 import 'package:school_app/theme/text_theme.dart';
 import 'package:school_app/utils/constants.dart';
 import 'package:school_app/utils/responsive.dart';
@@ -72,16 +70,11 @@ class WorkContainer extends StatelessWidget {
           ),
           Spacer(),
           GestureDetector(
-            onTap: () {
-              context.pushReplacementNamed(AppRouteConst.workviewRouteName);
-            },
-            child: GestureDetector(
-              onTap: onTap,
-              child: Text(
-                prefixText,
-                style: textThemeData.headlineMedium!
-                    .copyWith(fontSize: 16, color: prefixColor),
-              ),
+            onTap: onTap,
+            child: Text(
+              prefixText,
+              style: textThemeData.headlineMedium!
+                  .copyWith(fontSize: 16, color: prefixColor),
             ),
           ),
           SizedBox(

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:school_app/admin/screens/newstudent.dart';
-import 'package:school_app/admin/screens/studentdetails.dart';
 import 'package:school_app/teacher/routes/app_route_const.dart';
-
 
 class StudentsPage extends StatefulWidget {
   @override
@@ -39,10 +36,12 @@ class _StudentsPageState extends State<StudentsPage> {
   void _filterStudents(String query) {
     setState(() {
       searchQuery = query;
+      // Apply filtering logic based on both search query and selected class
       filteredStudents = students.where((student) {
         final matchesSearchQuery =
             student['name']!.toLowerCase().contains(query.toLowerCase());
-        final matchesClass = student['class'] == selectedClass;
+        final matchesClass =
+            selectedClass == "All" || student['class'] == selectedClass;
         return matchesSearchQuery && matchesClass;
       }).toList();
     });
@@ -52,22 +51,13 @@ class _StudentsPageState extends State<StudentsPage> {
     setState(() {
       selectedClass = newClass; // Update the selected class
 
-      // If "All" is selected, show all students, else filter by class
-      if (selectedClass == "All") {
-        filteredStudents = students.where((student) {
-          return student['name']!
-              .toLowerCase()
-              .contains(searchQuery.toLowerCase());
-        }).toList();
-      } else {
-        filteredStudents = students.where((student) {
-          final matchesSearchQuery = student['name']!
-              .toLowerCase()
-              .contains(searchQuery.toLowerCase());
-          final matchesClass = student['class'] == selectedClass;
-          return matchesSearchQuery && matchesClass;
-        }).toList();
-      }
+      // Filter by both class and search query
+      filteredStudents = students.where((student) {
+        final matchesSearchQuery =
+            student['name']!.toLowerCase().contains(searchQuery.toLowerCase());
+        final matchesClass = newClass == "All" || student['class'] == newClass;
+        return matchesSearchQuery && matchesClass;
+      }).toList();
     });
   }
 
@@ -89,7 +79,8 @@ class _StudentsPageState extends State<StudentsPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            context.pushReplacementNamed(AppRouteConst.homeRouteName);
+            context.pushReplacementNamed(AppRouteConst
+                .AdminHomeRouteName); // Go back to the previous page
           },
         ),
         actions: [
@@ -181,15 +172,13 @@ class _StudentsPageState extends State<StudentsPage> {
                   ),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => StudentDetailPage(
-                            name: filteredStudents[index]['name']!,
-                            studentClass: filteredStudents[index]['class']!,
-                            image: filteredStudents[index]['image']!,
-                          ),
-                        ),
+                      context.pushReplacementNamed(
+                        AppRouteConst.AdminstudentdetailsRouteName,
+                        extra: {
+                          'name': filteredStudents[index]['name'],
+                          'class': filteredStudents[index]['class'],
+                          'image': filteredStudents[index]['image'],
+                        },
                       );
                     },
                     child: ListTile(
@@ -200,13 +189,13 @@ class _StudentsPageState extends State<StudentsPage> {
                       title: Text(
                         filteredStudents[index]['name']!,
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16),
+                            fontWeight: FontWeight.normal, fontSize: 16),
                         overflow: TextOverflow.ellipsis,
                       ),
                       subtitle: Text(
                         filteredStudents[index]['class']!,
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15),
+                            fontWeight: FontWeight.normal, fontSize: 15),
                       ),
                       trailing: TextButton(
                         child: Text(
@@ -214,15 +203,13 @@ class _StudentsPageState extends State<StudentsPage> {
                           style: TextStyle(fontSize: 14),
                         ),
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => StudentDetailPage(
-                                name: filteredStudents[index]['name']!,
-                                studentClass: filteredStudents[index]['class']!,
-                                image: filteredStudents[index]['image']!,
-                              ),
-                            ),
+                          context.pushReplacementNamed(
+                            AppRouteConst.AdminstudentdetailsRouteName,
+                            extra: {
+                              'name': filteredStudents[index]['name'],
+                              'class': filteredStudents[index]['class'],
+                              'image': filteredStudents[index]['image'],
+                            },
                           );
                         },
                       ),
@@ -236,10 +223,7 @@ class _StudentsPageState extends State<StudentsPage> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AddStudentPage()),
-          );
+          context.pushReplacementNamed(AppRouteConst.AddStudentRouteName);
         },
         label: Text('Add New Student'),
         icon: Icon(Icons.add),

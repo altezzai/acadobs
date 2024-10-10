@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:school_app/admin/screens/teacherdetails.dart';
+import 'package:go_router/go_router.dart';
+import 'package:school_app/teacher/routes/app_route_const.dart';
 
 class TeachersPage extends StatefulWidget {
   @override
@@ -67,7 +68,8 @@ class _TeachersPageState extends State<TeachersPage> {
         ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () =>
+              context.pushReplacementNamed(AppRouteConst.AdminHomeRouteName),
         ),
         actions: [
           Padding(
@@ -80,7 +82,7 @@ class _TeachersPageState extends State<TeachersPage> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(16.0), // Reduced overall padding
+            padding: const EdgeInsets.all(16.0),
             child: Row(
               children: [
                 Expanded(
@@ -91,14 +93,12 @@ class _TeachersPageState extends State<TeachersPage> {
                       hintText: 'Search for Teachers',
                       prefixIcon: Icon(Icons.search, color: Colors.grey),
                       border: OutlineInputBorder(
-                        borderRadius:
-                            BorderRadius.circular(30), // Smaller radius
+                        borderRadius: BorderRadius.circular(30),
                         borderSide: BorderSide(color: Colors.grey.shade300),
                       ),
                       filled: true,
                       fillColor: Colors.grey.shade100,
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 12), // Reduced height
+                      contentPadding: EdgeInsets.symmetric(vertical: 12),
                     ),
                     style:
                         TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
@@ -163,10 +163,10 @@ class _TeachersPageState extends State<TeachersPage> {
                               AssetImage('assets/${teacher['image']}')),
                       title: Text(teacher['name']!,
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16)),
+                              fontWeight: FontWeight.normal, fontSize: 16)),
                       subtitle: Text(teacher['class']!,
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 15)),
+                              fontWeight: FontWeight.normal, fontSize: 15)),
                       trailing: TextButton(
                         child: Text('View'),
                         onPressed: () =>
@@ -180,20 +180,25 @@ class _TeachersPageState extends State<TeachersPage> {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {},
+        label: Text('Add New Teacher'),
+        icon: Icon(Icons.add),
+        backgroundColor: Colors.black,
+        foregroundColor: Colors.white,
+      ),
     );
   }
 
   void _navigateToTeacherDetails(
       BuildContext context, Map<String, String> teacher) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => TeacherDetailsPage(
-          name: teacher['name']!,
-          studentClass: teacher['class']!,
-          image: teacher['image']!,
-        ),
-      ),
+    context.pushReplacementNamed(
+      AppRouteConst.AdminteacherdetailsRouteName,
+      extra: {
+        'name': teacher['name']!,
+        'class': teacher['class']!,
+        'image': teacher['image']!,
+      },
     );
   }
 }
