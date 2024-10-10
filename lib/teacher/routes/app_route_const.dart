@@ -18,4 +18,8 @@ class AppRouteConst {
   static const String AdminstudentRouteName = 'adminstudent';
   static const String AdminteacherRouteName = 'adminteacher';
   static const String AdminstudentdetailsRouteName = 'adminstudentdetails';
+  static const String AddAchivementsRouteName = 'addachivement';
+  static const String AddStudentRouteName = 'addstudent';
+  static const String AdminteacherdetailsRouteName = 'adminteacherdetails';
+
 }

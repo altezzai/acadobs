@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:school_app/admin/widgets/custom_button.dart';
 import 'package:school_app/admin/widgets/custom_textfield.dart';
+import 'package:school_app/teacher/routes/app_route_const.dart';
 
 class AddStudentPage extends StatefulWidget {
   @override
@@ -26,7 +28,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Navigator.pop(context);
+            context.pushReplacementNamed(AppRouteConst.AdminstudentRouteName);
           },
         ),
         centerTitle: true,
@@ -367,7 +369,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 SizedBox(height: 20),
 
                 CustomTextfield(
-                  hintText: 'Aadhar Photo',
+                  hintText: 'Previous School Transfer Certificate',
                   iconData: Icon(Icons.attachment_rounded),
                 ),
 

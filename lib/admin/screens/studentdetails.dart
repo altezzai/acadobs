@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pie_chart/pie_chart.dart';
-import 'package:school_app/admin/screens/addAchivement.dart';
-import 'package:school_app/admin/screens/addhomwork.dart';
 import 'package:school_app/admin/screens/homeworkdetail.dart';
+import 'package:school_app/teacher/routes/app_route_const.dart';
 
 class StudentDetailPage extends StatelessWidget {
   final String name;
@@ -36,7 +36,7 @@ class StudentDetailPage extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Navigator.pop(context);
+            context.pushReplacementNamed(AppRouteConst.AdminstudentRouteName);
           },
         ),
       ),
@@ -132,7 +132,8 @@ class StudentDetailPage extends StatelessWidget {
                               right: 16,
                               child: FloatingActionButton(
                                 onPressed: () {
-                                  _showAddAchievementDialog(context);
+                                  context.pushReplacementNamed(
+                                      AppRouteConst.AddAchivementsRouteName);
                                 },
                                 child: Icon(Icons.add),
                                 backgroundColor: Colors.black,
@@ -556,11 +557,7 @@ Widget _buildScrollableHomeWorksContent(BuildContext context) {
         right: 16,
         child: ElevatedButton(
           onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => AddHomeworkPage(),
-              ),
-            );
+            context.pushReplacementNamed(AppRouteConst.addworkRouteName);
           },
           child: Text('Add Homework'),
           style: ElevatedButton.styleFrom(
@@ -629,54 +626,5 @@ Widget _buildHomeworkItem(BuildContext context, String title, String subject) {
         ),
       ),
     ),
-  );
-}
-
-void _showAddAchievementDialog(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text(
-          'Add Achievement',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        content: Text(
-          'Would you like to add an achievement?',
-          style: TextStyle(fontSize: 20),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text(
-              'Cancel',
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => AddAchievementPage(),
-                ),
-              );
-            },
-            child: Text(
-              'Add',
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ],
-      );
-    },
   );
 }

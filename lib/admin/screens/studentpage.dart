@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:school_app/admin/screens/newstudent.dart';
-import 'package:school_app/admin/screens/studentdetails.dart';
 import 'package:school_app/teacher/routes/app_route_const.dart';
 
 class StudentsPage extends StatefulWidget {
@@ -81,7 +79,8 @@ class _StudentsPageState extends State<StudentsPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Navigator.pop(context); // Go back to the previous page
+            context.pushReplacementNamed(AppRouteConst
+                .AdminHomeRouteName); // Go back to the previous page
           },
         ),
         actions: [
@@ -173,15 +172,13 @@ class _StudentsPageState extends State<StudentsPage> {
                   ),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => StudentDetailPage(
-                            name: filteredStudents[index]['name']!,
-                            studentClass: filteredStudents[index]['class']!,
-                            image: filteredStudents[index]['image']!,
-                          ),
-                        ),
+                      context.pushReplacementNamed(
+                        AppRouteConst.AdminstudentdetailsRouteName,
+                        extra: {
+                          'name': filteredStudents[index]['name'],
+                          'class': filteredStudents[index]['class'],
+                          'image': filteredStudents[index]['image'],
+                        },
                       );
                     },
                     child: ListTile(
@@ -206,16 +203,6 @@ class _StudentsPageState extends State<StudentsPage> {
                           style: TextStyle(fontSize: 14),
                         ),
                         onPressed: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => StudentDetailPage(
-                          //       name: filteredStudents[index]['name']!,
-                          //       studentClass: filteredStudents[index]['class']!,
-                          //       image: filteredStudents[index]['image']!,
-                          //     ),
-                          //   ),
-                          // );
                           context.pushReplacementNamed(
                             AppRouteConst.AdminstudentdetailsRouteName,
                             extra: {
@@ -236,10 +223,7 @@ class _StudentsPageState extends State<StudentsPage> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AddStudentPage()),
-          );
+          context.pushReplacementNamed(AppRouteConst.AddStudentRouteName);
         },
         label: Text('Add New Student'),
         icon: Icon(Icons.add),

@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:school_app/admin/screens/addAchivement.dart';
 import 'package:school_app/admin/screens/home.dart';
 import 'package:school_app/admin/screens/login.dart';
+import 'package:school_app/admin/screens/newstudent.dart';
 import 'package:school_app/admin/screens/payment.dart';
 import 'package:school_app/admin/screens/splashscreen.dart';
 import 'package:school_app/admin/screens/studentdetails.dart';
 import 'package:school_app/admin/screens/studentpage.dart';
+import 'package:school_app/admin/screens/teacherdetails.dart';
 import 'package:school_app/admin/screens/teachers_page.dart';
+import 'package:school_app/sample/screens/studentsample.dart';
 import 'package:school_app/teacher/attendance/screens/take_attendance.dart';
 import 'package:school_app/teacher/duties/duty_detail.dart';
 import 'package:school_app/teacher/homework/screens/work.dart';
@@ -26,7 +30,7 @@ class Approuter {
         name: AppRouteConst.splashRouteName,
         path: '/',
         pageBuilder: (context, state) {
-          return MaterialPage(child: SplashScreen());
+          return MaterialPage(child: Studentsample());
         },
       ),
       GoRoute(
@@ -135,7 +139,7 @@ class Approuter {
         },
       ),
       GoRoute(
-        name: AppRouteConst.AdminstudentRouteName,
+        name: AppRouteConst.AdminteacherRouteName,
         path: '/adminteacher',
         pageBuilder: (context, state) {
           return MaterialPage(child: TeachersPage());
@@ -151,6 +155,34 @@ class Approuter {
               name: studentData['name'],
               studentClass: studentData['class'],
               image: studentData['image'],
+            ),
+          );
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.AddAchivementsRouteName,
+        path: '/addachivement',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: AddAchievementPage());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.AddStudentRouteName,
+        path: '/addstudent',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: AddStudentPage());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.AdminteacherdetailsRouteName,
+        path: '/adminteacherdetails',
+        pageBuilder: (context, state) {
+          final teacher = state.extra as Map<String, dynamic>;
+          return MaterialPage(
+            child: TeacherDetailsPage(
+              name: teacher['name'],
+              studentClass: teacher['class'],
+              image: teacher['image'],
             ),
           );
         },

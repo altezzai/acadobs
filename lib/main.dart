@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/controller/dropdown_controller.dart';
+import 'package:school_app/sample/controller/student_controller.dart';
 import 'package:school_app/teacher/attendance/controller/attendance_controller.dart';
 import 'package:school_app/teacher/navbar/controller/navbar_provider.dart';
 import 'package:school_app/teacher/routes/app_route_config.dart';
@@ -20,13 +21,11 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-
   final Approuter appRouter;
   const MyApp({
     super.key,
     required this.appRouter,
   });
-
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +38,7 @@ class MyApp extends StatelessWidget {
               ChangeNotifierProvider(create: (_) => BottomNavProvider()),
               ChangeNotifierProvider(create: (_) => DropdownProvider()),
               ChangeNotifierProvider(create: (_) => AttendanceController()),
+              ChangeNotifierProvider(create: (_) => SampleController()),
             ],
             child: MaterialApp.router(
               themeMode: ThemeMode.light,
