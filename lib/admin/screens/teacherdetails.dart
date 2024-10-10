@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pie_chart/pie_chart.dart';
+import 'package:school_app/teacher/routes/app_route_const.dart';
 
 class TeacherDetailsPage extends StatelessWidget {
   final String name;
@@ -29,7 +31,8 @@ class TeacherDetailsPage extends StatelessWidget {
                 color: Colors.black)),
         leading: IconButton(
             icon: Icon(Icons.arrow_back, color: Colors.black),
-            onPressed: () => Navigator.pop(context)),
+            onPressed: () =>
+                context.pushReplacementNamed(AppRouteConst.AdminteacherRouteName)),
       ),
       body: Column(
         children: [
