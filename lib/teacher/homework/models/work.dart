@@ -6,6 +6,7 @@ class Work {
   final Color backgroundColor;
   final Color iconColor;
   final IconData icon;
+  final Function onTap;
 
   Work({
     required this.workType,
@@ -13,5 +14,6 @@ class Work {
     required this.backgroundColor,
     required this.iconColor,
     required this.icon,
+    required this.onTap,
   });
 }
