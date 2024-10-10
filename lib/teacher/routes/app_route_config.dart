@@ -30,7 +30,7 @@ class Approuter {
         name: AppRouteConst.splashRouteName,
         path: '/',
         pageBuilder: (context, state) {
-          return MaterialPage(child: Studentsample());
+          return MaterialPage(child: SplashScreen());
         },
       ),
       GoRoute(
