@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:school_app/admin/screens/newstudent.dart';
 import 'package:school_app/admin/screens/studentdetails.dart';
+import 'package:school_app/teacher/routes/app_route_const.dart';
 
 class StudentsPage extends StatefulWidget {
   @override
@@ -204,15 +206,23 @@ class _StudentsPageState extends State<StudentsPage> {
                           style: TextStyle(fontSize: 14),
                         ),
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => StudentDetailPage(
-                                name: filteredStudents[index]['name']!,
-                                studentClass: filteredStudents[index]['class']!,
-                                image: filteredStudents[index]['image']!,
-                              ),
-                            ),
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => StudentDetailPage(
+                          //       name: filteredStudents[index]['name']!,
+                          //       studentClass: filteredStudents[index]['class']!,
+                          //       image: filteredStudents[index]['image']!,
+                          //     ),
+                          //   ),
+                          // );
+                          context.pushReplacementNamed(
+                            AppRouteConst.AdminstudentdetailsRouteName,
+                            extra: {
+                              'name': filteredStudents[index]['name'],
+                              'class': filteredStudents[index]['class'],
+                              'image': filteredStudents[index]['image'],
+                            },
                           );
                         },
                       ),

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:school_app/admin/screens/duties.dart';
 import 'package:school_app/admin/screens/notice.dart';
 import 'package:school_app/admin/screens/payment.dart';
 import 'package:school_app/admin/screens/reports.dart';
 import 'package:school_app/admin/screens/studentpage.dart';
-import 'package:school_app/admin/screens/teachers_page.dart';
 import 'package:school_app/admin/widgets/button_navigation.dart';
+import 'package:school_app/teacher/routes/app_route_const.dart';
 
 class AdminHomePage extends StatefulWidget {
   @override
@@ -135,12 +136,8 @@ class HomeContentPage extends StatelessWidget {
               Expanded(
                 child: OutlinedButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => StudentsPage(),
-                      ),
-                    );
+                    context.pushReplacementNamed(
+                        AppRouteConst.AdminstudentRouteName);
                   },
                   style: OutlinedButton.styleFrom(
                     padding: EdgeInsets.symmetric(
@@ -163,13 +160,8 @@ class HomeContentPage extends StatelessWidget {
               Expanded(
                 child: OutlinedButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-
-                        builder: (context) => TeachersPage(),
-                      ),
-                    );
+                    context.pushReplacementNamed(
+                        AppRouteConst.AdminteacherRouteName);
                   },
                   style: OutlinedButton.styleFrom(
                     padding: EdgeInsets.symmetric(

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:school_app/admin/screens/home.dart';
 import 'package:school_app/admin/screens/login.dart';
 import 'package:school_app/admin/screens/payment.dart';
 import 'package:school_app/admin/screens/splashscreen.dart';
+import 'package:school_app/admin/screens/studentdetails.dart';
 import 'package:school_app/admin/screens/studentpage.dart';
+import 'package:school_app/admin/screens/teachers_page.dart';
 import 'package:school_app/teacher/attendance/screens/take_attendance.dart';
 import 'package:school_app/teacher/duties/duty_detail.dart';
 import 'package:school_app/teacher/homework/screens/work.dart';
@@ -115,6 +118,41 @@ class Approuter {
         path: '/parent',
         pageBuilder: (context, state) {
           return MaterialPage(child: ParentsScreen());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.AdminHomeRouteName,
+        path: '/adminhome',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: AdminHomePage());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.AdminstudentRouteName,
+        path: '/adminstudent',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: StudentsPage());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.AdminstudentRouteName,
+        path: '/adminteacher',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: TeachersPage());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.AdminstudentdetailsRouteName,
+        path: '/adminstudentdetails',
+        pageBuilder: (context, state) {
+          final studentData = state.extra as Map<String, dynamic>;
+          return MaterialPage(
+            child: StudentDetailPage(
+              name: studentData['name'],
+              studentClass: studentData['class'],
+              image: studentData['image'],
+            ),
+          );
         },
       ),
     ],

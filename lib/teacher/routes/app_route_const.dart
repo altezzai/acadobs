@@ -13,4 +13,9 @@ class AppRouteConst {
   static const String leaveRouteName = 'leave';
   static const String studentRouteName = 'student';
   static const String parentRouteName = 'parent';
+
+  static const String AdminHomeRouteName = 'adminhome';
+  static const String AdminstudentRouteName = 'adminstudent';
+  static const String AdminteacherRouteName = 'adminteacher';
+  static const String AdminstudentdetailsRouteName = 'adminstudentdetails';
 }
