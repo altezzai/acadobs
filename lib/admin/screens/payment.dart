@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:school_app/admin/screens/add_donation.dart';
-import 'package:school_app/admin/screens/add_payment.dart';
+import 'package:go_router/go_router.dart';
 import 'package:school_app/admin/widgets/custom_button.dart';
+import 'package:school_app/teacher/routes/app_route_const.dart';
 
 class PaymentsPage extends StatefulWidget {
   @override
@@ -31,12 +31,8 @@ class _PaymentsPageState extends State<PaymentsPage>
                   child: CustomButton(
                     text: 'Add Payment',
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AddPaymentPage(),
-                        ),
-                      );
+                      context.pushReplacementNamed(
+                          AppRouteConst.AddPaymentRouteName);
                     },
                   ),
                 ),
@@ -45,12 +41,8 @@ class _PaymentsPageState extends State<PaymentsPage>
                   child: CustomButton(
                     text: 'Add Donation',
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AddDonationPage(),
-                        ),
-                      );
+                      context.pushReplacementNamed(
+                          AppRouteConst.AddDonationRouteName);
                     },
                   ),
                 ),

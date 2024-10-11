@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:school_app/admin/screens/add_event.dart';
-import 'package:school_app/admin/screens/add_notice.dart';
+import 'package:go_router/go_router.dart';
 import 'package:school_app/admin/widgets/custom_button.dart';
+import 'package:school_app/teacher/routes/app_route_const.dart';
 
 class NoticeEventPage extends StatefulWidget {
   @override
@@ -40,11 +40,8 @@ class _NoticeEventPageState extends State<NoticeEventPage>
                   child: CustomButton(
                     text: 'Add Notice',
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AddNoticePage()),
-                      );
+                      context.pushReplacementNamed(
+                          AppRouteConst.AddNoticeRouteName);
                     },
                   ),
                 ),
@@ -56,10 +53,8 @@ class _NoticeEventPageState extends State<NoticeEventPage>
                   child: CustomButton(
                     text: 'Add Events',
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => AddEventPage()),
-                      );
+                      context.pushReplacementNamed(
+                          AppRouteConst.AddEventRouteName);
                     },
                   ),
                 ),

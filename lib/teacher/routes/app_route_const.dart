@@ -21,5 +21,12 @@ class AppRouteConst {
   static const String AddAchivementsRouteName = 'addachivement';
   static const String AddStudentRouteName = 'addstudent';
   static const String AdminteacherdetailsRouteName = 'adminteacherdetails';
+  static const String AdminAddDutyRouteName = 'adminaddduty';
+  static const String AddNoticeRouteName = 'addnotice';
+  static const String AddEventRouteName = 'addevent';
+  static const String NoticePageRouteName = 'noticepage';
+  static const String AddPaymentRouteName = 'addpayment';
+  static const String AddDonationRouteName = 'addDonation';
+ static const String PaymentPageRouteName = 'paymentpage';
 
 }

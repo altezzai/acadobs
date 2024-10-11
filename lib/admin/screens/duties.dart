@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:school_app/admin/screens/addDutyPage.dart';
+import 'package:go_router/go_router.dart';
+import 'package:school_app/teacher/routes/app_route_const.dart';
 
 class DutiesPage extends StatefulWidget {
   @override
@@ -34,10 +35,8 @@ class _DutiesPageState extends State<DutiesPage> {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => AddDutyPage()),
-                    );
+                   context.pushReplacementNamed(
+                        AppRouteConst.AdminAddDutyRouteName);
                   },
                   icon: Icon(Icons.add, color: Colors.white),
                   label: Text(

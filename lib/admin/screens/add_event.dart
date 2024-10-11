@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:go_router/go_router.dart';
+import 'package:school_app/teacher/routes/app_route_const.dart';
 
 class AddEventPage extends StatefulWidget {
   @override
@@ -25,7 +26,7 @@ class _AddEventPageState extends State<AddEventPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            context.pushReplacementNamed(AppRouteConst.NoticePageRouteName);
           },
         ),
       ),
@@ -39,7 +40,6 @@ class _AddEventPageState extends State<AddEventPage> {
                 'Event Details',
                 style: TextStyle(
                   fontSize: 16,
-                  
                 ),
               ),
               SizedBox(height: 20),

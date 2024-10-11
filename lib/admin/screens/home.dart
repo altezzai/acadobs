@@ -24,8 +24,8 @@ class _AdminHomePageState extends State<AdminHomePage> {
     DutiesPage(), // Duties page
     ReportPage(), // Reports page
     NoticeEventPage(), // Notice page
-    PaymentsPage(),
-    StudentsPage() // Student page
+    PaymentsPage(), //Payment Page
+    StudentsPage(), // Student page
   ];
 
   void _onItemTapped(int index) {
@@ -38,7 +38,6 @@ class _AdminHomePageState extends State<AdminHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -63,7 +62,6 @@ class _AdminHomePageState extends State<AdminHomePage> {
         ],
         automaticallyImplyLeading: false,
       ),
-      // pageview to switch between pages
       body: PageView(
         controller: _pageController,
         onPageChanged: (index) {
