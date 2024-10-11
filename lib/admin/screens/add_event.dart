@@ -26,7 +26,7 @@ class _AddEventPageState extends State<AddEventPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            context.pushReplacementNamed(AppRouteConst.NoticePageRouteName);
+            context.pushReplacementNamed(AppRouteConst.AdminHomeRouteName);
           },
         ),
       ),

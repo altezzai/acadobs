@@ -4,7 +4,6 @@ import 'package:school_app/admin/screens/duties.dart';
 import 'package:school_app/admin/screens/notice.dart';
 import 'package:school_app/admin/screens/payment.dart';
 import 'package:school_app/admin/screens/reports.dart';
-import 'package:school_app/admin/screens/studentpage.dart';
 import 'package:school_app/admin/widgets/button_navigation.dart';
 import 'package:school_app/teacher/routes/app_route_const.dart';
 
@@ -24,52 +23,34 @@ class _AdminHomePageState extends State<AdminHomePage> {
     DutiesPage(), // Duties page
     ReportPage(), // Reports page
     NoticeEventPage(), // Notice page
-    PaymentsPage(), //Payment Page
-    StudentsPage(), // Student page
+    PaymentsPage(), // Payment Page
   ];
 
   void _onItemTapped(int index) {
+    if (index != _selectedIndex) {
+      // Only update if the index changes
+      setState(() {
+        _selectedIndex = index; // Update the selected index
+        _pageController.jumpToPage(index); // Jump to the selected page
+      });
+    }
+  }
+
+  void _onPageChanged(int index) {
     setState(() {
-      _selectedIndex = index;
-      _pageController.jumpToPage(index);
+      _selectedIndex = index; // Update the selected index when the page changes
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Center(
-          child: Text(
-            _getAppBarTitle(_selectedIndex),
-            style: TextStyle(
-              fontSize: 24.0,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-          ),
-        ),
-        actions: [
-          Padding(
-            padding: EdgeInsets.all(10.0), // static padding
-            child: CircleAvatar(
-              radius: 20.0,
-              backgroundImage: AssetImage('assets/admin.png'),
-            ),
-          ),
-        ],
-        automaticallyImplyLeading: false,
-      ),
+      appBar: _buildAppBar(),
       body: PageView(
         controller: _pageController,
-        onPageChanged: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
+        onPageChanged: _onPageChanged,
         children: _pages,
+        physics: const NeverScrollableScrollPhysics(), // Disable manual swiping
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
         selectedIndex: _selectedIndex,
@@ -78,109 +59,135 @@ class _AdminHomePageState extends State<AdminHomePage> {
     );
   }
 
-  // method to get the AppBar title based on the selected index
+  AppBar _buildAppBar() {
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      title: Center(
+        child: Text(
+          _getAppBarTitle(_selectedIndex),
+          style: TextStyle(
+            fontSize: 24.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+      ),
+      actions: [
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: CircleAvatar(
+            radius: 20.0,
+            backgroundImage: AssetImage('assets/admin.png'),
+          ),
+        ),
+      ],
+      automaticallyImplyLeading: false,
+    );
+  }
+
   String _getAppBarTitle(int index) {
-    switch (index) {
-      case 0:
-        return 'Home';
-      case 1:
-        return 'Duties';
-      case 2:
-        return 'Reports';
-      case 3:
-        return 'Notice / Events';
-      case 4:
-        return 'Payments';
-      case 5:
-        return 'Students';
-      default:
-        return 'Home';
-    }
+    const titles = [
+      'Home',
+      'Duties',
+      'Reports',
+      'Notice / Events',
+      'Payments',
+    ];
+    return titles[index];
   }
 }
 
-// home content
+// Home content page
 class HomeContentPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(height: screenHeight * 0.01),
-          Text(
-            'Hi,',
-            style: TextStyle(
-              fontSize: screenWidth * 0.10,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-          ),
-          Text(
-            'Vincent',
-            style: TextStyle(
-              fontSize: screenWidth * 0.10,
-              fontWeight: FontWeight.bold,
-              color: Colors.grey[600],
-            ),
-          ),
+          _buildGreeting(screenWidth),
           SizedBox(height: screenHeight * 0.05),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Expanded(
-                child: OutlinedButton(
-                  onPressed: () {
-                    context.pushReplacementNamed(
-                        AppRouteConst.AdminstudentRouteName);
-                  },
-                  style: OutlinedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(
-                        vertical: screenHeight * 0.03), // responsive padding
-                    side: BorderSide(color: Colors.black),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: Text(
-                    'Student',
-                    style: TextStyle(
-                      fontSize: screenWidth * 0.05,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(width: screenWidth * 0.02),
-              Expanded(
-                child: OutlinedButton(
-                  onPressed: () {
-                    context.pushReplacementNamed(
-                        AppRouteConst.AdminteacherRouteName);
-                  },
-                  style: OutlinedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(
-                        vertical: screenHeight * 0.03), // responsive padding
-                    side: BorderSide(color: Colors.black),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: Text(
-                    'Teacher',
-                    style: TextStyle(
-                      fontSize: screenWidth * 0.05,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+          _buildActionButtons(screenWidth, screenHeight, context),
         ],
+      ),
+    );
+  }
+
+  Widget _buildGreeting(double screenWidth) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Hi,',
+          style: TextStyle(
+            fontSize: screenWidth * 0.10,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+        Text(
+          'Vincent',
+          style: TextStyle(
+            fontSize: screenWidth * 0.10,
+            fontWeight: FontWeight.bold,
+            color: Colors.grey[600],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildActionButtons(
+      double screenWidth, double screenHeight, BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        _buildOutlinedButton(
+          context,
+          'Student',
+          AppRouteConst.AdminstudentRouteName,
+          screenWidth,
+          screenHeight,
+        ),
+        SizedBox(width: screenWidth * 0.02),
+        _buildOutlinedButton(
+          context,
+          'Teacher',
+          AppRouteConst.AdminteacherRouteName,
+          screenWidth,
+          screenHeight,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildOutlinedButton(BuildContext context, String label,
+      String routeName, double screenWidth, double screenHeight) {
+    return Expanded(
+      child: OutlinedButton(
+        onPressed: () {
+          context.pushReplacementNamed(routeName);
+        },
+        style: OutlinedButton.styleFrom(
+          padding: EdgeInsets.symmetric(vertical: screenHeight * 0.03),
+          side: const BorderSide(color: Colors.black),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: screenWidth * 0.05,
+            color: Colors.black,
+          ),
+        ),
       ),
     );
   }

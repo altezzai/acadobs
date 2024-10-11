@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:school_app/admin/admin_navbar/screens/admin_nav.dart';
 import 'package:school_app/admin/screens/addAchivement.dart';
 import 'package:school_app/admin/screens/addDutyPage.dart';
 import 'package:school_app/admin/screens/add_donation.dart';
 import 'package:school_app/admin/screens/add_event.dart';
 import 'package:school_app/admin/screens/add_notice.dart';
 import 'package:school_app/admin/screens/add_payment.dart';
-import 'package:school_app/admin/screens/home.dart';
 import 'package:school_app/admin/screens/login.dart';
 import 'package:school_app/admin/screens/newstudent.dart';
 import 'package:school_app/admin/screens/notice.dart';
@@ -133,7 +133,7 @@ class Approuter {
         name: AppRouteConst.AdminHomeRouteName,
         path: '/adminhome',
         pageBuilder: (context, state) {
-          return MaterialPage(child: AdminHomePage());
+          return MaterialPage(child: AdminNav());
         },
       ),
       GoRoute(

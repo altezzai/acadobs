@@ -5,7 +5,7 @@ class ReportPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       // backgroundColor: Colors.white,
-      
+
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -31,7 +31,7 @@ class ReportPage extends StatelessWidget {
             ReportCard(
               title: 'Teacher Report',
               icon: Icons.person_rounded,
-              color: Colors.brown,
+              color: Colors.red,
               onTap: () {
                 // Navigate to Teacher Report page
               },

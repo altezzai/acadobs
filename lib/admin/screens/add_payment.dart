@@ -55,7 +55,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
               icon: const Icon(Icons.arrow_back, color: Colors.black),
               onPressed: () {
                 context.pushReplacementNamed(
-                        AppRouteConst.PaymentPageRouteName);
+                        AppRouteConst.AdminHomeRouteName);
               },
             ),
           ),

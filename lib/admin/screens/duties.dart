@@ -35,7 +35,7 @@ class _DutiesPageState extends State<DutiesPage> {
                     ),
                   ),
                   onPressed: () {
-                   context.pushReplacementNamed(
+                    context.pushReplacementNamed(
                         AppRouteConst.AdminAddDutyRouteName);
                   },
                   icon: Icon(Icons.add, color: Colors.white),
@@ -74,14 +74,19 @@ class _DutiesPageState extends State<DutiesPage> {
               // Duty Cards (Yesterday)
               _buildDutyCard(
                   context, "PTA meeting class 09", "15-06-24", "09:00 am"),
+              SizedBox(height: screenHeight * 0.01),
               _buildDutyCard(
                   context, "PTA meeting class 02", "15-06-24", "09:00 am"),
+              SizedBox(height: screenHeight * 0.01),
               _buildDutyCard(
                   context, "PTA meeting class VII", "15-06-24", "09:00 am"),
+              SizedBox(height: screenHeight * 0.01),
               _buildDutyCard(
                   context, "PTA meeting class XII", "15-06-24", "09:00 am"),
+              SizedBox(height: screenHeight * 0.01),
               _buildDutyCard(
                   context, "PTA meeting class XII", "15-06-24", "09:00 am"),
+              SizedBox(height: screenHeight * 0.01),
             ],
           ),
         ),

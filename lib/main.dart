@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/admin/admin_navbar/controller/admin_nav_provider.dart';
 import 'package:school_app/controller/dropdown_controller.dart';
 import 'package:school_app/sample/controller/student_controller.dart';
 import 'package:school_app/teacher/attendance/controller/attendance_controller.dart';
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
               ChangeNotifierProvider(create: (_) => DropdownProvider()),
               ChangeNotifierProvider(create: (_) => AttendanceController()),
               ChangeNotifierProvider(create: (_) => SampleController()),
+              ChangeNotifierProvider(create: (_) => AdminNavProvider()),
             ],
             child: MaterialApp.router(
               themeMode: ThemeMode.light,
