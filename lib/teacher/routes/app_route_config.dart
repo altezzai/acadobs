@@ -16,7 +16,6 @@ import 'package:school_app/admin/screens/studentdetails.dart';
 import 'package:school_app/admin/screens/studentpage.dart';
 import 'package:school_app/admin/screens/teacherdetails.dart';
 import 'package:school_app/admin/screens/teachers_page.dart';
-import 'package:school_app/sample/screens/studentsample.dart';
 import 'package:school_app/teacher/attendance/screens/take_attendance.dart';
 import 'package:school_app/teacher/duties/duty_detail.dart';
 import 'package:school_app/teacher/homework/screens/work.dart';
