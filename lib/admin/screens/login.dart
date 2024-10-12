@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/admin/widgets/custom_button.dart';
 import 'package:school_app/admin/widgets/custom_textfield.dart';
+import 'package:school_app/base/navbar/screen/bottom_nav.dart';
 import 'package:school_app/teacher/routes/app_route_const.dart';
 // import 'package:school_app/teacher/home/homescreen.dart';
 
@@ -17,9 +18,11 @@ class _LoginPageState extends State<LoginPage> {
   // Function to handle login action
   void _login(BuildContext context) {
     if (_username == 'ajay' && _password == '1234') {
+      // context.pushReplacementNamed(AppRouteConst.bottomNavRouteName, extra: UserType.admin);
       context.pushReplacementNamed(AppRouteConst.AdminHomeRouteName);
     } else if (_username == 'soorya' && _password == '1234') {
       context.pushReplacementNamed(AppRouteConst.homeRouteName);
+      // context.pushReplacementNamed(AppRouteConst.bottomNavRouteName, extra: UserType.teacher);
     } else {
       // Show an error message if the login credentials are incorrect
       ScaffoldMessenger.of(context).showSnackBar(
