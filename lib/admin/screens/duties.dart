@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:school_app/admin/screens/addDutyPage.dart';
+import 'package:go_router/go_router.dart';
+import 'package:school_app/teacher/routes/app_route_const.dart';
 
 class DutiesPage extends StatefulWidget {
   @override
@@ -34,10 +35,8 @@ class _DutiesPageState extends State<DutiesPage> {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => AddDutyPage()),
-                    );
+                    context.pushReplacementNamed(
+                        AppRouteConst.AdminAddDutyRouteName);
                   },
                   icon: Icon(Icons.add, color: Colors.white),
                   label: Text(
@@ -75,14 +74,19 @@ class _DutiesPageState extends State<DutiesPage> {
               // Duty Cards (Yesterday)
               _buildDutyCard(
                   context, "PTA meeting class 09", "15-06-24", "09:00 am"),
+              SizedBox(height: screenHeight * 0.01),
               _buildDutyCard(
                   context, "PTA meeting class 02", "15-06-24", "09:00 am"),
+              SizedBox(height: screenHeight * 0.01),
               _buildDutyCard(
                   context, "PTA meeting class VII", "15-06-24", "09:00 am"),
+              SizedBox(height: screenHeight * 0.01),
               _buildDutyCard(
                   context, "PTA meeting class XII", "15-06-24", "09:00 am"),
+              SizedBox(height: screenHeight * 0.01),
               _buildDutyCard(
                   context, "PTA meeting class XII", "15-06-24", "09:00 am"),
+              SizedBox(height: screenHeight * 0.01),
             ],
           ),
         ),
@@ -119,14 +123,14 @@ class _DutiesPageState extends State<DutiesPage> {
                   Text(
                     title,
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.normal,
                       fontSize: MediaQuery.of(context).size.width * 0.04,
                     ),
                   ),
                   SizedBox(height: 4),
                   Text(
                     date,
-                    style: TextStyle(color: Colors.grey),
+                    style: TextStyle(color: Colors.grey, fontSize: 13),
                   ),
                 ],
               ),
@@ -135,7 +139,7 @@ class _DutiesPageState extends State<DutiesPage> {
           Text(
             time,
             style: TextStyle(
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.normal,
               fontSize: MediaQuery.of(context).size.width * 0.04,
             ),
           ),

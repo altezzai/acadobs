@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart'; // imported for date formatting
 import 'package:school_app/admin/widgets/custom_button.dart';
 import 'package:school_app/admin/widgets/custom_textfield.dart';
+import 'package:school_app/teacher/routes/app_route_const.dart';
 
 class AddDutyPage extends StatefulWidget {
   @override
@@ -57,7 +59,7 @@ class _AddDutyPageState extends State<AddDutyPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Navigator.pop(context);
+            context.pushReplacementNamed(AppRouteConst.AdminHomeRouteName);
           },
         ),
         centerTitle: true,

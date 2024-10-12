@@ -4,8 +4,6 @@ class ReportPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.white,
-      
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -31,7 +29,7 @@ class ReportPage extends StatelessWidget {
             ReportCard(
               title: 'Teacher Report',
               icon: Icons.person_rounded,
-              color: Colors.brown,
+              color: Colors.red,
               onTap: () {
                 // Navigate to Teacher Report page
               },
@@ -95,8 +93,8 @@ class ReportCard extends StatelessWidget {
               child: Text(
                 title,
                 style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 16, // Reduced font size from 18 to 16
+                  fontWeight: FontWeight.normal,
                   color: Colors.black,
                 ),
               ),

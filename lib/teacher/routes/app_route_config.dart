@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:school_app/admin/admin_navbar/screens/admin_nav.dart';
 import 'package:school_app/admin/screens/addAchivement.dart';
-import 'package:school_app/admin/screens/home.dart';
+import 'package:school_app/admin/screens/addDutyPage.dart';
+import 'package:school_app/admin/screens/add_donation.dart';
+import 'package:school_app/admin/screens/add_event.dart';
+import 'package:school_app/admin/screens/add_notice.dart';
+import 'package:school_app/admin/screens/add_payment.dart';
 import 'package:school_app/admin/screens/login.dart';
 import 'package:school_app/admin/screens/newstudent.dart';
+import 'package:school_app/admin/screens/notice.dart';
 import 'package:school_app/admin/screens/payment.dart';
 import 'package:school_app/admin/screens/splashscreen.dart';
 import 'package:school_app/admin/screens/studentdetails.dart';
 import 'package:school_app/admin/screens/studentpage.dart';
 import 'package:school_app/admin/screens/teacherdetails.dart';
 import 'package:school_app/admin/screens/teachers_page.dart';
+import 'package:school_app/sample/controller/student_controller.dart';
+import 'package:school_app/sample/screens/addStudentData.dart';
 import 'package:school_app/sample/screens/studentsample.dart';
 import 'package:school_app/teacher/attendance/screens/take_attendance.dart';
 import 'package:school_app/teacher/duties/duty_detail.dart';
@@ -30,7 +38,7 @@ class Approuter {
         name: AppRouteConst.splashRouteName,
         path: '/',
         pageBuilder: (context, state) {
-          return MaterialPage(child: SplashScreen());
+          return MaterialPage(child: Studentsample());
         },
       ),
       GoRoute(
@@ -128,7 +136,7 @@ class Approuter {
         name: AppRouteConst.AdminHomeRouteName,
         path: '/adminhome',
         pageBuilder: (context, state) {
-          return MaterialPage(child: AdminHomePage());
+          return MaterialPage(child: AdminNav());
         },
       ),
       GoRoute(
@@ -185,6 +193,55 @@ class Approuter {
               image: teacher['image'],
             ),
           );
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.AdminAddDutyRouteName,
+        path: '/adminaddduty',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: AddDutyPage());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.AddNoticeRouteName,
+        path: '/addnotice',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: AddNoticePage());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.AddEventRouteName,
+        path: '/addevent',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: AddEventPage());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.NoticePageRouteName,
+        path: '/noticepage',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: NoticeEventPage());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.AddPaymentRouteName,
+        path: '/addpayment',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: AddPaymentPage());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.AddDonationRouteName,
+        path: '/addDonation',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: AddDonationPage());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.PaymentPageRouteName,
+        path: '/paymentpage',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: PaymentsPage());
         },
       ),
     ],

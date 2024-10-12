@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:school_app/admin/widgets/custom_dropdown.dart';
 import 'package:school_app/admin/widgets/custom_textfield.dart';
+import 'package:school_app/teacher/routes/app_route_const.dart';
 
 class AddPaymentPage extends StatefulWidget {
   const AddPaymentPage({super.key});
@@ -52,7 +54,8 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
             child: IconButton(
               icon: const Icon(Icons.arrow_back, color: Colors.black),
               onPressed: () {
-                Navigator.pop(context);
+                context.pushReplacementNamed(
+                        AppRouteConst.AdminHomeRouteName);
               },
             ),
           ),

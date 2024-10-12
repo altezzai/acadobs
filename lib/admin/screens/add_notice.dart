@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:school_app/teacher/routes/app_route_const.dart';
 
 
 class AddNoticePage extends StatefulWidget {
@@ -24,7 +26,8 @@ class _AddNoticePageState extends State<AddNoticePage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            context.pushReplacementNamed(
+                        AppRouteConst.AdminHomeRouteName);
           },
         ),
       ),
