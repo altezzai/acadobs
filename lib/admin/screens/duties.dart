@@ -123,14 +123,14 @@ class _DutiesPageState extends State<DutiesPage> {
                   Text(
                     title,
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.normal,
                       fontSize: MediaQuery.of(context).size.width * 0.04,
                     ),
                   ),
                   SizedBox(height: 4),
                   Text(
                     date,
-                    style: TextStyle(color: Colors.grey),
+                    style: TextStyle(color: Colors.grey, fontSize: 13),
                   ),
                 ],
               ),
@@ -139,7 +139,7 @@ class _DutiesPageState extends State<DutiesPage> {
           Text(
             time,
             style: TextStyle(
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.normal,
               fontSize: MediaQuery.of(context).size.width * 0.04,
             ),
           ),

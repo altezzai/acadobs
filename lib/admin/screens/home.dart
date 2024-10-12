@@ -132,7 +132,7 @@ class HomeContentPage extends StatelessWidget {
           ),
         ),
         Text(
-          'Vincent',
+          'Ajay',
           style: TextStyle(
             fontSize: screenWidth * 0.10,
             fontWeight: FontWeight.bold,

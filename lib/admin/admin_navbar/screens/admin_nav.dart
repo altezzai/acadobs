@@ -51,7 +51,7 @@ class AdminNav extends StatelessWidget {
       'Home',
       'Duties',
       'Reports',
-      'Notice / Events',
+      'Notice and Events',
       'Payments',
     ];
     return titles[index];
@@ -78,7 +78,7 @@ class AdminNav extends StatelessWidget {
         },
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.home_outlined),
             label: 'Home',
           ),
           BottomNavigationBarItem(

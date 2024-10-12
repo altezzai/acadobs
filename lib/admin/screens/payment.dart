@@ -117,7 +117,9 @@ class _PaymentsPageState extends State<PaymentsPage>
       padding: const EdgeInsets.all(8.0),
       child: Text(
         date,
-        style: TextStyle(fontWeight: FontWeight.normal),
+        style: TextStyle(
+          fontWeight: FontWeight.normal,
+        ),
       ),
     );
   }
@@ -130,15 +132,15 @@ class _PaymentsPageState extends State<PaymentsPage>
       ),
       title: Text(
         amount,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
       ),
       subtitle: Text(
         name,
-        style: TextStyle(fontSize: 20),
+        style: TextStyle(fontSize: 16),
       ),
       trailing: Text(
         time,
-        style: TextStyle(fontSize: 15),
+        style: TextStyle(fontSize: 13),
       ),
     );
   }

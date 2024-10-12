@@ -86,6 +86,7 @@ class _NoticeEventPageState extends State<NoticeEventPage>
     return ListView(
       padding: EdgeInsets.all(8.0), // Add padding to the ListView
       children: [
+        _buildDivider('Today'),
         _buildNoticeItem('PTA meeting class XII', '15 - 06 - 24', '09:00 am'),
         _buildDivider('Yesterday'),
         _buildNoticeItem('PTA meeting class 09', '15 - 06 - 24', '09:00 am'),
@@ -101,6 +102,7 @@ class _NoticeEventPageState extends State<NoticeEventPage>
     return ListView(
       padding: EdgeInsets.all(8.0), // Add padding to the ListView
       children: [
+        _buildDivider('Today'),
         _buildEventItem(
             'Sports day',
             'National sports day will be conducted in our school...',
@@ -141,12 +143,13 @@ class _NoticeEventPageState extends State<NoticeEventPage>
         ),
         title: Text(
           title,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
         ),
-        subtitle: Text(date, style: TextStyle(color: Colors.grey)),
+        subtitle:
+            Text(date, style: TextStyle(color: Colors.grey, fontSize: 16)),
         trailing: Text(
           time,
-          style: TextStyle(fontWeight: FontWeight.w600),
+          style: TextStyle(fontWeight: FontWeight.normal, fontSize: 13),
         ),
       ),
     );
@@ -168,11 +171,14 @@ class _NoticeEventPageState extends State<NoticeEventPage>
               children: [
                 Text(title,
                     style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 SizedBox(height: 8),
-                Text(description),
+                Text(
+                  description,
+                  style: TextStyle(fontSize: 16),
+                ),
                 SizedBox(height: 8),
-                Text(date, style: TextStyle(color: Colors.grey)),
+                Text(date, style: TextStyle(color: Colors.grey, fontSize: 16)),
               ],
             ),
           ),
