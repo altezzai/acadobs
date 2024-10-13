@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:school_app/main.dart';
-import 'package:school_app/teacher/routes/app_route_config.dart';  // Import your Approuter here
+import 'package:school_app/base/routes/app_route_config.dart';  // Import your Approuter here
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
