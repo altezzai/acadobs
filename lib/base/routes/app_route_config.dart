@@ -11,8 +11,8 @@ import 'package:school_app/features/admin/student/screens/newstudent.dart';
 import 'package:school_app/core/authentication/splashscreen.dart';
 import 'package:school_app/features/admin/student/screens/studentdetails.dart';
 import 'package:school_app/features/admin/student/screens/studentpage.dart';
-import 'package:school_app/features/admin/teacher_section/screens/teacherdetails.dart';
-import 'package:school_app/features/admin/teacher_section/screens/teachers_page.dart';
+import 'package:school_app/features/admin/teacher_section/screens/screens/teacherdetails.dart';
+import 'package:school_app/features/admin/teacher_section/screens/screens/teachers_page.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/teacher/attendance/screens/take_attendance.dart';
 import 'package:school_app/features/teacher/duties/duty_detail.dart';
@@ -42,12 +42,15 @@ class Approuter {
           return MaterialPage(child: LoginPage());
         },
       ),
-       GoRoute(
+      GoRoute(
         name: AppRouteConst.bottomNavRouteName,
         path: '/bottomNav',
         pageBuilder: (context, state) {
           final userType = state.extra as UserType;
-          return MaterialPage(child: BottomNavScreen(userType: userType,));
+          return MaterialPage(
+              child: BottomNavScreen(
+            userType: userType,
+          ));
         },
       ),
       GoRoute(
