@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart'; // imported for date formatting
+import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
-import 'package:school_app/core/navbar/screen/bottom_nav.dart';
-import 'package:school_app/features/teacher/widgets/custom_appbar.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
 
 class AddDutyPage extends StatefulWidget {
   @override
@@ -80,9 +80,14 @@ class _AddDutyPageState extends State<AddDutyPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomAppbar(title: "Add Duty",isProfileIcon: false,onTap: () {
-            context.pushReplacementNamed(AppRouteConst.bottomNavRouteName, extra: UserType.admin);
-          },),
+              CustomAppbar(
+                title: "Add Duty",
+                isProfileIcon: false,
+                onTap: () {
+                  context.pushReplacementNamed(AppRouteConst.bottomNavRouteName,
+                      extra: UserType.admin);
+                },
+              ),
               // Title Input
               CustomTextfield(
                 hintText: 'Title',

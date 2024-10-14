@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:school_app/features/teacher/widgets/custom_appbar.dart';
-import 'package:school_app/features/teacher/homework/widgets/work_container.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/constants.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/core/shared_widgets/custom_appbar.dart';
+import 'package:school_app/features/teacher/homework/widgets/work_container.dart';
 
 class DutiesScreen extends StatelessWidget {
   const DutiesScreen({super.key});

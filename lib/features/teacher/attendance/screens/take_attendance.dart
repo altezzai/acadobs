@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/utils/constants.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/teacher/attendance/controller/attendance_controller.dart';
 import 'package:school_app/features/teacher/attendance/widgets/attendance_tile.dart';
-import 'package:school_app/features/teacher/widgets/custom_appbar.dart';
 
 class TakeAttendance extends StatelessWidget {
   TakeAttendance({

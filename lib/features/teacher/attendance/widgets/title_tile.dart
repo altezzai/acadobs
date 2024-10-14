@@ -5,7 +5,11 @@ class TitleTile extends StatelessWidget {
   final String title;
   final IconData icon;
   final VoidCallback onTap;
-  const TitleTile({super.key, required this.title, required this.icon, required this.onTap});
+  const TitleTile(
+      {super.key,
+      required this.title,
+      required this.icon,
+      required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +22,7 @@ class TitleTile extends StatelessWidget {
             child: Row(
               children: [
                 CircleAvatar(
+                  backgroundColor: Color(0xFFD9D9D9),
                   radius: 25,
                   child: Icon(
                     icon,

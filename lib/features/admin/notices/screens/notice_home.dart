@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/core/shared_widgets/custom_appbar.dart';
+import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/features/admin/notices/widgets/event_item.dart';
 import 'package:school_app/features/admin/notices/widgets/notice_item.dart';
-import 'package:school_app/core/shared_widgets/custom_button.dart';
-import 'package:school_app/features/teacher/widgets/custom_appbar.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
 
 class NoticeHomeScreen extends StatefulWidget {
   @override
@@ -49,8 +49,7 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
                   child: CustomButton(
                     text: 'Add Notice',
                     onPressed: () {
-                      context.pushNamed(
-                          AppRouteConst.AddNoticeRouteName);
+                      context.pushNamed(AppRouteConst.AddNoticeRouteName);
                     },
                   ),
                 ),
@@ -61,8 +60,7 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
                   child: CustomButton(
                     text: 'Add Events',
                     onPressed: () {
-                      context.pushNamed(
-                          AppRouteConst.AddEventRouteName);
+                      context.pushNamed(AppRouteConst.AddEventRouteName);
                     },
                   ),
                 ),

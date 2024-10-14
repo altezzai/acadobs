@@ -42,11 +42,16 @@ class CustomDatePicker extends StatelessWidget {
     return TextField(
       controller: dateController, // Use the external controller
       readOnly: true,
-      style: TextStyle(fontSize: 14), // Smaller font size for the input text
+      style: TextStyle(
+          fontSize: 14,
+          fontWeight:
+              FontWeight.normal), // Smaller font size for the input text
       decoration: InputDecoration(
         contentPadding: EdgeInsets.only(left: 18),
         labelText: label,
-        labelStyle: TextStyle(fontSize: 14), // Adjust label font size
+        labelStyle: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.normal), // Adjust label font size
         suffixIcon: IconButton(
           icon: Icon(
             Icons.calendar_today,

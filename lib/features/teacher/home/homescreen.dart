@@ -2,14 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/responsive.dart';
-import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_name_container.dart';
 
 class TeacherScreen extends StatelessWidget {
   TeacherScreen({super.key});
-
-  final TextEditingController _startDateController = TextEditingController();
-  final TextEditingController _endDateController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -88,39 +84,6 @@ class TeacherScreen extends StatelessWidget {
                     },
                   ),
                 ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomDatePicker(
-                      label: "Date of Joining",
-                      dateController:
-                          _startDateController, // Unique controller for start date
-                      onDateSelected: (selectedDate) {
-                        print("Start Date selected: $selectedDate");
-                      },
-                    ),
-                  ),
-                  Expanded(
-                    child: CustomDatePicker(
-                      label: "Date of Joining",
-                      dateController:
-                          _startDateController, // Unique controller for start date
-                      onDateSelected: (selectedDate) {
-                        print("Start Date selected: $selectedDate");
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              CustomDatePicker(
-                label: "Date of Birth",
-                dateController:
-                    _endDateController, // Unique controller for end date
-                onDateSelected: (selectedDate) {
-                  print("End Date selected: $selectedDate");
-                },
               ),
             ],
           ),

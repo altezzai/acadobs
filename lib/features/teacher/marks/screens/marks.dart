@@ -3,11 +3,11 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/teacher/controller/dropdown_controller.dart';
 import 'package:school_app/features/teacher/data/dropdown_data.dart';
-import 'package:school_app/features/teacher/widgets/custom_appbar.dart';
 import 'package:school_app/features/teacher/widgets/custom_dropdown.dart';
 
 // ignore: must_be_immutable

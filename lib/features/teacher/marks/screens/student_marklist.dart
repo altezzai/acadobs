@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:school_app/base/utils/constants.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/features/teacher/marks/widgets/mark_tile.dart';
-import 'package:school_app/features/teacher/widgets/custom_appbar.dart';
 
 // ignore: must_be_immutable
 class StudentMarklist extends StatelessWidget {

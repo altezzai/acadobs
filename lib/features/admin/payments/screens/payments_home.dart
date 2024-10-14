@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:school_app/features/admin/payments/widgets/payment_item.dart';
-import 'package:school_app/core/shared_widgets/custom_button.dart';
-import 'package:school_app/features/teacher/widgets/custom_appbar.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/core/shared_widgets/custom_appbar.dart';
+import 'package:school_app/core/shared_widgets/custom_button.dart';
+import 'package:school_app/features/admin/payments/widgets/payment_item.dart';
 
 class PaymentsHomeScreen extends StatefulWidget {
   @override
@@ -37,8 +37,7 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
                   child: CustomButton(
                     text: 'Add Payment',
                     onPressed: () {
-                      context.pushNamed(
-                          AppRouteConst.AddPaymentRouteName);
+                      context.pushNamed(AppRouteConst.AddPaymentRouteName);
                     },
                   ),
                 ),
@@ -47,8 +46,7 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
                   child: CustomButton(
                     text: 'Add Donation',
                     onPressed: () {
-                      context.pushNamed(
-                          AppRouteConst.AddDonationRouteName);
+                      context.pushNamed(AppRouteConst.AddDonationRouteName);
                     },
                   ),
                 ),
@@ -80,13 +78,19 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
     return ListView(
       children: [
         _buildDateHeader('Today'),
-        PaymentItem(amount: '₹2500', name: 'Muhammed Rafsal N', time: '09:00 am'),
+        PaymentItem(
+            amount: '₹2500', name: 'Muhammed Rafsal N', time: '09:00 am'),
         _buildDateHeader('Yesterday'),
-        PaymentItem(amount: '₹2500', name: 'Muhammed Rafsal N', time: '09:00 am'),
-        PaymentItem(amount: '₹2500', name: 'Muhammed Rafsal N', time: '09:00 am'),
-        PaymentItem(amount: '₹2500', name: 'Muhammed Rafsal N', time: '09:00 am'),
-        PaymentItem(amount: '₹2500', name: 'Muhammed Rafsal N', time: '08:00 am'),
-        PaymentItem(amount: '₹2500', name: 'Muhammed Rafsal N', time: '09:00 am'),
+        PaymentItem(
+            amount: '₹2500', name: 'Muhammed Rafsal N', time: '09:00 am'),
+        PaymentItem(
+            amount: '₹2500', name: 'Muhammed Rafsal N', time: '09:00 am'),
+        PaymentItem(
+            amount: '₹2500', name: 'Muhammed Rafsal N', time: '09:00 am'),
+        PaymentItem(
+            amount: '₹2500', name: 'Muhammed Rafsal N', time: '08:00 am'),
+        PaymentItem(
+            amount: '₹2500', name: 'Muhammed Rafsal N', time: '09:00 am'),
       ],
     );
   }
@@ -95,13 +99,19 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
     return ListView(
       children: [
         _buildDateHeader('Today'),
-        PaymentItem(amount: '₹250', name: 'Muhammed Rafsal N', time: '09:00 am'),
+        PaymentItem(
+            amount: '₹250', name: 'Muhammed Rafsal N', time: '09:00 am'),
         _buildDateHeader('Yesterday'),
-        PaymentItem(amount: '₹1500', name: 'Muhammed Rafsal N', time: '09:00 am'),
-        PaymentItem(amount: '₹700', name: 'Muhammed Rafsal N', time: '09:00 am'),
-        PaymentItem(amount: '₹300', name: 'Muhammed Rafsal N', time: '09:00 am'),
-        PaymentItem(amount: '₹2500', name: 'Muhammed Rafsal N', time: '08:00 am'),
-        PaymentItem(amount: '₹400', name: 'Muhammed Rafsal N', time: '09:00 am'),
+        PaymentItem(
+            amount: '₹1500', name: 'Muhammed Rafsal N', time: '09:00 am'),
+        PaymentItem(
+            amount: '₹700', name: 'Muhammed Rafsal N', time: '09:00 am'),
+        PaymentItem(
+            amount: '₹300', name: 'Muhammed Rafsal N', time: '09:00 am'),
+        PaymentItem(
+            amount: '₹2500', name: 'Muhammed Rafsal N', time: '08:00 am'),
+        PaymentItem(
+            amount: '₹400', name: 'Muhammed Rafsal N', time: '09:00 am'),
       ],
     );
   }
