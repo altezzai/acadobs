@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
@@ -13,10 +14,25 @@ class _AddStudentPageState extends State<AddStudentPage> {
   final _formKey = GlobalKey<FormState>(); // Key for form validation
   String? selectedClass;
   String? selectedDivision;
+  String? selectedFile;
 
   // Dummy data for dropdowns
   List<String> classList = ['V', 'VI', 'VII', 'VIII', 'IX', 'X'];
   List<String> divisionList = ['A', 'B', 'C'];
+
+  Future<void> pickFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.any,
+    );
+
+    if (result != null) {
+      setState(() {
+        selectedFile = result.files.single.name;
+      });
+    } else {
+      print('No file selected');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -336,41 +352,123 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 _sectionTitle('Documents'),
                 SizedBox(height: 10),
 
-                CustomTextfield(
-                  hintText: 'Student Photo',
-                  iconData: Icon(Icons.attachment_rounded),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Mother\'s Phone Number is required';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 20),
-
-                CustomTextfield(
-                  hintText: 'father Or Mother Photo',
-                  iconData: Icon(Icons.attachment_rounded),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Mother\'s Phone Number is required';
-                    }
-                    return null;
-                  },
-                ),
-
-                SizedBox(height: 20),
-
-                CustomTextfield(
-                  hintText: 'Aadhar Photo',
-                  iconData: Icon(Icons.attachment_rounded),
+                GestureDetector(
+                  onTap: pickFile,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(25.0),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 12.0),
+                    child: Row(
+                      children: [
+                        Icon(Icons.attachment_rounded, color: Colors.black),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            selectedFile ?? 'Student Photo',
+                            style: TextStyle(
+                                color: selectedFile != null
+                                    ? Colors.black
+                                    : Colors.grey,
+                                fontSize: 14),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
 
                 SizedBox(height: 20),
 
-                CustomTextfield(
-                  hintText: 'Previous School Transfer Certificate',
-                  iconData: Icon(Icons.attachment_rounded),
+                GestureDetector(
+                  onTap: pickFile,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(25.0),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 12.0),
+                    child: Row(
+                      children: [
+                        Icon(Icons.attachment_rounded, color: Colors.black),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            selectedFile ?? 'father Or Mother Photo',
+                            style: TextStyle(
+                                color: selectedFile != null
+                                    ? Colors.black
+                                    : Colors.grey,
+                                fontSize: 14),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 20),
+
+                GestureDetector(
+                  onTap: pickFile,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(25.0),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 12.0),
+                    child: Row(
+                      children: [
+                        Icon(Icons.attachment_rounded, color: Colors.black),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            selectedFile ?? 'Aadhar Photo',
+                            style: TextStyle(
+                                color: selectedFile != null
+                                    ? Colors.black
+                                    : Colors.grey,
+                                fontSize: 14),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 20),
+
+                GestureDetector(
+                  onTap: pickFile,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(25.0),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 12.0),
+                    child: Row(
+                      children: [
+                        Icon(Icons.attachment_rounded, color: Colors.black),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            selectedFile ??
+                                'Previous School Transfer Certificate',
+                            style: TextStyle(
+                                color: selectedFile != null
+                                    ? Colors.black
+                                    : Colors.grey,
+                                fontSize: 14),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
 
                 SizedBox(height: 40),

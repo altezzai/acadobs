@@ -5,6 +5,7 @@ import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:file_picker/file_picker.dart';
 import '../../../../core/shared_widgets/custom_calendar.dart';
+import '../../../../core/shared_widgets/custom_datepicker.dart';
 
 class AddAchievementPage extends StatefulWidget {
   @override
@@ -18,6 +19,7 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
   String? studentName;
   String? selectedLevel;
   String? certificatePath;
+  final TextEditingController _dateController = TextEditingController();
 
   final List<String> classes = ['V', 'VI', 'VII', 'VIII', 'IX', 'X'];
   final List<String> divisions = ['A', 'B', 'C'];
@@ -146,15 +148,12 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
             SizedBox(height: 16),
 
             // Date field styled similarly to the other text fields
-            GestureDetector(
-              onTap: _showCalendar, // Show calendar on tap
-              child: CustomTextfield(
-                hintText: selectedDate != null
-                    ? "${selectedDate!.toLocal()}".split(' ')[0]
-                    : 'Select Date',
-                iconData: Icon(Icons.calendar_today),
-                // Disable editing
-              ),
+            CustomDatePicker(
+              label: "Date",
+              dateController: _dateController, // Unique controller for end date
+              onDateSelected: (selectedDate) {
+                print("End Date selected: $selectedDate");
+              },
             ),
             SizedBox(height: 16),
 

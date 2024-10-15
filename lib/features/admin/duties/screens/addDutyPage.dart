@@ -7,12 +7,17 @@ import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 
+import '../../../../core/shared_widgets/custom_datepicker.dart';
+
 class AddDutyPage extends StatefulWidget {
   @override
   _AddDutyPageState createState() => _AddDutyPageState();
 }
 
 class _AddDutyPageState extends State<AddDutyPage> {
+  // TextEditingController to manage date input
+  final TextEditingController _dateController = TextEditingController();
+
   List<String> staffList = [
     'Kaiya Mango',
     'Lindsey Calzoni',
@@ -55,25 +60,6 @@ class _AddDutyPageState extends State<AddDutyPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      // appBar: AppBar(
-      //   backgroundColor: Colors.transparent,
-      //   elevation: 0,
-      //   leading: IconButton(
-      //     icon: Icon(Icons.arrow_back, color: Colors.black),
-      //     onPressed: () {
-      //       context.pushReplacementNamed(AppRouteConst.AdminHomeRouteName);
-      //     },
-      //   ),
-      //   centerTitle: true,
-      //   title: Text(
-      //     'Add Duty',
-      //     style: TextStyle(
-      //       color: Colors.black,
-      //       fontWeight: FontWeight.bold,
-      //       fontSize: 24,
-      //     ),
-      //   ),
-      // ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: SingleChildScrollView(
@@ -104,39 +90,14 @@ class _AddDutyPageState extends State<AddDutyPage> {
                 hintStyle: TextStyle(fontSize: 14.0),
               ),
               SizedBox(height: 20),
-
-              // Date Inputs (Start and End Date) with DatePicker
-              Row(
-                children: [
-                  // Start Date Field
-                  Expanded(
-                    child: CustomTextfield(
-                      hintText: formatDate(selectedStartDate),
-                      iconData: Icon(Icons.calendar_today),
-                      hintStyle: TextStyle(fontSize: 14.0),
-                      textStyle:
-                          TextStyle(fontSize: 14.0, color: Colors.black87),
-                      isPasswordField: false,
-                      keyBoardtype: TextInputType.none,
-                      onTap: () => _selectDate(context, isStartDate: true),
-                    ),
-                  ),
-                  SizedBox(width: 10),
-
-                  // End Date Field
-                  Expanded(
-                    child: CustomTextfield(
-                      hintText: formatDate(selectedEndDate),
-                      iconData: Icon(Icons.calendar_today),
-                      hintStyle: TextStyle(fontSize: 14.0),
-                      textStyle:
-                          TextStyle(fontSize: 14.0, color: Colors.black87),
-                      isPasswordField: false,
-                      keyBoardtype: TextInputType.none,
-                      onTap: () => _selectDate(context, isStartDate: false),
-                    ),
-                  ),
-                ],
+              // End Date Field
+              CustomDatePicker(
+                label: "Date",
+                dateController:
+                    _dateController, // Unique controller for end date
+                onDateSelected: (selectedDate) {
+                  print("End Date selected: $selectedDate");
+                },
               ),
               SizedBox(height: 20),
 
@@ -158,8 +119,7 @@ class _AddDutyPageState extends State<AddDutyPage> {
                       value: staff,
                       child: Text(
                         staff,
-                        style: TextStyle(
-                            fontSize: 14.0), // Text inside dropdown items
+                        style: TextStyle(fontSize: 14.0),
                       ),
                     );
                   }).toList(),
@@ -170,18 +130,6 @@ class _AddDutyPageState extends State<AddDutyPage> {
                           !selectedStaffs.contains(newValue)) {
                         selectedStaffs.add(newValue);
                       }
-                    });
-                  },
-                  onTap: () {
-                    // Optionally clear the dropdown selection when it's opened
-                    // setState(() {
-                    //   selectedStaff = null;
-                    // });
-                  },
-                  onSaved: (value) {
-                    // Optionally clear the dropdown selection when the dropdown is closed
-                    setState(() {
-                      selectedStaff = null;
                     });
                   },
                 ),
