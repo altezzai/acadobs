@@ -42,12 +42,15 @@ class Approuter {
           return MaterialPage(child: LoginPage());
         },
       ),
-       GoRoute(
+      GoRoute(
         name: AppRouteConst.bottomNavRouteName,
         path: '/bottomNav',
         pageBuilder: (context, state) {
           final userType = state.extra as UserType;
-          return MaterialPage(child: BottomNavScreen(userType: userType,));
+          return MaterialPage(
+              child: BottomNavScreen(
+            userType: userType,
+          ));
         },
       ),
       GoRoute(
