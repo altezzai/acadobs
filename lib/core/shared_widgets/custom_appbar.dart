@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:school_app/base/utils/responsive.dart';
 
-class CustomAppbar extends StatelessWidget  {
+class CustomAppbar extends StatelessWidget {
   final bool isBackButton;
   final bool isProfileIcon;
   final String title;
@@ -18,42 +18,47 @@ class CustomAppbar extends StatelessWidget  {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16,vertical: Responsive.height * 5),
-      child: Row(
+      padding: EdgeInsets.symmetric(
+        vertical: Responsive.height * 4,
+      ),
+      child: Stack(
+        alignment: Alignment.center, // Center the title
         children: [
-          // Left Icon (Back Button)
-          isBackButton
-              ? GestureDetector(
-                  onTap: onTap,
-                  child: const CircleAvatar(
-                    backgroundColor: Color(0xFFD9D9D9),
-                    child: Icon(Icons.arrow_back_ios_new),
-                  ),
-                )
-              : const SizedBox(width: 48), // Empty space if no back button
-
-          // Title in the Center
-          Expanded(
-            child: Text(
-              title,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  fontWeight: FontWeight.w600, overflow: TextOverflow.ellipsis),
-            ),
+          // Back button aligned to the left
+          Align(
+            alignment: Alignment.centerLeft,
+            child: isBackButton
+                ? GestureDetector(
+                    onTap: onTap,
+                    child: const CircleAvatar(
+                      backgroundColor: Color(0xFFD9D9D9),
+                      child: Icon(Icons.arrow_back_ios_new),
+                    ),
+                  )
+                : const SizedBox(width: 48), // Placeholder to keep space
           ),
 
-          // Right Icon (Profile Icon)
-          isProfileIcon
-              ? const CircleAvatar(
-                  backgroundImage: AssetImage('assets/admin.png'),
-                )
-              : const SizedBox(width: 48), // Empty space if no profile icon
+          // Title in the center
+          Text(
+            title,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                  fontWeight: FontWeight.w600,
+                  overflow: TextOverflow.ellipsis,
+                ),
+          ),
+
+          // Profile icon aligned to the right
+          Align(
+            alignment: Alignment.centerRight,
+            child: isProfileIcon
+                ? const CircleAvatar(
+                    backgroundImage: AssetImage('assets/admin.png'),
+                  )
+                : const SizedBox(width: 48), // Placeholder to keep space
+          ),
         ],
       ),
     );
   }
-
-  // @override
-  // Size get preferredSize => Size.fromHeight(
-  //     Responsive.height * 10); // Set height as per your requirement
 }

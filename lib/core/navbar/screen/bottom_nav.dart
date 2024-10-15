@@ -28,7 +28,7 @@ class BottomNavScreen extends StatelessWidget {
       ];
     } else if (userType == UserType.teacher) {
       return [
-        const TeacherScreen(),
+         TeacherScreen(),
         Attendance(),
         ProgressReport(),
         const DutiesScreen(),

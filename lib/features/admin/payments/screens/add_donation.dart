@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:school_app/core/shared_widgets/custom_textfield.dart';
+import 'package:flutter/material.dart';
+import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
-import 'package:school_app/features/teacher/widgets/custom_appbar.dart';
-
+import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 
 class AddDonationPage extends StatefulWidget {
   const AddDonationPage({super.key});
@@ -66,8 +65,13 @@ class _AddDonationPageState extends State<AddDonationPage> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            CustomAppbar(title: "Add Donation", isProfileIcon: false, onTap:() {
-               Navigator.pop(context);} ,),
+            CustomAppbar(
+              title: "Add Donation",
+              isProfileIcon: false,
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
             Row(
               children: [
                 Expanded(

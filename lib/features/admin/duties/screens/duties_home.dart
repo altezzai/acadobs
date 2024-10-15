@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:school_app/features/admin/duties/widgets/duty_card.dart';
-import 'package:school_app/features/teacher/widgets/custom_appbar.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/core/shared_widgets/custom_appbar.dart';
+import 'package:school_app/features/admin/duties/widgets/duty_card.dart';
 
 class DutiesHomeScreen extends StatelessWidget {
   @override

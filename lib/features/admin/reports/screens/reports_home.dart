@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/admin/reports/widgets/report_card.dart';
-import 'package:school_app/features/teacher/widgets/custom_appbar.dart';
 
 class ReportsHomeScreen extends StatelessWidget {
   @override

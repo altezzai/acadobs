@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/constants.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/teacher/homework/widgets/date_picker.dart';
 import 'package:school_app/features/teacher/homework/widgets/view_container.dart';
-import 'package:school_app/features/teacher/widgets/custom_appbar.dart';
 
 class DutyDetailScreen extends StatelessWidget {
   const DutyDetailScreen({super.key});
