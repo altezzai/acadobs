@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
-import 'package:school_app/features/teacher/widgets/custom_appbar.dart';
 
 class AddPaymentPage extends StatefulWidget {
   const AddPaymentPage({super.key});
@@ -38,11 +38,14 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          
           children: [
-            CustomAppbar(title: "Add Payment", isProfileIcon: false,onTap: () {
-               Navigator.pop(context);
-              },),
+            CustomAppbar(
+              title: "Add Payment",
+              isProfileIcon: false,
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
             Row(
               children: [
                 Expanded(

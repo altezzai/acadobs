@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:school_app/features/teacher/widgets/custom_appbar.dart';
-
+import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 
 class AddEventPage extends StatefulWidget {
   @override
@@ -34,12 +33,15 @@ class _AddEventPageState extends State<AddEventPage> {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
-          
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomAppbar(title: "Add Event",isProfileIcon: false,onTap: () {
-           Navigator.pop(context);
-          },),
+              CustomAppbar(
+                title: "Add Event",
+                isProfileIcon: false,
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
               Text(
                 'Event Details',
                 style: TextStyle(

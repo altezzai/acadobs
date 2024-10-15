@@ -6,7 +6,7 @@ const InputDecorationTheme lightInputDecorationTheme = InputDecorationTheme(
   fillColor: lightGreyColor,
   filled: true,
   hintStyle:
-      TextStyle(color: greyColor, fontSize: 16, fontWeight: FontWeight.w400),
+      TextStyle(color: greyColor, fontSize: 12, fontWeight: FontWeight.w400),
   border: outlineInputBorder,
   enabledBorder: outlineInputBorder,
   focusedBorder: focusedOutlineInputBorder,

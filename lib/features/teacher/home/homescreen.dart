@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:school_app/core/shared_widgets/custom_name_container.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/core/shared_widgets/custom_name_container.dart';
 
 class TeacherScreen extends StatelessWidget {
-  const TeacherScreen({super.key});
+  TeacherScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -80,8 +80,7 @@ class TeacherScreen extends StatelessWidget {
                   CustomNameContainer(
                     text: "Parents",
                     onPressed: () {
-                      context
-                          .pushNamed(AppRouteConst.parentRouteName);
+                      context.pushNamed(AppRouteConst.parentRouteName);
                     },
                   ),
                 ],

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:school_app/features/teacher/widgets/custom_appbar.dart';
+import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 
 class AddNoticePage extends StatefulWidget {
   @override
