@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:school_app/core/shared_widgets/custom_dropdown.dart'
-    as custom_widgets;
+import 'package:go_router/go_router.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
+import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:file_picker/file_picker.dart';
 import '../../../../core/shared_widgets/custom_calendar.dart';
-import '../../../../core/shared_widgets/custom_datepicker.dart';
 
 class AddAchievementPage extends StatefulWidget {
   @override
@@ -13,17 +14,15 @@ class AddAchievementPage extends StatefulWidget {
 }
 
 class _AddAchievementPageState extends State<AddAchievementPage> {
+  final _formKey = GlobalKey<FormState>();
   DateTime? selectedDate;
   String? selectedClass;
   String? selectedDivision;
   String? studentName;
   String? selectedLevel;
-  String? certificatePath;
-  final TextEditingController _dateController = TextEditingController();
+  String? selectedFile;
 
-  final List<String> classes = ['V', 'VI', 'VII', 'VIII', 'IX', 'X'];
-  final List<String> divisions = ['A', 'B', 'C'];
-  final List<String> levels = ['Beginner', 'Intermediate', 'Advanced'];
+  final TextEditingController _dateController = TextEditingController();
 
   void _handleDateSelection(DateTime date) {
     setState(() {
@@ -31,15 +30,17 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
     });
   }
 
-  Future<void> _selectCertificate() async {
-    final result = await FilePicker.platform.pickFiles(
-      allowMultiple: false,
+  Future<void> pickFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.any,
     );
+
     if (result != null) {
       setState(() {
-        certificatePath = result.files.single.path;
+        selectedFile = result.files.single.name;
       });
+    } else {
+      print('No file selected');
     }
   }
 
@@ -69,7 +70,9 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () {
+            context.pushReplacementNamed(AppRouteConst.studentRouteName);
+          },
         ),
         title: Text(
           'Add Achievement',
@@ -81,30 +84,31 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            custom_widgets.CustomDropdown(
+            CustomDropdown(
               hintText: 'Class',
               value: selectedClass,
-              items: classes,
+              items: ['V', 'VI', 'VII', 'VIII', 'IX', 'X'],
               onChanged: (value) {
                 setState(() {
                   selectedClass = value;
                 });
               },
-              iconData: Icon(Icons.class_),
+              iconData: const Icon(Icons.class_),
             ),
             SizedBox(height: 16),
 
-            custom_widgets.CustomDropdown(
+            CustomDropdown(
               hintText: 'Division',
               value: selectedDivision,
-              items: divisions,
+              items: ['A', 'B', 'C'],
               onChanged: (value) {
                 setState(() {
                   selectedDivision = value;
                 });
               },
-              iconData: Icon(Icons.category),
+              iconData: const Icon(Icons.category),
             ),
+
             SizedBox(height: 16),
 
             CustomTextfield(
@@ -134,17 +138,18 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
             ),
             SizedBox(height: 16),
 
-            custom_widgets.CustomDropdown(
+            CustomDropdown(
               hintText: 'Level',
               value: selectedLevel,
-              items: levels,
+              items: ['Beginner', 'Intermediate', 'Advanced'],
               onChanged: (value) {
                 setState(() {
                   selectedLevel = value;
                 });
               },
-              iconData: Icon(Icons.star),
+              iconData: const Icon(Icons.star),
             ),
+
             SizedBox(height: 16),
 
             // Date field styled similarly to the other text fields
@@ -158,26 +163,26 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
             SizedBox(height: 16),
 
             GestureDetector(
-              onTap: _selectCertificate,
+              onTap: pickFile,
               child: Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25),
                   border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(25.0),
                 ),
-                padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 15.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 10.0, vertical: 12.0),
                 child: Row(
                   children: [
-                    Icon(Icons.attach_file),
-                    SizedBox(width: 12),
+                    Icon(Icons.attachment_rounded, color: Colors.black),
+                    const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        certificatePath != null
-                            ? certificatePath!.split('/').last
-                            : 'Select Certificate',
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                              fontSize: 14.0,
-                              color: Colors.grey,
-                            ),
+                        selectedFile ?? 'Student Photo',
+                        style: TextStyle(
+                            color: selectedFile != null
+                                ? Colors.black
+                                : Colors.grey,
+                            fontSize: 14),
                       ),
                     ),
                   ],
@@ -186,13 +191,18 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
             ),
             SizedBox(height: 32),
 
-            CustomButton(
-              text: 'Submit',
-              onPressed: () {
-                // Implement submit logic here
-                print('Submit button pressed');
-                // You can also validate inputs here before submission
-              },
+            Center(
+              child: CustomButton(
+                text: 'Submit',
+                onPressed: () {
+                  if (_formKey.currentState?.validate() ?? false) {
+                    // Handle form submission logic here
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Form successfully submitted!')),
+                    );
+                  }
+                },
+              ),
             ),
           ],
         ),

@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
+import 'package:school_app/core/shared_widgets/custom_textfield.dart';
+import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
+import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
+import 'package:school_app/core/shared_widgets/custom_button.dart';
 
 class AddNoticePage extends StatefulWidget {
   @override
@@ -7,13 +12,19 @@ class AddNoticePage extends StatefulWidget {
 }
 
 class _AddNoticePageState extends State<AddNoticePage> {
+  String? selectedDivision;
+  String? selectedClass;
+  String? selectedAudience;
+  String? selectedFile;
+  final _formKey = GlobalKey<FormState>();
+
   final TextEditingController _dateController = TextEditingController();
 
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is disposed.
-    _dateController.dispose();
-    super.dispose();
+  Future<void> pickFile() async {
+    // ignore: unused_local_variable
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.any,
+    );
   }
 
   @override
@@ -38,7 +49,7 @@ class _AddNoticePageState extends State<AddNoticePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             CustomAppbar(
-              title: "Add Event",
+              title: "Add Notice",
               isProfileIcon: false,
               onTap: () {
                 Navigator.pop(context);
@@ -52,73 +63,48 @@ class _AddNoticePageState extends State<AddNoticePage> {
             ),
             SizedBox(height: 20),
             // Target Audience Dropdown
-            DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                labelText: 'Select Audience',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                ),
-                prefixIcon: Icon(Icons.person),
-              ),
-              items: [
-                DropdownMenuItem(
-                  child: Text('All Students'),
-                  value: 'All Students',
-                ),
-                DropdownMenuItem(
-                  child: Text('All Teachers'),
-                  value: 'All Teachers',
-                ),
-                // Add more items as needed
-              ],
-              onChanged: (value) {},
+            CustomDropdown(
+              hintText: 'Select Audience',
+              value: selectedAudience,
+              items: ['All Students', 'All Teachers'],
+              onChanged: (value) {
+                setState(() {
+                  selectedAudience = value;
+                });
+              },
+              iconData: const Icon(Icons.person),
             ),
+
             SizedBox(height: 16),
 
             // Class Dropdown
             Row(
               children: [
                 Expanded(
-                  child: DropdownButtonFormField<String>(
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.school),
-                      labelText: 'Class',
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0)),
-                    ),
-                    items: ['Class 1', 'Class 2', 'Class 3']
-                        .map((className) => DropdownMenuItem(
-                              value: className,
-                              child: Text(className),
-                            ))
-                        .toList(),
+                  child: CustomDropdown(
+                    hintText: 'Class',
+                    value: selectedClass,
+                    items: ['Class 1', 'Class 2', 'Class 3'],
                     onChanged: (value) {
-                      // Handle class selection
+                      setState(() {
+                        selectedClass = value;
+                      });
                     },
+                    iconData: const Icon(Icons.school),
                   ),
                 ),
                 const SizedBox(width: 16), // Space between Class and Division
                 Expanded(
-                  child: DropdownButtonFormField<String>(
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(
-                        Icons
-                            .class_, // You can use other letter icons as needed
-                        // Adjust the size
-                      ),
-                      labelText: 'Division',
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0)),
-                    ),
-                    items: ['Division A', 'Division B', 'Division C']
-                        .map((divisionName) => DropdownMenuItem(
-                              value: divisionName,
-                              child: Text(divisionName),
-                            ))
-                        .toList(),
+                  child: CustomDropdown(
+                    hintText: 'Division',
+                    value: selectedDivision,
+                    items: ['Division A', 'Division B', 'Division C'],
                     onChanged: (value) {
-                      // Handle division selection
+                      setState(() {
+                        selectedDivision = value;
+                      });
                     },
+                    iconData: const Icon(Icons.class_),
                   ),
                 ),
               ],
@@ -126,32 +112,11 @@ class _AddNoticePageState extends State<AddNoticePage> {
             SizedBox(height: 16),
 
             // Date Picker
-            TextField(
-              controller: _dateController,
-              decoration: InputDecoration(
-                labelText: 'Date',
-                labelStyle: TextStyle(
-                  color: Colors.grey, // Change label text color here
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                prefixIcon: Icon(Icons.calendar_today),
-              ),
-              readOnly: true, // To prevent manual editing
-              onTap: () async {
-                DateTime? pickedDate = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime(2101),
-                );
-                if (pickedDate != null) {
-                  setState(() {
-                    _dateController.text =
-                        "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}"; // Format the date as per your requirement
-                  });
-                }
+            CustomDatePicker(
+              label: "Date",
+              dateController: _dateController, // Unique controller for end date
+              onDateSelected: (selectedDate) {
+                print("End Date selected: $selectedDate");
               },
             ),
             SizedBox(height: 16),
@@ -164,17 +129,15 @@ class _AddNoticePageState extends State<AddNoticePage> {
             SizedBox(height: 16),
 
             // Title Input
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Title',
-                labelStyle: TextStyle(
-                  color: Colors.grey, // Change label text color here
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                ),
-                prefixIcon: Icon(Icons.title),
-              ),
+            CustomTextfield(
+              hintText: 'Title',
+              iconData: Icon(Icons.title),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Title is required';
+                }
+                return null;
+              },
             ),
             SizedBox(height: 16),
 
@@ -195,41 +158,46 @@ class _AddNoticePageState extends State<AddNoticePage> {
             SizedBox(height: 16),
 
             // Document Upload Button
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'Document',
-                labelStyle: TextStyle(
-                  color: Colors.grey, // Change label text color here
+            GestureDetector(
+              onTap: pickFile,
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(25.0),
                 ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 10.0, vertical: 12.0),
+                child: Row(
+                  children: [
+                    Icon(Icons.attachment_rounded, color: Colors.black),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        selectedFile ?? 'Document',
+                        style: TextStyle(
+                            color: selectedFile != null
+                                ? Colors.black
+                                : Colors.grey,
+                            fontSize: 14),
+                      ),
+                    ),
+                  ],
                 ),
-                prefixIcon: Icon(Icons.attach_file),
               ),
-              onTap: () {
-                // Add document picker action
-              },
             ),
 
             SizedBox(height: 40),
-            Container(
-              width: double.infinity,
-              child: ElevatedButton(
+            Center(
+              child: CustomButton(
+                text: 'Submit',
                 onPressed: () {
-                  // Submit action
+                  if (_formKey.currentState?.validate() ?? false) {
+                    // Handle form submission logic here
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Form successfully submitted!')),
+                    );
+                  }
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  foregroundColor: Colors.white,
-                  minimumSize: Size(double.infinity, 60),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-                child: Text(
-                  'Submit',
-                  style: TextStyle(fontSize: 18),
-                ),
               ),
             ),
           ],

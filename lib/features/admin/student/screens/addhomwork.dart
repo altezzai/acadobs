@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
+import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
+import 'package:school_app/core/shared_widgets/custom_button.dart';
 
 class AddHomeworkPage extends StatefulWidget {
   @override
@@ -8,14 +10,20 @@ class AddHomeworkPage extends StatefulWidget {
 }
 
 class _AddHomeworkPageState extends State<AddHomeworkPage> {
+  final _formKey = GlobalKey<FormState>();
+
   String? selectedClass;
   String? selectedDivision;
   String? selectedStudent;
   String? selectedSubject;
   String? startDate;
   String? endDate;
+
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+
+  final TextEditingController _startDateController = TextEditingController();
+  final TextEditingController _endDateController = TextEditingController();
 
   final List<String> classes = ['V', 'VI', 'VII', 'VIII', 'IX', 'X'];
   final List<String> divisions = ['A', 'B', 'C'];
@@ -30,49 +38,22 @@ class _AddHomeworkPageState extends State<AddHomeworkPage> {
   ];
   final List<String> subjects = ['Math', 'Science', 'History'];
 
-  Future<void> _pickDate(
-      BuildContext context, Function(String?) onDatePicked) async {
-    DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.light(
-              primary: Colors.blue, // header background color
-              onPrimary: Colors.white, // header text color
-              onSurface: Colors.black, // body text color
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.blue, // button text color
-              ),
-            ),
-            dialogBackgroundColor:
-                Colors.white, // background color of the picker
-          ),
-          child: child!,
-        );
-      },
-    );
-    if (pickedDate != null) {
-      onDatePicked("${pickedDate.month}/${pickedDate.day}/${pickedDate.year}");
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         title: Text(
           'Add Homework',
-          style: TextStyle(fontSize: 20),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
-        centerTitle: true,
       ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -146,26 +127,24 @@ class _AddHomeworkPageState extends State<AddHomeworkPage> {
             Row(
               children: [
                 Expanded(
-                  child: CustomTextfield(
-                    hintText: startDate ?? 'mm/dd/yyyy',
-                    iconData: Icon(Icons.calendar_today),
-                    onTap: () => _pickDate(context, (value) {
-                      setState(() {
-                        startDate = value;
-                      });
-                    }),
+                  child: CustomDatePicker(
+                    label: "Start Date",
+                    dateController:
+                        _startDateController, // Unique controller for end date
+                    onDateSelected: (selectedDate) {
+                      print("Start Date selected: $selectedDate");
+                    },
                   ),
                 ),
                 SizedBox(width: screenWidth * 0.02), // Responsive spacing
                 Expanded(
-                  child: CustomTextfield(
-                    hintText: endDate ?? 'mm/dd/yyyy',
-                    iconData: Icon(Icons.calendar_today),
-                    onTap: () => _pickDate(context, (value) {
-                      setState(() {
-                        endDate = value;
-                      });
-                    }),
+                  child: CustomDatePicker(
+                    label: "End Date",
+                    dateController:
+                        _endDateController, // Unique controller for end date
+                    onDateSelected: (selectedDate) {
+                      print("End Date selected: $selectedDate");
+                    },
                   ),
                 ),
               ],
@@ -193,16 +172,18 @@ class _AddHomeworkPageState extends State<AddHomeworkPage> {
             SizedBox(height: screenWidth * 0.04), // Responsive spacing
 
             // Submit Button
-            ElevatedButton(
-              onPressed: () {
-                // Handle submit action
-                print('Homework Added');
-              },
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-                textStyle: TextStyle(fontSize: 16),
+            Center(
+              child: CustomButton(
+                text: 'Submit',
+                onPressed: () {
+                  if (_formKey.currentState?.validate() ?? false) {
+                    // Handle form submission logic here
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Form successfully submitted!')),
+                    );
+                  }
+                },
               ),
-              child: Text('Submit'),
             ),
           ],
         ),

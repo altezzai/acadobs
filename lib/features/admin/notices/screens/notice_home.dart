@@ -37,7 +37,7 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
           Padding(
             padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
             child: CustomAppbar(
-              title: "Notices/Events",
+              title: "Notices and Events",
               isBackButton: false,
             ),
           ),
