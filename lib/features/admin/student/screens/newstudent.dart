@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
+import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
+import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 
 class AddStudentPage extends StatefulWidget {
@@ -13,10 +16,24 @@ class _AddStudentPageState extends State<AddStudentPage> {
   final _formKey = GlobalKey<FormState>(); // Key for form validation
   String? selectedClass;
   String? selectedDivision;
+  String? selectedFile;
+  final TextEditingController _dateOfJoiningController =
+      TextEditingController();
+  final TextEditingController _dateOfBirthController = TextEditingController();
 
-  // Dummy data for dropdowns
-  List<String> classList = ['V', 'VI', 'VII', 'VIII', 'IX', 'X'];
-  List<String> divisionList = ['A', 'B', 'C'];
+  Future<void> pickFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.any,
+    );
+
+    if (result != null) {
+      setState(() {
+        selectedFile = result.files.single.name;
+      });
+    } else {
+      print('No file selected');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,86 +101,32 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   children: [
                     // Class Dropdown
                     Expanded(
-                      child: DropdownButtonFormField<String>(
-                        style: TextStyle(
-                          fontSize: 14, // Text size for dropdown items
-                          color: Colors.black,
-                        ),
-                        decoration: InputDecoration(
-                          labelText: 'Class',
-                          labelStyle: TextStyle(
-                            fontSize: 12, // Make the label text smaller
-                            color: Colors
-                                .black54, // Optional: Adjust label text color
-                          ),
-                          errorStyle: TextStyle(
-                            fontSize:
-                                10, // Smaller font size for error messages
-                            color: Colors.red, // Error message color
-                          ),
-                          border: OutlineInputBorder(),
-                        ),
+                      child: CustomDropdown(
+                        hintText: 'Class',
                         value: selectedClass,
-                        items: classList
-                            .map((classValue) => DropdownMenuItem<String>(
-                                  value: classValue,
-                                  child: Text(classValue),
-                                ))
-                            .toList(),
-                        onChanged: (newValue) {
+                        items: ['V', 'VI', 'VII', 'VIII', 'IX', 'X'],
+                        onChanged: (value) {
                           setState(() {
-                            selectedClass = newValue;
+                            selectedClass = value;
                           });
                         },
-                        validator: (value) {
-                          if (value == null) {
-                            return 'Class is required';
-                          }
-                          return null;
-                        },
+                        iconData: const Icon(Icons.school),
                       ),
                     ),
                     SizedBox(width: 10),
 
                     // Division Dropdown
                     Expanded(
-                      child: DropdownButtonFormField<String>(
-                        style: TextStyle(
-                          fontSize: 14, // Text size for dropdown items
-                          color: Colors.black,
-                        ),
-                        decoration: InputDecoration(
-                          labelText: 'Division',
-                          labelStyle: TextStyle(
-                            fontSize: 12, // Make the label text smaller
-                            color: Colors.black54,
-                            // Optional: Adjust label text color
-                          ),
-                          errorStyle: TextStyle(
-                            fontSize:
-                                10, // Smaller font size for error messages
-                            color: Colors.red, // Error message color
-                          ),
-                          border: OutlineInputBorder(),
-                        ),
+                      child: CustomDropdown(
+                        hintText: 'Division',
                         value: selectedDivision,
-                        items: divisionList
-                            .map((divisionValue) => DropdownMenuItem<String>(
-                                  value: divisionValue,
-                                  child: Text(divisionValue),
-                                ))
-                            .toList(),
-                        onChanged: (newValue) {
+                        items: ['A', 'B', 'C'],
+                        onChanged: (value) {
                           setState(() {
-                            selectedDivision = newValue;
+                            selectedDivision = value;
                           });
                         },
-                        validator: (value) {
-                          if (value == null) {
-                            return 'Division is required';
-                          }
-                          return null;
-                        },
+                        iconData: const Icon(Icons.class_),
                       ),
                     ),
                   ],
@@ -172,18 +135,25 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 SizedBox(height: 20),
 
                 // Date of Joining Input
-                CustomTextfield(
-                  hintText: 'Date of joining',
-                  iconData: Icon(Icons.calendar_today),
-                  keyBoardtype: TextInputType.datetime,
+                CustomDatePicker(
+                  label: "Date of Joining",
+                  dateController:
+                      _dateOfJoiningController, // Unique controller for end date
+                  onDateSelected: (selectedDate) {
+                    print("End Date selected: $selectedDate");
+                  },
                 ),
+
                 SizedBox(height: 20),
 
                 // Date of Birth Input
-                CustomTextfield(
-                  hintText: 'Date of Birth',
-                  iconData: Icon(Icons.calendar_today),
-                  keyBoardtype: TextInputType.datetime,
+                CustomDatePicker(
+                  label: "Date of Birth",
+                  dateController:
+                      _dateOfBirthController, // Unique controller for end date
+                  onDateSelected: (selectedDate) {
+                    print("End Date selected: $selectedDate");
+                  },
                 ),
                 SizedBox(height: 20),
 
@@ -336,41 +306,123 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 _sectionTitle('Documents'),
                 SizedBox(height: 10),
 
-                CustomTextfield(
-                  hintText: 'Student Photo',
-                  iconData: Icon(Icons.attachment_rounded),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Mother\'s Phone Number is required';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 20),
-
-                CustomTextfield(
-                  hintText: 'father Or Mother Photo',
-                  iconData: Icon(Icons.attachment_rounded),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Mother\'s Phone Number is required';
-                    }
-                    return null;
-                  },
-                ),
-
-                SizedBox(height: 20),
-
-                CustomTextfield(
-                  hintText: 'Aadhar Photo',
-                  iconData: Icon(Icons.attachment_rounded),
+                GestureDetector(
+                  onTap: pickFile,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(25.0),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 12.0),
+                    child: Row(
+                      children: [
+                        Icon(Icons.attachment_rounded, color: Colors.black),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            selectedFile ?? 'Student Photo',
+                            style: TextStyle(
+                                color: selectedFile != null
+                                    ? Colors.black
+                                    : Colors.grey,
+                                fontSize: 14),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
 
                 SizedBox(height: 20),
 
-                CustomTextfield(
-                  hintText: 'Previous School Transfer Certificate',
-                  iconData: Icon(Icons.attachment_rounded),
+                GestureDetector(
+                  onTap: pickFile,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(25.0),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 12.0),
+                    child: Row(
+                      children: [
+                        Icon(Icons.attachment_rounded, color: Colors.black),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            selectedFile ?? 'father Or Mother Photo',
+                            style: TextStyle(
+                                color: selectedFile != null
+                                    ? Colors.black
+                                    : Colors.grey,
+                                fontSize: 14),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 20),
+
+                GestureDetector(
+                  onTap: pickFile,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(25.0),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 12.0),
+                    child: Row(
+                      children: [
+                        Icon(Icons.attachment_rounded, color: Colors.black),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            selectedFile ?? 'Aadhar Photo',
+                            style: TextStyle(
+                                color: selectedFile != null
+                                    ? Colors.black
+                                    : Colors.grey,
+                                fontSize: 14),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 20),
+
+                GestureDetector(
+                  onTap: pickFile,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(25.0),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 12.0),
+                    child: Row(
+                      children: [
+                        Icon(Icons.attachment_rounded, color: Colors.black),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            selectedFile ??
+                                'Previous School Transfer Certificate',
+                            style: TextStyle(
+                                color: selectedFile != null
+                                    ? Colors.black
+                                    : Colors.grey,
+                                fontSize: 14),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
 
                 SizedBox(height: 40),

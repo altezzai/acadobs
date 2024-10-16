@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart'; // imported for date formatting
-import 'package:school_app/base/routes/app_route_const.dart';
-import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+import 'package:file_picker/file_picker.dart'; // imported for date formatting
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
+import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
 
 class AddDutyPage extends StatefulWidget {
   @override
@@ -13,67 +15,27 @@ class AddDutyPage extends StatefulWidget {
 }
 
 class _AddDutyPageState extends State<AddDutyPage> {
-  List<String> staffList = [
-    'Kaiya Mango',
-    'Lindsey Calzoni',
-    'Adison Rhiel Madsen'
-  ];
+  final _formKey = GlobalKey<FormState>();
+
   String? selectedStaff;
+  String? selectedFile;
   List<String> selectedStaffs = [];
+  final TextEditingController _startDateController = TextEditingController();
+  final TextEditingController _endDateController = TextEditingController();
+
+  Future<void> pickFile() async {
+    // ignore: unused_local_variable
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.any,
+    );
+  }
 
   // Variables to hold selected dates
-  DateTime? selectedStartDate;
-  DateTime? selectedEndDate;
-
-  // Function to format date
-  String formatDate(DateTime? date) {
-    if (date == null) return 'Select Date';
-    return DateFormat('dd/MM/yyyy').format(date);
-  }
-
-  // Function to show the date picker and set the selected date
-  Future<void> _selectDate(BuildContext context,
-      {required bool isStartDate}) async {
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
-    if (pickedDate != null) {
-      setState(() {
-        if (isStartDate) {
-          selectedStartDate = pickedDate;
-        } else {
-          selectedEndDate = pickedDate;
-        }
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      // appBar: AppBar(
-      //   backgroundColor: Colors.transparent,
-      //   elevation: 0,
-      //   leading: IconButton(
-      //     icon: Icon(Icons.arrow_back, color: Colors.black),
-      //     onPressed: () {
-      //       context.pushReplacementNamed(AppRouteConst.AdminHomeRouteName);
-      //     },
-      //   ),
-      //   centerTitle: true,
-      //   title: Text(
-      //     'Add Duty',
-      //     style: TextStyle(
-      //       color: Colors.black,
-      //       fontWeight: FontWeight.bold,
-      //       fontSize: 24,
-      //     ),
-      //   ),
-      // ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: SingleChildScrollView(
@@ -110,30 +72,26 @@ class _AddDutyPageState extends State<AddDutyPage> {
                 children: [
                   // Start Date Field
                   Expanded(
-                    child: CustomTextfield(
-                      hintText: formatDate(selectedStartDate),
-                      iconData: Icon(Icons.calendar_today),
-                      hintStyle: TextStyle(fontSize: 14.0),
-                      textStyle:
-                          TextStyle(fontSize: 14.0, color: Colors.black87),
-                      isPasswordField: false,
-                      keyBoardtype: TextInputType.none,
-                      onTap: () => _selectDate(context, isStartDate: true),
+                    child: CustomDatePicker(
+                      label: "Start Date",
+                      dateController:
+                          _startDateController, // Unique controller for end date
+                      onDateSelected: (selectedDate) {
+                        print("End Date selected: $selectedDate");
+                      },
                     ),
                   ),
                   SizedBox(width: 10),
 
                   // End Date Field
                   Expanded(
-                    child: CustomTextfield(
-                      hintText: formatDate(selectedEndDate),
-                      iconData: Icon(Icons.calendar_today),
-                      hintStyle: TextStyle(fontSize: 14.0),
-                      textStyle:
-                          TextStyle(fontSize: 14.0, color: Colors.black87),
-                      isPasswordField: false,
-                      keyBoardtype: TextInputType.none,
-                      onTap: () => _selectDate(context, isStartDate: false),
+                    child: CustomDatePicker(
+                      label: "End Date",
+                      dateController:
+                          _endDateController, // Unique controller for end date
+                      onDateSelected: (selectedDate) {
+                        print("End Date selected: $selectedDate");
+                      },
                     ),
                   ),
                 ],
@@ -142,48 +100,20 @@ class _AddDutyPageState extends State<AddDutyPage> {
 
               // Select Staffs Dropdown
               Container(
-                child: DropdownButtonFormField<String>(
-                  decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 12.0, horizontal: 15.0),
-                    border: InputBorder.none,
-                    prefixIcon: Icon(Icons.person, size: 20),
-                    hintText: 'Select Staffs...',
-                    hintStyle: TextStyle(fontSize: 14.0, color: Colors.grey),
-                  ),
+                child: CustomDropdown(
+                  hintText: 'Select Staffs',
                   value: selectedStaff,
-                  icon: Icon(Icons.arrow_drop_down, size: 20),
-                  items: staffList.map((String staff) {
-                    return DropdownMenuItem<String>(
-                      value: staff,
-                      child: Text(
-                        staff,
-                        style: TextStyle(
-                            fontSize: 14.0), // Text inside dropdown items
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (newValue) {
+                  items: [
+                    'Kaiya Mango',
+                    'Lindsey Calzoni',
+                    'Adison Rhiel Madsen'
+                  ],
+                  onChanged: (value) {
                     setState(() {
-                      selectedStaff = newValue;
-                      if (newValue != null &&
-                          !selectedStaffs.contains(newValue)) {
-                        selectedStaffs.add(newValue);
-                      }
+                      selectedStaff = value;
                     });
                   },
-                  onTap: () {
-                    // Optionally clear the dropdown selection when it's opened
-                    // setState(() {
-                    //   selectedStaff = null;
-                    // });
-                  },
-                  onSaved: (value) {
-                    // Optionally clear the dropdown selection when the dropdown is closed
-                    setState(() {
-                      selectedStaff = null;
-                    });
-                  },
+                  iconData: const Icon(Icons.person),
                 ),
               ),
               SizedBox(height: 20),
@@ -199,11 +129,32 @@ class _AddDutyPageState extends State<AddDutyPage> {
               SizedBox(height: 20),
 
               // Add Documents Button
-              CustomButton(
-                text: 'Add Documents',
-                onPressed: () {
-                  // Handle document upload
-                },
+              GestureDetector(
+                onTap: pickFile,
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(25.0),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 10.0, vertical: 12.0),
+                  child: Row(
+                    children: [
+                      Icon(Icons.attachment_rounded, color: Colors.black),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          selectedFile ?? 'Add Documents',
+                          style: TextStyle(
+                              color: selectedFile != null
+                                  ? Colors.black
+                                  : Colors.grey,
+                              fontSize: 14),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
               SizedBox(height: 30),
 
@@ -212,7 +163,12 @@ class _AddDutyPageState extends State<AddDutyPage> {
                 child: CustomButton(
                   text: 'Submit',
                   onPressed: () {
-                    // Handle form submission
+                    if (_formKey.currentState?.validate() ?? false) {
+                      // Handle form submission logic here
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Form successfully submitted!')),
+                      );
+                    }
                   },
                 ),
               ),

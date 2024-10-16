@@ -7,8 +7,9 @@ import 'package:school_app/features/admin/notices/screens/add_event.dart';
 import 'package:school_app/features/admin/notices/screens/add_notice.dart';
 import 'package:school_app/features/admin/payments/screens/add_payment.dart';
 import 'package:school_app/core/authentication/login.dart';
-import 'package:school_app/features/admin/student/screens/newstudent.dart';
 import 'package:school_app/core/authentication/splashscreen.dart';
+import 'package:school_app/features/admin/student/screens/addhomwork.dart';
+import 'package:school_app/features/admin/student/screens/newstudent.dart';
 import 'package:school_app/features/admin/student/screens/studentdetails.dart';
 import 'package:school_app/features/admin/student/screens/studentpage.dart';
 import 'package:school_app/features/admin/teacher_section/screens/screens/teacherdetails.dart';
@@ -212,6 +213,14 @@ class Approuter {
         path: '/addDonation',
         pageBuilder: (context, state) {
           return MaterialPage(child: AddDonationPage());
+        },
+      ),
+
+      GoRoute(
+        name: AppRouteConst.AddHomeworkRouteName,
+        path: '/addhomework',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: AddHomeworkPage());
         },
       ),
     ],

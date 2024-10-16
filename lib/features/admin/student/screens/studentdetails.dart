@@ -557,7 +557,7 @@ Widget _buildScrollableHomeWorksContent(BuildContext context) {
         right: 16,
         child: ElevatedButton(
           onPressed: () {
-            context.pushReplacementNamed(AppRouteConst.addworkRouteName);
+            context.pushReplacementNamed(AppRouteConst.AddHomeworkRouteName);
           },
           child: Text('Add Homework'),
           style: ElevatedButton.styleFrom(

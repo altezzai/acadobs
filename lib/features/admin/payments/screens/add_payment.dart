@@ -1,8 +1,11 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
+import 'package:school_app/core/shared_widgets/custom_button.dart';
+// ignore: unused_import
+import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 
 class AddPaymentPage extends StatefulWidget {
   const AddPaymentPage({super.key});
@@ -12,10 +15,13 @@ class AddPaymentPage extends StatefulWidget {
 }
 
 class _AddPaymentPageState extends State<AddPaymentPage> {
+  final _formKey = GlobalKey<FormState>();
   String? selectedClass;
   String? selectedDivision;
   String? selectedStudent;
   String? selectedFile;
+  // ignore: unused_field
+  final TextEditingController _dateController = TextEditingController();
 
   Future<void> pickFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -166,24 +172,17 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
               ),
             ),
             const Spacer(),
-            Container(
-              width: double.infinity,
-              child: ElevatedButton(
+            Center(
+              child: CustomButton(
+                text: 'Submit',
                 onPressed: () {
-                  // Submit action
+                  if (_formKey.currentState?.validate() ?? false) {
+                    // Handle form submission logic here
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Form successfully submitted!')),
+                    );
+                  }
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  foregroundColor: Colors.white,
-                  minimumSize: const Size(double.infinity, 60),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                ),
-                child: const Text(
-                  'Submit',
-                  style: TextStyle(fontSize: 18),
-                ),
               ),
             ),
           ],

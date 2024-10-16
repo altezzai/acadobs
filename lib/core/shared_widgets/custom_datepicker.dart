@@ -47,15 +47,15 @@ class CustomDatePicker extends StatelessWidget {
           fontWeight:
               FontWeight.normal), // Smaller font size for the input text
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.only(left: 18),
+        contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 15),
         labelText: label,
         labelStyle: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.normal), // Adjust label font size
-        suffixIcon: IconButton(
+        prefixIcon: IconButton(
           icon: Icon(
             Icons.calendar_today,
-            size: 18,
+            size: 20,
           ),
           onPressed: () => _selectDate(context),
         ),

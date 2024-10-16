@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:school_app/core/shared_widgets/custom_textfield.dart';
+import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
+import 'package:school_app/core/shared_widgets/custom_button.dart';
 
 class AddEventPage extends StatefulWidget {
   @override
@@ -7,13 +11,14 @@ class AddEventPage extends StatefulWidget {
 }
 
 class _AddEventPageState extends State<AddEventPage> {
+  final _formKey = GlobalKey<FormState>();
+  String? selectedFile;
   final TextEditingController _dateController = TextEditingController();
-
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is disposed.
-    _dateController.dispose();
-    super.dispose();
+  Future<void> pickFile() async {
+    // ignore: unused_local_variable
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.any,
+    );
   }
 
   @override
@@ -79,14 +84,15 @@ class _AddEventPageState extends State<AddEventPage> {
                 ),
               ),
               SizedBox(height: 20),
-              TextField(
-                decoration: InputDecoration(
-                  labelText: 'Title',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  prefixIcon: Icon(Icons.title),
-                ),
+              CustomTextfield(
+                hintText: 'Title',
+                iconData: Icon(Icons.title),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Title is required';
+                  }
+                  return null;
+                },
               ),
               SizedBox(height: 20),
               TextField(
@@ -100,63 +106,54 @@ class _AddEventPageState extends State<AddEventPage> {
                 ),
               ),
               SizedBox(height: 20),
-              TextField(
-                controller: _dateController,
-                decoration: InputDecoration(
-                  labelText: 'Date',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  prefixIcon: Icon(Icons.calendar_today),
-                ),
-                readOnly: true, // To prevent manual editing
-                onTap: () async {
-                  DateTime? pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(2000),
-                    lastDate: DateTime(2101),
-                  );
-                  if (pickedDate != null) {
-                    setState(() {
-                      _dateController.text =
-                          "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}"; // Format the date as per your requirement
-                    });
-                  }
+              CustomDatePicker(
+                label: "Date",
+                dateController:
+                    _dateController, // Unique controller for end date
+                onDateSelected: (selectedDate) {
+                  print("End Date selected: $selectedDate");
                 },
               ),
               SizedBox(height: 20),
-              TextField(
-                decoration: InputDecoration(
-                  labelText: 'Document',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
+              GestureDetector(
+                onTap: pickFile,
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(25.0),
                   ),
-                  prefixIcon: Icon(Icons.attach_file),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 10.0, vertical: 12.0),
+                  child: Row(
+                    children: [
+                      Icon(Icons.attachment_rounded, color: Colors.black),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          selectedFile ?? 'Document',
+                          style: TextStyle(
+                              color: selectedFile != null
+                                  ? Colors.black
+                                  : Colors.grey,
+                              fontSize: 14),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                onTap: () {
-                  // Add document picker action
-                },
               ),
               SizedBox(height: 40),
-              Container(
-                width: double.infinity,
-                child: ElevatedButton(
+              Center(
+                child: CustomButton(
+                  text: 'Submit',
                   onPressed: () {
-                    // Submit action
+                    if (_formKey.currentState?.validate() ?? false) {
+                      // Handle form submission logic here
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Form successfully submitted!')),
+                      );
+                    }
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    foregroundColor: Colors.white,
-                    minimumSize: Size(double.infinity, 60),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                  child: Text(
-                    'Submit',
-                    style: TextStyle(fontSize: 18),
-                  ),
                 ),
               ),
             ],
