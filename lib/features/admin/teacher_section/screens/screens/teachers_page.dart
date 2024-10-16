@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/features/admin/teacher_section/controller/teacher_controller.dart';
 
 class TeachersPage extends StatefulWidget {
   @override
@@ -30,6 +32,7 @@ class _TeachersPageState extends State<TeachersPage> {
     super.initState();
     teachers.sort((a, b) => a['name']!.compareTo(b['name']!));
     filteredTeachers = teachers;
+    context.read<TeacherController>().getTeacherDetails();
   }
 
   void _filterTeachers(String query) {
@@ -68,8 +71,7 @@ class _TeachersPageState extends State<TeachersPage> {
         ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () =>
-              Navigator.pop(context),
+          onPressed: () => Navigator.pop(context),
         ),
         actions: [
           Padding(
@@ -146,37 +148,48 @@ class _TeachersPageState extends State<TeachersPage> {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: filteredTeachers.length,
-              itemBuilder: (context, index) {
-                final teacher = filteredTeachers[index];
-                return Card(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 1, vertical: 5),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)),
-                  child: GestureDetector(
-                    onTap: () => _navigateToTeacherDetails(context, teacher),
-                    child: ListTile(
-                      leading: CircleAvatar(
-                          backgroundImage:
-                              AssetImage('assets/${teacher['image']}')),
-                      title: Text(teacher['name']!,
-                          style: TextStyle(
-                              fontWeight: FontWeight.normal, fontSize: 16)),
-                      subtitle: Text(teacher['class']!,
-                          style: TextStyle(
-                              fontWeight: FontWeight.normal, fontSize: 15)),
-                      trailing: TextButton(
-                        child: Text('View'),
-                        onPressed: () =>
-                            _navigateToTeacherDetails(context, teacher),
-                      ),
+            child:
+                Consumer<TeacherController>(builder: (context, value, child) {
+              return ListView.builder(
+                itemCount: value.teachers.length,
+                itemBuilder: (context, index) {
+                  final teacher = filteredTeachers[index];
+                  // final teacher = value.teachers[index];
+                  return Card(
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 1, vertical: 5),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15)),
+                    child: GestureDetector(
+                      // onTap: () => _navigateToTeacherDetails(context, teacher),
+                      child: ListTile(
+                          leading: CircleAvatar(
+                              backgroundImage:
+                                  AssetImage('assets/${teacher['image']}')),
+                          title: Text(value.teachers[index].fullName ?? "",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.normal, fontSize: 16)),
+                          subtitle: Text(
+                              value.teachers[index].classGradeHandling ?? "",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.normal, fontSize: 15)),
+                          trailing: TextButton(
+                            child: Text('View'),
+                            onPressed: () => context.pushReplacementNamed(
+                              AppRouteConst.AdminteacherdetailsRouteName,
+                              extra: {
+                                'name': value.teachers[index].fullName,
+                                'class':
+                                    value.teachers[index].classGradeHandling,
+                                'image': teacher['image']!,
+                              },
+                            ),
+                          )),
                     ),
-                  ),
-                );
-              },
-            ),
+                  );
+                },
+              );
+            }),
           ),
         ],
       ),
@@ -187,18 +200,6 @@ class _TeachersPageState extends State<TeachersPage> {
         backgroundColor: Colors.black,
         foregroundColor: Colors.white,
       ),
-    );
-  }
-
-  void _navigateToTeacherDetails(
-      BuildContext context, Map<String, String> teacher) {
-    context.pushReplacementNamed(
-      AppRouteConst.AdminteacherdetailsRouteName,
-      extra: {
-        'name': teacher['name']!,
-        'class': teacher['class']!,
-        'image': teacher['image']!,
-      },
     );
   }
 }

@@ -3,10 +3,17 @@ import 'package:flutter/material.dart';
 import '../utils/constants.dart';
 
 const InputDecorationTheme lightInputDecorationTheme = InputDecorationTheme(
+  contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 16),
   fillColor: lightGreyColor,
+  labelStyle: TextStyle(
+    fontSize: 14, // Set a smaller size for the label text
+    color: Colors.grey, // Customize the label color
+  ),
+  hintStyle: TextStyle(
+    fontSize: 14, // Set a smaller size for the hint text
+    color: Colors.grey, // Customize the hint text color
+  ),
   filled: true,
-  hintStyle:
-      TextStyle(color: greyColor, fontSize: 12, fontWeight: FontWeight.w400),
   border: outlineInputBorder,
   enabledBorder: outlineInputBorder,
   focusedBorder: focusedOutlineInputBorder,

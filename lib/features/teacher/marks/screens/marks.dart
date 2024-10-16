@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
-import 'package:school_app/features/teacher/controller/dropdown_controller.dart';
 import 'package:school_app/features/teacher/data/dropdown_data.dart';
-import 'package:school_app/features/teacher/widgets/custom_dropdown.dart';
+
 
 // ignore: must_be_immutable
 class ProgressReport extends StatelessWidget {
@@ -20,7 +18,6 @@ class ProgressReport extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dropdownProvider = Provider.of<DropdownProvider>(context);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -30,36 +27,24 @@ class ProgressReport extends StatelessWidget {
               title: "Progress Report",
               isBackButton: false,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: CustomDropdown(
-                    title: 'Select  Class',
-                    icon: Icons.school,
-                    items: allClasses,
-                    selectedValue: dropdownProvider.selectedClass,
-                    onChanged: (value) {
-                      dropdownProvider.setSelectedClass(
-                          value); // Update the state using provider
-                    },
-                  ),
-                ),
-                // SizedBox(width: Responsive.width * 6),
-                Expanded(
-                  child: CustomDropdown(
-                    title: 'Select Division',
-                    icon: Icons.format_shapes_sharp,
-                    items: allDivisions,
-                    selectedValue: dropdownProvider.selectedDivision,
-                    onChanged: (value) {
-                      dropdownProvider.setSelectedDivision(
-                          value); // Update the state using provider
-                    },
-                  ),
-                ),
-              ],
-            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Expanded(
+            //       child: CustomDropdown(
+            //           icon: Icons.school,
+            //           label: "Select Class",
+            //           items: ["1", "2", "3", "4", "5"]),
+            //     ),
+            //     // SizedBox(width: Responsive.width * 6),
+            //     Expanded(
+            //       child: CustomDropdown(
+            //           icon: Icons.school,
+            //           label: "Select Period",
+            //           items: ["A", "B", "C", "D", "E"]),
+            //     ),
+            //   ],
+            // ),
             SizedBox(height: Responsive.height * 1),
             CustomTextfield(
               hintText: "Exam",
@@ -68,16 +53,10 @@ class ProgressReport extends StatelessWidget {
             SizedBox(height: Responsive.height * 1),
 
             // Dropdown for Selecting Subjects
-            CustomDropdown(
-              title: 'Select Subject',
-              icon: Icons.book,
-              items: subjects,
-              selectedValue: dropdownProvider.selectedSubject,
-              onChanged: (value) {
-                dropdownProvider.setSelectedSubject(
-                    value); // Update the state using provider
-              },
-            ),
+            // CustomDropdown(icon: Icons.school, label: "Select Subject", items: [
+            //   "Physics",
+            //   "Chemistry",
+            // ]),
             SizedBox(height: Responsive.height * 1),
             CustomTextfield(
               hintText: "dd/mm/yyyy",
