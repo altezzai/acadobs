@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
-
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
-import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
+
 
 
 class AddNoticePage extends StatefulWidget {
@@ -122,7 +121,6 @@ class _AddNoticePageState extends State<AddNoticePage> {
                 print("End Date selected: $selectedDate");
               },
             ),
-r
             SizedBox(height: 16),
             Text(
               'Notice Details',
