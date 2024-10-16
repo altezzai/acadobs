@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
+import 'package:provider/provider.dart'; // Import for state management
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/features/teacher/attendance/widgets/title_tile.dart';
-import 'package:school_app/features/teacher/controller/dropdown_controller.dart';
-import 'package:school_app/features/teacher/data/dropdown_data.dart';
+import 'package:school_app/features/teacher/controller/dropdown_provider.dart';
 import 'package:school_app/features/teacher/widgets/custom_dropdown.dart';
 
-// ignore: must_be_immutable
 class Attendance extends StatelessWidget {
-  Attendance({super.key});
+  Attendance({Key? key}) : super(key: key);
 
   final Map<String, IconData> titleIconMap = {
     "Set Holiday": Icons.beach_access, // Holiday-related icon
@@ -22,126 +20,151 @@ class Attendance extends StatelessWidget {
     "Set All Leave": Icons.airline_seat_flat_angled, // Leave icon
   };
 
-  List<DropdownMenuItem<String>> allClasses = DropdownData.allClasses;
-  List<DropdownMenuItem<String>> allDivisions = DropdownData.allDivisions;
-  List<DropdownMenuItem<String>> periods = DropdownData.periods;
-  TextEditingController _dateController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final dropdownProvider = Provider.of<DropdownProvider>(context);
-    return Scaffold(
-      body: Center(
+    return ChangeNotifierProvider(
+      create: (_) => DropdownProvider(), // Instantiate the DropdownProvider
+      child: Scaffold(
+        body: Center(
           child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        child: Column(
-          children: [
-            const CustomAppbar(
-              title: "Attendance",
-              isBackButton: false,
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            child: Column(
+              children: [
+                const CustomAppbar(
+                  title: "Attendance",
+                  isBackButton: false,
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: Responsive.height * 1,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // First Dropdown: Select Class
+                            Expanded(
+                              child: CustomDropdown(
+                                dropdownKey: 'class', // Unique key
+                                icon: Icons.school,
+                                label: "Select Class",
+                                items: ["1", "2", "3", "4", "5"],
+                              ),
+                            ),
+                            SizedBox(width: Responsive.width * 1),
+                            // Second Dropdown: Select Period
+                            Expanded(
+                              child: CustomDropdown(
+                                dropdownKey: 'period', // Unique key
+                                icon: Icons.access_time,
+                                label: "Select Division",
+                                items: ["A", "B", "C", "D", "E"],
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: Responsive.height * 2),
+                        // Date Picker: Select Date
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: CustomDatePicker(
+                                label: "Date",
+                                dateController:
+                                    _dateController, // Controller for date input
+                                onDateSelected: (selectedDate) {
+                                  print("Date selected: $selectedDate");
+                                },
+                              ),
+                            ),
+                            SizedBox(width: Responsive.width * 1),
+                            // Another Dropdown: Select Student/Division/etc.
+                            Expanded(
+                              child: CustomDropdown(
+                                dropdownKey: 'division', // Unique key
+                                icon: Icons.group,
+                                label: "Select Period",
+                                items: ["1", "2", "3", "4", "5", "6", "7"],
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        SizedBox(height: Responsive.height * 2),
+                        // Title Tiles (Set Holiday, Set All Present, etc.)
+                        Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            border: Border.all(),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: EdgeInsets.zero,
+                            itemCount: titleIconMap.length,
+                            itemBuilder: (context, index) {
+                              String title = titleIconMap.keys.elementAt(index);
+                              IconData icon =
+                                  titleIconMap.values.elementAt(index);
+                              return TitleTile(
+                                onTap: () {
+                                  print("Tapped on $title");
+                                },
+                                title: title,
+                                icon: icon,
+                              );
+                            },
+                          ),
+                        ),
+                        SizedBox(height: Responsive.height * 2),
+                        const Text("Or"),
+                        SizedBox(height: Responsive.height * 2),
+                        TitleTile(
+                          onTap: () {
+                            context
+                                .pushNamed(AppRouteConst.attendanceRouteName);
+                          },
+                          title: "Take Attendance",
+                          icon: Icons.my_library_books_outlined,
+                        ),
+                        SizedBox(height: Responsive.height * 3),
+                        CustomButton(
+                          text: "Submit",
+                          onPressed: () {
+                            // Example submission: Accessing selected dropdown values
+                            String selectedClass = context
+                                .read<DropdownProvider>()
+                                .getSelectedItem('class');
+                            String selectedPeriod = context
+                                .read<DropdownProvider>()
+                                .getSelectedItem('period');
+                            String selectedDivision = context
+                                .read<DropdownProvider>()
+                                .getSelectedItem('division');
+                            print(
+                                "Selected Class: $selectedClass, Period: $selectedPeriod, Division: $selectedDivision");
+
+                            // Call backend submission function here with selected data
+                            context
+                                .pushNamed(AppRouteConst.attendanceRouteName);
+                          },
+                        ),
+                        SizedBox(height: Responsive.height * 3),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-            Expanded(
-                child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: CustomDropdown(
-                          title: 'Select  Class',
-                          icon: Icons.school,
-                          items: allClasses,
-                          selectedValue: dropdownProvider.selectedClass,
-                          onChanged: (value) {
-                            dropdownProvider.setSelectedClass(
-                                value); // Update the state using provider
-                          },
-                        ),
-                      ),
-                      // SizedBox(width: Responsive.width * 6),
-                      Expanded(
-                        child: CustomDropdown(
-                          title: 'Select Division',
-                          icon: Icons.school,
-                          items: allDivisions,
-                          selectedValue: dropdownProvider.selectedDivision,
-                          onChanged: (value) {
-                            dropdownProvider.setSelectedDivision(
-                                value); // Update the state using provider
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: Responsive.height * 1),
-                  CustomDatePicker(
-                    label: "Date of Birth",
-                    dateController:
-                        _dateController, // Unique controller for end date
-                    onDateSelected: (selectedDate) {
-                      print("End Date selected: $selectedDate");
-                    },
-                  ),
-                  SizedBox(height: Responsive.height * 1),
-                  CustomDropdown(
-                    title: 'Select Period',
-                    icon: Icons.book_outlined,
-                    items: periods,
-                    selectedValue: dropdownProvider.selectedPeriod,
-                    onChanged: (value) {
-                      dropdownProvider.setSelectedPeriod(
-                          value); // Update the state using provider
-                    },
-                  ),
-                  SizedBox(height: Responsive.height * 2),
-                  Container(
-                    padding: EdgeInsets.all(
-                        4), // Ensure there's no padding around the container
-                    decoration: BoxDecoration(
-                      border: Border.all(),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding:
-                          EdgeInsets.zero, // Remove padding inside the ListView
-                      itemCount: titleIconMap.length,
-                      itemBuilder: (context, index) {
-                        // Get the title and icon from the map
-                        String title = titleIconMap.keys.elementAt(index);
-                        IconData icon = titleIconMap.values.elementAt(index);
-                        return TitleTile(
-                          onTap: () {},
-                          title: title,
-                          icon: icon,
-                        );
-                      },
-                    ),
-                  ),
-                  SizedBox(height: Responsive.height * 2),
-                  const Text("Or"),
-                  SizedBox(height: Responsive.height * 2),
-                  TitleTile(
-                      onTap: () {
-                        context.pushNamed(AppRouteConst.attendanceRouteName);
-                      },
-                      title: "Take Attendance",
-                      icon: Icons.my_library_books_outlined),
-                  SizedBox(height: Responsive.height * 3),
-                  CustomButton(
-                      text: "Submit",
-                      onPressed: () {
-                        context.pushNamed(AppRouteConst.attendanceRouteName);
-                      }),
-                  SizedBox(height: Responsive.height * 3),
-                ],
-              ),
-            ))
-          ],
+          ),
         ),
-      )),
+      ),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
+import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 
 class AddNoticePage extends StatefulWidget {
   @override
@@ -126,34 +127,12 @@ class _AddNoticePageState extends State<AddNoticePage> {
             SizedBox(height: 16),
 
             // Date Picker
-            TextField(
-              controller: _dateController,
-              decoration: InputDecoration(
-                labelText: 'Date',
-                labelStyle: TextStyle(
-                  color: Colors.grey, // Change label text color here
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                prefixIcon: Icon(Icons.calendar_today),
-              ),
-              readOnly: true, // To prevent manual editing
-              onTap: () async {
-                DateTime? pickedDate = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime(2101),
-                );
-                if (pickedDate != null) {
-                  setState(() {
-                    _dateController.text =
-                        "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}"; // Format the date as per your requirement
-                  });
-                }
-              },
-            ),
+            CustomDatePicker(
+                dateController: _dateController,
+                onDateSelected: (selectedDate) {
+                  print("End Date selected: $selectedDate");
+                },
+                label: "Select Date"),
             SizedBox(height: 16),
             Text(
               'Notice Details',
@@ -168,8 +147,9 @@ class _AddNoticePageState extends State<AddNoticePage> {
               decoration: InputDecoration(
                 labelText: 'Title',
                 labelStyle: TextStyle(
-                  color: Colors.grey, // Change label text color here
-                ),
+                    color: Colors.grey,
+                    fontSize: 14 // Change label text color here
+                    ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30.0),
                 ),
