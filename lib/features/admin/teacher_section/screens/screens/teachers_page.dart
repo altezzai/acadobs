@@ -163,19 +163,27 @@ class _TeachersPageState extends State<TeachersPage> {
                     child: GestureDetector(
                       // onTap: () => _navigateToTeacherDetails(context, teacher),
                       child: ListTile(
-                          // leading: CircleAvatar(
-                          //     backgroundImage:
-                          //         AssetImage('assets/${teacher['image']}')),
+                          leading: CircleAvatar(
+                              backgroundImage:
+                                  AssetImage('assets/${teacher['image']}')),
                           title: Text(value.teachers[index].fullName ?? "",
                               style: TextStyle(
                                   fontWeight: FontWeight.normal, fontSize: 16)),
-                          subtitle: Text(value.teachers[index].fullName ?? "",
+                          subtitle: Text(
+                              value.teachers[index].classGradeHandling ?? "",
                               style: TextStyle(
                                   fontWeight: FontWeight.normal, fontSize: 15)),
                           trailing: TextButton(
                             child: Text('View'),
-                            onPressed: () =>
-                                _navigateToTeacherDetails(context, teacher),
+                            onPressed: () => context.pushReplacementNamed(
+                              AppRouteConst.AdminteacherdetailsRouteName,
+                              extra: {
+                                'name': value.teachers[index].fullName,
+                                'class':
+                                    value.teachers[index].classGradeHandling,
+                                'image': teacher['image']!,
+                              },
+                            ),
                           )),
                     ),
                   );
@@ -192,18 +200,6 @@ class _TeachersPageState extends State<TeachersPage> {
         backgroundColor: Colors.black,
         foregroundColor: Colors.white,
       ),
-    );
-  }
-
-  void _navigateToTeacherDetails(
-      BuildContext context, Map<String, String> teacher) {
-    context.pushReplacementNamed(
-      AppRouteConst.AdminteacherdetailsRouteName,
-      extra: {
-        'name': teacher['name']!,
-        'class': teacher['class']!,
-        'image': teacher['image']!,
-      },
     );
   }
 }

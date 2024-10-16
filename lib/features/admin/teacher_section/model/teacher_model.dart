@@ -88,17 +88,28 @@ class Teacher {
   factory Teacher.fromJson(Map<String, dynamic> json) => Teacher(
         id: json["id"],
         fullName: json["full_name"],
-        dateOfBirth: json["date_of_birth"] == null
-            ? null
-            : DateTime.parse(json["date_of_birth"]),
-        gender: genderValues.map[json["gender"]]!,
-        address: addressValues.map[json["address"]]!,
+        dateOfBirth: json["date_of_birth"] != null
+            ? DateTime.tryParse(json["date_of_birth"])
+            : null,
+
+        // gender: genderValues.map[json["gender"]]!,
+        // address: addressValues.map[json["address"]]!,
+        gender:
+            json["gender"] != null ? genderValues.map[json["gender"]] : null,
+        address:
+            json["address"] != null ? addressValues.map[json["address"]] : null,
+
         contactNumber: json["contact_number"],
         emailAddress: json["email_address"],
         aadhaarNumber: json["aadhaar_number"],
         bloodGroup: json["blood_group"],
-        nationality: nationalityValues.map[json["nationality"]]!,
-        maritalStatus: maritalStatusValues.map[json["marital_status"]]!,
+        nationality: json["nationality"] != null
+            ? nationalityValues.map[json["nationality"]]
+            : null,
+        maritalStatus: json["marital_status"] != null
+            ? maritalStatusValues.map[json["marital_status"]]
+            : null,
+
         highestQualification: json["highest_qualification"],
         additionalQualifications: json["additional_qualifications"],
         specializationSubjectExpertise:
