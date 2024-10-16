@@ -6,7 +6,7 @@ import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/teacher/data/dropdown_data.dart';
-import 'package:school_app/features/teacher/widgets/custom_dropdown_2.dart';
+
 
 // ignore: must_be_immutable
 class ProgressReport extends StatelessWidget {

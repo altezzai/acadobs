@@ -6,7 +6,6 @@ import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/teacher/homework/widgets/date_picker.dart';
-import 'package:school_app/features/teacher/widgets/custom_dropdown_2.dart';
 
 // ignore: must_be_immutable
 class HomeWork extends StatelessWidget {
