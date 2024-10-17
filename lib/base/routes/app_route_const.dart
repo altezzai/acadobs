@@ -30,6 +30,9 @@ class AppRouteConst {
   static const String PaymentPageRouteName = 'paymentpage';
   static const String AddHomeworkRouteName = 'addhomework';
 
+  static const String ParentHomeRouteName = 'parenthome';
+  
+
  
  static const String bottomNavRouteName = 'bottomNav';
 

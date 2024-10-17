@@ -15,6 +15,7 @@ import 'package:school_app/features/admin/student/screens/studentpage.dart';
 import 'package:school_app/features/admin/teacher_section/screens/screens/teacherdetails.dart';
 import 'package:school_app/features/admin/teacher_section/screens/screens/teachers_page.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+import 'package:school_app/features/parent/screen/homescreen.dart';
 import 'package:school_app/features/teacher/attendance/screens/take_attendance.dart';
 import 'package:school_app/features/teacher/duties/duty_detail.dart';
 import 'package:school_app/features/teacher/homework/screens/work.dart';
@@ -221,6 +222,14 @@ class Approuter {
         path: '/addhomework',
         pageBuilder: (context, state) {
           return MaterialPage(child: AddHomeworkPage());
+        },
+      ),
+
+      GoRoute(
+        name: AppRouteConst.ParentHomeRouteName,
+        path: '/parenthome',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: ParentHomeScreen());
         },
       ),
     ],
