@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
+import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
 import 'package:school_app/features/admin/notices/widgets/event_item.dart';
 import 'package:school_app/features/admin/notices/widgets/notice_item.dart';
 
@@ -78,8 +81,8 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
             child: TabBarView(
               controller: _tabController,
               children: [
-                _buildNoticesList(),
-                _buildEventsList(),
+                _buildNotices(),
+                _buildEvents(),
               ],
             ),
           ),
@@ -88,63 +91,51 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
     );
   }
 
-  Widget _buildNoticesList() {
-    return ListView(
-      padding: EdgeInsets.all(8.0),
-      children: [
-        _buildDivider('Today'),
-        NoticeItem(
-            title: 'PTA meeting class XII',
-            date: '15 - 06 - 24',
-            time: '09:00 am'),
-        _buildDivider('Yesterday'),
-        NoticeItem(
-            title: 'PTA meeting class 09',
-            date: '15 - 06 - 24',
-            time: '09:00 am'),
-        NoticeItem(
-            title: 'PTA meeting class 02',
-            date: '15 - 06 - 24',
-            time: '09:00 am'),
-      ],
-    );
+  Widget _buildNotices() {
+    context.read<NoticeController>().getNotices();
+    return Consumer<NoticeController>(builder: (context, value, child) {
+      return ListView.builder(
+          itemCount: value.notices.length,
+          itemBuilder: (context, index) {
+            final notice = value.notices[index];
+            return NoticeItem(
+                title: notice.title ?? "",
+                date: DateFormatter.formatDateString(notice.date.toString()),
+                time: "9.00 AM");
+          });
+    });
   }
 
-  Widget _buildEventsList() {
-    return ListView(
-      padding: EdgeInsets.all(8.0),
-      children: [
-        _buildDivider('Today'),
-        EventItem(
-          title: 'Sports day',
-          description: 'National sports day will be conducted in our school...',
-          date: '15 - 06 - 24',
-          imagePath: 'assets/sports_day.png',
-        ),
-        _buildDivider('Yesterday'),
-        EventItem(
-          title: 'Cycle competition',
-          description: 'Cycle race will be held on this day...',
-          date: '15 - 06 - 24',
-          imagePath: 'assets/cycle.png',
-        ),
-      ],
-    );
+  Widget _buildEvents() {
+    context.read<NoticeController>().getEvents();
+    return Consumer<NoticeController>(builder: (context, value, child) {
+      return ListView.builder(
+          itemCount: value.events.length,
+          itemBuilder: (context, index) {
+            final event = value.events[index];
+            return EventItem(
+              title: event.title ?? "",
+              description: event.description ?? "",
+              date: DateFormatter.formatDateString(event.eventDate.toString()),
+              imagePath: 'assets/sports_day.png',
+            );
+          });
+    });
   }
 
-  Widget _buildDivider(String text) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-      child: Row(
-        children: [
-          Expanded(child: Divider()),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Text(text, style: TextStyle(color: Colors.grey)),
-          ),
-          Expanded(child: Divider()),
-        ],
-      ),
-    );
-  }
+  // Widget _buildDivider(String text) {
+  //   return Padding(
+  //     padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+  //     child: Row(
+  //       children: [
+  //         Expanded(child: Divider()),
+  //         Padding(
+  //           padding: const EdgeInsets.symmetric(horizontal: 8.0),
+  //           child: Text(text, style: TextStyle(color: Colors.grey)),
+  //         ),
+  //         Expanded(child: Divider()),
+  //       ],
+  //     ),
+  //   );
+  // }
 }

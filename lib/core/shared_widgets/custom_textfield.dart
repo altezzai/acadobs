@@ -5,6 +5,7 @@ class CustomTextfield extends StatelessWidget {
   final String hintText;
   final TextInputType? keyBoardtype;
   final ValueNotifier<bool> isObscure;
+  final TextEditingController? controller;
   final bool isPasswordField;
   final Icon? iconData;
   final TextStyle? hintStyle;
@@ -18,6 +19,7 @@ class CustomTextfield extends StatelessWidget {
    // Add controller parameter
 
   CustomTextfield({
+    this.controller,
     super.key,
     required this.hintText,
     required this.iconData,
@@ -47,6 +49,7 @@ class CustomTextfield extends StatelessWidget {
         builder: (context, value, child) {
           return TextFormField(
              // Pass the controller to the TextFormField
+             controller: controller,
             style: textStyle ??
                 Theme.of(context).textTheme.bodySmall!.copyWith(
                       color: Colors.black87,

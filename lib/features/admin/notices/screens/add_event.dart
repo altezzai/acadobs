@@ -1,9 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:school_app/core/shared_widgets/custom_textfield.dart';
-import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
+import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
+import 'package:school_app/core/shared_widgets/custom_textfield.dart';
+import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
 
 class AddEventPage extends StatefulWidget {
   @override
@@ -14,6 +16,9 @@ class _AddEventPageState extends State<AddEventPage> {
   final _formKey = GlobalKey<FormState>();
   String? selectedFile;
   final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+
   Future<void> pickFile() async {
     // ignore: unused_local_variable
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -24,16 +29,6 @@ class _AddEventPageState extends State<AddEventPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('Add Event'),
-      //   centerTitle: true,
-      //   leading: IconButton(
-      //     icon: Icon(Icons.arrow_back),
-      //     onPressed: () {
-      //       context.pushReplacementNamed(AppRouteConst.AdminHomeRouteName);
-      //     },
-      //   ),
-      // ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -85,6 +80,7 @@ class _AddEventPageState extends State<AddEventPage> {
               ),
               SizedBox(height: 20),
               CustomTextfield(
+                controller: _titleController,
                 hintText: 'Title',
                 iconData: Icon(Icons.title),
                 validator: (value) {
@@ -96,6 +92,7 @@ class _AddEventPageState extends State<AddEventPage> {
               ),
               SizedBox(height: 20),
               TextField(
+                controller: _descriptionController,
                 maxLines: 4,
                 decoration: InputDecoration(
                   labelText: 'Description',
@@ -147,12 +144,16 @@ class _AddEventPageState extends State<AddEventPage> {
                 child: CustomButton(
                   text: 'Submit',
                   onPressed: () {
-                    if (_formKey.currentState?.validate() ?? false) {
-                      // Handle form submission logic here
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Form successfully submitted!')),
-                      );
-                    }
+                    context.read<NoticeController>().addEvent(
+                        title: _titleController.text,
+                        description: _descriptionController.text,
+                        date: _dateController.text);
+                    // if (_formKey.currentState?.validate() ?? false) {
+                    //   // Handle form submission logic here
+                    //   ScaffoldMessenger.of(context).showSnackBar(
+                    //     SnackBar(content: Text('Form successfully submitted!')),
+                    //   );
+                    // }
                   },
                 ),
               ),
