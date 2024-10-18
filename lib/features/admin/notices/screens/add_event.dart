@@ -13,7 +13,7 @@ class AddEventPage extends StatefulWidget {
 }
 
 class _AddEventPageState extends State<AddEventPage> {
-  final _formKey = GlobalKey<FormState>();
+  // final _formKey = GlobalKey<FormState>();
   String? selectedFile;
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();

@@ -1,14 +1,17 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class DropdownProvider with ChangeNotifier {
-  Map<String, String> _selectedItems = {}; // Store selected items for multiple dropdowns
+  // Store selected items for each dropdownKey
+  final Map<String, String> _selectedItems = {};
 
-  String getSelectedItem(String dropdownKey) {
-    return _selectedItems[dropdownKey] ?? '';
+  // Method to get selected item for a dropdownKey
+  String getSelectedItem(String key) {
+    return _selectedItems[key] ?? '';
   }
 
-  void setSelectedItem(String dropdownKey, String newValue) {
-    _selectedItems[dropdownKey] = newValue;
-    notifyListeners(); // Notify listeners when the value changes
+  // Method to set the selected item
+  void setSelectedItem(String key, String value) {
+    _selectedItems[key] = value;
+    notifyListeners();
   }
 }

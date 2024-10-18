@@ -14,6 +14,28 @@ class NoticeServices {
     return response;
   }
 
+  // Add event
+  Future<Response> addNotice(
+      {
+        required String audience_type,
+        required String title,
+      required String description,
+      required String date}) async {
+    // Create the form data to pass to the API
+    final formData = {
+      'audience_type': audience_type,
+      'title': title,
+      'description': description,
+      'event_date': date, // Make sure this date is a string
+    };
+
+    // Call the ApiServices post method with formData and isFormData: true
+    final Response response =
+        await ApiServices.post("/events", formData, isFormData: true);
+
+    return response;
+  }
+
 // Add event
   Future<Response> addEvent(
       {required String title,

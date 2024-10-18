@@ -1,12 +1,13 @@
-import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
-import 'package:school_app/core/shared_widgets/custom_textfield.dart';
-import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
-import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
-
-
+import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
+import 'package:school_app/core/shared_widgets/custom_textfield.dart';
+import 'package:school_app/features/teacher/controller/dropdown_provider.dart';
+import 'package:school_app/features/teacher/widgets/custom_dropdown.dart';
 
 class AddNoticePage extends StatefulWidget {
   @override
@@ -21,6 +22,8 @@ class _AddNoticePageState extends State<AddNoticePage> {
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _dateController = TextEditingController();
+  final TextEditingController classController = TextEditingController();
+  final List<String> classes = ['Class 1', 'Class 2', 'Class 3', 'Class 4'];
 
   Future<void> pickFile() async {
     // ignore: unused_local_variable
@@ -32,17 +35,6 @@ class _AddNoticePageState extends State<AddNoticePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // appBar: AppBar(
-        //   title: Text('Add Notice'),
-        //   centerTitle: true,
-        //   leading: IconButton(
-        //     icon: Icon(Icons.arrow_back),
-        //     onPressed: () {
-        //       context.pushReplacementNamed(
-        //                   AppRouteConst.AdminHomeRouteName);
-        //     },
-        //   ),
-        // ),
         body: SingleChildScrollView(
       // Use SingleChildScrollView here
       child: Padding(
@@ -66,53 +58,37 @@ class _AddNoticePageState extends State<AddNoticePage> {
             SizedBox(height: 20),
             // Target Audience Dropdown
             CustomDropdown(
-              hintText: 'Select Audience',
-              value: selectedAudience,
-              items: ['All Students', 'All Teachers'],
-              onChanged: (value) {
-                setState(() {
-                  selectedAudience = value;
-                });
-              },
-              iconData: const Icon(Icons.person),
+              dropdownKey: 'targetAudience',
+              label: 'Select Audience',
+              icon: Icons.school,
+              items: ['All', 'Teachers', 'Parents'],
             ),
-
-            SizedBox(height: 16),
-
-            // Class Dropdown
+            SizedBox(height: Responsive.height * 2),
+            // Row for Class and Division Dropdowns
             Row(
               children: [
+                // Expanded dropdown for Class
                 Expanded(
                   child: CustomDropdown(
-                    hintText: 'Class',
-                    value: selectedClass,
+                    dropdownKey: 'classDropdown',
+                    label: 'Select Class',
+                    icon: Icons.school,
                     items: ['Class 1', 'Class 2', 'Class 3'],
-                    onChanged: (value) {
-                      setState(() {
-                        selectedClass = value;
-                      });
-                    },
-                    iconData: const Icon(Icons.school),
                   ),
                 ),
-                const SizedBox(width: 16), // Space between Class and Division
+                SizedBox(width: 16), // Space between the dropdowns
+                // Expanded dropdown for Division
                 Expanded(
                   child: CustomDropdown(
-                    hintText: 'Division',
-                    value: selectedDivision,
-                    items: ['Division A', 'Division B', 'Division C'],
-                    onChanged: (value) {
-                      setState(() {
-                        selectedDivision = value;
-                      });
-                    },
-                    iconData: const Icon(Icons.class_),
+                    dropdownKey: 'divisionDropdown',
+                    label: 'Select Division',
+                    icon: Icons.group,
+                    items: ['A', 'B', 'C'],
                   ),
                 ),
               ],
             ),
             SizedBox(height: 16),
-
             // Date Picker
             CustomDatePicker(
               label: "Date",
@@ -193,12 +169,13 @@ class _AddNoticePageState extends State<AddNoticePage> {
               child: CustomButton(
                 text: 'Submit',
                 onPressed: () {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    // Handle form submission logic here
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Form successfully submitted!')),
-                    );
-                  }
+                  final selected_Audience = context.read<DropdownProvider>().getSelectedItem('targetAudience');
+                  // if (_formKey.currentState?.validate() ?? false) {
+                  //   // Handle form submission logic here
+                  //   ScaffoldMessenger.of(context).showSnackBar(
+                  //     SnackBar(content: Text('Form successfully submitted!')),
+                  //   );
+                  // }
                 },
               ),
             ),

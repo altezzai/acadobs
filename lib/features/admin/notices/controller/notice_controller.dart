@@ -46,6 +46,24 @@ class NoticeController extends ChangeNotifier {
     notifyListeners();
   }
 
+   // add events
+  Future<void> addNotice(
+      {
+        required String audience_type,
+        required String title,
+      required String description,
+      required String date}) async {
+    try {
+      final response = await NoticeServices()
+          .addNotice(title: title, description: description, date: date, audience_type: audience_type);
+      if (response.statusCode == 201) {
+        log(">>>>>>${response.statusMessage}");
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
   // add events
   Future<void> addEvent(
       {required String title,
