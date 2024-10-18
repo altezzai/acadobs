@@ -153,7 +153,7 @@ class _TeachersPageState extends State<TeachersPage> {
               return ListView.builder(
                 itemCount: value.teachers.length,
                 itemBuilder: (context, index) {
-                  final teacher = filteredTeachers[index];
+                  // final teacher = filteredTeachers[index];
                   // final teacher = value.teachers[index];
                   return Card(
                     margin:
@@ -164,8 +164,8 @@ class _TeachersPageState extends State<TeachersPage> {
                       // onTap: () => _navigateToTeacherDetails(context, teacher),
                       child: ListTile(
                           leading: CircleAvatar(
-                              backgroundImage:
-                                  AssetImage('assets/${teacher['image']}')),
+                            backgroundImage: AssetImage('student5.png'),
+                          ),
                           title: Text(value.teachers[index].fullName ?? "",
                               style: TextStyle(
                                   fontWeight: FontWeight.normal, fontSize: 16)),
@@ -181,7 +181,7 @@ class _TeachersPageState extends State<TeachersPage> {
                                 'name': value.teachers[index].fullName,
                                 'class':
                                     value.teachers[index].classGradeHandling,
-                                'image': teacher['image']!,
+                                'image': 'student5.png',
                               },
                             ),
                           )),
