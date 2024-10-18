@@ -55,12 +55,14 @@ class CustomDropdown extends StatelessWidget {
   void _showDropdown(BuildContext context) {
     showMenu<String>(
       context: context,
-      position: RelativeRect.fromLTRB(100, 100, 100, 100), // Adjust position if needed
+      position: RelativeRect.fromLTRB(
+          100, 100, 100, 100), // Adjust position if needed
       items: items.map((String item) {
         return PopupMenuItem<String>(
           value: item,
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+            padding:
+                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
             child: Text(
               item,
               style: TextStyle(fontSize: 14.0, color: Colors.black87),

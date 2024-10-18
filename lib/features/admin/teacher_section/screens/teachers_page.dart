@@ -194,7 +194,9 @@ class _TeachersPageState extends State<TeachersPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          context.goNamed(AppRouteConst.AddTeacherRouteName);
+        },
         label: Text('Add New Teacher'),
         icon: Icon(Icons.add),
         backgroundColor: Colors.black,
