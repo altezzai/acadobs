@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:school_app/base/theme/button_theme.dart';
 import 'package:school_app/base/theme/input_decoration.dart';
-import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/theme/theme_data.dart';
 
 import '../utils/constants.dart';
@@ -15,7 +14,7 @@ class AppTheme {
       primaryColor: blackColor,
       scaffoldBackgroundColor: Colors.grey.shade200,
       iconTheme: const IconThemeData(color: blackColor),
-      textTheme: textThemeData,
+      // textTheme: textThemeData,
       elevatedButtonTheme: elevatedButtonThemeData,
       textButtonTheme: textButtonThemeData,
       outlinedButtonTheme: outlinedButtonTheme(),
@@ -34,7 +33,7 @@ class AppTheme {
       primaryColor: primaryColor,
       scaffoldBackgroundColor: Colors.black,
       iconTheme: const IconThemeData(color: blackColor),
-      textTheme: textThemeData,
+      // textTheme: textThemeData,
       elevatedButtonTheme: elevatedButtonThemeData,
       textButtonTheme: textButtonThemeData,
       outlinedButtonTheme: outlinedButtonTheme(),

@@ -3,8 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
+import 'package:school_app/core/shared_widgets/add_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
-import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
 import 'package:school_app/features/admin/notices/widgets/event_item.dart';
 import 'package:school_app/features/admin/notices/widgets/notice_item.dart';
@@ -49,23 +49,21 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
             child: Row(
               children: [
                 Expanded(
-                  child: CustomButton(
-                    text: 'Add Notice',
-                    onPressed: () {
-                      context.pushNamed(AppRouteConst.AddNoticeRouteName);
-                    },
-                  ),
+                  child: AddButton(
+                      onPressed: () {
+                        context.pushNamed(AppRouteConst.AddNoticeRouteName);
+                      },
+                      text: "Add Notice"),
                 ),
                 SizedBox(
                   width: screenWidth > 600 ? 32 : 16,
                 ),
                 Expanded(
-                  child: CustomButton(
-                    text: 'Add Events',
-                    onPressed: () {
-                      context.pushNamed(AppRouteConst.AddEventRouteName);
-                    },
-                  ),
+                  child: AddButton(
+                      onPressed: () {
+                        context.pushNamed(AppRouteConst.AddEventRouteName);
+                      },
+                      text: "Add Notice"),
                 ),
               ],
             ),

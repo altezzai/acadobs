@@ -22,6 +22,8 @@ class CustomDropdown extends StatelessWidget {
       builder: (context, dropdownProvider, child) {
         return DropdownButtonFormField<String>(
           decoration: InputDecoration(
+            contentPadding:
+                EdgeInsets.symmetric(vertical: 14.0, horizontal: 15.0),
             labelText: label,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
