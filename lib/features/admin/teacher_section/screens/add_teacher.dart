@@ -8,6 +8,7 @@ import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/admin/teacher_section/controller/teacher_controller.dart';
+import 'package:school_app/features/teacher/controller/dropdown_provider.dart';
 import 'package:school_app/features/teacher/widgets/custom_dropdown.dart';
 
 class AddTeacher extends StatefulWidget {
@@ -20,9 +21,23 @@ class AddTeacher extends StatefulWidget {
 class _AddTeacherState extends State<AddTeacher> {
   String? selectedGender;
 
+  // textediting controllers
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _dateOfBirthController = TextEditingController();
-  // final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    _nameController.dispose();
+    _dateOfBirthController.dispose();
+    _addressController.dispose();
+    _phoneController.dispose();
+    _emailController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,15 +89,16 @@ class _AddTeacherState extends State<AddTeacher> {
                 height: Responsive.height * 1,
               ),
               CustomDropdown(
-                dropdownKey: 'Gender',
+                dropdownKey: 'gender',
                 label: 'Gender',
                 icon: Icons.person_2_outlined,
-                items: ['male', 'female', 'other'],
+                items: ['Male', 'Female', 'Other'],
               ),
               SizedBox(
                 height: Responsive.height * 1,
               ),
               CustomTextfield(
+                controller: _addressController, //Add controller
                 hintText: 'Address',
                 iconData: Icon(Icons.location_on),
                 keyBoardtype: TextInputType.streetAddress,
@@ -91,6 +107,7 @@ class _AddTeacherState extends State<AddTeacher> {
                 height: Responsive.height * 1,
               ),
               CustomTextfield(
+                controller: _phoneController, //Add controller
                 hintText: 'Phone Number',
                 iconData: Icon(Icons.phone),
                 keyBoardtype: TextInputType.phone,
@@ -99,6 +116,7 @@ class _AddTeacherState extends State<AddTeacher> {
                 height: Responsive.height * 1,
               ),
               CustomTextfield(
+                controller: _emailController, //Add controller
                 hintText: 'Email',
                 iconData: Icon(Icons.email),
               ),
@@ -108,7 +126,16 @@ class _AddTeacherState extends State<AddTeacher> {
               CustomButton(
                   text: 'Submit',
                   onPressed: () {
-                    context.read<TeacherController>().addTeacher();
+                    final selectedGender = context
+                        .read<DropdownProvider>()
+                        .getSelectedItem('gender');
+                    context.read<TeacherController>().addNewTeacher(context,
+                        fullName: _nameController.text,
+                        dateOfBirth: _dateOfBirthController.text,
+                        gender: selectedGender,
+                        address: _addressController.text,
+                        contactNumber: _phoneController.text,
+                        emailAddress: _emailController.text);
                   }),
             ],
           ),

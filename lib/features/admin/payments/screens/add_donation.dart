@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:go_router/go_router.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
@@ -48,7 +51,10 @@ class _AddDonationPageState extends State<AddDonationPage> {
               title: "Add Donation",
               isProfileIcon: false,
               onTap: () {
-                Navigator.pop(context);
+                context.goNamed(
+                  AppRouteConst.bottomNavRouteName,
+                  extra: UserType.admin, // Pass the userType to the next screen
+                );
               },
             ),
             Expanded(

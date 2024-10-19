@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/admin/teacher_section/controller/teacher_controller.dart';
 
 class TeachersPage extends StatefulWidget {
@@ -71,7 +72,12 @@ class _TeachersPageState extends State<TeachersPage> {
         ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () =>
+              // Navigator.pop(context),
+              context.goNamed(
+            AppRouteConst.bottomNavRouteName,
+            extra: UserType.admin, // Pass the userType to the next screen
+          ),
         ),
         actions: [
           Padding(
@@ -164,7 +170,7 @@ class _TeachersPageState extends State<TeachersPage> {
                       // onTap: () => _navigateToTeacherDetails(context, teacher),
                       child: ListTile(
                           leading: CircleAvatar(
-                            backgroundImage: AssetImage('student5.png'),
+                            backgroundImage: AssetImage('assets/student5.png'),
                           ),
                           title: Text(value.teachers[index].fullName ?? "",
                               style: TextStyle(

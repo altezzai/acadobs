@@ -1,5 +1,8 @@
-import 'package:dio/dio.dart';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/features/admin/teacher_section/model/teacher_model.dart';
 import 'package:school_app/features/admin/teacher_section/services/teacher_services.dart';
 
@@ -9,14 +12,15 @@ class TeacherController extends ChangeNotifier {
 
   Future<void> getTeacherDetails() async {
     try {
-      final response = await TeacherServices()
-          .getTeacher("/teachers"); // Updated method call
+      final response =
+          await TeacherServices().getTeacher(); // Updated method call
       print("***********${response.statusCode}");
       print(response.toString());
       if (response.statusCode == 200) {
         _teachers = (response.data as List<dynamic>)
             .map((result) => Teacher.fromJson(result))
             .toList();
+            
       }
     } catch (e) {
       print(e);
@@ -25,27 +29,53 @@ class TeacherController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addTeacher() async {
+  // Future<void> addTeacher() async {
+  //   try {
+  //     // Use the formData you've already defined
+  //     Response response =
+  //         await TeacherServices().addTeacher("/teachers", formData);
+  //     if (response.statusCode == 201) {
+  //       print("Teacher added successfully: ${response.data}");
+  //     } else {
+  //       print("Failed to add teacher: ${response.statusCode}");
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
+
+  // FormData formData = FormData.fromMap({
+  //   "name": "Soorya",
+  //   "date_of_birth": "1980-05-15",
+  //   "gender": "female",
+  //   "address": "123 Elm Street, Springfield",
+  //   "phone_number": "458734567368",
+  //   "email": "soo@example.com",
+  // });
+
+  // ********Add New Teacher************
+  Future<void> addNewTeacher(
+    BuildContext context,
+      {required String fullName,
+      required String dateOfBirth,
+      required String gender,
+      required String address,
+      required String contactNumber,
+      required String emailAddress}) async {
     try {
-      // Use the formData you've already defined
-      Response response =
-          await TeacherServices().addTeacher("/teachers", formData);
+      final response = await TeacherServices().addNewTeacher(
+          fullName: fullName,
+          dateOfBirth: dateOfBirth,
+          gender: gender,
+          address: address,
+          contactNumber: contactNumber,
+          emailAddress: emailAddress);
       if (response.statusCode == 201) {
-        print("Teacher added successfully: ${response.data}");
-      } else {
-        print("Failed to add teacher: ${response.statusCode}");
+        log(">>>>>>>>>>>>>Teacher Added}");
+        context.goNamed(AppRouteConst.AdminteacherRouteName);
       }
     } catch (e) {
-      print(e);
+      log(e.toString());
     }
   }
-
-  FormData formData = FormData.fromMap({
-    "name": "Soorya",
-    "date_of_birth": "1980-05-15",
-    "gender": "female",
-    "address": "123 Elm Street, Springfield",
-    "phone_number": "458734567368",
-    "email": "soo@example.com",
-  });
 }

@@ -1,11 +1,14 @@
-import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
-import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
-import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 // ignore: unused_import
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
+import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
+import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 
 class AddPaymentPage extends StatefulWidget {
   const AddPaymentPage({super.key});
@@ -49,7 +52,10 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
               title: "Add Payment",
               isProfileIcon: false,
               onTap: () {
-                Navigator.pop(context);
+                context.goNamed(
+                  AppRouteConst.bottomNavRouteName,
+                  extra: UserType.admin, // Pass the userType to the next screen
+                );
               },
             ),
             Row(
