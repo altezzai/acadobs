@@ -169,9 +169,9 @@ class _AddNoticePageState extends State<AddNoticePage> {
               child: CustomButton(
                 text: 'Submit',
                 onPressed: () {
-                  final selected_Audience = context
-                      .read<DropdownProvider>()
-                      .getSelectedItem('targetAudience');
+                  // final selected_Audience = context
+                  //     .read<DropdownProvider>()
+                  //     .getSelectedItem('targetAudience');
                   // if (_formKey.currentState?.validate() ?? false) {
                   //   // Handle form submission logic here
                   //   ScaffoldMessenger.of(context).showSnackBar(
