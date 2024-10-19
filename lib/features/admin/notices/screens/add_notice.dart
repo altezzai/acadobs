@@ -7,7 +7,7 @@ import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/teacher/controller/dropdown_provider.dart';
-import 'package:school_app/features/teacher/widgets/custom_dropdown.dart';
+import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 
 class AddNoticePage extends StatefulWidget {
   @override
@@ -169,7 +169,9 @@ class _AddNoticePageState extends State<AddNoticePage> {
               child: CustomButton(
                 text: 'Submit',
                 onPressed: () {
-                  final selected_Audience = context.read<DropdownProvider>().getSelectedItem('targetAudience');
+                  final selected_Audience = context
+                      .read<DropdownProvider>()
+                      .getSelectedItem('targetAudience');
                   // if (_formKey.currentState?.validate() ?? false) {
                   //   // Handle form submission logic here
                   //   ScaffoldMessenger.of(context).showSnackBar(

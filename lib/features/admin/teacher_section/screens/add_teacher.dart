@@ -9,7 +9,7 @@ import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/admin/teacher_section/controller/teacher_controller.dart';
 import 'package:school_app/features/teacher/controller/dropdown_provider.dart';
-import 'package:school_app/features/teacher/widgets/custom_dropdown.dart';
+import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 
 class AddTeacher extends StatefulWidget {
   const AddTeacher({super.key});

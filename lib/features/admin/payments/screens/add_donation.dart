@@ -5,8 +5,8 @@ import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
-import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
+import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 
 class AddDonationPage extends StatefulWidget {
   const AddDonationPage({super.key});
@@ -65,44 +65,29 @@ class _AddDonationPageState extends State<AddDonationPage> {
                       children: [
                         Expanded(
                           child: CustomDropdown(
-                            hintText: 'Class',
-                            value: selectedClass,
+                            dropdownKey: 'class',
+                            label: 'Class',
                             items: ['Class 1', 'Class 2', 'Class 3'],
-                            onChanged: (value) {
-                              setState(() {
-                                selectedClass = value;
-                              });
-                            },
-                            iconData: const Icon(Icons.school),
+                            icon: Icons.school,
                           ),
                         ),
                         const SizedBox(width: 16),
                         Expanded(
                           child: CustomDropdown(
-                            hintText: 'Division',
-                            value: selectedDivision,
+                            dropdownKey: 'division',
+                            label: 'Division',
                             items: ['Division A', 'Division B', 'Division C'],
-                            onChanged: (value) {
-                              setState(() {
-                                selectedDivision = value;
-                              });
-                            },
-                            iconData: const Icon(Icons.group),
+                            icon: Icons.group,
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 16),
                     CustomDropdown(
-                      hintText: 'Select Student',
-                      value: selectedStudent,
+                      dropdownKey: 'select student',
+                      label: 'Select studenr',
                       items: ['Student 1', 'Student 2', 'Student 3'],
-                      onChanged: (value) {
-                        setState(() {
-                          selectedStudent = value;
-                        });
-                      },
-                      iconData: const Icon(Icons.person),
+                      icon: Icons.person,
                     ),
                     const SizedBox(height: 16),
                     Column(
