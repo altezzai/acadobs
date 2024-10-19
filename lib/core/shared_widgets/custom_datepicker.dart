@@ -49,7 +49,7 @@ class CustomDatePicker extends StatelessWidget {
           fontWeight:
               FontWeight.normal), // Smaller font size for the input text
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 15.0),
+        contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
         hintText: hintText,
         hintStyle: TextStyle(
           color: Colors.grey,

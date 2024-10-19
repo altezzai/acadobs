@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/constants.dart';
 import 'package:school_app/core/shared_widgets/add_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/admin/payments/widgets/payment_item.dart';
@@ -35,6 +36,7 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
               children: [
                 Expanded(
                   child: AddButton(
+                      iconPath: paymentIcon,
                       onPressed: () {
                         context.pushNamed(AppRouteConst.AddPaymentRouteName);
                       },
@@ -45,6 +47,7 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
                 ),
                 Expanded(
                   child: AddButton(
+                      iconPath: donationIcon,
                       onPressed: () {
                         context.pushNamed(AppRouteConst.AddDonationRouteName);
                       },

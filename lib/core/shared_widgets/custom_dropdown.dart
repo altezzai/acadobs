@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:school_app/features/teacher/controller/dropdown_provider.dart';
+import 'package:school_app/core/controller/dropdown_provider.dart';
 
 class CustomDropdown extends StatelessWidget {
   final String dropdownKey; // Unique key for each dropdown

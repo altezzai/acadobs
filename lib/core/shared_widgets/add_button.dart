@@ -5,10 +5,10 @@ import 'package:school_app/base/utils/responsive.dart';
 class AddButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String text;
-  // final String icon;
+  final String iconPath;
   const AddButton({
     super.key,
-    // required this.icon,
+    required this.iconPath,
     required this.onPressed,
     required this.text,
   });
@@ -32,8 +32,9 @@ class AddButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                noticeIcon,
-                height: 24,
+                iconPath,
+                height: 22,
+                width: 20,
                 color: whiteColor,
               ),
               const SizedBox(height: 6),

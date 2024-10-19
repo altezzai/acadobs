@@ -33,8 +33,6 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
       body: Column(
         children: [
@@ -51,6 +49,7 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
               children: [
                 Expanded(
                   child: AddButton(
+                    iconPath: noticeIcon,
                       onPressed: () {
                         context.pushNamed(AppRouteConst.AddNoticeRouteName);
                       },
@@ -64,6 +63,7 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
                       onPressed: () {
                         context.pushNamed(AppRouteConst.AddEventRouteName);
                       },
+                      iconPath: eventIcon,
                       text: "Add Event"),
                 ),
               ],
@@ -125,20 +125,4 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
           });
     });
   }
-
-  // Widget _buildDivider(String text) {
-  //   return Padding(
-  //     padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-  //     child: Row(
-  //       children: [
-  //         Expanded(child: Divider()),
-  //         Padding(
-  //           padding: const EdgeInsets.symmetric(horizontal: 8.0),
-  //           child: Text(text, style: TextStyle(color: Colors.grey)),
-  //         ),
-  //         Expanded(child: Divider()),
-  //       ],
-  //     ),
-  //   );
-  // }
 }
