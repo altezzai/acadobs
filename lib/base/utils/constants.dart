@@ -48,4 +48,7 @@ const double defaultBorderRadius = 30.0;
 const Duration defaultDuration = Duration(milliseconds: 300);
 
 
+// icons
+const String noticeIcon = "assets/icons/notice.png";
+
 

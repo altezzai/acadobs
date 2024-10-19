@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/features/admin/notices/models/event_model.dart';
 import 'package:school_app/features/admin/notices/models/notice_model.dart';
 import 'package:school_app/features/admin/notices/services/notice_services.dart';
@@ -48,6 +50,7 @@ class NoticeController extends ChangeNotifier {
 
    // add events
   Future<void> addNotice(
+    BuildContext context,
       {
         required String audience_type,
         required String title,
@@ -58,6 +61,7 @@ class NoticeController extends ChangeNotifier {
           .addNotice(title: title, description: description, date: date, audience_type: audience_type);
       if (response.statusCode == 201) {
         log(">>>>>>${response.statusMessage}");
+        context.goNamed(AppRouteConst.NoticePageRouteName);
       }
     } catch (e) {
       log(e.toString());
@@ -66,6 +70,7 @@ class NoticeController extends ChangeNotifier {
 
   // add events
   Future<void> addEvent(
+    BuildContext context,
       {required String title,
       required String description,
       required String date}) async {
@@ -74,6 +79,7 @@ class NoticeController extends ChangeNotifier {
           .addEvent(title: title, description: description, date: date);
       if (response.statusCode == 201) {
         log(">>>>>>${response.statusMessage}");
+        context.goNamed(AppRouteConst.NoticePageRouteName);
       }
     } catch (e) {
       log(e.toString());

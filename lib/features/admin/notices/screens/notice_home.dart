@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/constants.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/core/shared_widgets/add_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
@@ -56,18 +57,22 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
                       text: "Add Notice"),
                 ),
                 SizedBox(
-                  width: screenWidth > 600 ? 32 : 16,
+                  width: 16,
                 ),
                 Expanded(
                   child: AddButton(
                       onPressed: () {
                         context.pushNamed(AppRouteConst.AddEventRouteName);
                       },
-                      text: "Add Notice"),
+                      text: "Add Event"),
                 ),
               ],
             ),
           ),
+          // Image.asset(
+          //   noticeIcon,
+          //   color: Colors.green,
+          // ),
           TabBar(
             controller: _tabController,
             tabs: [

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:school_app/base/utils/constants.dart';
 import 'package:school_app/base/utils/responsive.dart';
 
 class AddButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String text;
+  // final String icon;
   const AddButton({
     super.key,
+    // required this.icon,
     required this.onPressed,
     required this.text,
   });
@@ -14,7 +17,7 @@ class AddButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: Responsive.width * 36,
-      height: Responsive.height * 8,
+      height: Responsive.height * 9,
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             padding: EdgeInsets.all(10),
@@ -25,7 +28,18 @@ class AddButton extends StatelessWidget {
             ),
           ),
           onPressed: onPressed,
-          child: Text(text)),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                noticeIcon,
+                height: 24,
+                color: whiteColor,
+              ),
+              const SizedBox(height: 6),
+              Text(text),
+            ],
+          )),
     );
   }
 }

@@ -185,6 +185,7 @@ class _AddNoticePageState extends State<AddNoticePage> {
                       .read<DropdownProvider>()
                       .getSelectedItem('targetAudience');
                   context.read<NoticeController>().addNotice(
+                    context,
                       audience_type: selected_Audience,
                       title: _titleController.text,
                       description: _descriptionController.text,
