@@ -4,8 +4,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
-import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 
 class AddStudentPage extends StatefulWidget {
   @override
@@ -102,15 +102,10 @@ class _AddStudentPageState extends State<AddStudentPage> {
                     // Class Dropdown
                     Expanded(
                       child: CustomDropdown(
-                        hintText: 'Class',
-                        value: selectedClass,
+                        dropdownKey: 'class',
+                        label: 'Class',
                         items: ['V', 'VI', 'VII', 'VIII', 'IX', 'X'],
-                        onChanged: (value) {
-                          setState(() {
-                            selectedClass = value;
-                          });
-                        },
-                        iconData: const Icon(Icons.school),
+                        icon: Icons.school,
                       ),
                     ),
                     SizedBox(width: 10),
@@ -118,15 +113,10 @@ class _AddStudentPageState extends State<AddStudentPage> {
                     // Division Dropdown
                     Expanded(
                       child: CustomDropdown(
-                        hintText: 'Division',
-                        value: selectedDivision,
+                        dropdownKey: 'division',
+                        label: 'Division',
                         items: ['A', 'B', 'C'],
-                        onChanged: (value) {
-                          setState(() {
-                            selectedDivision = value;
-                          });
-                        },
-                        iconData: const Icon(Icons.class_),
+                        icon: Icons.class_,
                       ),
                     ),
                   ],

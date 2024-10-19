@@ -6,8 +6,8 @@ import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
-import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 
 class AddDutyPage extends StatefulWidget {
   @override
@@ -101,19 +101,14 @@ class _AddDutyPageState extends State<AddDutyPage> {
               // Select Staffs Dropdown
               Container(
                 child: CustomDropdown(
-                  hintText: 'Select Staffs',
-                  value: selectedStaff,
+                  dropdownKey: 'select staffs',
+                  label: 'Select Staffs',
                   items: [
                     'Kaiya Mango',
                     'Lindsey Calzoni',
                     'Adison Rhiel Madsen'
                   ],
-                  onChanged: (value) {
-                    setState(() {
-                      selectedStaff = value;
-                    });
-                  },
-                  iconData: const Icon(Icons.person),
+                  icon: Icons.person,
                 ),
               ),
               SizedBox(height: 20),

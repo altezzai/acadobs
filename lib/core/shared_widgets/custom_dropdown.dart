@@ -1,77 +1,59 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:school_app/features/teacher/controller/dropdown_provider.dart';
 
 class CustomDropdown extends StatelessWidget {
-  final String hintText;
-  final String? value;
+  final String dropdownKey; // Unique key for each dropdown
+  final String label;
+  final IconData icon;
   final List<String> items;
-  final ValueChanged<String?> onChanged;
-  final Icon? iconData;
 
-  CustomDropdown({
+  const CustomDropdown({
     Key? key,
-    required this.hintText,
-    required this.value,
+    required this.dropdownKey, // Unique key
+    required this.label,
+    required this.icon,
     required this.items,
-    required this.onChanged,
-    this.iconData,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        _showDropdown(context);
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(25),
-          border: Border.all(color: Colors.grey), // Match CustomTextField
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 15.0),
-          child: Row(
-            children: [
-              if (iconData != null) ...[
-                iconData!,
-                SizedBox(width: 12),
-              ],
-              Expanded(
-                child: Text(
-                  value ?? hintText,
-                  style: TextStyle(
-                    fontSize: 14.0,
-                    color: value != null ? Colors.black87 : Colors.grey,
-                  ),
-                ),
-              ),
-              Icon(Icons.arrow_drop_down),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _showDropdown(BuildContext context) {
-    showMenu<String>(
-      context: context,
-      position: RelativeRect.fromLTRB(100, 100, 100, 100), // Adjust position if needed
-      items: items.map((String item) {
-        return PopupMenuItem<String>(
-          value: item,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
-            child: Text(
-              item,
-              style: TextStyle(fontSize: 14.0, color: Colors.black87),
+    return Consumer<DropdownProvider>(
+      builder: (context, dropdownProvider, child) {
+        return DropdownButtonFormField<String>(
+          decoration: InputDecoration(
+            labelText: label,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: Colors.grey),
+            ),
+            prefixIcon: Padding(
+              padding: const EdgeInsets.only(left: 4),
+              child: Icon(icon),
             ),
           ),
+          icon: const Icon(Icons.arrow_drop_down), // Dropdown icon
+          value: dropdownProvider.getSelectedItem(dropdownKey).isNotEmpty
+              ? dropdownProvider.getSelectedItem(dropdownKey)
+              : null,
+          // hint: Text(label), // Hint text
+          items: items.map((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
+          onChanged: (String? newValue) {
+            if (newValue != null) {
+              dropdownProvider.setSelectedItem(dropdownKey, newValue);
+            }
+          },
+          dropdownColor: Colors.white, // Dropdown background color
+          style: const TextStyle(color: Colors.black), // Style dropdown text
+          menuMaxHeight: 200, // Sets a max height for the dropdown menu
+          borderRadius: BorderRadius.circular(24), // Dropdown menu shape
         );
-      }).toList(),
-    ).then((String? newValue) {
-      if (newValue != null) {
-        onChanged(newValue);
-      }
-    });
+      },
+    );
   }
 }

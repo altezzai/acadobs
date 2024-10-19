@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
+import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 
 class AddHomeworkPage extends StatefulWidget {
   @override
@@ -66,29 +66,19 @@ class _AddHomeworkPageState extends State<AddHomeworkPage> {
               children: [
                 Expanded(
                   child: CustomDropdown(
-                    hintText: 'Class',
-                    value: selectedClass,
+                    dropdownKey: 'class',
+                    label: 'Class',
                     items: classes,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedClass = value;
-                      });
-                    },
-                    iconData: Icon(Icons.class_),
+                    icon: Icons.class_,
                   ),
                 ),
                 SizedBox(width: screenWidth * 0.02), // Responsive spacing
                 Expanded(
                   child: CustomDropdown(
-                    hintText: 'Division',
-                    value: selectedDivision,
+                    dropdownKey: 'division',
+                    label: 'Division',
                     items: divisions,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedDivision = value;
-                      });
-                    },
-                    iconData: Icon(Icons.account_tree),
+                    icon: Icons.account_tree,
                   ),
                 ),
               ],
@@ -97,29 +87,19 @@ class _AddHomeworkPageState extends State<AddHomeworkPage> {
 
             // Student Dropdown
             CustomDropdown(
-              hintText: 'Select Student',
-              value: selectedStudent,
+              dropdownKey: 'select student',
+              label: 'Select student',
               items: students,
-              onChanged: (value) {
-                setState(() {
-                  selectedStudent = value;
-                });
-              },
-              iconData: Icon(Icons.person),
+              icon: Icons.person,
             ),
             SizedBox(height: screenWidth * 0.04), // Responsive spacing
 
             // Subject Dropdown
             CustomDropdown(
-              hintText: 'Select Subject',
-              value: selectedSubject,
+              dropdownKey: 'select subject',
+              label: 'Select subject',
               items: subjects,
-              onChanged: (value) {
-                setState(() {
-                  selectedSubject = value;
-                });
-              },
-              iconData: Icon(Icons.subject),
+              icon: Icons.subject,
             ),
             SizedBox(height: screenWidth * 0.04), // Responsive spacing
 

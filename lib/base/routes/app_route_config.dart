@@ -12,8 +12,9 @@ import 'package:school_app/features/admin/student/screens/addhomwork.dart';
 import 'package:school_app/features/admin/student/screens/newstudent.dart';
 import 'package:school_app/features/admin/student/screens/studentdetails.dart';
 import 'package:school_app/features/admin/student/screens/studentpage.dart';
-import 'package:school_app/features/admin/teacher_section/screens/screens/teacherdetails.dart';
-import 'package:school_app/features/admin/teacher_section/screens/screens/teachers_page.dart';
+import 'package:school_app/features/admin/teacher_section/screens/add_teacher.dart';
+import 'package:school_app/features/admin/teacher_section/screens/teacherdetails.dart';
+import 'package:school_app/features/admin/teacher_section/screens/teachers_page.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/teacher/attendance/screens/take_attendance.dart';
 import 'package:school_app/features/teacher/duties/duty_detail.dart';
@@ -215,12 +216,18 @@ class Approuter {
           return MaterialPage(child: AddDonationPage());
         },
       ),
-
       GoRoute(
         name: AppRouteConst.AddHomeworkRouteName,
         path: '/addhomework',
         pageBuilder: (context, state) {
           return MaterialPage(child: AddHomeworkPage());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.AddTeacherRouteName,
+        path: '/addteacher',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: AddTeacher());
         },
       ),
     ],
