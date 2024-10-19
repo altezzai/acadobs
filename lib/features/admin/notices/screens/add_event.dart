@@ -145,6 +145,7 @@ class _AddEventPageState extends State<AddEventPage> {
                   text: 'Submit',
                   onPressed: () {
                     context.read<NoticeController>().addEvent(
+                      context,
                         title: _titleController.text,
                         description: _descriptionController.text,
                         date: _dateController.text);

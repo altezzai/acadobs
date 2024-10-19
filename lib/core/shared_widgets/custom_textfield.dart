@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart'; // Import the file picker package
+import 'package:flutter/material.dart';
 
 class CustomTextfield extends StatelessWidget {
-  final String hintText;
+  final String? hintText;
+  final String? label;
   final TextInputType? keyBoardtype;
   final ValueNotifier<bool> isObscure;
   final TextEditingController? controller;
@@ -16,12 +17,13 @@ class CustomTextfield extends StatelessWidget {
   final FormFieldValidator<String>? validator; // Validator for input
   final bool enabled; // New enabled parameter
   final double borderRadius; // New parameter for border radius
-   // Add controller parameter
+  // Add controller parameter
 
   CustomTextfield({
     this.controller,
     super.key,
-    required this.hintText,
+    this.hintText,
+    this.label,
     required this.iconData,
     this.keyBoardtype,
     this.isPasswordField = false,
@@ -33,7 +35,7 @@ class CustomTextfield extends StatelessWidget {
     this.validator, // Validator function
     this.enabled = true, // By default, the field is enabled
     this.borderRadius = 8.0, // Default border radius
-     // Make controller required
+    // Make controller required
   }) : isObscure = ValueNotifier<bool>(isPasswordField);
 
   @override
@@ -48,8 +50,8 @@ class CustomTextfield extends StatelessWidget {
         valueListenable: isObscure,
         builder: (context, value, child) {
           return TextFormField(
-             // Pass the controller to the TextFormField
-             controller: controller,
+            // Pass the controller to the TextFormField
+            controller: controller,
             style: textStyle ??
                 Theme.of(context).textTheme.bodySmall!.copyWith(
                       color: Colors.black87,
@@ -59,13 +61,16 @@ class CustomTextfield extends StatelessWidget {
             keyboardType: keyBoardtype,
             onChanged: onChanged, // Call the onChanged callback
             validator: validator, // Apply the validator
-            readOnly: onTap != null, // Make field read-only if onTap is provided
-            enabled: enabled, // Use the enabled parameter to control field behavior
+            readOnly:
+                onTap != null, // Make field read-only if onTap is provided
+            enabled:
+                enabled, // Use the enabled parameter to control field behavior
             decoration: InputDecoration(
               contentPadding:
-                  EdgeInsets.symmetric(vertical: 18.0, horizontal: 15.0),
+                  EdgeInsets.symmetric(vertical: 16.0, horizontal: 15.0),
               isDense: true,
               prefixIcon: iconData,
+              labelText: label,
               hintText: hintText,
               hintStyle: hintStyle ??
                   const TextStyle(
@@ -78,7 +83,8 @@ class CustomTextfield extends StatelessWidget {
                     color: Colors.red, // Optional: change color if needed
                   ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(borderRadius), // Use the borderRadius parameter
+                borderRadius: BorderRadius.circular(
+                    borderRadius), // Use the borderRadius parameter
                 borderSide: const BorderSide(color: Colors.grey),
               ),
               suffixIcon: isPasswordField

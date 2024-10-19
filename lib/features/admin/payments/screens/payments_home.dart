@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/core/shared_widgets/add_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
-import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/features/admin/payments/widgets/payment_item.dart';
 
 class PaymentsHomeScreen extends StatefulWidget {
@@ -34,24 +34,45 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
             Row(
               children: [
                 Expanded(
-                  child: CustomButton(
-                    text: 'Add Payment',
-                    onPressed: () {
-                      context.pushNamed(AppRouteConst.AddPaymentRouteName);
-                    },
-                  ),
+                  child: AddButton(
+                      onPressed: () {
+                        context.pushNamed(AppRouteConst.AddPaymentRouteName);
+                      },
+                      text: "Add Payment"),
                 ),
-                SizedBox(width: 10),
+                SizedBox(
+                  width: 16,
+                ),
                 Expanded(
-                  child: CustomButton(
-                    text: 'Add Donation',
-                    onPressed: () {
-                      context.pushNamed(AppRouteConst.AddDonationRouteName);
-                    },
-                  ),
+                  child: AddButton(
+                      onPressed: () {
+                        context.pushNamed(AppRouteConst.AddDonationRouteName);
+                      },
+                      text: "Add Donation"),
                 ),
               ],
             ),
+            // Row(
+            //   children: [
+            //     Expanded(
+            //       child: CustomButton(
+            //         text: 'Add Payment',
+            //         onPressed: () {
+            //           context.pushNamed(AppRouteConst.AddPaymentRouteName);
+            //         },
+            //       ),
+            //     ),
+            //     SizedBox(width: 10),
+            //     Expanded(
+            //       child: CustomButton(
+            //         text: 'Add Donation',
+            //         onPressed: () {
+            //           context.pushNamed(AppRouteConst.AddDonationRouteName);
+            //         },
+            //       ),
+            //     ),
+            //   ],
+            // ),
             TabBar(
               controller: _tabController,
               tabs: [

@@ -26,12 +26,12 @@ class NoticeServices {
       'audience_type': audience_type,
       'title': title,
       'description': description,
-      'event_date': date, // Make sure this date is a string
+      'date': date, // Make sure this date is a string
     };
 
     // Call the ApiServices post method with formData and isFormData: true
     final Response response =
-        await ApiServices.post("/events", formData, isFormData: true);
+        await ApiServices.post("/notices", formData, isFormData: true);
 
     return response;
   }
