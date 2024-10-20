@@ -156,6 +156,11 @@ class _TeachersPageState extends State<TeachersPage> {
           Expanded(
             child:
                 Consumer<TeacherController>(builder: (context, value, child) {
+              if (value.isloading) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
               return ListView.builder(
                 itemCount: value.teachers.length,
                 itemBuilder: (context, index) {

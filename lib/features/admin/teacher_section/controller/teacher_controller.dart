@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
@@ -7,10 +6,13 @@ import 'package:school_app/features/admin/teacher_section/model/teacher_model.da
 import 'package:school_app/features/admin/teacher_section/services/teacher_services.dart';
 
 class TeacherController extends ChangeNotifier {
+  bool _isloading = false;
+  bool get isloading => _isloading;
   List<Teacher> _teachers = [];
   List<Teacher> get teachers => _teachers;
 
   Future<void> getTeacherDetails() async {
+    _isloading = true;
     try {
       final response =
           await TeacherServices().getTeacher(); // Updated method call
@@ -20,12 +22,11 @@ class TeacherController extends ChangeNotifier {
         _teachers = (response.data as List<dynamic>)
             .map((result) => Teacher.fromJson(result))
             .toList();
-            
       }
     } catch (e) {
       print(e);
     }
-
+    _isloading = false;
     notifyListeners();
   }
 
@@ -54,8 +55,7 @@ class TeacherController extends ChangeNotifier {
   // });
 
   // ********Add New Teacher************
-  Future<void> addNewTeacher(
-    BuildContext context,
+  Future<void> addNewTeacher(BuildContext context,
       {required String fullName,
       required String dateOfBirth,
       required String gender,
