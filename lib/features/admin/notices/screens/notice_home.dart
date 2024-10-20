@@ -49,7 +49,7 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
               children: [
                 Expanded(
                   child: AddButton(
-                    iconPath: noticeIcon,
+                      iconPath: noticeIcon,
                       onPressed: () {
                         context.pushNamed(AppRouteConst.AddNoticeRouteName);
                       },
@@ -97,6 +97,11 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
   Widget _buildNotices() {
     context.read<NoticeController>().getNotices();
     return Consumer<NoticeController>(builder: (context, value, child) {
+      if (value.isloading) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      }
       return ListView.builder(
           itemCount: value.notices.length,
           itemBuilder: (context, index) {
@@ -112,6 +117,11 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
   Widget _buildEvents() {
     context.read<NoticeController>().getEvents();
     return Consumer<NoticeController>(builder: (context, value, child) {
+      if (value.isloading) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      }
       return ListView.builder(
           itemCount: value.events.length,
           itemBuilder: (context, index) {

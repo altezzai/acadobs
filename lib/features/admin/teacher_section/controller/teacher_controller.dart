@@ -17,8 +17,7 @@ class TeacherController extends ChangeNotifier {
   Future<void> getTeacherDetails() async {
     _isloading = true;
     try {
-      final response =
-          await TeacherServices().getTeacher(); 
+      final response = await TeacherServices().getTeacher();
       print("***********${response.statusCode}");
       print(response.toString());
       if (response.statusCode == 200) {
@@ -65,10 +64,9 @@ class TeacherController extends ChangeNotifier {
       required String address,
       required String contactNumber,
       required String emailAddress}) async {
-    _isloading = true;
-
-    final loadingProvider = Provider.of<LoadingProvider>(context, listen: false);  //loading provider
-    loadingProvider.setLoading(true);    //start loader
+    final loadingProvider =
+        Provider.of<LoadingProvider>(context, listen: false); //loading provider
+    loadingProvider.setLoading(true); //start loader
     try {
       //  _isloading = false;
       final response = await TeacherServices().addNewTeacher(
@@ -84,10 +82,9 @@ class TeacherController extends ChangeNotifier {
       }
     } catch (e) {
       log(e.toString());
-    } finally{
+    } finally {
       loadingProvider.setLoading(false); // End loader
-       notifyListeners();
+      notifyListeners();
     }
-   
   }
 }
