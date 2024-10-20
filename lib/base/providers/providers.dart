@@ -1,4 +1,5 @@
 import 'package:provider/provider.dart';
+import 'package:school_app/core/controller/loading_provider.dart';
 import 'package:school_app/core/navbar/controller/bottom_nav_controller.dart';
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
 import 'package:school_app/features/admin/teacher_section/controller/teacher_controller.dart';
@@ -14,5 +15,6 @@ getProviders() {
     ChangeNotifierProvider(create: (_) => BottomNavController()),
     ChangeNotifierProvider(create: (_) => TeacherController()),
      ChangeNotifierProvider(create: (_) => NoticeController()),
+     ChangeNotifierProvider(create: (_) => LoadingProvider()),
   ];
 }
