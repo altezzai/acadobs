@@ -62,6 +62,7 @@ class TeacherController extends ChangeNotifier {
       required String address,
       required String contactNumber,
       required String emailAddress}) async {
+    _isloading = true;
     try {
       final response = await TeacherServices().addNewTeacher(
           fullName: fullName,
@@ -77,5 +78,7 @@ class TeacherController extends ChangeNotifier {
     } catch (e) {
       log(e.toString());
     }
+    _isloading = false;
+    notifyListeners();
   }
 }
