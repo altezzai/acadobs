@@ -1,4 +1,4 @@
-import 'package:file_picker/file_picker.dart'; // Import the file picker package
+// import 'package:file_picker/file_picker.dart'; // Import the file picker package
 import 'package:flutter/material.dart';
 
 class CustomTextfield extends StatelessWidget {
@@ -107,20 +107,20 @@ class CustomTextfield extends StatelessWidget {
     );
   }
 
-  /// Method to pick a file using the file_picker package
-  Future<void> selectFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.any, // Adjust file type as needed
-    );
+  // /// Method to pick a file using the file_picker package
+  // Future<void> selectFile() async {
+  //   FilePickerResult? result = await FilePicker.platform.pickFiles(
+  //     type: FileType.any, // Adjust file type as needed
+  //   );
 
-    if (result != null) {
-      // If a file is picked, you can handle the selected file here
-      String filePath = result.files.single.path ?? 'No file selected';
-      // You can perform actions with the selected file path
-      print('Selected file path: $filePath');
-    } else {
-      // User canceled the picker
-      print('No file selected');
-    }
-  }
+  //   if (result != null) {
+  //     // If a file is picked, you can handle the selected file here
+  //     String filePath = result.files.single.path ?? 'No file selected';
+  //     // You can perform actions with the selected file path
+  //     print('Selected file path: $filePath');
+  //   } else {
+  //     // User canceled the picker
+  //     print('No file selected');
+  //   }
+  // }
 }

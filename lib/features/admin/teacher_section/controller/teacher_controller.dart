@@ -13,11 +13,12 @@ class TeacherController extends ChangeNotifier {
   List<Teacher> _teachers = [];
   List<Teacher> get teachers => _teachers;
 
+// **********Get all teachers*****************
   Future<void> getTeacherDetails() async {
     _isloading = true;
     try {
       final response =
-          await TeacherServices().getTeacher(); // Updated method call
+          await TeacherServices().getTeacher(); 
       print("***********${response.statusCode}");
       print(response.toString());
       if (response.statusCode == 200) {
