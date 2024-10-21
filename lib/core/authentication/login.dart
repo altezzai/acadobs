@@ -94,15 +94,6 @@ class _LoginPageState extends State<LoginPage> {
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
                               ),
-                              // recognizer: TapGestureRecognizer()
-                              //   ..onTap = () {
-                              //     Navigator.push(
-                              //       context,
-                              //       MaterialPageRoute(
-                              //         builder: (context) => RegisterPage(),
-                              //       ),
-                              //     );
-                              //   },
                             ),
                           ],
                         ),
