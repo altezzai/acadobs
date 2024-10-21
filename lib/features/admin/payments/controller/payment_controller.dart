@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
-import 'package:school_app/features/admin/notices/services/notice_services.dart';
+import 'package:school_app/features/admin/payments/model/donation_model.dart';
 import 'package:school_app/features/admin/payments/model/payment_model.dart';
+import 'package:school_app/features/admin/payments/services/payment_services.dart';
 
 class PaymentController extends ChangeNotifier {
   bool _isloading = false;
@@ -8,10 +9,10 @@ class PaymentController extends ChangeNotifier {
   List<Payment> _payments = [];
   List<Payment> get payments => _payments;
 
-  Future<void> getNotices() async {
+  Future<void> getPayments() async {
     _isloading = true;
     try {
-      final response = await NoticeServices().getNotices();
+      final response = await PaymentServices().getPayments();
       print("***********${response.statusCode}");
       // print(response.toString());
       if (response.statusCode == 200) {
@@ -26,30 +27,22 @@ class PaymentController extends ChangeNotifier {
     notifyListeners();
   }
 
-  // add events
-  // Future<void> addNotice(BuildContext context,
-  //     {required String audience_type,
-  //     required String title,
-  //     required String description,
-  //     required String date}) async {
-  //   final loadingProvider =
-  //       Provider.of<LoadingProvider>(context, listen: false); //loading provider
-  //   loadingProvider.setLoading(true); //start loader
-  //   try {
-  //     final response = await NoticeServices().addNotice(
-  //         title: title,
-  //         description: description,
-  //         date: date,
-  //         audience_type: audience_type);
-  //     if (response.statusCode == 201) {
-  //       log(">>>>>>${response.statusMessage}");
-  //       context.goNamed(AppRouteConst.NoticePageRouteName);
-  //     }
-  //   } catch (e) {
-  //     log(e.toString());
-  //   } finally {
-  //     loadingProvider.setLoading(false); // End loader
-  //     notifyListeners();
-  //   }
-  // }
+  List<Donation> _donations = [];
+  List<Donation> get donations => _donations;
+
+  Future<void> getDonations() async {
+    try {
+      final response = await PaymentServices().getDonations();
+      print("***********${response.statusCode}");
+      // print(response.toString());
+      if (response.statusCode == 200) {
+        _donations = (response.data as List<dynamic>)
+            .map((result) => Donation.fromJson(result))
+            .toList();
+      }
+    } catch (e) {
+      // print(e);
+    }
+    notifyListeners();
+  }
 }

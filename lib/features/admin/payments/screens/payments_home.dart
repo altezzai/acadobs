@@ -101,7 +101,6 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
   }
 
   Widget _buildPaymentsList() {
-    context.read<PaymentController>().getNotices();
     // return ListView(
     //   children: [
     //     _buildDateHeader('Today'),
@@ -120,6 +119,7 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
     //         amount: '₹2500', name: 'Muhammed Rafsal N', time: '09:00 am'),
     //   ],
     // );
+    context.read<PaymentController>().getPayments();
     return Consumer<PaymentController>(builder: (context, value, child) {
       return ListView.builder(
           itemCount: value.payments.length,
@@ -134,24 +134,36 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
   }
 
   Widget _buildDonationsList() {
-    return ListView(
-      children: [
-        _buildDateHeader('Today'),
-        PaymentItem(
-            amount: '₹250', name: 'Muhammed Rafsal N', time: '09:00 am'),
-        _buildDateHeader('Yesterday'),
-        PaymentItem(
-            amount: '₹1500', name: 'Muhammed Rafsal N', time: '09:00 am'),
-        PaymentItem(
-            amount: '₹700', name: 'Muhammed Rafsal N', time: '09:00 am'),
-        PaymentItem(
-            amount: '₹300', name: 'Muhammed Rafsal N', time: '09:00 am'),
-        PaymentItem(
-            amount: '₹2500', name: 'Muhammed Rafsal N', time: '08:00 am'),
-        PaymentItem(
-            amount: '₹400', name: 'Muhammed Rafsal N', time: '09:00 am'),
-      ],
-    );
+    // return ListView(
+    //   children: [
+    //     _buildDateHeader('Today'),
+    //     PaymentItem(
+    //         amount: '₹250', name: 'Muhammed Rafsal N', time: '09:00 am'),
+    //     _buildDateHeader('Yesterday'),
+    //     PaymentItem(
+    //         amount: '₹1500', name: 'Muhammed Rafsal N', time: '09:00 am'),
+    //     PaymentItem(
+    //         amount: '₹700', name: 'Muhammed Rafsal N', time: '09:00 am'),
+    //     PaymentItem(
+    //         amount: '₹300', name: 'Muhammed Rafsal N', time: '09:00 am'),
+    //     PaymentItem(
+    //         amount: '₹2500', name: 'Muhammed Rafsal N', time: '08:00 am'),
+    //     PaymentItem(
+    //         amount: '₹400', name: 'Muhammed Rafsal N', time: '09:00 am'),
+    //   ],
+    // );
+    context.read<PaymentController>().getDonations();
+    return Consumer<PaymentController>(builder: (context, value, child) {
+      return ListView.builder(
+          itemCount: value.donations.length,
+          itemBuilder: (context, index) {
+            return PaymentItem(
+              amount: value.donations[index].amountDonated ?? "",
+              name: value.donations[index].purpose ?? "",
+              time: value.donations[index].donationDate.toString(),
+            );
+          });
+    });
   }
 
   Widget _buildDateHeader(String date) {
