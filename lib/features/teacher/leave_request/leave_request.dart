@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/teacher/homework/widgets/date_picker.dart';
-
 
 // ignore: must_be_immutable
 class LeaveRequest extends StatelessWidget {
@@ -13,29 +16,21 @@ class LeaveRequest extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(Icons.arrow_back_ios)),
-        title: Center(
-          child: Text(
-            'Leave Request',
-            style:
-                textThemeData.bodyMedium!.copyWith(fontWeight: FontWeight.w700),
-          ),
-        ),
-        backgroundColor: Colors.transparent,
-      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: Responsive.height * 3,
+              CustomAppbar(
+                title: 'Leave Request',
+                isProfileIcon: false,
+                onTap: () {
+                  context.goNamed(
+                    AppRouteConst.bottomNavRouteName,
+                    extra: UserType.teacher,
+                  );
+                },
               ),
               Row(
                 children: [
@@ -81,7 +76,7 @@ class LeaveRequest extends StatelessWidget {
                 iconData: const Icon(Icons.link),
               ),
               SizedBox(
-                height: Responsive.height * 7,
+                height: Responsive.height * 40,
               ),
               CustomButton(text: "Submit", onPressed: () {})
             ],

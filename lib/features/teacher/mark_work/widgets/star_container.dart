@@ -6,7 +6,11 @@ import 'package:school_app/base/utils/responsive.dart';
 class StarContainer extends StatelessWidget {
   final String name;
   final String rollNo;
-  const StarContainer({super.key, required this.name, required this.rollNo,});
+  const StarContainer({
+    super.key,
+    required this.name,
+    required this.rollNo,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +41,10 @@ class StarContainer extends StatelessWidget {
               ),
               Text(
                 name,
-                style: textThemeData.labelSmall!.copyWith(
-                  color: Colors.black,
-                ),
+                style: textThemeData.labelSmall?.copyWith(
+                      color: Colors.black,
+                    ) ??
+                    const TextStyle(color: Colors.black, fontSize: 12),
               )
             ],
           ),
