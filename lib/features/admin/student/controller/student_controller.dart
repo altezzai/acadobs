@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:school_app/sample/model/student_data.dart';
-import 'package:school_app/sample/services/studentservice.dart';
+import 'package:school_app/features/admin/student/model/student_data.dart';
+import 'package:school_app/features/admin/student/services/studentservice.dart';
 
 class SampleController extends ChangeNotifier {
   List<StudentData> _studentData = [];
