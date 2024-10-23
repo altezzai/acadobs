@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
-import 'package:school_app/sample/controller/student_controller.dart';
+import 'package:school_app/features/admin/student/controller/student_controller.dart';
 
 class StudentsPage extends StatefulWidget {
   @override
