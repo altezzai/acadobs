@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/features/admin/notices/screens/notice_home.dart';
+import 'package:school_app/features/admin/payments/screens/payments_home.dart';
 import 'package:school_app/features/admin/student/screens/addAchivement.dart';
 import 'package:school_app/features/admin/duties/screens/addDutyPage.dart';
 import 'package:school_app/features/admin/payments/screens/add_donation.dart';
@@ -208,6 +209,13 @@ class Approuter {
         path: '/addevent',
         pageBuilder: (context, state) {
           return MaterialPage(child: AddEventPage());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.PaymentPageRouteName,
+        path: '/paymentpage',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: PaymentsHomeScreen());
         },
       ),
       GoRoute(
