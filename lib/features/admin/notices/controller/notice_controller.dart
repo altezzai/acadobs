@@ -86,7 +86,7 @@ class NoticeController extends ChangeNotifier {
   Future<void> addEvent(BuildContext context,
       {required String title,
       required String description,
-      required String date}) async {
+      required String date, String? coverPhoto}) async {
     final loadingProvider =
         Provider.of<LoadingProvider>(context, listen: false); //loading provider
     loadingProvider.setLoading(true); //start loader

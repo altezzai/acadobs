@@ -74,7 +74,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                     dropdownKey: 'division',
                     label: 'Division',
                     items: ['Division A', 'Division B', 'Division C'],
-                    icon: Icons.account_circle,
+                    icon: Icons.group,
                   ),
                 ),
               ],

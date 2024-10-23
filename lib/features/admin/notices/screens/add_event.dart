@@ -13,17 +13,32 @@ class AddEventPage extends StatefulWidget {
 }
 
 class _AddEventPageState extends State<AddEventPage> {
-  // final _formKey = GlobalKey<FormState>();
   String? selectedFile;
+  String? coverPhoto;
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 
   Future<void> pickFile() async {
-    // ignore: unused_local_variable
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.any,
     );
+    if (result != null && result.files.isNotEmpty) {
+      setState(() {
+        selectedFile = result.files.first.name;
+      });
+    }
+  }
+
+  Future<void> pickCoverPhoto() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+    );
+    if (result != null && result.files.isNotEmpty) {
+      setState(() {
+        coverPhoto = result.files.first.name;
+      });
+    }
   }
 
   @override
@@ -33,8 +48,9 @@ class _AddEventPageState extends State<AddEventPage> {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              // Custom AppBar
               CustomAppbar(
                 title: "Add Event",
                 isProfileIcon: false,
@@ -42,46 +58,47 @@ class _AddEventPageState extends State<AddEventPage> {
                   Navigator.pop(context);
                 },
               ),
+              SizedBox(height: 20),
+
+              // Event Details Heading
               Text(
                 'Event Details',
                 style: TextStyle(
                   fontSize: 16,
                 ),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 16),
+
+              // Add Cover Photo
               GestureDetector(
-                onTap: () {
-                  // Add cover photo action
-                },
+                onTap: pickCoverPhoto, // Call pickCoverPhoto here
                 child: Container(
-                  width: double.infinity,
                   height: 150,
                   decoration: BoxDecoration(
-                    border: Border.all(),
+                    border: Border.all(color: Colors.grey),
                     borderRadius: BorderRadius.circular(30),
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.camera_alt,
-                        size: 40,
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        'Add Cover Photo',
-                        style: TextStyle(
-                          fontSize: 16,
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.camera_alt, size: 40),
+                        SizedBox(height: 8),
+                        Text(
+                          coverPhoto ?? 'Add Cover Photo',
+                          style: TextStyle(fontSize: 16),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
               SizedBox(height: 20),
+
+              // Title Input (styled similar to Add Notice)
               CustomTextfield(
                 controller: _titleController,
-                hintText: 'Title',
+                label: 'Title',
                 iconData: Icon(Icons.title),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -90,28 +107,43 @@ class _AddEventPageState extends State<AddEventPage> {
                   return null;
                 },
               ),
-              SizedBox(height: 20),
-              TextField(
+              SizedBox(height: 16),
+
+              // Description Input
+              TextFormField(
                 controller: _descriptionController,
                 maxLines: 4,
                 decoration: InputDecoration(
+                  hintText: 'Write here....',
                   labelText: 'Description',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
+                  labelStyle: TextStyle(
+                    color: Colors.grey, // Change label text color here
                   ),
-                  prefixIcon: Icon(Icons.description),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                  prefixIcon: Padding(
+                    padding: const EdgeInsets.only(
+                        bottom: 75.0), // Adjust this value to your needs
+                    child: Icon(Icons.description),
+                  ),
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
                 ),
               ),
-              SizedBox(height: 20),
+
+              SizedBox(height: 16),
+
+              // Date Picker (styled similar to Add Notice)
               CustomDatePicker(
-                label: "Date",
-                dateController:
-                    _dateController, // Unique controller for end date
+                label: "dd-mm-yyyy",
+                dateController: _dateController,
                 onDateSelected: (selectedDate) {
-                  print("End Date selected: $selectedDate");
+                  print("Event Date selected: $selectedDate");
                 },
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 16),
+
+              // Document Upload Button (styled like Add Notice)
               GestureDetector(
                 onTap: pickFile,
                 child: Container(
@@ -119,8 +151,8 @@ class _AddEventPageState extends State<AddEventPage> {
                     border: Border.all(color: Colors.grey),
                     borderRadius: BorderRadius.circular(25.0),
                   ),
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 10.0, vertical: 12.0),
+                  padding:
+                      EdgeInsets.symmetric(vertical: 12.0, horizontal: 15.0),
                   child: Row(
                     children: [
                       Icon(Icons.attachment_rounded, color: Colors.black),
@@ -140,21 +172,20 @@ class _AddEventPageState extends State<AddEventPage> {
                 ),
               ),
               SizedBox(height: 40),
+
+              // Submit Button
               Center(
                 child: CustomButton(
                   text: 'Submit',
                   onPressed: () {
                     context.read<NoticeController>().addEvent(
-                      context,
-                        title: _titleController.text,
-                        description: _descriptionController.text,
-                        date: _dateController.text);
-                    // if (_formKey.currentState?.validate() ?? false) {
-                    //   // Handle form submission logic here
-                    //   ScaffoldMessenger.of(context).showSnackBar(
-                    //     SnackBar(content: Text('Form successfully submitted!')),
-                    //   );
-                    // }
+                          context,
+                          title: _titleController.text,
+                          description: _descriptionController.text,
+                          date: _dateController.text,
+                          coverPhoto:
+                              coverPhoto, // Use the selected cover photo
+                        );
                   },
                 ),
               ),
