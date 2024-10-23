@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:school_app/features/parent/screen/noticedetailedscreen.dart';
+import 'package:go_router/go_router.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
 
 class NoticeCard extends StatelessWidget {
   final String noticeTitle;
@@ -17,19 +18,29 @@ class NoticeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => NoticeDetailPage(
-              title: noticeTitle,
-              description:
-                  "You have to complete the registration of 12th class students before 2022.",
-              fileName: "Exam-details.pdf",
-              imageProvider: const AssetImage(
-                  'assets/images/class12.png'), // Pass your image here
-            ),
-          ),
+        context.pushReplacementNamed(
+          AppRouteConst.NoticeDetailedPageRouteName,
+          extra: {
+            'title': noticeTitle,
+            'description':
+                "You have to complete the registration of 12th class students before 2022.",
+            'fileName': "Exam-details.pdf",
+            'imageProvider': const AssetImage('assets/class12.png'),
+          },
         );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => NoticeDetailPage(
+        //       title: noticeTitle,
+        //       description:
+        //           "You have to complete the registration of 12th class students before 2022.",
+        //       fileName: "Exam-details.pdf",
+        //       imageProvider: const AssetImage(
+        //           'assets/class12.png'), // Pass your image here
+        //     ),
+        //   ),
+        // );
       },
       child: Card(
         child: ListTile(

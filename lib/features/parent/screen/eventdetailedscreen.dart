@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
 
 class EventDetailPage extends StatelessWidget {
   final String title;
@@ -21,7 +23,10 @@ class EventDetailPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.chevron_left, color: Colors.black),
           onPressed: () {
-            Navigator.of(context).pop();
+            context.pushReplacementNamed(
+              AppRouteConst.EventsPageRouteName,
+            );
+            // Navigator.of(context).pop();
           },
         ),
         title: Text(title),

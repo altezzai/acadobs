@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
 
 import 'package:school_app/features/parent/widgets/noticecard.dart';
 
@@ -9,9 +11,20 @@ class NoticePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Notices',
-          style: TextStyle(color: Colors.black),
+        leading: IconButton(
+          icon: const Icon(Icons.chevron_left, color: Colors.black),
+          onPressed: () {
+            context.pushReplacementNamed(
+              AppRouteConst.ParentHomeRouteName,
+            );
+            // Navigator.of(context).pop();
+          },
+        ),
+        title: Center(
+          child: const Text(
+            'Notices',
+            style: TextStyle(color: Colors.black),
+          ),
         ),
         backgroundColor: Colors.white,
         elevation: 0,
@@ -74,4 +87,3 @@ class NoticePage extends StatelessWidget {
     );
   }
 }
-

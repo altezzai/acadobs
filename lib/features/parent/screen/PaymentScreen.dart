@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:school_app/features/parent/screen/paymentdetailedscreen.dart';
+import 'package:go_router/go_router.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
 
 class PaymentPage extends StatelessWidget {
   const PaymentPage({super.key});
@@ -11,7 +12,9 @@ class PaymentPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.chevron_left, color: Colors.black),
           onPressed: () {
-            Navigator.of(context).pop();
+            context.pushReplacementNamed(
+              AppRouteConst.ParentHomeRouteName,
+            );
           },
         ),
         title: const Text(
@@ -41,17 +44,6 @@ class PaymentPage extends StatelessWidget {
                 amountTitle: "1000",
                 name: "\tMuhammed Rafsal N",
                 time: "09:00 am",
-                onTap: (context, amountTitle) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PaymentDetailPage(
-                        amount: amountTitle, // Pass amountTitle dynamically
-                        description: "8th class 2nd Semester Fee",
-                      ),
-                    ),
-                  );
-                },
               ),
               const SizedBox(height: 20),
 
@@ -68,65 +60,21 @@ class PaymentPage extends StatelessWidget {
                 amountTitle: "250",
                 name: "\tMuhammed Rafsal N",
                 time: "09:00 am",
-                onTap: (context, amountTitle) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PaymentDetailPage(
-                        amount: amountTitle, // Pass amountTitle dynamically
-                        description: "8th class 2nd Semester Fee",
-                      ),
-                    ),
-                  );
-                },
               ),
               PaymentCard(
                 amountTitle: "1500",
                 name: "\tManuprasad K",
                 time: "09:00 am",
-                onTap: (context, amountTitle) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PaymentDetailPage(
-                        amount: amountTitle, // Pass amountTitle dynamically
-                        description: "8th class 2nd Semester Fee",
-                      ),
-                    ),
-                  );
-                },
               ),
               PaymentCard(
                 amountTitle: "500",
                 name: "\tAswin Koroth",
                 time: "09:00 am",
-                onTap: (context, amountTitle) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PaymentDetailPage(
-                        amount: amountTitle, // Pass amountTitle dynamically
-                        description: "8th class 2nd Semester Fee",
-                      ),
-                    ),
-                  );
-                },
               ),
               PaymentCard(
                 amountTitle: "1000",
                 name: "\tMuhammed Rafsal N",
                 time: "09:00 am",
-                onTap: (context, amountTitle) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PaymentDetailPage(
-                        amount: amountTitle, // Pass amountTitle dynamically
-                        description: "8th class 2nd Semester Fee",
-                      ),
-                    ),
-                  );
-                },
               ),
             ],
           ),
@@ -140,20 +88,35 @@ class PaymentCard extends StatelessWidget {
   final String amountTitle;
   final String name;
   final String time;
-  final void Function(BuildContext context, String amountTitle) onTap;
 
   const PaymentCard({
     super.key,
     required this.amountTitle,
     required this.name,
     required this.time,
-    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => onTap(context, amountTitle), // Pass amountTitle dynamically
+      onTap: () {
+        context.pushReplacementNamed(
+          AppRouteConst.ParentPaymentDetailedPageRouteName,
+          extra: {
+            'amount': amountTitle,
+            'description': "8th class 2nd Semester Fee",
+          },
+        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => PaymentDetailPage(
+        //       amount: amountTitle, // Pass amountTitle dynamically
+        //       description: "8th class 2nd Semester Fee",
+        //     ),
+        //   ),
+        // );
+      },
       child: Card(
         child: ListTile(
           leading: CircleAvatar(

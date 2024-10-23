@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/features/parent/widgets/eventcard.dart'
     as event_card;
 
@@ -9,6 +11,15 @@ class EventsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.chevron_left, color: Colors.black),
+          onPressed: () {
+            context.pushReplacementNamed(
+              AppRouteConst.ParentHomeRouteName,
+            );
+            // Navigator.of(context).pop();
+          },
+        ),
         title: const Text(
           'Events',
           style: TextStyle(color: Colors.black),
@@ -38,7 +49,7 @@ class EventsPage extends StatelessWidget {
                     "National sports day will be conducted in our school...",
                 date: "15 - 06 - 24",
                 time: "09:00 am",
-                imageProvider: AssetImage('assets/images/event.png'),
+                imageProvider: AssetImage('assets/event.png'),
               ),
               SizedBox(height: 20),
 
@@ -57,7 +68,7 @@ class EventsPage extends StatelessWidget {
                     "National sports day will be conducted in our school...",
                 date: "15 - 06 - 24",
                 time: "09:00 am",
-                imageProvider: AssetImage('assets/images/event2.png'),
+                imageProvider: AssetImage('assets/event2.png'),
               ),
               event_card.EventCard(
                 eventTitle: "Sports day",
@@ -65,7 +76,7 @@ class EventsPage extends StatelessWidget {
                     "National sports day will be conducted in our school...",
                 date: "15 - 06 - 24",
                 time: "09:00 am",
-                imageProvider: AssetImage('assets/images/event3.png'),
+                imageProvider: AssetImage('assets/event3.png'),
               ),
               event_card.EventCard(
                 eventTitle: "Sports day",
@@ -73,7 +84,7 @@ class EventsPage extends StatelessWidget {
                     "National sports day will be conducted in our school...",
                 date: "15 - 06 - 24",
                 time: "09:00 am",
-                imageProvider: AssetImage('assets/images/event4.png'),
+                imageProvider: AssetImage('assets/event4.png'),
               ),
             ],
           ),
@@ -82,4 +93,3 @@ class EventsPage extends StatelessWidget {
     );
   }
 }
-

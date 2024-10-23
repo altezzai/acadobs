@@ -1,7 +1,9 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
 
 class LeaveRequestPage extends StatefulWidget {
   const LeaveRequestPage({super.key});
@@ -48,7 +50,10 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
         leading: IconButton(
           icon: const Icon(Icons.chevron_left, color: Colors.black),
           onPressed: () {
-            Navigator.of(context).pop();
+            context.pushReplacementNamed(
+              AppRouteConst.ParentHomeRouteName,
+            );
+            // Navigator.of(context).pop();
           },
         ),
         title: const Text(

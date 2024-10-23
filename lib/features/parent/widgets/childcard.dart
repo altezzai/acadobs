@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
-import 'package:school_app/features/parent/screen/studentdetails.dart';
+import 'package:go_router/go_router.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
 
 class ChildCard extends StatelessWidget {
   final String childName;
@@ -25,14 +25,22 @@ class ChildCard extends StatelessWidget {
         subtitle: Text(className),
         trailing: TextButton(
           onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => StudentDetailPage(
-                          name: childName,
-                          studentClass: className,
-                          image: imageProvider,
-                        )));
+            context.pushReplacementNamed(
+              AppRouteConst.ParentStudentDetailRouteName,
+              extra: {
+                'name': childName,
+                'studentClass': className,
+                'image': imageProvider,
+              },
+            );
+            // Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //         builder: (context) => ParentStudentDetailPage(
+            //               name: childName,
+            //               studentClass: className,
+            //               image: imageProvider,
+            //             )));
           },
           child: const Text("View"),
         ),
@@ -40,4 +48,3 @@ class ChildCard extends StatelessWidget {
     );
   }
 }
-

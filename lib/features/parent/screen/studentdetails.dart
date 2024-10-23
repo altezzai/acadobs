@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pie_chart/pie_chart.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/features/parent/screen/addachievementscreen.dart';
 import 'package:school_app/features/parent/screen/addhomeworkscreen.dart';
 
-class StudentDetailPage extends StatelessWidget {
+class ParentStudentDetailPage extends StatelessWidget {
   final String name;
   final String studentClass;
   final ImageProvider image;
 
-  const StudentDetailPage({
+  const ParentStudentDetailPage({
     super.key,
     required this.name,
     required this.studentClass,
@@ -34,9 +36,12 @@ class StudentDetailPage extends StatelessWidget {
           ),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.chevron_left, color: Colors.black),
           onPressed: () {
-            Navigator.pop(context);
+            context.pushReplacementNamed(
+              AppRouteConst.ParentHomeRouteName,
+            );
+            // Navigator.of(context).pop();
           },
         ),
       ),

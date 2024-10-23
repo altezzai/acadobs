@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:school_app/features/parent/screen/eventdetailedscreen.dart';
+import 'package:go_router/go_router.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
 
 class EventCard extends StatelessWidget {
   final String eventTitle;
@@ -21,14 +22,15 @@ class EventCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => EventDetailPage(
-                    title: eventTitle,
-                    description: eventDescription,
-                    date: date,
-                    imageProvider: imageProvider)));
+        context.pushReplacementNamed(
+          AppRouteConst.EventDetailedPageRouteName,
+          extra: {
+            'title': eventTitle,
+            'description': eventDescription,
+            'date': date,
+            'imageProvider': imageProvider,
+          },
+        );
       },
       child: Card(
         shape: RoundedRectangleBorder(
@@ -106,30 +108,7 @@ class EventCard extends StatelessWidget {
                             fontSize: 12,
                             color: Colors.black,
                           ),
-                          // overflow: TextOverflow.ellipsis,  // Handle overflow with ellipsis
                         ),
-                        // const SizedBox(width: 10),
-                        // Flexible(
-                        //   child: TextButton(
-                        //     onPressed: () {
-                        //       Navigator.push(
-                        //         context,
-                        //         MaterialPageRoute(
-                        //           builder: (context) => EventDetailPage(
-                        //             title: eventTitle,
-                        //             description: eventDescription,
-                        //             date: date,
-                        //             imageProvider: imageProvider,
-                        //           ),
-                        //         ),
-                        //       );
-                        //     },
-                        //     child: const Text(
-                        //       "View",
-                        //       style: TextStyle(color: Colors.blue),
-                        //     ),
-                        //   ),
-                        // ),
                       ],
                     ),
                   ],

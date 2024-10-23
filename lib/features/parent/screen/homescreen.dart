@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/features/parent/screen/PaymentScreen.dart';
 import 'package:school_app/features/parent/screen/eventscreen.dart';
-import 'package:school_app/features/parent/screen/leaveRequestScreen.dart';
+
 import 'package:school_app/features/parent/screen/noticescreen.dart';
 import 'package:school_app/features/parent/widgets/childcard.dart';
 import 'package:school_app/features/parent/widgets/eventcard.dart'
@@ -83,12 +85,15 @@ class HomePage extends StatelessWidget {
             title: const Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Hi, \nVincent",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold),
+                Padding(
+                  padding: EdgeInsets.only(left: 10),
+                  child: Text(
+                    "Hi, \nVincent",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
                 Spacer(),
                 Padding(
@@ -151,11 +156,9 @@ class HomePage extends StatelessWidget {
                     Center(
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const LeaveRequestPage()));
+                          context.pushReplacementNamed(
+                            AppRouteConst.LeaveRequestRouteName,
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black,
@@ -205,10 +208,9 @@ class HomePage extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const NoticePage()));
+                            context.pushReplacementNamed(
+                              AppRouteConst.ParentNoticePageRouteName,
+                            );
                           },
                           child: const Text(
                             "View",
@@ -241,10 +243,9 @@ class HomePage extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const EventsPage()));
+                            context.pushReplacementNamed(
+                              AppRouteConst.EventsPageRouteName,
+                            );
                           },
                           child: const Text(
                             "View",
