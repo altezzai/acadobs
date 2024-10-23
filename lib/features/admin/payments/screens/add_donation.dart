@@ -85,7 +85,7 @@ class _AddDonationPageState extends State<AddDonationPage> {
                     const SizedBox(height: 16),
                     CustomDropdown(
                       dropdownKey: 'select student',
-                      label: 'Select studenr',
+                      label: 'Select student',
                       items: ['Student 1', 'Student 2', 'Student 3'],
                       icon: Icons.person,
                     ),

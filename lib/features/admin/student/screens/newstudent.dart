@@ -16,19 +16,23 @@ class _AddStudentPageState extends State<AddStudentPage> {
   final _formKey = GlobalKey<FormState>(); // Key for form validation
   String? selectedClass;
   String? selectedDivision;
-  String? selectedFile;
+  String? selectedStudentPhoto;
+  String? selectedParentPhoto;
+  String? selectedAadharPhoto;
+  String? selectedTransferCertificate;
+
   final TextEditingController _dateOfJoiningController =
       TextEditingController();
   final TextEditingController _dateOfBirthController = TextEditingController();
 
-  Future<void> pickFile() async {
+  Future<void> pickFile(Function(String) onFilePicked) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.any,
     );
 
     if (result != null) {
       setState(() {
-        selectedFile = result.files.single.name;
+        onFilePicked(result.files.single.name);
       });
     } else {
       print('No file selected');
@@ -116,7 +120,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                         dropdownKey: 'division',
                         label: 'Division',
                         items: ['A', 'B', 'C'],
-                        icon: Icons.class_,
+                        icon: Icons.group,
                       ),
                     ),
                   ],
@@ -297,7 +301,48 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 SizedBox(height: 10),
 
                 GestureDetector(
-                  onTap: pickFile,
+                    onTap: () async {
+                      await pickFile((fileName) {
+                        setState(() {
+                          selectedStudentPhoto = fileName;
+                        });
+                      });
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(25.0),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10.0, vertical: 12.0),
+                      child: Row(
+                        children: [
+                          Icon(Icons.attachment_rounded, color: Colors.black),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              selectedStudentPhoto ?? 'Student Photo',
+                              style: TextStyle(
+                                  color: selectedStudentPhoto != null
+                                      ? Colors.black
+                                      : Colors.grey,
+                                  fontSize: 14),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )),
+
+                SizedBox(height: 20),
+
+                GestureDetector(
+                  onTap: () async {
+                    await pickFile((fileName) {
+                      setState(() {
+                        selectedParentPhoto = fileName;
+                      });
+                    });
+                  },
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey),
@@ -311,9 +356,9 @@ class _AddStudentPageState extends State<AddStudentPage> {
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            selectedFile ?? 'Student Photo',
+                            selectedParentPhoto ?? 'father Or Mother Photo',
                             style: TextStyle(
-                                color: selectedFile != null
+                                color: selectedParentPhoto != null
                                     ? Colors.black
                                     : Colors.grey,
                                 fontSize: 14),
@@ -327,7 +372,13 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 SizedBox(height: 20),
 
                 GestureDetector(
-                  onTap: pickFile,
+                  onTap: () async {
+                    await pickFile((fileName) {
+                      setState(() {
+                        selectedAadharPhoto = fileName;
+                      });
+                    });
+                  },
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey),
@@ -341,9 +392,9 @@ class _AddStudentPageState extends State<AddStudentPage> {
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            selectedFile ?? 'father Or Mother Photo',
+                            selectedAadharPhoto ?? 'Aadhar Photo',
                             style: TextStyle(
-                                color: selectedFile != null
+                                color: selectedAadharPhoto != null
                                     ? Colors.black
                                     : Colors.grey,
                                 fontSize: 14),
@@ -357,7 +408,13 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 SizedBox(height: 20),
 
                 GestureDetector(
-                  onTap: pickFile,
+                  onTap: () async {
+                    await pickFile((fileName) {
+                      setState(() {
+                        selectedTransferCertificate = fileName;
+                      });
+                    });
+                  },
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey),
@@ -371,40 +428,10 @@ class _AddStudentPageState extends State<AddStudentPage> {
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            selectedFile ?? 'Aadhar Photo',
-                            style: TextStyle(
-                                color: selectedFile != null
-                                    ? Colors.black
-                                    : Colors.grey,
-                                fontSize: 14),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                SizedBox(height: 20),
-
-                GestureDetector(
-                  onTap: pickFile,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(25.0),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 12.0),
-                    child: Row(
-                      children: [
-                        Icon(Icons.attachment_rounded, color: Colors.black),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            selectedFile ??
+                            selectedTransferCertificate ??
                                 'Previous School Transfer Certificate',
                             style: TextStyle(
-                                color: selectedFile != null
+                                color: selectedTransferCertificate != null
                                     ? Colors.black
                                     : Colors.grey,
                                 fontSize: 14),

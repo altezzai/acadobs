@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+import 'package:school_app/sample/controller/student_controller.dart';
 
 class StudentsPage extends StatefulWidget {
   @override
@@ -8,57 +11,27 @@ class StudentsPage extends StatefulWidget {
 }
 
 class _StudentsPageState extends State<StudentsPage> {
-  final List<Map<String, String>> students = [
-    {"name": "Muhammad Rafasl", "class": "VI", "image": "student1.png"},
-    {"name": "Midlej O P", "class": "V", "image": "student2.png"},
-    {"name": "Saleem Riyaz", "class": "VIII", "image": "student3.png"},
-    {"name": "Abram Bator", "class": "IX", "image": "student4.png"},
-    {"name": "Allison Lipshulz", "class": "VII", "image": "student5.png"},
-    {"name": "Rayees Ibrahim", "class": "VII", "image": "student6.png"},
-    {"name": "Khalid Mustafa", "class": "XI", "image": "student7.png"},
-    {"name": "Bilal Rifad", "class": "X", "image": "student1.png"},
-    {"name": "Hamem Fahad", "class": "VI", "image": "student6.png"},
-    {"name": "Sajad K V", "class": "X", "image": "student5.png"},
-  ];
-
-  List<Map<String, String>> filteredStudents = [];
   String searchQuery = "";
-  String selectedClass = "All"; // Initial class selected
+  String selectedClass = "All";
 
   @override
   void initState() {
     super.initState();
-    // Sort the students by name in alphabetical order
-    students.sort((a, b) => a['name']!.compareTo(b['name']!));
-    filteredStudents = students; // Initialize with all students
+    context.read<SampleController>().getStudentDetails();
   }
 
   void _filterStudents(String query) {
     setState(() {
       searchQuery = query;
-      // Apply filtering logic based on both search query and selected class
-      filteredStudents = students.where((student) {
-        final matchesSearchQuery =
-            student['name']!.toLowerCase().contains(query.toLowerCase());
-        final matchesClass =
-            selectedClass == "All" || student['class'] == selectedClass;
-        return matchesSearchQuery && matchesClass;
-      }).toList();
     });
   }
 
-  void _filterByClass(String newClass) {
-    setState(() {
-      selectedClass = newClass; // Update the selected class
-
-      // Filter by both class and search query
-      filteredStudents = students.where((student) {
-        final matchesSearchQuery =
-            student['name']!.toLowerCase().contains(searchQuery.toLowerCase());
-        final matchesClass = newClass == "All" || student['class'] == newClass;
-        return matchesSearchQuery && matchesClass;
-      }).toList();
-    });
+  void _filterByClass(String? newClass) {
+    if (newClass != null) {
+      setState(() {
+        selectedClass = newClass;
+      });
+    }
   }
 
   @override
@@ -71,17 +44,19 @@ class _StudentsPageState extends State<StudentsPage> {
         title: Text(
           'Students',
           style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 25,
-            color: Colors.black,
-          ),
+              fontWeight: FontWeight.bold, fontSize: 25, color: Colors.black),
         ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Navigator.pop(context);
-            // context.pushReplacementNamed(AppRouteConst
-            //     .AdminHomeRouteName); // Go back to the previous page
+            try {
+              context.goNamed(
+                AppRouteConst.bottomNavRouteName,
+                extra: UserType.admin,
+              );
+            } catch (e) {
+              print('Navigation Error: $e');
+            }
           },
         ),
         actions: [
@@ -102,11 +77,9 @@ class _StudentsPageState extends State<StudentsPage> {
                 Expanded(
                   flex: 3,
                   child: TextField(
-                    onChanged: (value) {
-                      _filterStudents(value);
-                    },
+                    onChanged: _filterStudents,
                     decoration: InputDecoration(
-                      hintText: 'Search for students',
+                      hintText: 'Search for Students',
                       prefixIcon: Icon(Icons.search, color: Colors.grey),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30),
@@ -162,60 +135,62 @@ class _StudentsPageState extends State<StudentsPage> {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: filteredStudents.length,
-              itemBuilder: (context, index) {
-                return Card(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 1, vertical: 5),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: GestureDetector(
-                    onTap: () {
-                      context.pushReplacementNamed(
-                        AppRouteConst.AdminstudentdetailsRouteName,
-                        extra: {
-                          'name': filteredStudents[index]['name'],
-                          'class': filteredStudents[index]['class'],
-                          'image': filteredStudents[index]['image'],
-                        },
-                      );
-                    },
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage: AssetImage(
-                            'assets/${filteredStudents[index]['image']}'),
-                      ),
-                      title: Text(
-                        filteredStudents[index]['name']!,
-                        style: TextStyle(
-                            fontWeight: FontWeight.normal, fontSize: 16),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      subtitle: Text(
-                        filteredStudents[index]['class']!,
-                        style: TextStyle(
-                            fontWeight: FontWeight.normal, fontSize: 15),
-                      ),
-                      trailing: TextButton(
-                        child: Text(
-                          'View',
-                          style: TextStyle(fontSize: 14),
+            child: Consumer<SampleController>(
+              builder: (context, controller, child) {
+                if (controller.studentData.isEmpty) {
+                  return Center(child: CircularProgressIndicator());
+                }
+
+                // Filter students by search query and class
+                final filteredStudents =
+                    controller.studentData.where((student) {
+                  final matchesSearchQuery = student.fullName!
+                      .toLowerCase()
+                      .contains(searchQuery.toLowerCase());
+                  final matchesClass = selectedClass == "All" ||
+                      student.studentDatumClass == selectedClass;
+                  return matchesSearchQuery && matchesClass;
+                }).toList();
+
+                return ListView.builder(
+                  itemCount: filteredStudents.length,
+                  itemBuilder: (context, index) {
+                    final student = filteredStudents[index];
+                    return Card(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 1, vertical: 5),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15)),
+                      child: GestureDetector(
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundImage: AssetImage('assets/student4.png'),
+                          ),
+                          title: Text(
+                            student.fullName ?? "",
+                            style: TextStyle(
+                                fontWeight: FontWeight.normal, fontSize: 16),
+                          ),
+                          subtitle: Text(
+                            student.studentDatumClass ?? "",
+                            style: TextStyle(
+                                fontWeight: FontWeight.normal, fontSize: 15),
+                          ),
+                          trailing: TextButton(
+                            child: Text('View'),
+                            onPressed: () => context.pushReplacementNamed(
+                              AppRouteConst.AdminstudentdetailsRouteName,
+                              extra: {
+                                'name': student.fullName,
+                                'class': student.studentDatumClass,
+                                'image': 'student6.png',
+                              },
+                            ),
+                          ),
                         ),
-                        onPressed: () {
-                          context.pushReplacementNamed(
-                            AppRouteConst.AdminstudentdetailsRouteName,
-                            extra: {
-                              'name': filteredStudents[index]['name'],
-                              'class': filteredStudents[index]['class'],
-                              'image': filteredStudents[index]['image'],
-                            },
-                          );
-                        },
                       ),
-                    ),
-                  ),
+                    );
+                  },
                 );
               },
             ),
@@ -224,7 +199,7 @@ class _StudentsPageState extends State<StudentsPage> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          context.pushReplacementNamed(AppRouteConst.AddStudentRouteName);
+          context.goNamed(AppRouteConst.AddStudentRouteName);
         },
         label: Text('Add New Student'),
         icon: Icon(Icons.add),
