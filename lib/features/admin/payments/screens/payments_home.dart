@@ -121,6 +121,11 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
     // );
     context.read<PaymentController>().getPayments();
     return Consumer<PaymentController>(builder: (context, value, child) {
+      if (value.isloading) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      }
       return ListView.builder(
           itemCount: value.payments.length,
           itemBuilder: (context, index) {
@@ -154,6 +159,11 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
     // );
     context.read<PaymentController>().getDonations();
     return Consumer<PaymentController>(builder: (context, value, child) {
+      if (value.isloading) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      }
       return ListView.builder(
           itemCount: value.donations.length,
           itemBuilder: (context, index) {

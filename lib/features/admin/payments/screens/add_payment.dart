@@ -1,6 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
@@ -9,6 +10,7 @@ import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
+import 'package:school_app/features/admin/payments/controller/payment_controller.dart';
 
 class AddPaymentPage extends StatefulWidget {
   const AddPaymentPage({super.key});
@@ -18,13 +20,19 @@ class AddPaymentPage extends StatefulWidget {
 }
 
 class _AddPaymentPageState extends State<AddPaymentPage> {
-  final _formKey = GlobalKey<FormState>();
+  // final _formKey = GlobalKey<FormState>();
   String? selectedClass;
   String? selectedDivision;
   String? selectedStudent;
   String? selectedFile;
   // ignore: unused_field
   final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _yearController = TextEditingController();
+  final TextEditingController _monthController = TextEditingController();
+  final TextEditingController _amountController = TextEditingController();
+  final TextEditingController _methodController = TextEditingController();
+  final TextEditingController _transactionController = TextEditingController();
+  final TextEditingController _statusController = TextEditingController();
 
   Future<void> pickFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -103,34 +111,56 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                     Expanded(
                       child: CustomTextfield(
                         hintText: 'Year',
+                        controller: _yearController,
                         iconData: const Icon(Icons.calendar_today),
                         keyBoardtype: TextInputType.number,
-                        onChanged: (value) {
-                          // Handle year input
-                        },
                       ),
                     ),
                     const SizedBox(width: 16),
                     Expanded(
                       child: CustomTextfield(
                         hintText: 'Month',
+                        controller: _monthController,
                         iconData: const Icon(Icons.date_range),
                         keyBoardtype: TextInputType.number,
-                        onChanged: (value) {
-                          // Handle month input
-                        },
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 16),
+                CustomDatePicker(
+                    dateController: _dateController,
+                    onDateSelected: (selectedDate) {
+                      print("End Date selected: $selectedDate");
+                    },
+                    label: 'Payment Date'),
+                const SizedBox(height: 16),
                 CustomTextfield(
                   hintText: 'Amount',
+                  controller: _amountController,
                   iconData: const Icon(Icons.currency_rupee),
                   keyBoardtype: TextInputType.number,
-                  onChanged: (value) {
-                    // Handle amount input
-                  },
+                ),
+                const SizedBox(height: 16),
+                CustomTextfield(
+                  hintText: 'Payment Method',
+                  controller: _methodController,
+                  iconData: const Icon(Icons.currency_rupee),
+                  keyBoardtype: TextInputType.number,
+                ),
+                const SizedBox(height: 16),
+                CustomTextfield(
+                  hintText: 'Transaction Id',
+                  controller: _transactionController,
+                  iconData: const Icon(Icons.currency_rupee),
+                  keyBoardtype: TextInputType.number,
+                ),
+                const SizedBox(height: 16),
+                CustomTextfield(
+                  hintText: 'Payment Status',
+                  controller: _statusController,
+                  iconData: const Icon(Icons.currency_rupee),
+                  keyBoardtype: TextInputType.number,
                 ),
               ],
             ),
@@ -162,17 +192,19 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                 ),
               ),
             ),
-            const Spacer(),
+            const SizedBox(height: 45),
             Center(
               child: CustomButton(
                 text: 'Submit',
                 onPressed: () {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    // Handle form submission logic here
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Form successfully submitted!')),
-                    );
-                  }
+                  context.read<PaymentController>().addPayment(context,
+                      amount_paid: _amountController.text,
+                      payment_date: _dateController.text,
+                      month: _monthController.text,
+                      year: _yearController.text,
+                      payment_method: _methodController.text,
+                      transaction_id: _transactionController.text,
+                      payment_status: _statusController.text);
                 },
               ),
             ),
