@@ -86,7 +86,7 @@ class StudentData {
     this.insertedUserId,
     this.trash,
     this.createdAt,
-    this.updatedAt,
+    this.updatedAt, DateTime? dateOfJoining, required String studentClass, required String division,
   });
 
   factory StudentData.fromJson(Map<String, dynamic> json) => StudentData(
@@ -132,7 +132,7 @@ class StudentData {
             : DateTime.parse(json["created_at"]),
         updatedAt: json["updated_at"] == null
             ? null
-            : DateTime.parse(json["updated_at"]),
+            : DateTime.parse(json["updated_at"]), studentClass: '', division: '',
       );
 
   Map<String, dynamic> toJson() => {

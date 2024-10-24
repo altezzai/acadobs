@@ -124,7 +124,7 @@ class _AddStudentDataState extends State<AddStudentData> {
       email: _emailController.text,
       fatherFullName: _fatherFullNameController.text,
       motherFullName: _motherFullNameController.text,
-      bloodGroup: null, // Optional, add other fields as needed
+      bloodGroup: null, studentClass: '', division: '', // Optional, add other fields as needed
     );
 
     // Call the addStudent method in the controller

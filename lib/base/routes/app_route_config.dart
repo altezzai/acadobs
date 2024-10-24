@@ -27,6 +27,7 @@ import 'package:school_app/features/teacher/marks/screens/student_marklist.dart'
 import 'package:school_app/features/teacher/parent/screens/parents.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 
+
 class Approuter {
   GoRouter router = GoRouter(
     routes: [
