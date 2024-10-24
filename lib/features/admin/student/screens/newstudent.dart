@@ -59,6 +59,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
     _fatherFullNameController.dispose();
     _motherFullNameController.dispose();
     _emailController.dispose();
+
     super.dispose();
   }
 
@@ -544,10 +545,8 @@ class _AddStudentPageState extends State<AddStudentPage> {
         division: '', // Optional
       );
 
-      // Call the addStudent method in the controller
       context.read<SampleController>().addStudent(student);
 
-      // Show success message using SnackBar
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Student added successfully!'),
@@ -556,13 +555,12 @@ class _AddStudentPageState extends State<AddStudentPage> {
         ),
       );
 
-      // Optionally, you can also clear the form fields after successful submission
       _clearFormFields();
     } catch (e) {
       // Handle any errors and show an error message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Failed to add student: $e'),
+          content: Text('Failed to add student complete all required fields'),
           backgroundColor: Colors.red,
           duration: Duration(seconds: 3),
         ),
@@ -583,6 +581,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
     _emailController.clear();
     _fatherFullNameController.clear();
     _motherFullNameController.clear();
+    context.read<DropdownProvider>().clearAllDropdowns();
   }
 
   // Helper to create section titles
