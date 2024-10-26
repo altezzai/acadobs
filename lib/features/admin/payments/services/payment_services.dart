@@ -13,6 +13,7 @@ class PaymentServices {
   }
 
   Future<Response> addPayment({
+    required String userId,
     required String amount_paid,
     required String payment_date,
     required String month,
@@ -23,7 +24,7 @@ class PaymentServices {
   }) async {
     // Create the form data to pass to the API
     final formData = {
-      'user_id': '1',
+      'user_id': userId,
       'amount_paid': amount_paid,
       'payment_date': payment_date,
       'month': month,
