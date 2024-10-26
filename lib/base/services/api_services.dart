@@ -16,9 +16,9 @@ class ApiServices {
   );
 
   // GET request
-  static Future<Response> get(String endpoint) async {
+  static Future<Response> get(String endpoint,{dynamic data}) async {
     try {
-      final Response response = await _dio.get(endpoint);
+      final Response response = await _dio.get(endpoint, data: data);
       return response;
     } on DioException catch (e) {
       throw Exception('Failed to load data: $e');

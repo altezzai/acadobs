@@ -17,4 +17,7 @@ class AttendanceController extends ChangeNotifier {
     _attendanceStatus[studentId] = status;
     notifyListeners(); // Notify to rebuild the UI
   }
+
+  // get students
+  
 }
