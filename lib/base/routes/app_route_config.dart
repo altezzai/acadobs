@@ -37,7 +37,6 @@ import 'package:school_app/features/teacher/marks/screens/student_marklist.dart'
 import 'package:school_app/features/teacher/parent/screens/parents.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 
-
 class Approuter {
   GoRouter router = GoRouter(
     routes: [
@@ -316,16 +315,16 @@ class Approuter {
         },
       ),
       GoRoute(
-        name: AppRouteConst.ParentPaymentPageRouteName,
-        path: '/parentpaymentpage',
-        pageBuilder: (context, state) {
-          return MaterialPage(child: PaymentPage());
-GoRoute(
+          name: AppRouteConst.ParentPaymentPageRouteName,
+          path: '/parentpaymentpage',
+          pageBuilder: (context, state) {
+            return MaterialPage(child: PaymentPage());
+          }),
+      GoRoute(
         name: AppRouteConst.AddTeacherRouteName,
         path: '/addteacher',
         pageBuilder: (context, state) {
           return MaterialPage(child: AddTeacher());
-)
         },
       ),
     ],
