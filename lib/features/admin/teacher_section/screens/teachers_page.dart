@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/admin/teacher_section/controller/teacher_controller.dart';
 
 class TeachersPage extends StatefulWidget {
@@ -71,7 +72,12 @@ class _TeachersPageState extends State<TeachersPage> {
         ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () =>
+              // Navigator.pop(context),
+              context.goNamed(
+            AppRouteConst.bottomNavRouteName,
+            extra: UserType.admin, // Pass the userType to the next screen
+          ),
         ),
         actions: [
           Padding(
@@ -150,10 +156,15 @@ class _TeachersPageState extends State<TeachersPage> {
           Expanded(
             child:
                 Consumer<TeacherController>(builder: (context, value, child) {
+              if (value.isloading) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
               return ListView.builder(
                 itemCount: value.teachers.length,
                 itemBuilder: (context, index) {
-                  final teacher = filteredTeachers[index];
+                  // final teacher = filteredTeachers[index];
                   // final teacher = value.teachers[index];
                   return Card(
                     margin:
@@ -164,8 +175,8 @@ class _TeachersPageState extends State<TeachersPage> {
                       // onTap: () => _navigateToTeacherDetails(context, teacher),
                       child: ListTile(
                           leading: CircleAvatar(
-                              backgroundImage:
-                                  AssetImage('assets/${teacher['image']}')),
+                            backgroundImage: AssetImage('assets/student5.png'),
+                          ),
                           title: Text(value.teachers[index].fullName ?? "",
                               style: TextStyle(
                                   fontWeight: FontWeight.normal, fontSize: 16)),
@@ -181,7 +192,7 @@ class _TeachersPageState extends State<TeachersPage> {
                                 'name': value.teachers[index].fullName,
                                 'class':
                                     value.teachers[index].classGradeHandling,
-                                'image': teacher['image']!,
+                                'image': 'student5.png',
                               },
                             ),
                           )),
@@ -194,7 +205,9 @@ class _TeachersPageState extends State<TeachersPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          context.goNamed(AppRouteConst.AddTeacherRouteName);
+        },
         label: Text('Add New Teacher'),
         icon: Icon(Icons.add),
         backgroundColor: Colors.black,

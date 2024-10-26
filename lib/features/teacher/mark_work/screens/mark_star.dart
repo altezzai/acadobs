@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/features/teacher/mark_work/widgets/star_container.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
@@ -49,44 +50,21 @@ class _MarkStarState extends State<MarkStar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        leading: IconButton(
-          onPressed: () {
-            context.pushReplacementNamed(AppRouteConst.workviewRouteName);
-          },
-          icon: const Icon(Icons.keyboard_arrow_left),
-        ),
-        title: Center(
-          child: Text(
-            'Hindi Imposition',
-            style: textThemeData.bodyMedium!.copyWith(
-              fontSize: 20,
-            ),
-          ),
-        ),
-        actions: [
-          Padding(
-            padding: EdgeInsets.all(Responsive.width * 3),
-            child: const CircleAvatar(
-              radius: 20.0,
-              backgroundImage: AssetImage('assets/admin.png'),
-            ),
-          ),
-        ],
-      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 18),
         child: Column(
           children: [
+            CustomAppbar(
+              title: 'Hindi Imposition',
+              onTap: () {
+                context.pushReplacementNamed(AppRouteConst.workviewRouteName);
+              },
+            ),
             Center(
               child: Text(
                 currentDate,
                 style: textThemeData.labelSmall,
               ),
-            ),
-            SizedBox(
-              height: Responsive.height * 2,
             ),
             Expanded(
               child: ListView.builder(

@@ -31,8 +31,12 @@ class CustomAppbar extends StatelessWidget {
                 ? GestureDetector(
                     onTap: onTap,
                     child: const CircleAvatar(
+                      radius: 16,
                       backgroundColor: Color(0xFFD9D9D9),
-                      child: Icon(Icons.arrow_back_ios_new),
+                      child: Icon(
+                        Icons.arrow_back_ios_new,
+                        size: 18,
+                      ),
                     ),
                   )
                 : const SizedBox(width: 48), // Placeholder to keep space

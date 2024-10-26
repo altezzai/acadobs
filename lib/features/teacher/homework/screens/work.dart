@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/teacher/homework/widgets/date_picker.dart';
@@ -14,30 +15,20 @@ class HomeWork extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-            onPressed: () {
-              context.pushReplacementNamed(AppRouteConst.homeworkRouteName);
-            },
-            icon: const Icon(Icons.arrow_back_ios)),
-        title: Center(
-          child: Text(
-            'Add Homework',
-            style:
-                textThemeData.bodyMedium!.copyWith(fontWeight: FontWeight.w700),
-          ),
-        ),
-        backgroundColor: Colors.transparent,
-      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: Responsive.height * 3,
+              CustomAppbar(
+                title: 'Add Homework',
+                isProfileIcon: false,
+                onTap: () {
+                  context.pushReplacementNamed(AppRouteConst.homeworkRouteName);
+                },
               ),
+
               // Row(
               //   children: [
               //     Expanded(
@@ -55,7 +46,7 @@ class HomeWork extends StatelessWidget {
               //     ),
               //   ],
               // ),
-              SizedBox(height: Responsive.height * 2),
+
               Row(
                 children: [
                   const DatePicker(title: "Start Date"),
@@ -95,7 +86,7 @@ class HomeWork extends StatelessWidget {
                 maxLines: null,
               ),
               SizedBox(
-                height: Responsive.height * 7,
+                height: Responsive.height * 30,
               ),
               CustomButton(text: 'Submit', onPressed: () {})
             ],

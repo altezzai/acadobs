@@ -12,8 +12,9 @@ import 'package:school_app/features/admin/student/screens/addhomwork.dart';
 import 'package:school_app/features/admin/student/screens/newstudent.dart';
 import 'package:school_app/features/admin/student/screens/studentdetails.dart';
 import 'package:school_app/features/admin/student/screens/studentpage.dart';
-import 'package:school_app/features/admin/teacher_section/screens/screens/teacherdetails.dart';
-import 'package:school_app/features/admin/teacher_section/screens/screens/teachers_page.dart';
+import 'package:school_app/features/admin/teacher_section/screens/add_teacher.dart';
+import 'package:school_app/features/admin/teacher_section/screens/teacherdetails.dart';
+import 'package:school_app/features/admin/teacher_section/screens/teachers_page.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/parent/screen/PaymentScreen.dart';
 import 'package:school_app/features/parent/screen/eventdetailedscreen.dart';
@@ -35,6 +36,7 @@ import 'package:school_app/features/teacher/mark_work/screens/mark_star.dart';
 import 'package:school_app/features/teacher/marks/screens/student_marklist.dart';
 import 'package:school_app/features/teacher/parent/screens/parents.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+
 
 class Approuter {
   GoRouter router = GoRouter(
@@ -318,6 +320,12 @@ class Approuter {
         path: '/parentpaymentpage',
         pageBuilder: (context, state) {
           return MaterialPage(child: PaymentPage());
+GoRoute(
+        name: AppRouteConst.AddTeacherRouteName,
+        path: '/addteacher',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: AddTeacher());
+)
         },
       ),
     ],

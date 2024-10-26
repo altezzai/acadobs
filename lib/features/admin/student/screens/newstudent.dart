@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
-import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
+import 'package:school_app/features/admin/student/controller/student_controller.dart';
+import 'package:school_app/features/admin/student/model/student_data.dart';
 
 class AddStudentPage extends StatefulWidget {
   @override
@@ -16,19 +20,57 @@ class _AddStudentPageState extends State<AddStudentPage> {
   final _formKey = GlobalKey<FormState>(); // Key for form validation
   String? selectedClass;
   String? selectedDivision;
-  String? selectedFile;
+  String? selectedGender;
+  String? selectedStudentPhoto;
+  String? selectedParentPhoto;
+  String? selectedAadharPhoto;
+  String? selectedTransferCertificate;
+
   final TextEditingController _dateOfJoiningController =
       TextEditingController();
   final TextEditingController _dateOfBirthController = TextEditingController();
+  final TextEditingController _fullNameController = TextEditingController();
 
-  Future<void> pickFile() async {
+  final TextEditingController _rollNumberController = TextEditingController();
+  final TextEditingController _admissionNumberController =
+      TextEditingController();
+  final TextEditingController _aadhaarNumberController =
+      TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _contactNumberController =
+      TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _fatherFullNameController =
+      TextEditingController();
+  final TextEditingController _motherFullNameController =
+      TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    _fullNameController.dispose();
+    _dateOfBirthController.dispose();
+    _dateOfJoiningController.dispose();
+    _rollNumberController.dispose();
+    _admissionNumberController.dispose();
+    _addressController.dispose();
+    _aadhaarNumberController.dispose();
+    _contactNumberController.dispose();
+    _fatherFullNameController.dispose();
+    _motherFullNameController.dispose();
+    _emailController.dispose();
+
+    super.dispose();
+  }
+
+  Future<void> pickFile(Function(String) onFilePicked) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.any,
     );
 
     if (result != null) {
       setState(() {
-        selectedFile = result.files.single.name;
+        onFilePicked(result.files.single.name);
       });
     } else {
       print('No file selected');
@@ -73,6 +115,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 // Name Input
                 CustomTextfield(
                   hintText: 'Name',
+                  controller: _fullNameController,
                   iconData: Icon(Icons.person),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -86,6 +129,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 // Roll Number Input
                 CustomTextfield(
                   hintText: 'Roll Number',
+                  controller: _rollNumberController,
                   iconData: Icon(Icons.badge),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -96,21 +140,23 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 ),
                 SizedBox(height: 20),
 
+                CustomDropdown(
+                  dropdownKey: 'gender',
+                  label: 'Gender',
+                  icon: Icons.person_2_outlined,
+                  items: ['Male', 'Female', 'Other'],
+                ),
+                SizedBox(height: 20),
                 // Class and Division dropdowns
                 Row(
                   children: [
                     // Class Dropdown
                     Expanded(
                       child: CustomDropdown(
-                        hintText: 'Class',
-                        value: selectedClass,
-                        items: ['V', 'VI', 'VII', 'VIII', 'IX', 'X'],
-                        onChanged: (value) {
-                          setState(() {
-                            selectedClass = value;
-                          });
-                        },
-                        iconData: const Icon(Icons.school),
+                        dropdownKey: 'class',
+                        label: 'Class',
+                        items: ['5', '6', '7', '8', '9', '10'],
+                        icon: Icons.school,
                       ),
                     ),
                     SizedBox(width: 10),
@@ -118,15 +164,10 @@ class _AddStudentPageState extends State<AddStudentPage> {
                     // Division Dropdown
                     Expanded(
                       child: CustomDropdown(
-                        hintText: 'Division',
-                        value: selectedDivision,
+                        dropdownKey: 'division',
+                        label: 'Division',
                         items: ['A', 'B', 'C'],
-                        onChanged: (value) {
-                          setState(() {
-                            selectedDivision = value;
-                          });
-                        },
-                        iconData: const Icon(Icons.class_),
+                        icon: Icons.group,
                       ),
                     ),
                   ],
@@ -160,6 +201,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 // Address Input
                 CustomTextfield(
                   hintText: 'Address',
+                  controller: _addressController,
                   iconData: Icon(Icons.location_on),
                   keyBoardtype: TextInputType.streetAddress,
                 ),
@@ -168,11 +210,13 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 // Admission Number and Aadhar Number Input
                 CustomTextfield(
                   hintText: 'Admission Number',
+                  controller: _admissionNumberController,
                   iconData: Icon(Icons.credit_card),
                 ),
                 SizedBox(height: 20),
                 CustomTextfield(
                   hintText: 'Aadhar Number',
+                  controller: _aadhaarNumberController,
                   iconData: Icon(Icons.account_box_outlined),
                 ),
                 SizedBox(height: 20),
@@ -185,6 +229,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 SizedBox(height: 20),
                 CustomTextfield(
                   hintText: 'Email',
+                  controller: _emailController,
                   iconData: Icon(Icons.email),
                 ),
                 SizedBox(height: 20),
@@ -200,6 +245,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 // Parent Details
                 CustomTextfield(
                   hintText: 'Father\'s Name',
+                  controller: _fatherFullNameController,
                   iconData: Icon(Icons.person_outline),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -211,6 +257,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 SizedBox(height: 20),
                 CustomTextfield(
                   hintText: 'Father\'s Phone Number',
+                  controller: _contactNumberController,
                   iconData: Icon(Icons.phone),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -223,6 +270,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 SizedBox(height: 20),
                 CustomTextfield(
                   hintText: 'Mother\'s Name',
+                  controller: _motherFullNameController,
                   iconData: Icon(Icons.person_outline),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -307,7 +355,48 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 SizedBox(height: 10),
 
                 GestureDetector(
-                  onTap: pickFile,
+                    onTap: () async {
+                      await pickFile((fileName) {
+                        setState(() {
+                          selectedStudentPhoto = fileName;
+                        });
+                      });
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(25.0),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10.0, vertical: 12.0),
+                      child: Row(
+                        children: [
+                          Icon(Icons.attachment_rounded, color: Colors.black),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              selectedStudentPhoto ?? 'Student Photo',
+                              style: TextStyle(
+                                  color: selectedStudentPhoto != null
+                                      ? Colors.black
+                                      : Colors.grey,
+                                  fontSize: 14),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )),
+
+                SizedBox(height: 20),
+
+                GestureDetector(
+                  onTap: () async {
+                    await pickFile((fileName) {
+                      setState(() {
+                        selectedParentPhoto = fileName;
+                      });
+                    });
+                  },
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey),
@@ -321,9 +410,9 @@ class _AddStudentPageState extends State<AddStudentPage> {
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            selectedFile ?? 'Student Photo',
+                            selectedParentPhoto ?? 'father Or Mother Photo',
                             style: TextStyle(
-                                color: selectedFile != null
+                                color: selectedParentPhoto != null
                                     ? Colors.black
                                     : Colors.grey,
                                 fontSize: 14),
@@ -337,7 +426,13 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 SizedBox(height: 20),
 
                 GestureDetector(
-                  onTap: pickFile,
+                  onTap: () async {
+                    await pickFile((fileName) {
+                      setState(() {
+                        selectedAadharPhoto = fileName;
+                      });
+                    });
+                  },
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey),
@@ -351,9 +446,9 @@ class _AddStudentPageState extends State<AddStudentPage> {
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            selectedFile ?? 'father Or Mother Photo',
+                            selectedAadharPhoto ?? 'Aadhar Photo',
                             style: TextStyle(
-                                color: selectedFile != null
+                                color: selectedAadharPhoto != null
                                     ? Colors.black
                                     : Colors.grey,
                                 fontSize: 14),
@@ -367,7 +462,13 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 SizedBox(height: 20),
 
                 GestureDetector(
-                  onTap: pickFile,
+                  onTap: () async {
+                    await pickFile((fileName) {
+                      setState(() {
+                        selectedTransferCertificate = fileName;
+                      });
+                    });
+                  },
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey),
@@ -381,40 +482,10 @@ class _AddStudentPageState extends State<AddStudentPage> {
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            selectedFile ?? 'Aadhar Photo',
-                            style: TextStyle(
-                                color: selectedFile != null
-                                    ? Colors.black
-                                    : Colors.grey,
-                                fontSize: 14),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                SizedBox(height: 20),
-
-                GestureDetector(
-                  onTap: pickFile,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(25.0),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 12.0),
-                    child: Row(
-                      children: [
-                        Icon(Icons.attachment_rounded, color: Colors.black),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            selectedFile ??
+                            selectedTransferCertificate ??
                                 'Previous School Transfer Certificate',
                             style: TextStyle(
-                                color: selectedFile != null
+                                color: selectedTransferCertificate != null
                                     ? Colors.black
                                     : Colors.grey,
                                 fontSize: 14),
@@ -426,18 +497,12 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 ),
 
                 SizedBox(height: 40),
-                // Submit Button
+
                 Center(
                   child: CustomButton(
                     text: 'Submit',
                     onPressed: () {
-                      if (_formKey.currentState?.validate() ?? false) {
-                        // Handle form submission logic here
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content: Text('Form successfully submitted!')),
-                        );
-                      }
+                      _submitForm(context);
                     },
                   ),
                 ),
@@ -448,6 +513,75 @@ class _AddStudentPageState extends State<AddStudentPage> {
         ),
       ),
     );
+  }
+
+  void _submitForm(BuildContext context) {
+    try {
+      // Create StudentData from form data
+      final selectedGender =
+          context.read<DropdownProvider>().getSelectedItem('gender');
+      final selectedClass =
+          context.read<DropdownProvider>().getSelectedItem('class');
+      final selectedDivision =
+          context.read<DropdownProvider>().getSelectedItem('division');
+
+      final student = StudentData(
+        fullName: _fullNameController.text,
+        dateOfBirth: DateTime.parse(_dateOfBirthController.text),
+        dateOfJoining: DateTime.parse(_dateOfJoiningController.text),
+        studentDatumClass: selectedClass,
+        section: selectedDivision,
+        rollNumber: int.tryParse(_rollNumberController.text),
+        gender: selectedGender,
+        admissionNumber: _admissionNumberController.text,
+        aadhaarNumber: _aadhaarNumberController.text,
+        residentialAddress: _addressController.text,
+        contactNumber: _contactNumberController.text,
+        email: _emailController.text,
+        fatherFullName: _fatherFullNameController.text,
+        motherFullName: _motherFullNameController.text,
+        bloodGroup: null, // Optional
+        studentClass: '',
+        division: '', // Optional
+      );
+
+      context.read<SampleController>().addStudent(student);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Student added successfully!'),
+          backgroundColor: Colors.green,
+          duration: Duration(seconds: 3),
+        ),
+      );
+
+      _clearFormFields();
+    } catch (e) {
+      // Handle any errors and show an error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to add student complete all required fields'),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 3),
+        ),
+      );
+    }
+  }
+
+// Optional: Method to clear form fields after successful submission
+  void _clearFormFields() {
+    _fullNameController.clear();
+    _dateOfBirthController.clear();
+    _dateOfJoiningController.clear();
+    _rollNumberController.clear();
+    _admissionNumberController.clear();
+    _aadhaarNumberController.clear();
+    _addressController.clear();
+    _contactNumberController.clear();
+    _emailController.clear();
+    _fatherFullNameController.clear();
+    _motherFullNameController.clear();
+    context.read<DropdownProvider>().clearAllDropdowns();
   }
 
   // Helper to create section titles
