@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/constants.dart';
+import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/core/shared_widgets/add_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/admin/payments/controller/payment_controller.dart';
@@ -132,7 +133,8 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
             return PaymentItem(
               amount: value.payments[index].amountPaid ?? "",
               name: value.payments[index].transactionId ?? "",
-              time: value.payments[index].paymentDate.toString(),
+              time: DateFormatter.formatDateString(
+                  value.payments[index].paymentDate.toString()),
             );
           });
     });
@@ -170,7 +172,8 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
             return PaymentItem(
               amount: value.donations[index].amountDonated ?? "",
               name: value.donations[index].purpose ?? "",
-              time: value.donations[index].donationDate.toString(),
+              time: DateFormatter.formatDateString(
+                  value.donations[index].donationDate.toString()),
             );
           });
     });

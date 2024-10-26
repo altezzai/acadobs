@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:school_app/base/controller/student_id_controller.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
@@ -12,19 +14,31 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  @override
+  void initState() {
+    context
+        .read<StudentIdController>()
+        .getStudentsFromClassAndDivision(className: "8", section: "b");
+    super.initState();
+  }
+
   String _username = '';
   String _password = '';
 
   // Function to handle login action
   void _login(BuildContext context) {
     if (_username == 'ajay' && _password == '1234') {
-      context.pushReplacementNamed(AppRouteConst.bottomNavRouteName, extra: UserType.admin);
-      // context.pushReplacementNamed(AppRouteConst.AdminHomeRouteName);
+      context.pushReplacementNamed(AppRouteConst.bottomNavRouteName,
+          extra: UserType.admin);
     } else if (_username == 'soorya' && _password == '1234') {
-      // context.pushReplacementNamed(AppRouteConst.homeRouteName);
-      context.pushReplacementNamed(AppRouteConst.bottomNavRouteName, extra: UserType.teacher);
+      context.pushReplacementNamed(AppRouteConst.bottomNavRouteName,
+          extra: UserType.teacher);
+    } else if (_username == 'manu' && _password == '1234') {
+      // Navigate to ParentHomeScreen for parent login
+      context.pushReplacementNamed(
+        AppRouteConst.ParentHomeRouteName,
+      );
     } else {
-      // Show an error message if the login credentials are incorrect
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Invalid username or password')),
       );
@@ -94,15 +108,6 @@ class _LoginPageState extends State<LoginPage> {
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
                               ),
-                              // recognizer: TapGestureRecognizer()
-                              //   ..onTap = () {
-                              //     Navigator.push(
-                              //       context,
-                              //       MaterialPageRoute(
-                              //         builder: (context) => RegisterPage(),
-                              //       ),
-                              //     );
-                              //   },
                             ),
                           ],
                         ),

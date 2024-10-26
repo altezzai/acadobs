@@ -56,6 +56,7 @@ class PaymentController extends ChangeNotifier {
 
   Future<void> addPayment(
     BuildContext context, {
+    required String userId,
     required String amount_paid,
     required String payment_date,
     required String month,
@@ -69,6 +70,7 @@ class PaymentController extends ChangeNotifier {
     loadingProvider.setLoading(true); //start loader
     try {
       final response = await PaymentServices().addPayment(
+        userId: userId,
         amount_paid: amount_paid,
         payment_date: payment_date,
         month: month,
