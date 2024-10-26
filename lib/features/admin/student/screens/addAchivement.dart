@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
-import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import '../../../../core/shared_widgets/custom_calendar.dart';
 
 class AddAchievementPage extends StatefulWidget {
@@ -85,28 +85,18 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             CustomDropdown(
-              hintText: 'Class',
-              value: selectedClass,
+              dropdownKey: 'class',
+              label: 'Class',
               items: ['V', 'VI', 'VII', 'VIII', 'IX', 'X'],
-              onChanged: (value) {
-                setState(() {
-                  selectedClass = value;
-                });
-              },
-              iconData: const Icon(Icons.class_),
+              icon: Icons.class_,
             ),
             SizedBox(height: 16),
 
             CustomDropdown(
-              hintText: 'Division',
-              value: selectedDivision,
+              dropdownKey: 'division',
+              label: 'Division',
               items: ['A', 'B', 'C'],
-              onChanged: (value) {
-                setState(() {
-                  selectedDivision = value;
-                });
-              },
-              iconData: const Icon(Icons.category),
+              icon: Icons.category,
             ),
 
             SizedBox(height: 16),
@@ -139,15 +129,10 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
             SizedBox(height: 16),
 
             CustomDropdown(
-              hintText: 'Level',
-              value: selectedLevel,
+              dropdownKey: 'level',
+              label: 'Level',
               items: ['Beginner', 'Intermediate', 'Advanced'],
-              onChanged: (value) {
-                setState(() {
-                  selectedLevel = value;
-                });
-              },
-              iconData: const Icon(Icons.star),
+              icon: Icons.star,
             ),
 
             SizedBox(height: 16),

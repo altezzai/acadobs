@@ -38,7 +38,7 @@ class DutiesHomeScreen extends StatelessWidget {
                     context.pushReplacementNamed(
                         AppRouteConst.AdminAddDutyRouteName);
                   },
-                  icon: Icon(Icons.add, color: Colors.white),
+                  icon: Icon(Icons.event_note_outlined, color: Colors.white),
                   label: Text(
                     'Add Duty',
                     style: TextStyle(

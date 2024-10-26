@@ -4,12 +4,14 @@ import 'package:intl/intl.dart';
 class CustomDatePicker extends StatelessWidget {
   final TextEditingController dateController; // Expose the controller
   final Function(DateTime) onDateSelected;
+  final String? hintText;
   final String label;
 
   CustomDatePicker({
     required this.dateController,
     required this.onDateSelected,
     required this.label,
+    this.hintText,
   });
 
   Future<void> _selectDate(BuildContext context) async {
@@ -47,15 +49,19 @@ class CustomDatePicker extends StatelessWidget {
           fontWeight:
               FontWeight.normal), // Smaller font size for the input text
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 15),
+        contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+        hintText: hintText,
+        hintStyle: TextStyle(
+          color: Colors.grey,
+        ),
         labelText: label,
         labelStyle: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.normal), // Adjust label font size
+          color: Colors.grey, // Change label text color here
+        ), // Adjust label font size
         prefixIcon: IconButton(
           icon: Icon(
-            Icons.calendar_today,
-            size: 20,
+            Icons.calendar_month,
+            size: 22,
           ),
           onPressed: () => _selectDate(context),
         ),

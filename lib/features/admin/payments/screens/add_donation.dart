@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
+import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
-import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
+import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
+import 'package:school_app/features/admin/payments/controller/payment_controller.dart';
 
 class AddDonationPage extends StatefulWidget {
   const AddDonationPage({super.key});
@@ -14,10 +20,17 @@ class AddDonationPage extends StatefulWidget {
 
 class _AddDonationPageState extends State<AddDonationPage> {
   String? selectedClass;
-  final _formKey = GlobalKey<FormState>();
+  // final _formKey = GlobalKey<FormState>();
   String? selectedDivision;
   String? selectedStudent;
   String? selectedFile;
+
+  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _amountController = TextEditingController();
+  final TextEditingController _purposeController = TextEditingController();
+  final TextEditingController _donationtypeController = TextEditingController();
+  final TextEditingController _methodController = TextEditingController();
+  final TextEditingController _transactionController = TextEditingController();
 
   // Method to pick a file from the device
   Future<void> pickFile() async {
@@ -48,7 +61,10 @@ class _AddDonationPageState extends State<AddDonationPage> {
               title: "Add Donation",
               isProfileIcon: false,
               onTap: () {
-                Navigator.pop(context);
+                context.goNamed(
+                  AppRouteConst.bottomNavRouteName,
+                  extra: UserType.admin, // Pass the userType to the next screen
+                );
               },
             ),
             Expanded(
@@ -59,44 +75,29 @@ class _AddDonationPageState extends State<AddDonationPage> {
                       children: [
                         Expanded(
                           child: CustomDropdown(
-                            hintText: 'Class',
-                            value: selectedClass,
+                            dropdownKey: 'class',
+                            label: 'Class',
                             items: ['Class 1', 'Class 2', 'Class 3'],
-                            onChanged: (value) {
-                              setState(() {
-                                selectedClass = value;
-                              });
-                            },
-                            iconData: const Icon(Icons.school),
+                            icon: Icons.school,
                           ),
                         ),
                         const SizedBox(width: 16),
                         Expanded(
                           child: CustomDropdown(
-                            hintText: 'Division',
-                            value: selectedDivision,
+                            dropdownKey: 'division',
+                            label: 'Division',
                             items: ['Division A', 'Division B', 'Division C'],
-                            onChanged: (value) {
-                              setState(() {
-                                selectedDivision = value;
-                              });
-                            },
-                            iconData: const Icon(Icons.group),
+                            icon: Icons.group,
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 16),
                     CustomDropdown(
-                      hintText: 'Select Student',
-                      value: selectedStudent,
+                      dropdownKey: 'select student',
+                      label: 'Select student',
                       items: ['Student 1', 'Student 2', 'Student 3'],
-                      onChanged: (value) {
-                        setState(() {
-                          selectedStudent = value;
-                        });
-                      },
-                      iconData: const Icon(Icons.person),
+                      icon: Icons.person,
                     ),
                     const SizedBox(height: 16),
                     Column(
@@ -112,19 +113,45 @@ class _AddDonationPageState extends State<AddDonationPage> {
                         const SizedBox(height: 8),
                         CustomTextfield(
                           hintText: 'Title',
+                          controller: _purposeController,
                           iconData: const Icon(Icons.title),
-                          onChanged: (value) {
-                            // Handle title input
-                          },
                         ),
                         const SizedBox(height: 16),
                         CustomTextfield(
                           hintText: 'Amount',
+                          controller: _amountController,
                           iconData: const Icon(Icons.currency_rupee),
                           keyBoardtype: TextInputType.number,
-                          onChanged: (value) {
-                            // Handle amount input
-                          },
+                        ),
+                        const SizedBox(height: 16),
+                        CustomDatePicker(
+                            dateController: _dateController,
+                            onDateSelected: (selectedDate) {
+                              print(
+                                "End Date selected: $selectedDate",
+                              );
+                            },
+                            label: 'Donation Date'),
+                        const SizedBox(height: 16),
+                        CustomTextfield(
+                          hintText: 'Donation Type',
+                          controller: _donationtypeController,
+                          iconData: const Icon(Icons.currency_rupee),
+                          keyBoardtype: TextInputType.number,
+                        ),
+                        const SizedBox(height: 16),
+                        CustomTextfield(
+                          hintText: 'Payment Method',
+                          controller: _methodController,
+                          iconData: const Icon(Icons.currency_rupee),
+                          keyBoardtype: TextInputType.number,
+                        ),
+                        const SizedBox(height: 16),
+                        CustomTextfield(
+                          hintText: 'Transaction Id',
+                          controller: _transactionController,
+                          iconData: const Icon(Icons.currency_rupee),
+                          keyBoardtype: TextInputType.number,
                         ),
                       ],
                     ),
@@ -167,12 +194,15 @@ class _AddDonationPageState extends State<AddDonationPage> {
               child: CustomButton(
                 text: 'Submit',
                 onPressed: () {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    // Handle form submission logic here
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Form successfully submitted!')),
-                    );
-                  }
+                  context.read<PaymentController>().addDonation(
+                        context,
+                        amount_donated: _amountController.text,
+                        donation_date: _dateController.text,
+                        purpose: _purposeController.text,
+                        donation_type: _donationtypeController.text,
+                        payment_method: _methodController.text,
+                        transaction_id: _transactionController.text,
+                      );
                 },
               ),
             ),

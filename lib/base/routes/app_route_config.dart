@@ -12,9 +12,20 @@ import 'package:school_app/features/admin/student/screens/addhomwork.dart';
 import 'package:school_app/features/admin/student/screens/newstudent.dart';
 import 'package:school_app/features/admin/student/screens/studentdetails.dart';
 import 'package:school_app/features/admin/student/screens/studentpage.dart';
-import 'package:school_app/features/admin/teacher_section/screens/screens/teacherdetails.dart';
-import 'package:school_app/features/admin/teacher_section/screens/screens/teachers_page.dart';
+import 'package:school_app/features/admin/teacher_section/screens/add_teacher.dart';
+import 'package:school_app/features/admin/teacher_section/screens/teacherdetails.dart';
+import 'package:school_app/features/admin/teacher_section/screens/teachers_page.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+import 'package:school_app/features/parent/screen/PaymentScreen.dart';
+import 'package:school_app/features/parent/screen/eventdetailedscreen.dart';
+import 'package:school_app/features/parent/screen/eventscreen.dart';
+import 'package:school_app/features/parent/screen/homescreen.dart';
+import 'package:school_app/features/parent/screen/leaveRequestScreen.dart';
+import 'package:school_app/features/parent/screen/noticedetailedscreen.dart';
+import 'package:school_app/features/parent/screen/noticescreen.dart';
+import 'package:school_app/features/parent/screen/paymentdetailedscreen.dart';
+import 'package:school_app/features/parent/screen/studentdetails.dart';
+// import 'package:school_app/features/parent/screen/studentdetails.dart';
 import 'package:school_app/features/teacher/attendance/screens/take_attendance.dart';
 import 'package:school_app/features/teacher/duties/duty_detail.dart';
 import 'package:school_app/features/teacher/homework/screens/work.dart';
@@ -25,6 +36,7 @@ import 'package:school_app/features/teacher/mark_work/screens/mark_star.dart';
 import 'package:school_app/features/teacher/marks/screens/student_marklist.dart';
 import 'package:school_app/features/teacher/parent/screens/parents.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+
 
 class Approuter {
   GoRouter router = GoRouter(
@@ -215,12 +227,105 @@ class Approuter {
           return MaterialPage(child: AddDonationPage());
         },
       ),
-
       GoRoute(
         name: AppRouteConst.AddHomeworkRouteName,
         path: '/addhomework',
         pageBuilder: (context, state) {
           return MaterialPage(child: AddHomeworkPage());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.ParentHomeRouteName,
+        path: '/parenthome',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: ParentHomeScreen());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.LeaveRequestRouteName,
+        path: '/leaverequest',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: LeaveRequestPage());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.ParentStudentDetailRouteName,
+        path: '/parentstudentdetail',
+        pageBuilder: (context, state) {
+          final studentData = state.extra as Map<String, dynamic>;
+          return MaterialPage(
+              child: ParentStudentDetailPage(
+            name: studentData['name'],
+            studentClass: studentData['studentClass'],
+            image: studentData['image'],
+          ));
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.EventsPageRouteName,
+        path: '/eventspage',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: EventsPage());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.ParentNoticePageRouteName,
+        path: '/parentnoticepage',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: NoticePage());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.EventDetailedPageRouteName,
+        path: '/eventdetailedpage',
+        pageBuilder: (context, state) {
+          final eventData = state.extra as Map<String, dynamic>;
+          return MaterialPage(
+              child: EventDetailPage(
+            title: eventData['title'],
+            description: eventData['description'],
+            date: eventData['date'],
+            imageProvider: eventData['imageProvider'],
+          ));
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.NoticeDetailedPageRouteName,
+        path: '/noticedetailedpage',
+        pageBuilder: (context, state) {
+          final noticeData = state.extra as Map<String, dynamic>;
+          return MaterialPage(
+              child: NoticeDetailPage(
+            title: noticeData['title'],
+            description: noticeData['description'],
+            fileName: noticeData['fileName'],
+            imageProvider: noticeData['imageProvider'],
+          ));
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.ParentPaymentDetailedPageRouteName,
+        path: '/parentpaymentdetailedpage',
+        pageBuilder: (context, state) {
+          final paymentData = state.extra as Map<String, dynamic>;
+          return MaterialPage(
+              child: PaymentDetailPage(
+            amount: paymentData['amount'],
+            description: paymentData['description'],
+          ));
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.ParentPaymentPageRouteName,
+        path: '/parentpaymentpage',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: PaymentPage());
+GoRoute(
+        name: AppRouteConst.AddTeacherRouteName,
+        path: '/addteacher',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: AddTeacher());
+)
         },
       ),
     ],

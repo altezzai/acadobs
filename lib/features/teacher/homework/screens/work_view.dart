@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/teacher/homework/widgets/view_container.dart';
 
 class WorkView extends StatelessWidget {
@@ -11,20 +12,18 @@ class WorkView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        leading: IconButton(
-          onPressed: () {
-            context.pushReplacementNamed(AppRouteConst.homeworkRouteName);
-          },
-          icon: const Icon(Icons.keyboard_arrow_left),
-        ),
-      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 18),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            CustomAppbar(
+              title: '',
+              isProfileIcon: false,
+              onTap: () {
+                context.goNamed(AppRouteConst.homeworkRouteName);
+              },
+            ),
             const ViewContainer(
               bcolor: Color(0xffFFCEDE),
               icolor: Color(0xffB14F6F),

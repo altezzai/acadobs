@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:school_app/sample/controller/student_controller.dart';
-import 'package:school_app/sample/model/student_data.dart';
+import 'package:school_app/features/admin/student/controller/student_controller.dart';
+import 'package:school_app/features/admin/student/model/student_data.dart';
 
 class AddStudentData extends StatefulWidget {
   @override
@@ -124,7 +124,7 @@ class _AddStudentDataState extends State<AddStudentData> {
       email: _emailController.text,
       fatherFullName: _fatherFullNameController.text,
       motherFullName: _motherFullNameController.text,
-      bloodGroup: null, // Optional, add other fields as needed
+      bloodGroup: null, studentClass: '', division: '', // Optional, add other fields as needed
     );
 
     // Call the addStudent method in the controller

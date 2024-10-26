@@ -14,17 +14,18 @@ class WorkContainer extends StatelessWidget {
   final Color prefixColor;
   final VoidCallback? onTap;
 
-  const WorkContainer(
-      {super.key,
-      required this.bcolor,
-      required this.icolor,
-      required this.icon,
-      required this.sub,
-      required this.work,
-      this.brad = 0,
-      this.prefixText = "View",
-      this.prefixColor = blackColor,
-      this.onTap});
+  const WorkContainer({
+    super.key,
+    required this.bcolor,
+    required this.icolor,
+    required this.icon,
+    required this.sub,
+    required this.work,
+    this.brad = 0,
+    this.prefixText = "View",
+    this.prefixColor = blackColor,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -60,11 +61,13 @@ class WorkContainer extends StatelessWidget {
             children: [
               Text(
                 work,
-                style: textThemeData.headlineMedium!.copyWith(fontSize: 16),
+                style: textThemeData.headlineMedium?.copyWith(fontSize: 16) ??
+                    const TextStyle(fontSize: 16), // Null check
               ),
               Text(
                 sub,
-                style: textThemeData.labelSmall!.copyWith(fontSize: 12),
+                style: textThemeData.labelSmall?.copyWith(fontSize: 12) ??
+                    const TextStyle(fontSize: 12), // Null check
               ),
             ],
           ),
@@ -73,8 +76,9 @@ class WorkContainer extends StatelessWidget {
             onTap: onTap,
             child: Text(
               prefixText,
-              style: textThemeData.headlineMedium!
-                  .copyWith(fontSize: 16, color: prefixColor),
+              style: textThemeData.headlineMedium
+                      ?.copyWith(fontSize: 16, color: prefixColor) ??
+                  const TextStyle(fontSize: 16),
             ),
           ),
           SizedBox(

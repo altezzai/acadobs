@@ -7,8 +7,8 @@ import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/features/teacher/attendance/widgets/title_tile.dart';
-import 'package:school_app/features/teacher/controller/dropdown_provider.dart';
-import 'package:school_app/features/teacher/widgets/custom_dropdown.dart';
+import 'package:school_app/core/controller/dropdown_provider.dart';
+import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 
 class Attendance extends StatelessWidget {
   Attendance({Key? key}) : super(key: key);
