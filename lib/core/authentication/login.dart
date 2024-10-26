@@ -18,13 +18,17 @@ class _LoginPageState extends State<LoginPage> {
   // Function to handle login action
   void _login(BuildContext context) {
     if (_username == 'ajay' && _password == '1234') {
-      context.pushReplacementNamed(AppRouteConst.bottomNavRouteName, extra: UserType.admin);
-      // context.pushReplacementNamed(AppRouteConst.AdminHomeRouteName);
+      context.pushReplacementNamed(AppRouteConst.bottomNavRouteName,
+          extra: UserType.admin);
     } else if (_username == 'soorya' && _password == '1234') {
-      // context.pushReplacementNamed(AppRouteConst.homeRouteName);
-      context.pushReplacementNamed(AppRouteConst.bottomNavRouteName, extra: UserType.teacher);
+      context.pushReplacementNamed(AppRouteConst.bottomNavRouteName,
+          extra: UserType.teacher);
+    } else if (_username == 'manu' && _password == '1234') {
+      // Navigate to ParentHomeScreen for parent login
+      context.pushReplacementNamed(
+        AppRouteConst.ParentHomeRouteName,
+      );
     } else {
-      // Show an error message if the login credentials are incorrect
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Invalid username or password')),
       );
