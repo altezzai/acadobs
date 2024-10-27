@@ -18,7 +18,7 @@ class CustomNameContainer extends StatelessWidget {
       style: OutlinedButton.styleFrom(
         padding: EdgeInsets.symmetric(
           vertical: Responsive.height * 3,
-          horizontal: Responsive.width * 12,
+          horizontal: Responsive.width * 13.5,
         ),
       ),
       child: Text(
