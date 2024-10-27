@@ -4,12 +4,13 @@ import 'package:school_app/base/utils/constants.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/teacher/attendance/controller/attendance_controller.dart';
+import 'package:school_app/features/teacher/attendance/model/attendance_data.dart';
 import 'package:school_app/features/teacher/attendance/widgets/attendance_tile.dart';
 
 class TakeAttendance extends StatelessWidget {
-  TakeAttendance({
-    super.key,
-  });
+  final AttendanceData attendanceData;
+
+  TakeAttendance({super.key, required this.attendanceData});
 
   final students = [
     {"id": 1, "name": "Theodore T.C. Calvin"},
@@ -38,7 +39,7 @@ class TakeAttendance extends StatelessWidget {
                 },
               ),
               Text(
-                "01/09/2024",
+                attendanceData.selectedDivision,
                 style: Theme.of(context)
                     .textTheme
                     .bodySmall!

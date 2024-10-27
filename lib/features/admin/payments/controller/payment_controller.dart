@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -64,6 +65,7 @@ class PaymentController extends ChangeNotifier {
     required String payment_method,
     required String transaction_id,
     required String payment_status,
+    File? file,
   }) async {
     final loadingProvider =
         Provider.of<LoadingProvider>(context, listen: false); //loading provider
@@ -78,6 +80,7 @@ class PaymentController extends ChangeNotifier {
         payment_method: payment_method,
         transaction_id: transaction_id,
         payment_status: payment_status,
+        file: file
       );
       if (response.statusCode == 201) {
         log(">>>>>>${response.statusMessage}");

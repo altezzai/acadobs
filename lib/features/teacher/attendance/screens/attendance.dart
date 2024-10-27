@@ -3,12 +3,13 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart'; // Import for state management
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
-import 'package:school_app/features/teacher/attendance/widgets/title_tile.dart';
-import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
+import 'package:school_app/features/teacher/attendance/model/attendance_data.dart';
+import 'package:school_app/features/teacher/attendance/widgets/title_tile.dart';
 
 class Attendance extends StatelessWidget {
   Attendance({Key? key}) : super(key: key);
@@ -52,7 +53,7 @@ class Attendance extends StatelessWidget {
                                 dropdownKey: 'class', // Unique key
                                 icon: Icons.school,
                                 label: "Select Class",
-                                items: ["1", "2", "3", "4", "5"],
+                                items: ["6", "7", "8", "9", "10"],
                               ),
                             ),
                             SizedBox(width: Responsive.width * 1),
@@ -89,7 +90,18 @@ class Attendance extends StatelessWidget {
                                 dropdownKey: 'division', // Unique key
                                 icon: Icons.group,
                                 label: "Select Period",
-                                items: ["1", "2", "3", "4", "5", "6", "7"],
+                                items: [
+                                  "1",
+                                  "2",
+                                  "3",
+                                  "4",
+                                  "5",
+                                  "6",
+                                  "7",
+                                  "8",
+                                  "9",
+                                  "10"
+                                ],
                               ),
                             ),
                           ],
@@ -137,7 +149,7 @@ class Attendance extends StatelessWidget {
                         CustomButton(
                           text: "Submit",
                           onPressed: () {
-                            // Example submission: Accessing selected dropdown values
+                            // Accessing selected dropdown values
                             String selectedClass = context
                                 .read<DropdownProvider>()
                                 .getSelectedItem('class');
@@ -147,14 +159,25 @@ class Attendance extends StatelessWidget {
                             String selectedDivision = context
                                 .read<DropdownProvider>()
                                 .getSelectedItem('division');
-                            print(
-                                "Selected Class: $selectedClass, Period: $selectedPeriod, Division: $selectedDivision");
+                            String selectedDate = _dateController
+                                .text; // Access date from dateController
 
-                            // Call backend submission function here with selected data
-                            context
-                                .pushNamed(AppRouteConst.attendanceRouteName);
+                            // Create an AttendanceData object
+                            final attendanceData = AttendanceData(
+                              selectedClass: selectedClass,
+                              selectedPeriod: selectedPeriod,
+                              selectedDivision: selectedDivision,
+                              selectedDate: selectedDate,
+                            );
+
+                            // Push to attendanceRoute with extra data
+                            context.pushNamed(
+                              AppRouteConst.attendanceRouteName,
+                              extra: attendanceData,
+                            );
                           },
                         ),
+
                         SizedBox(height: Responsive.height * 3),
                       ],
                     ),
