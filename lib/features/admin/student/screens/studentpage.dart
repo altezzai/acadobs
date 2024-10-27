@@ -17,7 +17,7 @@ class _StudentsPageState extends State<StudentsPage> {
   @override
   void initState() {
     super.initState();
-    context.read<SampleController>().getStudentDetails();
+    context.read<StudentController>().getStudentDetails();
   }
 
   void _filterStudents(String query) {
@@ -135,27 +135,29 @@ class _StudentsPageState extends State<StudentsPage> {
             ),
           ),
           Expanded(
-            child: Consumer<SampleController>(
-              builder: (context, controller, child) {
-                if (controller.studentData.isEmpty) {
-                  return Center(child: CircularProgressIndicator());
+            child: Consumer<StudentController>(
+              builder: (context, value, child) {
+                if (value.isloading) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
                 }
 
                 // Filter students by search query and class
-                final filteredStudents =
-                    controller.studentData.where((student) {
-                  final matchesSearchQuery = student.fullName!
-                      .toLowerCase()
-                      .contains(searchQuery.toLowerCase());
-                  final matchesClass = selectedClass == "All" ||
-                      student.studentDatumClass == selectedClass;
-                  return matchesSearchQuery && matchesClass;
-                }).toList();
+                // final filteredStudents =
+                //     value.students.where((student) {
+                //   final matchesSearchQuery = student.fullName!
+                //       .toLowerCase()
+                //       .contains(searchQuery.toLowerCase());
+                //   final matchesClass = selectedClass == "All" ||
+                //       student.studentDatumClass == selectedClass;
+                //   return matchesSearchQuery && matchesClass;
+                // }).toList();
 
                 return ListView.builder(
-                  itemCount: filteredStudents.length,
+                  itemCount: value.students.length,
                   itemBuilder: (context, index) {
-                    final student = filteredStudents[index];
+                    // final student = filteredStudents[index];
                     return Card(
                       margin: const EdgeInsets.symmetric(
                           horizontal: 1, vertical: 5),
@@ -167,12 +169,12 @@ class _StudentsPageState extends State<StudentsPage> {
                             backgroundImage: AssetImage('assets/student4.png'),
                           ),
                           title: Text(
-                            student.fullName ?? "",
+                            value.students[index].fullName ?? "",
                             style: TextStyle(
                                 fontWeight: FontWeight.normal, fontSize: 16),
                           ),
                           subtitle: Text(
-                            student.studentDatumClass ?? "",
+                            value.students[index].studentClass.toString(),
                             style: TextStyle(
                                 fontWeight: FontWeight.normal, fontSize: 15),
                           ),
@@ -181,8 +183,8 @@ class _StudentsPageState extends State<StudentsPage> {
                             onPressed: () => context.pushReplacementNamed(
                               AppRouteConst.AdminstudentdetailsRouteName,
                               extra: {
-                                'name': student.fullName,
-                                'class': student.studentDatumClass,
+                                'name': value.students[index].fullName,
+                                'class': value.students[index].studentClass,
                                 'image': 'student6.png',
                               },
                             ),

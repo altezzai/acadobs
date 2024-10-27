@@ -13,7 +13,7 @@ getProviders() {
   return [
     ChangeNotifierProvider(create: (_) => DropdownProvider()),
     ChangeNotifierProvider(create: (_) => AttendanceController()),
-    ChangeNotifierProvider(create: (_) => SampleController()),
+    ChangeNotifierProvider(create: (_) => StudentController()),
     ChangeNotifierProvider(create: (_) => BottomNavController()),
     ChangeNotifierProvider(create: (_) => TeacherController()),
     ChangeNotifierProvider(create: (_) => NoticeController()),

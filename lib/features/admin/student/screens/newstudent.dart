@@ -9,7 +9,6 @@ import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/features/admin/student/controller/student_controller.dart';
-import 'package:school_app/features/admin/student/model/student_data.dart';
 
 class AddStudentPage extends StatefulWidget {
   @override
@@ -44,7 +43,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
       TextEditingController();
   final TextEditingController _motherFullNameController =
       TextEditingController();
-
+  final TextEditingController _bloodgroupController = TextEditingController();
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -224,6 +223,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 // Blood Group, Email, Previous School Inputs
                 CustomTextfield(
                   hintText: 'Blood Group',
+                  controller: _bloodgroupController,
                   iconData: Icon(Icons.bloodtype),
                 ),
                 SizedBox(height: 20),
@@ -332,7 +332,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 SizedBox(height: 20),
 
                 CustomTextfield(
-                  hintText: 'Sibblings Name',
+                  hintText: 'Siblings Name',
                   iconData: Icon(Icons.group),
                 ),
 
@@ -525,27 +525,41 @@ class _AddStudentPageState extends State<AddStudentPage> {
       final selectedDivision =
           context.read<DropdownProvider>().getSelectedItem('division');
 
-      final student = StudentData(
-        fullName: _fullNameController.text,
-        dateOfBirth: DateTime.parse(_dateOfBirthController.text),
-        dateOfJoining: DateTime.parse(_dateOfJoiningController.text),
-        studentDatumClass: selectedClass,
-        section: selectedDivision,
-        rollNumber: int.tryParse(_rollNumberController.text),
-        gender: selectedGender,
-        admissionNumber: _admissionNumberController.text,
-        aadhaarNumber: _aadhaarNumberController.text,
-        residentialAddress: _addressController.text,
-        contactNumber: _contactNumberController.text,
-        email: _emailController.text,
-        fatherFullName: _fatherFullNameController.text,
-        motherFullName: _motherFullNameController.text,
-        bloodGroup: null, // Optional
-        studentClass: '',
-        division: '', // Optional
-      );
+      // final student = Student(
+      //   fullName: _fullNameController.text,
+      //   dateOfBirth: DateTime.parse(_dateOfBirthController.text),
+      //   dateOfJoining: DateTime.parse(_dateOfJoiningController.text),
+      //   studentClass: selectedClass,
+      //   section: selectedDivision,
+      //   rollNumber: int.tryParse(_rollNumberController.text),
+      //   gender: selectedGender,
+      //   admissionNumber: _admissionNumberController.text,
+      //   aadhaarNumber: _aadhaarNumberController.text,
+      //   residentialAddress: _addressController.text,
+      //   contactNumber: _contactNumberController.text,
+      //   email: _emailController.text,
+      //   fatherFullName: _fatherFullNameController.text,
+      //   motherFullName: _motherFullNameController.text,
+      //   bloodGroup: null, // Optional
+      //   studentClass: '',
+      //   division: '', // Optional
+      // );
 
-      context.read<SampleController>().addStudent(student);
+      context.read<StudentController>().addNewStudent(context,
+          fullName: _fullNameController.text,
+          dateOfBirth: _dateOfBirthController.text,
+          gender: selectedGender,
+          studentClass: selectedClass,
+          section: selectedDivision,
+          rollNumber: _rollNumberController.text,
+          admissionNumber: _admissionNumberController.text,
+          aadhaarNumber: _aadhaarNumberController.text,
+          residentialAddress: _addressController.text,
+          contactNumber: _contactNumberController.text,
+          email: _emailController.text,
+          fatherFullName: _fatherFullNameController.text,
+          motherFullName: _motherFullNameController.text,
+          bloodGroup: _bloodgroupController.text);
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
