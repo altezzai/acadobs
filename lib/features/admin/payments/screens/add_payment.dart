@@ -11,8 +11,8 @@ import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
-import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
+import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/admin/payments/controller/payment_controller.dart';
 
 class AddPaymentPage extends StatefulWidget {
@@ -26,9 +26,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
   String? selectedFile;
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
-  final TextEditingController _methodController = TextEditingController();
   final TextEditingController _transactionController = TextEditingController();
-  final TextEditingController _statusController = TextEditingController();
 
   @override
   void initState() {
@@ -38,11 +36,8 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
     dropdownProvider.addListener(() {
       final selectedClass = dropdownProvider.getSelectedItem('class');
       final selectedDivision = dropdownProvider.getSelectedItem('division');
-
-      if (selectedClass != null && selectedDivision != null) {
-        context.read<StudentIdController>().getStudentsFromClassAndDivision(
-            className: selectedClass, section: selectedDivision);
-      }
+      context.read<StudentIdController>().getStudentsFromClassAndDivision(
+          className: selectedClass, section: selectedDivision);
     });
   }
 
@@ -102,18 +97,13 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
               Consumer<StudentIdController>(
                 builder: (context, studentController, child) {
                   return CustomDropdown(
-                    dropdownKey: 'selectStudent',
+                    dropdownKey: 'selectedStudent',
                     label: 'Select student',
                     items: studentController.students
-                        .map((student) => student['full_name'] as String)
+                        .map((student) =>
+                            '${student['id'].toString()}. ${student['full_name']}')
                         .toList(),
                     icon: Icons.person,
-                    onChanged: (selectedStudent) {
-                      final selected = studentController.students.firstWhere(
-                        (student) => student['full_name'] == selectedStudent,
-                      );
-                      studentController.setSelectedStudentId(selected['id']);
-                    },
                   );
                 },
               ),
@@ -176,11 +166,11 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                     keyBoardtype: TextInputType.number,
                   ),
                   const SizedBox(height: 16),
-                  CustomTextfield(
-                    hintText: 'Payment Method',
-                    controller: _methodController,
-                    iconData: const Icon(Icons.payment),
-                    keyBoardtype: TextInputType.text,
+                  CustomDropdown(
+                    dropdownKey: 'paymentMethod',
+                    label: 'Payment Method',
+                    icon: Icons.payment,
+                    items: ['Cash', 'Bank Transfer', 'Credit Card', 'UPI'],
                   ),
                   const SizedBox(height: 16),
                   CustomTextfield(
@@ -190,11 +180,11 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                     keyBoardtype: TextInputType.text,
                   ),
                   const SizedBox(height: 16),
-                  CustomTextfield(
-                    hintText: 'Payment Status',
-                    controller: _statusController,
-                    iconData: const Icon(Icons.check_circle),
-                    keyBoardtype: TextInputType.text,
+                  CustomDropdown(
+                    dropdownKey: 'paymentStatus',
+                    label: 'Payment Status',
+                    icon: Icons.check_circle,
+                    items: ['Pending', 'Completed', 'Failed'],
                   ),
                 ],
               ),
@@ -232,25 +222,34 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                 child: CustomButton(
                   text: 'Submit',
                   onPressed: () {
+                    final selectedStudent = context
+                        .read<DropdownProvider>()
+                        .getSelectedItem('selectedStudent');
                     final selectedYear = context
                         .read<DropdownProvider>()
                         .getSelectedItem('selectedYear');
                     final selectedMonth = context
                         .read<DropdownProvider>()
                         .getSelectedItem('selectedMonth');
-                    final studentId =
-                        context.read<StudentIdController>().selectedStudentId;
+                    final paymentMethod = context
+                        .read<DropdownProvider>()
+                        .getSelectedItem('paymentMethod');
+                    final paymentStatus = context
+                        .read<DropdownProvider>()
+                        .getSelectedItem('paymentStatus');
+                    final studentId = selectedStudent.split('.').first;
+
                     log(">>>>>>>>>>>>${studentId}");
                     context.read<PaymentController>().addPayment(
                           context,
-                          userId: "1",
+                          userId: studentId,
                           amount_paid: _amountController.text,
                           payment_date: _dateController.text,
                           month: selectedMonth,
                           year: selectedYear,
-                          payment_method: _methodController.text,
+                          payment_method: paymentMethod,
                           transaction_id: _transactionController.text,
-                          payment_status: _statusController.text,
+                          payment_status: paymentStatus,
                         );
                   },
                 ),

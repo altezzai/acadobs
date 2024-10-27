@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:school_app/features/admin/student/model/student_data.dart';
@@ -11,10 +13,12 @@ class SampleController extends ChangeNotifier {
   Future<void> getStudentDetails() async {
     try {
       final response = await SampleServices().get("/students");
+      log(response.data);
       if (response.statusCode == 200) {
         _studentData = (response.data as List<dynamic>)
             .map((result) => StudentData.fromJson(result))
             .toList();
+
         notifyListeners(); // Notify UI about data changes
       }
     } catch (e) {

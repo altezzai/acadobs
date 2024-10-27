@@ -40,10 +40,15 @@ class TeacherScreen extends StatelessWidget {
                     ],
                   ),
                   const Spacer(),
-                  Padding(
+                 GestureDetector(
+                  onTap: () {
+                    context.goNamed(AppRouteConst.loginRouteName);
+                  },
+                  child: Padding(
                     padding: const EdgeInsets.only(bottom: 30),
                     child: Image.asset('assets/admin.png'),
                   ),
+                ),
                 ],
               ),
               SizedBox(
