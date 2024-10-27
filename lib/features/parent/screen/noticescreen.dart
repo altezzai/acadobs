@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
 
 import 'package:school_app/features/parent/widgets/noticecard.dart';
@@ -57,11 +58,11 @@ class _NoticePageState extends State<NoticePage> {
                 ),
               ),
               SizedBox(height: 10),
-              NoticeCard(
-                noticeTitle: "PTA meeting class XII",
-                date: "15 - 06 - 24",
-                time: "09:00 am",
-              ),
+              // NoticeCard(
+              //   noticeTitle: "PTA meeting class XII",
+              //   date: "15 - 06 - 24",
+              //   time: "09:00 am",
+              // ),
               SizedBox(height: 20),
 
               // Yesterday Events Section
@@ -80,9 +81,12 @@ class _NoticePageState extends State<NoticePage> {
                   itemCount: value.notices.length,
                   itemBuilder: (context, index) {
                     return NoticeCard(
+                        description: value.notices[index].description ?? "",
                         noticeTitle: value.notices[index].title ?? "",
-                        date: value.notices[index].date.toString(),
-                        time: value.notices[index].createdAt.toString());
+                        date: DateFormatter.formatDateString(
+                            value.notices[index].date.toString()),
+                        time: TimeFormatter.formatTimeFromString(
+                            value.notices[index].createdAt.toString()));
                   },
                 );
               })

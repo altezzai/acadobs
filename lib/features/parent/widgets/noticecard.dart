@@ -4,6 +4,7 @@ import 'package:school_app/base/routes/app_route_const.dart';
 
 class NoticeCard extends StatelessWidget {
   final String noticeTitle;
+  final String description;
   final String date;
   final String time;
 
@@ -11,6 +12,7 @@ class NoticeCard extends StatelessWidget {
     super.key,
     required this.noticeTitle,
     required this.date,
+    required this.description,
     required this.time,
   });
 
@@ -22,8 +24,7 @@ class NoticeCard extends StatelessWidget {
           AppRouteConst.NoticeDetailedPageRouteName,
           extra: {
             'title': noticeTitle,
-            'description':
-                "You have to complete the registration of 12th class students before 2022.",
+            'description': description,
             'fileName': "Exam-details.pdf",
             'imageProvider': const AssetImage('assets/class12.png'),
           },

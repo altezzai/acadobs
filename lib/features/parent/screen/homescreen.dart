@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/date_formatter.dart';
+import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
 import 'package:school_app/features/parent/screen/PaymentScreen.dart';
 import 'package:school_app/features/parent/screen/eventscreen.dart';
 
@@ -18,6 +21,12 @@ class ParentHomeScreen extends StatefulWidget {
 }
 
 class _ParentHomeScreenState extends State<ParentHomeScreen> {
+  @override
+  void initState() {
+    context.read<NoticeController>().getNotices();
+    super.initState();
+  }
+
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
@@ -220,16 +229,36 @@ class HomePage extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 10),
-                    const NoticeCard(
-                      noticeTitle: "PTA meeting class 09",
-                      date: "15 - 06 - 24",
-                      time: "09:00 am",
-                    ),
-                    const NoticeCard(
-                      noticeTitle: "PTA meeting class 02",
-                      date: "15 - 06 - 24",
-                      time: "09:00 am",
-                    ),
+                    Consumer<NoticeController>(
+                        builder: (context, value, child) {
+                      return ListView.builder(
+                        padding: EdgeInsets.zero,
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: value.notices.take(3).length,
+                        itemBuilder: (context, index) {
+                          return NoticeCard(
+                              description:
+                                  value.notices[index].description ?? "",
+                              noticeTitle: value.notices[index].title ?? "",
+                              date: DateFormatter.formatDateString(
+                                  value.notices[index].date.toString()),
+                              time: TimeFormatter.formatTimeFromString(
+                                  value.notices[index].createdAt.toString()));
+                        },
+                      );
+                    }),
+                    // const NoticeCard(
+                    //   noticeTitle: "PTA meeting class 09",
+                    //   date: "15 - 06 - 24",
+                    //   description: "",
+                    //   time: "09:00 am",
+                    // ),
+                    // const NoticeCard(
+                    //   noticeTitle: "PTA meeting class 02",
+                    //   date: "15 - 06 - 24",
+                    //   time: "09:00 am",
+                    // ),
                     const SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
