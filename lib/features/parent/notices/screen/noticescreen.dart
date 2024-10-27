@@ -4,21 +4,20 @@ import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
-import 'package:school_app/features/parent/widgets/eventcard.dart'
-    as event_card;
-import 'package:school_app/features/parent/widgets/eventcard.dart';
 
-class EventsPage extends StatefulWidget {
-  const EventsPage({super.key});
+import 'package:school_app/features/parent/notices/widget/noticecard.dart';
+
+class NoticePage extends StatefulWidget {
+  const NoticePage({super.key});
 
   @override
-  State<EventsPage> createState() => _EventsPageState();
+  State<NoticePage> createState() => _NoticePageState();
 }
 
-class _EventsPageState extends State<EventsPage> {
+class _NoticePageState extends State<NoticePage> {
   @override
   void initState() {
-    context.read<NoticeController>().getEvents();
+    context.read<NoticeController>().getNotices();
     super.initState();
   }
 
@@ -35,9 +34,11 @@ class _EventsPageState extends State<EventsPage> {
             // Navigator.of(context).pop();
           },
         ),
-        title: const Text(
-          'Events',
-          style: TextStyle(color: Colors.black),
+        title: Center(
+          child: const Text(
+            'Notices',
+            style: TextStyle(color: Colors.black),
+          ),
         ),
         backgroundColor: Colors.white,
         elevation: 0,
@@ -49,7 +50,6 @@ class _EventsPageState extends State<EventsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Today Events Section
               Text(
                 "Today",
                 style: TextStyle(
@@ -58,14 +58,11 @@ class _EventsPageState extends State<EventsPage> {
                 ),
               ),
               SizedBox(height: 10),
-              event_card.EventCard(
-                eventTitle: "Sports day",
-                eventDescription:
-                    "National sports day will be conducted in our school...",
-                date: "15 - 06 - 24",
-                time: "09:00 am",
-                imageProvider: AssetImage('assets/event.png'),
-              ),
+              // NoticeCard(
+              //   noticeTitle: "PTA meeting class XII",
+              //   date: "15 - 06 - 24",
+              //   time: "09:00 am",
+              // ),
               SizedBox(height: 20),
 
               // Yesterday Events Section
@@ -77,46 +74,41 @@ class _EventsPageState extends State<EventsPage> {
                 ),
               ),
               SizedBox(height: 10),
+
               Consumer<NoticeController>(builder: (context, value, child) {
                 return ListView.builder(
                   shrinkWrap: true,
-                  itemCount: value.events.length,
+                  itemCount: value.notices.length,
                   itemBuilder: (context, index) {
-                    return EventCard(
-                      eventDescription: value.events[index].description ?? "",
-                      eventTitle: value.events[index].title ?? "",
-                      date: DateFormatter.formatDateString(
-                          value.events[index].eventDate.toString()),
-                      time: TimeFormatter.formatTimeFromString(
-                          value.notices[index].createdAt.toString()),
-                      imageProvider: AssetImage("assets/event2.png"),
-                    );
+                    return NoticeCard(
+                        description: value.notices[index].description ?? "",
+                        noticeTitle: value.notices[index].title ?? "",
+                        date: DateFormatter.formatDateString(
+                            value.notices[index].date.toString()),
+                        time: TimeFormatter.formatTimeFromString(
+                            value.notices[index].createdAt.toString()));
                   },
                 );
               })
-              // event_card.EventCard(
-              //   eventTitle: "Cycle competition",
-              //   eventDescription:
-              //       "National sports day will be conducted in our school...",
+              // NoticeCard(
+              //   noticeTitle: "PTA meeting class 09",
               //   date: "15 - 06 - 24",
               //   time: "09:00 am",
-              //   imageProvider: AssetImage('assets/event2.png'),
               // ),
-              // event_card.EventCard(
-              //   eventTitle: "Sports day",
-              //   eventDescription:
-              //       "National sports day will be conducted in our school...",
+              // NoticeCard(
+              //   noticeTitle: "PTA meeting class 02",
               //   date: "15 - 06 - 24",
               //   time: "09:00 am",
-              //   imageProvider: AssetImage('assets/event3.png'),
               // ),
-              // event_card.EventCard(
-              //   eventTitle: "Sports day",
-              //   eventDescription:
-              //       "National sports day will be conducted in our school...",
+              // NoticeCard(
+              //   noticeTitle: "PTA meeting class VII",
               //   date: "15 - 06 - 24",
               //   time: "09:00 am",
-              //   imageProvider: AssetImage('assets/event4.png'),
+              // ),
+              // NoticeCard(
+              //   noticeTitle: "PTA meeting class X",
+              //   date: "15 - 06 - 24",
+              //   time: "09:00 am",
               // ),
             ],
           ),

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
-import 'package:school_app/features/parent/screen/addachievementscreen.dart';
-import 'package:school_app/features/parent/screen/addhomeworkscreen.dart';
+import 'package:school_app/features/parent/students/screen/addachievementscreen.dart';
+import 'package:school_app/features/parent/students/screen/addhomeworkscreen.dart';
 
 class ParentStudentDetailPage extends StatelessWidget {
   final String name;

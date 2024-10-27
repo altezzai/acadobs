@@ -25,7 +25,9 @@ class NoticeCard extends StatelessWidget {
           extra: {
             'title': noticeTitle,
             'description': description,
-            'fileName': "Exam-details.pdf",
+            'fileName': "event.png",
+
+            // 'fileName': "Exam-details.pdf",
             'imageProvider': const AssetImage('assets/class12.png'),
           },
         );
