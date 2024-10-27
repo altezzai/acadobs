@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:school_app/base/services/api_services.dart';
 
 class StudentServices {
-  // GET request
+  // GET student
   Future<Response> getStudent() async {
     try {
       final Response response = await ApiServices.get('/students');
@@ -12,7 +12,7 @@ class StudentServices {
     }
   }
 
-  // POST request
+  // Add student
   Future<Response> addNewStudent({
     required String fullName,
     required String dateOfBirth,
