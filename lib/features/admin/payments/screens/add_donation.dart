@@ -1,8 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/controller/student_id_controller.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
@@ -31,6 +35,19 @@ class _AddDonationPageState extends State<AddDonationPage> {
   final TextEditingController _donationtypeController = TextEditingController();
   final TextEditingController _methodController = TextEditingController();
   final TextEditingController _transactionController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Ensure `StudentIdController` fetches data on dropdown change
+    final dropdownProvider = context.read<DropdownProvider>();
+    dropdownProvider.addListener(() {
+      final selectedClass = dropdownProvider.getSelectedItem('class');
+      final selectedDivision = dropdownProvider.getSelectedItem('division');
+      context.read<StudentIdController>().getStudentsFromClassAndDivision(
+          className: selectedClass, section: selectedDivision);
+    });
+  }
 
   // Method to pick a file from the device
   Future<void> pickFile() async {
@@ -77,7 +94,7 @@ class _AddDonationPageState extends State<AddDonationPage> {
                           child: CustomDropdown(
                             dropdownKey: 'class',
                             label: 'Class',
-                            items: ['Class 1', 'Class 2', 'Class 3'],
+                            items: ['8', '9', '10'],
                             icon: Icons.school,
                           ),
                         ),
@@ -86,18 +103,25 @@ class _AddDonationPageState extends State<AddDonationPage> {
                           child: CustomDropdown(
                             dropdownKey: 'division',
                             label: 'Division',
-                            items: ['Division A', 'Division B', 'Division C'],
+                            items: ['A', 'B', 'C'],
                             icon: Icons.group,
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 16),
-                    CustomDropdown(
-                      dropdownKey: 'select student',
-                      label: 'Select student',
-                      items: ['Student 1', 'Student 2', 'Student 3'],
-                      icon: Icons.person,
+                    Consumer<StudentIdController>(
+                      builder: (context, studentController, child) {
+                        return CustomDropdown(
+                          dropdownKey: 'selectedStudent',
+                          label: 'Select student',
+                          items: studentController.students
+                              .map((student) =>
+                                  '${student['id'].toString()}. ${student['full_name']}')
+                              .toList(),
+                          icon: Icons.person,
+                        );
+                      },
                     ),
                     const SizedBox(height: 16),
                     Column(
@@ -194,8 +218,15 @@ class _AddDonationPageState extends State<AddDonationPage> {
               child: CustomButton(
                 text: 'Submit',
                 onPressed: () {
+                  final selectedStudent = context
+                      .read<DropdownProvider>()
+                      .getSelectedItem('selectedStudent');
+                  final studentId = selectedStudent.split('.').first;
+
+                  log(">>>>>>>>>>>>${studentId}");
                   context.read<PaymentController>().addDonation(
                         context,
+                        userId: studentId,
                         amount_donated: _amountController.text,
                         donation_date: _dateController.text,
                         purpose: _purposeController.text,

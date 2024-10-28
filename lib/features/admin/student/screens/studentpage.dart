@@ -143,17 +143,6 @@ class _StudentsPageState extends State<StudentsPage> {
                   );
                 }
 
-                // Filter students by search query and class
-                // final filteredStudents =
-                //     value.students.where((student) {
-                //   final matchesSearchQuery = student.fullName!
-                //       .toLowerCase()
-                //       .contains(searchQuery.toLowerCase());
-                //   final matchesClass = selectedClass == "All" ||
-                //       student.studentDatumClass == selectedClass;
-                //   return matchesSearchQuery && matchesClass;
-                // }).toList();
-
                 return ListView.builder(
                   itemCount: value.students.length,
                   itemBuilder: (context, index) {
@@ -184,7 +173,8 @@ class _StudentsPageState extends State<StudentsPage> {
                               AppRouteConst.AdminstudentdetailsRouteName,
                               extra: {
                                 'name': value.students[index].fullName,
-                                'class': value.students[index].studentClass,
+                                'class': value.students[index].studentClass
+                                    .toString(),
                                 'image': 'student6.png',
                               },
                             ),
