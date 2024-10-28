@@ -23,109 +23,76 @@ class ParentStudentDetailPage extends StatelessWidget {
     final double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        title: Text(
-          name,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: screenWidth * 0.06,
-            color: Colors.black,
-          ),
-        ),
-        leading: IconButton(
-          icon: const Icon(Icons.chevron_left, color: Colors.black),
-          onPressed: () {
-            context.pushReplacementNamed(
-              AppRouteConst.ParentHomeRouteName,
-            );
-            // Navigator.of(context).pop();
-          },
-        ),
-      ),
-      body: Column(
-        children: [
-          Container(
-            padding: EdgeInsets.zero,
-            margin: EdgeInsets.zero,
-            child: Column(
-              children: [
-                CircleAvatar(
-                  radius: screenWidth * 0.15,
-                  backgroundImage: image,
-                ),
-                SizedBox(height: screenHeight * 0.05),
-                Text(
-                  name,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: screenWidth * 0.05,
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            title: Text(
+              name,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: screenWidth * 0.06,
+                color: Colors.black,
+              ),
+            ),
+            expandedHeight: screenHeight * 0.5, // Expanded height for profile
+            floating: false,
+            pinned: true,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            leading: IconButton(
+              icon: const Icon(Icons.chevron_left, color: Colors.black),
+              onPressed: () {
+                context.pushReplacementNamed(AppRouteConst.ParentHomeRouteName);
+              },
+            ),
+            flexibleSpace: FlexibleSpaceBar(
+              centerTitle: true,
+              background: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircleAvatar(
+                    radius: screenWidth * 0.15,
+                    backgroundImage: image,
                   ),
-                ),
-                Text(
-                  'Class: $studentClass',
-                  style: TextStyle(
-                    fontSize: screenWidth * 0.04,
-                    color: Colors.grey,
+                  SizedBox(height: screenHeight * 0.02),
+                  Text(
+                    name,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: screenWidth * 0.05,
+                    ),
                   ),
-                ),
-              ],
+                  Text(
+                    'Class: $studentClass',
+                    style: TextStyle(
+                      fontSize: screenWidth * 0.04,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  _buildStatRow(),
+                ],
+              ),
             ),
           ),
-          Expanded(
+          // SliverToBoxAdapter(
+          //   child: _buildStatRow(), // Statistics Row
+          // ),
+          SliverFillRemaining(
             child: DefaultTabController(
               length: 4,
               child: Column(
                 children: [
-                  // Add the statistics here
-                  _buildStatRow(), // NEW STATISTICS ROW
-                  const SizedBox(height: 20),
-
-                  Container(
-                    child: TabBar(
-                      isScrollable:
-                          true, // Set to false as the tabs are not scrollable
-                      labelColor: Colors.black,
-                      unselectedLabelColor: Colors.grey,
-                      indicatorColor: Colors.black,
-                      indicatorPadding:
-                          const EdgeInsets.symmetric(horizontal: 0),
-                      tabs: [
-                        Tab(
-                          child: Container(
-                            width: 100, // Set the desired width
-                            alignment: Alignment.center,
-                            child: const Text("Dashboard"),
-                          ),
-                        ),
-                        Tab(
-                          child: Container(
-                            width: 120, // Set the desired width
-                            alignment: Alignment.center,
-                            child: const Text("Achievements"),
-                          ),
-                        ),
-                        Tab(
-                          child: Container(
-                            width: 80, // Set the desired width
-                            alignment: Alignment.center,
-                            child: const Text("Exam"),
-                          ),
-                        ),
-                        Tab(
-                          child: Container(
-                            width: 100, // Set the desired width
-                            alignment: Alignment.center,
-                            child: const Text("Home Work"),
-                          ),
-                        ),
-                      ],
-                    ),
+                  TabBar(
+                    labelColor: Colors.black,
+                    unselectedLabelColor: Colors.grey,
+                    indicatorColor: Colors.black,
+                    tabs: [
+                      Tab(text: "Dashboard"),
+                      Tab(text: "Achievements"),
+                      Tab(text: "Exam"),
+                      Tab(text: "Home Work"),
+                    ],
                   ),
-
-                  const SizedBox(height: 40),
                   Expanded(
                     child: TabBarView(
                       children: [
@@ -161,7 +128,6 @@ class ParentStudentDetailPage extends StatelessWidget {
     );
   }
 
-  // Build the row showing "Present", "Absent", "Late" just above the TabBar
   Widget _buildStatRow() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
