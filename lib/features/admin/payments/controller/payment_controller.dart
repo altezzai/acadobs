@@ -72,16 +72,15 @@ class PaymentController extends ChangeNotifier {
     loadingProvider.setLoading(true); //start loader
     try {
       final response = await PaymentServices().addPayment(
-        userId: userId,
-        amount_paid: amount_paid,
-        payment_date: payment_date,
-        month: month,
-        year: year,
-        payment_method: payment_method,
-        transaction_id: transaction_id,
-        payment_status: payment_status,
-        file: file
-      );
+          userId: userId,
+          amount_paid: amount_paid,
+          payment_date: payment_date,
+          month: month,
+          year: year,
+          payment_method: payment_method,
+          transaction_id: transaction_id,
+          payment_status: payment_status,
+          file: file);
       if (response.statusCode == 201) {
         log(">>>>>>${response.statusMessage}");
         context.goNamed(AppRouteConst.bottomNavRouteName,
@@ -97,6 +96,7 @@ class PaymentController extends ChangeNotifier {
 
   Future<void> addDonation(
     BuildContext context, {
+    required String userId,
     required String amount_donated,
     required String donation_date,
     required String purpose,
