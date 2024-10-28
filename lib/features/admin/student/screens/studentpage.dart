@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/capitalize_first_letter.dart';
+import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/admin/student/controller/student_controller.dart';
 
 class StudentsPage extends StatefulWidget {
+  
   @override
   _StudentsPageState createState() => _StudentsPageState();
 }
@@ -143,46 +146,68 @@ class _StudentsPageState extends State<StudentsPage> {
                   );
                 }
 
-                return ListView.builder(
-                  itemCount: value.students.length,
-                  itemBuilder: (context, index) {
-                    // final student = filteredStudents[index];
-                    return Card(
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 1, vertical: 5),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      child: GestureDetector(
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            backgroundImage: AssetImage('assets/student4.png'),
-                          ),
-                          title: Text(
-                            value.students[index].fullName ?? "",
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal, fontSize: 16),
-                          ),
-                          subtitle: Text(
-                            value.students[index].studentClass.toString(),
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal, fontSize: 15),
-                          ),
-                          trailing: TextButton(
-                            child: Text('View'),
-                            onPressed: () => context.pushReplacementNamed(
-                              AppRouteConst.AdminstudentdetailsRouteName,
-                              extra: {
-                                'name': value.students[index].fullName,
-                                'class': value.students[index].studentClass
-                                    .toString(),
-                                'image': 'student6.png',
-                              },
-                            ),
-                          ),
+                return SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      children: [
+                        ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: value.students.length,
+                          itemBuilder: (context, index) {
+                            // final student = filteredStudents[index];
+                            return Card(
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 1, vertical: 5),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15)),
+                              child: GestureDetector(
+                                child: ListTile(
+                                  leading: CircleAvatar(
+                                    backgroundImage:
+                                        AssetImage('assets/student4.png'),
+                                  ),
+                                  title: Text(
+                                    capitalizeFirstLetter(
+                                        value.students[index].fullName ?? ""),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 16),
+                                  ),
+                                  subtitle: Text(
+                                    value.students[index].studentClass
+                                        .toString(),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 15),
+                                  ),
+                                  trailing: TextButton(
+                                    child: Text('View'),
+                                    onPressed: () =>
+                                        context.pushReplacementNamed(
+                                      AppRouteConst
+                                          .AdminstudentdetailsRouteName,
+                                      extra: {
+                                        'name': value.students[index].fullName,
+                                        'class': value
+                                            .students[index].studentClass
+                                            .toString(),
+                                        'image': 'student6.png',
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
                         ),
-                      ),
-                    );
-                  },
+                        SizedBox(
+                          height: Responsive.height * 7.5,
+                        )
+                      ],
+                    ),
+                  ),
                 );
               },
             ),
