@@ -6,11 +6,13 @@ import 'package:school_app/features/teacher/attendance/controller/attendance_con
 class AttendanceTile extends StatelessWidget {
   final int studentId; // Unique ID of the student
   final String studentName; // Name of the student
+  final String rollNo;
 
   const AttendanceTile({
     super.key,
     required this.studentId,
     required this.studentName,
+    required this.rollNo
   });
 
   @override
@@ -45,7 +47,7 @@ class AttendanceTile extends StatelessWidget {
                   radius: 15,
                   backgroundColor: Color(0xFFD9D9D9),
                   child: Text(
-                    studentId.toString(),
+                    rollNo,
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall!
@@ -55,10 +57,10 @@ class AttendanceTile extends StatelessWidget {
                 const SizedBox(width: 15),
                 Text(
                   studentName,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodySmall!
-                      .copyWith(fontSize: 16, color: Colors.black),
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      fontSize: 16,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500),
                 )
               ],
             ),
@@ -68,23 +70,23 @@ class AttendanceTile extends StatelessWidget {
               _attendanceButton(
                 context: context,
                 text: "Present",
-                // status: AttendanceStatus.present,
-                // currentStatus: controller.getStatus(studentId),
+                status: AttendanceStatus.present,
+                currentStatus: controller.getStatus(studentId),
                 studentId: studentId,
                 bottomLeftRadius: 8,
               ),
               _attendanceButton(
                 context: context,
                 text: "Late",
-                // status: AttendanceStatus.late,
-                // currentStatus: controller.getStatus(studentId),
+                status: AttendanceStatus.late,
+                currentStatus: controller.getStatus(studentId),
                 studentId: studentId,
               ),
               _attendanceButton(
                 context: context,
                 text: "Absent",
-                // status: AttendanceStatus.absent,
-                // currentStatus: controller.getStatus(studentId),
+                status: AttendanceStatus.absent,
+                currentStatus: controller.getStatus(studentId),
                 studentId: studentId,
                 bottomRightRadius: 8,
               ),
@@ -99,8 +101,8 @@ class AttendanceTile extends StatelessWidget {
   Widget _attendanceButton(
       {required BuildContext context,
       required String text,
-      // required AttendanceStatus status,
-      // required AttendanceStatus currentStatus,
+      required AttendanceStatus status,
+      required AttendanceStatus currentStatus,
       required int studentId,
       double bottomRightRadius = 0,
       double bottomLeftRadius = 0}) {
@@ -112,15 +114,13 @@ class AttendanceTile extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () {
           // Update attendance status for the specific student
-          // controller.updateStatus(studentId, status);
+          controller.updateStatus(studentId, status);
         },
         style: ElevatedButton.styleFrom(
           padding: const EdgeInsets.symmetric(vertical: 25),
-          backgroundColor: 
-          // currentStatus == status
-          //     ? _getStatusColor(status)
-          //     :
-               const Color(0xFFEAEAEA),
+          backgroundColor: currentStatus == status
+              ? _getStatusColor(status)
+              : const Color(0xFFEAEAEA),
           shape: RoundedRectangleBorder(
             side: const BorderSide(
               width: 0,
@@ -134,7 +134,8 @@ class AttendanceTile extends StatelessWidget {
         ),
         child: Text(
           text,
-          style: const TextStyle(color: Colors.black),
+          style: const TextStyle(
+              color: Colors.black, fontWeight: FontWeight.normal),
         ),
       ),
     );

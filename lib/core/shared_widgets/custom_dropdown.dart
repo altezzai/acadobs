@@ -8,6 +8,7 @@ class CustomDropdown extends StatelessWidget {
   final IconData icon;
   final List<String> items;
   final ValueChanged<String?>? onChanged;
+  final validator;
 
   const CustomDropdown({
     Key? key,
@@ -16,6 +17,7 @@ class CustomDropdown extends StatelessWidget {
     required this.icon,
     required this.items,
     this.onChanged, // Add onChanged callback parameter
+    this.validator
   }) : super(key: key);
 
   @override
@@ -23,6 +25,7 @@ class CustomDropdown extends StatelessWidget {
     return Consumer<DropdownProvider>(
       builder: (context, dropdownProvider, child) {
         return DropdownButtonFormField<String>(
+          validator: validator,
           decoration: InputDecoration(
             labelText: label,
             border: OutlineInputBorder(
