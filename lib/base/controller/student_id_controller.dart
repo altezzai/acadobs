@@ -2,6 +2,8 @@ import 'package:flutter/widgets.dart';
 import 'package:school_app/base/services/student_id_services.dart';
 
 class StudentIdController extends ChangeNotifier {
+  bool _isloading = false;
+  bool get isloading => _isloading;
   List<Map<String, dynamic>> _students = [];
   List<Map<String, dynamic>> get students => _students;
 
@@ -11,6 +13,7 @@ class StudentIdController extends ChangeNotifier {
     required String className,
     required String section,
   }) async {
+    _isloading = true;
     try {
       final response = await StudentIdServices()
           .getStudentsFromClassAndDivision(
@@ -27,6 +30,7 @@ class StudentIdController extends ChangeNotifier {
     } catch (e) {
       print(e.toString());
     }
+    _isloading = false;
   }
 
   void setSelectedStudentId(String? studentId) {
