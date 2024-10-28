@@ -1,32 +1,59 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/teacher/attendance/services/attendance_services.dart';
 
 // Enum to represent attendance status
 enum AttendanceStatus { present, late, absent, none }
 
 class AttendanceController extends ChangeNotifier {
-  // Map to hold attendance status for each student by their ID
   final Map<int, AttendanceStatus> _attendanceStatus = {};
 
-  // Getter for attendance status of a specific student
   AttendanceStatus getStatus(int studentId) {
     return _attendanceStatus[studentId] ?? AttendanceStatus.none;
   }
 
-  // Method to update the attendance status of a specific student
   void updateStatus(int studentId, AttendanceStatus status) {
     _attendanceStatus[studentId] = status;
-    notifyListeners(); // Notify to rebuild the UI
+    notifyListeners();
   }
 
-// present/late/absent toggle button
+  // Method to clear previous attendance statuses
+  void clearAttendanceStatus() {
+    _attendanceStatus.clear();
+    notifyListeners();
+  }
 
+  // Function to return a list of attendance data
+  List<Map<String, dynamic>> get attendanceList {
+    return _attendanceStatus.entries.map((entry) {
+      return {
+        'student_id': entry.key,
+        'attendance_status': _statusToString(entry.value),
+      };
+    }).toList();
+  }
+
+  // Helper function to convert AttendanceStatus enum to string
+  String _statusToString(AttendanceStatus status) {
+    switch (status) {
+      case AttendanceStatus.present:
+        return "Present";
+      case AttendanceStatus.late:
+        return "Late";
+      case AttendanceStatus.absent:
+        return "Absent";
+      default:
+        return "None";
+    }
+  }
 
   //*************** */ submit attendance**************
   final AttendanceServices _attendanceService = AttendanceServices();
-  Future<void> submitAttendance(
+  Future<void> submitAttendance(BuildContext context,
       {required String date,
       required String classGrade,
       required String section,
@@ -41,17 +68,21 @@ class AttendanceController extends ChangeNotifier {
       'recorded_by': recordedBy,
       'students': students,
     };
-
+    // students.clear();
     try {
       final response =
           await _attendanceService.submitAttendance(attendanceData);
       if (response.statusCode == 201) {
         log(">>>>>>>>>>>>>>>>>>>Attendance submitted successfully");
+        context.pushReplacementNamed(AppRouteConst.bottomNavRouteName,
+            extra: UserType.teacher);
+        // clearAttendanceStatus();
       } else {
         log(">>>>>>>>>>>>>>>>>>>Error submitting attendance--Status Code:${response.statusCode}");
       }
     } catch (e) {
       print(e);
     }
+    clearAttendanceStatus();
   }
 }

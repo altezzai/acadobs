@@ -6,13 +6,14 @@ class CustomDatePicker extends StatelessWidget {
   final Function(DateTime) onDateSelected;
   final String? hintText;
   final String label;
+  final validator;
 
-  CustomDatePicker({
-    required this.dateController,
-    required this.onDateSelected,
-    required this.label,
-    this.hintText,
-  });
+  CustomDatePicker(
+      {required this.dateController,
+      required this.onDateSelected,
+      required this.label,
+      this.hintText,
+      this.validator});
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
@@ -41,7 +42,8 @@ class CustomDatePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      validator: validator,
       controller: dateController, // Use the external controller
       readOnly: true,
       style: TextStyle(
@@ -58,7 +60,7 @@ class CustomDatePicker extends StatelessWidget {
         labelStyle: TextStyle(
           color: Colors.grey, // Change label text color here
         ), // Adjust label font size
-        prefixIcon: IconButton(
+        suffixIcon: IconButton(
           icon: Icon(
             Icons.calendar_month,
             size: 22,
