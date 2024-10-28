@@ -184,7 +184,8 @@ class _StudentsPageState extends State<StudentsPage> {
                               AppRouteConst.AdminstudentdetailsRouteName,
                               extra: {
                                 'name': value.students[index].fullName,
-                                'class': value.students[index].studentClass,
+                                'class': value.students[index].studentClass
+                                    .toString(),
                                 'image': 'student6.png',
                               },
                             ),
