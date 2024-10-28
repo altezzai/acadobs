@@ -10,6 +10,8 @@ import 'package:school_app/features/teacher/attendance/services/attendance_servi
 enum AttendanceStatus { present, late, absent, none }
 
 class AttendanceController extends ChangeNotifier {
+  bool _isloading = false;
+  bool get isloading => _isloading;
   final Map<int, AttendanceStatus> _attendanceStatus = {};
 
   AttendanceStatus getStatus(int studentId) {
@@ -60,6 +62,9 @@ class AttendanceController extends ChangeNotifier {
       required String periodNumber,
       required int recordedBy,
       required List<Map<String, dynamic>> students}) async {
+    _isloading = true;
+    notifyListeners(); // Notify listeners when loading starts
+
     final attendanceData = {
       'date': date,
       'class_grade': classGrade,
@@ -68,21 +73,23 @@ class AttendanceController extends ChangeNotifier {
       'recorded_by': recordedBy,
       'students': students,
     };
-    // students.clear();
+
     try {
       final response =
           await _attendanceService.submitAttendance(attendanceData);
       if (response.statusCode == 201) {
-        log(">>>>>>>>>>>>>>>>>>>Attendance submitted successfully");
+        log("Attendance submitted successfully");
         context.pushReplacementNamed(AppRouteConst.bottomNavRouteName,
             extra: UserType.teacher);
-        // clearAttendanceStatus();
       } else {
-        log(">>>>>>>>>>>>>>>>>>>Error submitting attendance--Status Code:${response.statusCode}");
+        log("Error submitting attendance--Status Code:${response.statusCode}");
       }
     } catch (e) {
       print(e);
     }
+
+    _isloading = false;
+    notifyListeners(); // Notify listeners when loading ends
     clearAttendanceStatus();
   }
 }

@@ -65,6 +65,11 @@ class TakeAttendance extends StatelessWidget {
                   children: [
                     Consumer<StudentIdController>(
                         builder: (context, studentController, child) {
+                      if (studentController.isloading) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
                       final studentNamesList = studentController.students
                           .map((student) => '${student['full_name']}')
                           .toList();
@@ -93,6 +98,11 @@ class TakeAttendance extends StatelessWidget {
                     ),
                     Consumer<AttendanceController>(
                         builder: (context, value, child) {
+                      if (value.isloading) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
                       final attendanceStatusList = value.attendanceList;
                       return CustomButton(
                           text: "Submit",
