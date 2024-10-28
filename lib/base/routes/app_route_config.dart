@@ -25,6 +25,7 @@ import 'package:school_app/features/parent/screen/noticedetailedscreen.dart';
 import 'package:school_app/features/parent/screen/noticescreen.dart';
 import 'package:school_app/features/parent/screen/paymentdetailedscreen.dart';
 import 'package:school_app/features/parent/screen/studentdetails.dart';
+import 'package:school_app/features/teacher/attendance/model/attendance_data.dart';
 // import 'package:school_app/features/parent/screen/studentdetails.dart';
 import 'package:school_app/features/teacher/attendance/screens/take_attendance.dart';
 import 'package:school_app/features/teacher/duties/duty_detail.dart';
@@ -44,7 +45,7 @@ class Approuter {
         name: AppRouteConst.splashRouteName,
         path: '/',
         pageBuilder: (context, state) {
-          return MaterialPage(child: SplashScreen());
+          return MaterialPage(child: BottomNavScreen(userType: UserType.teacher,));
         },
       ),
       GoRoute(
@@ -69,7 +70,10 @@ class Approuter {
         name: AppRouteConst.attendanceRouteName,
         path: '/attendance',
         pageBuilder: (context, state) {
-          return MaterialPage(child: TakeAttendance());
+          final attendanceData = state.extra as AttendanceData;
+          return MaterialPage(child: TakeAttendance(
+            attendanceData: attendanceData,
+          ));
         },
       ),
       GoRoute(
