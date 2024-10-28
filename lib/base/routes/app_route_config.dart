@@ -45,7 +45,7 @@ class Approuter {
         name: AppRouteConst.splashRouteName,
         path: '/',
         pageBuilder: (context, state) {
-          return MaterialPage(child: BottomNavScreen(userType: UserType.teacher,));
+          return MaterialPage(child: SplashScreen());
         },
       ),
       GoRoute(
@@ -71,7 +71,8 @@ class Approuter {
         path: '/attendance',
         pageBuilder: (context, state) {
           final attendanceData = state.extra as AttendanceData;
-          return MaterialPage(child: TakeAttendance(
+          return MaterialPage(
+              child: TakeAttendance(
             attendanceData: attendanceData,
           ));
         },
