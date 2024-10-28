@@ -25,166 +25,160 @@ class Attendance extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => DropdownProvider(), // Instantiate the DropdownProvider
-      child: Scaffold(
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            child: Column(
-              children: [
-                const CustomAppbar(
-                  title: "Attendance",
-                  isBackButton: false,
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: Responsive.height * 1,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            // First Dropdown: Select Class
-                            Expanded(
-                              child: CustomDropdown(
-                                dropdownKey: 'class', // Unique key
-                                icon: Icons.school,
-                                label: "Select Class",
-                                items: ["6", "7", "8", "9", "10"],
-                              ),
+    return Scaffold(
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          child: Column(
+            children: [
+              const CustomAppbar(
+                title: "Attendance",
+                isBackButton: false,
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: Responsive.height * 1,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // First Dropdown: Select Class
+                          Expanded(
+                            child: CustomDropdown(
+                              dropdownKey: 'class', // Unique key
+                              icon: Icons.school,
+                              label: "Select Class",
+                              items: ["6", "7", "8", "9", "10"],
                             ),
-                            SizedBox(width: Responsive.width * 1),
-                            // Second Dropdown: Select Period
-                            Expanded(
-                              child: CustomDropdown(
-                                dropdownKey: 'period', // Unique key
-                                icon: Icons.access_time,
-                                label: "Select Division",
-                                items: ["A", "B", "C", "D", "E"],
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: Responsive.height * 2),
-                        // Date Picker: Select Date
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: CustomDatePicker(
-                                label: "Date",
-                                dateController:
-                                    _dateController, // Controller for date input
-                                onDateSelected: (selectedDate) {
-                                  print("Date selected: $selectedDate");
-                                },
-                              ),
-                            ),
-                            SizedBox(width: Responsive.width * 1),
-                            // Another Dropdown: Select Student/Division/etc.
-                            Expanded(
-                              child: CustomDropdown(
-                                dropdownKey: 'division', // Unique key
-                                icon: Icons.group,
-                                label: "Select Period",
-                                items: [
-                                  "1",
-                                  "2",
-                                  "3",
-                                  "4",
-                                  "5",
-                                  "6",
-                                  "7",
-                                  "8",
-                                  "9",
-                                  "10"
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        SizedBox(height: Responsive.height * 2),
-                        // Title Tiles (Set Holiday, Set All Present, etc.)
-                        Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(12),
                           ),
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            padding: EdgeInsets.zero,
-                            itemCount: titleIconMap.length,
-                            itemBuilder: (context, index) {
-                              String title = titleIconMap.keys.elementAt(index);
-                              IconData icon =
-                                  titleIconMap.values.elementAt(index);
-                              return TitleTile(
-                                onTap: () {
-                                  print("Tapped on $title");
-                                },
-                                title: title,
-                                icon: icon,
-                              );
-                            },
+                          SizedBox(width: Responsive.width * 1),
+                          // Second Dropdown: Select Period
+                          Expanded(
+                            child: CustomDropdown(
+                              dropdownKey: 'division', // Unique key
+                              icon: Icons.access_time,
+                              label: "Select Division",
+                              items: ["A", "B", "C", "D", "E"],
+                            ),
                           ),
-                        ),
-                        SizedBox(height: Responsive.height * 2),
-                        const Text("Or"),
-                        SizedBox(height: Responsive.height * 2),
-                        TitleTile(
-                          onTap: () {
-                            context
-                                .pushNamed(AppRouteConst.attendanceRouteName);
-                          },
-                          title: "Take Attendance",
-                          icon: Icons.my_library_books_outlined,
-                        ),
-                        SizedBox(height: Responsive.height * 3),
-                        CustomButton(
-                          text: "Submit",
-                          onPressed: () {
-                            // Accessing selected dropdown values
-                            String selectedClass = context
-                                .read<DropdownProvider>()
-                                .getSelectedItem('class');
-                            String selectedPeriod = context
-                                .read<DropdownProvider>()
-                                .getSelectedItem('period');
-                            String selectedDivision = context
-                                .read<DropdownProvider>()
-                                .getSelectedItem('division');
-                            String selectedDate = _dateController
-                                .text; // Access date from dateController
+                        ],
+                      ),
+                      SizedBox(height: Responsive.height * 2),
+                      // Date Picker: Select Date
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: CustomDatePicker(
+                              label: "Date",
+                              dateController:
+                                  _dateController, // Controller for date input
+                              onDateSelected: (selectedDate) {
+                                print("Date selected: $selectedDate");
+                              },
+                            ),
+                          ),
+                          SizedBox(width: Responsive.width * 1),
+                          // Another Dropdown: Select Student/Division/etc.
+                          Expanded(
+                            child: CustomDropdown(
+                              dropdownKey: 'period', // Unique key
+                              icon: Icons.group,
+                              label: "Select Period",
+                              items: [
+                                "1",
+                                "2",
+                                "3",
+                                "4",
+                                "5",
+                                "6",
+                                "7",
+                                "8",
+                                "9",
+                                "10"
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
 
-                            // Create an AttendanceData object
-                            final attendanceData = AttendanceData(
-                              selectedClass: selectedClass,
-                              selectedPeriod: selectedPeriod,
-                              selectedDivision: selectedDivision,
-                              selectedDate: selectedDate,
-                            );
-
-                            // Push to attendanceRoute with extra data
-                            context.pushNamed(
-                              AppRouteConst.attendanceRouteName,
-                              extra: attendanceData,
+                      SizedBox(height: Responsive.height * 2),
+                      // Title Tiles (Set Holiday, Set All Present, etc.)
+                      Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          padding: EdgeInsets.zero,
+                          itemCount: titleIconMap.length,
+                          itemBuilder: (context, index) {
+                            String title = titleIconMap.keys.elementAt(index);
+                            IconData icon =
+                                titleIconMap.values.elementAt(index);
+                            return TitleTile(
+                              onTap: () {
+                                print("Tapped on $title");
+                              },
+                              title: title,
+                              icon: icon,
                             );
                           },
                         ),
+                      ),
+                      SizedBox(height: Responsive.height * 2),
+                      const Text("Or"),
+                      SizedBox(height: Responsive.height * 2),
+                      TitleTile(
+                        onTap: () {
+                          // Accessing selected dropdown values
+                          String selectedClass = context
+                              .read<DropdownProvider>()
+                              .getSelectedItem('class');
+                          String selectedPeriod = context
+                              .read<DropdownProvider>()
+                              .getSelectedItem('period');
+                          String selectedDivision = context
+                              .read<DropdownProvider>()
+                              .getSelectedItem('division');
+                          String selectedDate = _dateController
+                              .text; // Access date from dateController
 
-                        SizedBox(height: Responsive.height * 3),
-                      ],
-                    ),
+                          // Create an AttendanceData object
+                          final attendanceData = AttendanceData(
+                            selectedClass: selectedClass,
+                            selectedPeriod: selectedPeriod,
+                            selectedDivision: selectedDivision,
+                            selectedDate: selectedDate,
+                          );
+
+                          // Push to attendanceRoute with extra data
+                          context.pushNamed(
+                            AppRouteConst.attendanceRouteName,
+                            extra: attendanceData,
+                          );
+                        },
+                        title: "Take Attendance",
+                        icon: Icons.my_library_books_outlined,
+                      ),
+                      SizedBox(height: Responsive.height * 3),
+                      CustomButton(
+                        text: "Submit",
+                        onPressed: () {},
+                      ),
+
+                      SizedBox(height: Responsive.height * 3),
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
