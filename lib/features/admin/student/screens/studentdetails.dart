@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pie_chart/pie_chart.dart';
-import 'package:school_app/features/admin/student/screens/homeworkdetail.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/features/admin/student/model/student_data.dart';
+import 'package:school_app/features/admin/student/screens/homeworkdetail.dart';
 
 class StudentDetailPage extends StatelessWidget {
-  final String name;
-  final String studentClass;
-  final String image;
+  // final String name;
+  // final String studentClass;
+  // final String image;
+  final Student student;
 
   StudentDetailPage({
-    required this.name,
-    required this.studentClass,
-    required this.image,
+    // required this.name,
+    // required this.studentClass,
+    // required this.image,
+    required this.student,
   });
 
   @override
@@ -26,7 +29,7 @@ class StudentDetailPage extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          name,
+          student.fullName ?? "",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: screenWidth * 0.06,
@@ -49,18 +52,18 @@ class StudentDetailPage extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: screenWidth * 0.15,
-                  backgroundImage: AssetImage('assets/$image'),
+                  backgroundImage: AssetImage('assets/student5.png'),
                 ),
                 SizedBox(height: screenHeight * 0.05),
                 Text(
-                  name,
+                  student.fullName ?? "",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: screenWidth * 0.05,
                   ),
                 ),
                 Text(
-                  'Class: $studentClass',
+                  'Class: ${student.studentClass}',
                   style: TextStyle(
                     fontSize: screenWidth * 0.04,
                     color: Colors.grey,
