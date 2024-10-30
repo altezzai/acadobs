@@ -33,6 +33,17 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
     super.initState();
     // Ensure `StudentIdController` fetches data on dropdown change
     final dropdownProvider = context.read<DropdownProvider>();
+
+
+  // Clear dropdown selections when page loads
+  dropdownProvider.clearSelectedItem('class');
+  dropdownProvider.clearSelectedItem('division');
+  dropdownProvider.clearSelectedItem('selectedStudent');
+  dropdownProvider.clearSelectedItem('selectedYear');
+  dropdownProvider.clearSelectedItem('selectedMonth');
+  dropdownProvider.clearSelectedItem('paymentMethod');
+  dropdownProvider.clearSelectedItem('paymentStatus');
+  
     dropdownProvider.addListener(() {
       final selectedClass = dropdownProvider.getSelectedItem('class');
       final selectedDivision = dropdownProvider.getSelectedItem('division');
@@ -242,7 +253,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                     log(">>>>>>>>>>>>${studentId}");
                     context.read<PaymentController>().addPayment(
                           context,
-                          userId: studentId,
+                          userId: int.parse(studentId),
                           amount_paid: _amountController.text,
                           payment_date: _dateController.text,
                           month: selectedMonth,
