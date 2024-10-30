@@ -187,14 +187,15 @@ class _TeachersPageState extends State<TeachersPage> {
                           trailing: TextButton(
                             child: Text('View'),
                             onPressed: () => context.pushReplacementNamed(
-                              AppRouteConst.AdminteacherdetailsRouteName,
-                              extra: {
-                                'name': value.teachers[index].fullName,
-                                'class':
-                                    value.teachers[index].classGradeHandling,
-                                'image': 'student5.png',
-                              },
-                            ),
+                                AppRouteConst.AdminteacherdetailsRouteName,
+                                extra: value.teachers[index]
+                                // {
+                                //   'name': value.teachers[index].fullName,
+                                //   'class':
+                                //       value.teachers[index].classGradeHandling,
+                                //   'image': 'student5.png',
+                                // },
+                                ),
                           )),
                     ),
                   );
