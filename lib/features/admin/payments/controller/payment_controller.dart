@@ -54,10 +54,10 @@ class PaymentController extends ChangeNotifier {
     _isloading = false;
     notifyListeners();
   }
-
+// add payment
   Future<void> addPayment(
     BuildContext context, {
-    required String userId,
+    required int userId,
     required String amount_paid,
     required String payment_date,
     required String month,
