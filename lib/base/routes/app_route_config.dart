@@ -13,6 +13,7 @@ import 'package:school_app/features/admin/student/screens/addhomwork.dart';
 import 'package:school_app/features/admin/student/screens/newstudent.dart';
 import 'package:school_app/features/admin/student/screens/studentdetails.dart';
 import 'package:school_app/features/admin/student/screens/studentpage.dart';
+import 'package:school_app/features/admin/teacher_section/model/teacher_model.dart';
 import 'package:school_app/features/admin/teacher_section/screens/add_teacher.dart';
 import 'package:school_app/features/admin/teacher_section/screens/teacherdetails.dart';
 import 'package:school_app/features/admin/teacher_section/screens/teachers_page.dart';
@@ -189,12 +190,14 @@ class Approuter {
         name: AppRouteConst.AdminteacherdetailsRouteName,
         path: '/adminteacherdetails',
         pageBuilder: (context, state) {
-          final teacher = state.extra as Map<String, dynamic>;
+          // final teacher = state.extra as Map<String, dynamic>;
+          final teacher = state.extra as Teacher;
           return MaterialPage(
             child: TeacherDetailsPage(
-              name: teacher['name'],
-              studentClass: teacher['class'],
-              image: teacher['image'],
+              teacher: teacher,
+              // name: teacher['name'],
+              // studentClass: teacher['class'],
+              // image: teacher['image'],
             ),
           );
         },
