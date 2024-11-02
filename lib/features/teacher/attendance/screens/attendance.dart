@@ -1,33 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
+import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
+import 'package:school_app/features/teacher/attendance/controller/attendance_controller.dart';
 import 'package:school_app/features/teacher/attendance/model/attendance_data.dart';
 import 'package:school_app/features/teacher/attendance/widgets/title_tile.dart';
 
-class Attendance extends StatefulWidget {
-  Attendance({Key? key}) : super(key: key);
+class AttendanceScreen extends StatefulWidget {
+  AttendanceScreen({Key? key}) : super(key: key);
 
   @override
-  State<Attendance> createState() => _AttendanceState();
+  State<AttendanceScreen> createState() => _AttendanceScreenState();
 }
 
-class _AttendanceState extends State<Attendance> {
+class _AttendanceScreenState extends State<AttendanceScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   final Map<String, IconData> titleIconMap = {
     "Set Holiday": Icons.beach_access,
     "Set All Present": Icons.check_circle,
     "Set All Absent": Icons.cancel,
     "Set All Leave": Icons.airline_seat_flat_angled,
   };
+
   final TextEditingController _dateController = TextEditingController();
 
-  @override
+
+   @override
   void initState() {
     super.initState();
 
@@ -39,7 +42,6 @@ class _AttendanceState extends State<Attendance> {
       dropdownProvider.clearSelectedItem('period');
     });
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,8 +66,8 @@ class _AttendanceState extends State<Attendance> {
                         _buildDateAndPeriodRow(),
                         SizedBox(height: Responsive.height * 2),
                         TitleTile(
-                            title: "Set All Students Present",
-                            icon: Icons.school,
+                            title: "Set All Present",
+                            icon: Icons.group_outlined,
                             onTap: () {}),
                         // _buildAttendanceOptions(),
                         SizedBox(height: Responsive.height * 2),
@@ -73,14 +75,14 @@ class _AttendanceState extends State<Attendance> {
                         SizedBox(height: Responsive.height * 2),
                         _buildTakeAttendanceTile(),
                         SizedBox(height: Responsive.height * 3),
-                        // CustomButton(
-                        //   text: "Submit",
-                        //   onPressed: () {
-                        //     if (_formKey.currentState!.validate()) {
-                        //       // Handle submission logic
-                        //     }
-                        //   },
-                        // ),
+                        CustomButton(
+                          text: "Submit",
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              // Handle submission logic
+                            }
+                          },
+                        ),
                         SizedBox(height: Responsive.height * 3),
                       ],
                     ),
@@ -101,7 +103,7 @@ class _AttendanceState extends State<Attendance> {
         Expanded(
           child: CustomDropdown(
             dropdownKey: 'class',
-            icon: Icons.school,
+            icon: Icons.school_outlined,
             label: "Select Class",
             items: ["6", "7", "8", "9", "10"],
             validator: (value) {
@@ -154,7 +156,7 @@ class _AttendanceState extends State<Attendance> {
         Expanded(
           child: CustomDropdown(
             dropdownKey: 'period',
-            icon: Icons.group,
+            icon: Icons.group_outlined,
             label: "Select Period",
             items: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
             validator: (value) {
@@ -215,10 +217,19 @@ class _AttendanceState extends State<Attendance> {
             selectedDate: selectedDate,
           );
 
-          context.pushNamed(
-            AppRouteConst.attendanceRouteName,
-            extra: attendanceData,
-          );
+
+          context.read<AttendanceController>().takeAttendance(context,
+              className: selectedClass,
+              section: selectedDivision,
+              date: selectedDate,
+              period: selectedPeriod,
+              attendanceData: attendanceData
+              );
+
+          // context.pushNamed(
+          //   AppRouteConst.attendanceRouteName,
+          //   extra: attendanceData,
+          // );
         }
       },
       title: "Take Attendance",
