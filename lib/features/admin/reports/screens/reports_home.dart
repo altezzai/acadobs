@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/admin/reports/widgets/report_card.dart';
 
@@ -19,7 +21,8 @@ class ReportsHomeScreen extends StatelessWidget {
               icon: Icons.currency_rupee,
               color: Colors.green,
               onTap: () {
-                // Navigate to Payment Report page
+                context
+                    .pushReplacementNamed(AppRouteConst.PaymentReportRouteName);
               },
             ),
             SizedBox(height: 16),

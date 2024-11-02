@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:school_app/features/admin/reports/screens/payment.dart';
 import 'package:school_app/features/admin/student/model/student_data.dart';
 import 'package:school_app/features/admin/student/screens/addAchivement.dart';
 import 'package:school_app/features/admin/duties/screens/addDutyPage.dart';
@@ -34,7 +35,7 @@ import 'package:school_app/features/teacher/duties/duty_detail.dart';
 import 'package:school_app/features/teacher/homework/screens/work.dart';
 import 'package:school_app/features/teacher/homework/screens/work_screen.dart';
 import 'package:school_app/features/teacher/homework/screens/work_view.dart';
-import 'package:school_app/features/teacher/leave_request/leave_request.dart';
+import 'package:school_app/features/teacher/leave_request/screens/leave_request.dart';
 import 'package:school_app/features/teacher/mark_work/screens/mark_star.dart';
 import 'package:school_app/features/teacher/marks/screens/student_marklist.dart';
 import 'package:school_app/features/teacher/parent/screens/parents.dart';
@@ -336,6 +337,13 @@ class Approuter {
         path: '/addteacher',
         pageBuilder: (context, state) {
           return MaterialPage(child: AddTeacher());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.PaymentReportRouteName,
+        path: '/paymentreport',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: PaymentReport());
         },
       ),
     ],
