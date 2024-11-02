@@ -84,7 +84,7 @@ class StudentDetailPage extends StatelessWidget {
                   Container(
                     child: TabBar(
                       isScrollable:
-                          true, // Set to false as the tabs are not scrollable
+                          false, // Set to false as the tabs are not scrollable
                       labelColor: Colors.black,
                       unselectedLabelColor: Colors.grey,
                       indicatorColor: Colors.black,
