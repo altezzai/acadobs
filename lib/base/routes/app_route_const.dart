@@ -28,6 +28,7 @@ class AppRouteConst {
   static const String AddDonationRouteName = 'addDonation';
   static const String AddHomeworkRouteName = 'addhomework';
   static const String AddTeacherRouteName = 'addteacher';
+  static const String PaymentReportRouteName = 'paymentreport';
 
   static const String ParentHomeRouteName = 'parenthome';
   static const String LeaveRequestRouteName = 'leaverequest';
@@ -37,8 +38,8 @@ class AppRouteConst {
   static const String ParentNoticePageRouteName = 'parentnoticepage';
   static const String NoticeDetailedPageRouteName = 'noticedetailedpage';
   static const String ParentPaymentPageRouteName = 'parentpaymentpage';
-  static const String ParentPaymentDetailedPageRouteName = 'parentpaymentdetailedpage';
-
+  static const String ParentPaymentDetailedPageRouteName =
+      'parentpaymentdetailedpage';
 
   static const String bottomNavRouteName = 'bottomNav';
 }
