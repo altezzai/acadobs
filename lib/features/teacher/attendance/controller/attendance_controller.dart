@@ -3,7 +3,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+import 'package:school_app/features/teacher/attendance/model/attendance_data.dart';
+import 'package:school_app/features/teacher/attendance/model/attendance_model.dart';
 import 'package:school_app/features/teacher/attendance/services/attendance_services.dart';
 
 // Enum to represent attendance status
@@ -30,7 +33,7 @@ class AttendanceController extends ChangeNotifier {
   }
 
   // Function to return a list of attendance data
-  List<Map<String, dynamic>> get attendanceList {
+  List<Map<String, dynamic>> get attendanceStatusList {
     return _attendanceStatus.entries.map((entry) {
       return {
         'student_id': entry.key,
@@ -50,6 +53,86 @@ class AttendanceController extends ChangeNotifier {
         return "Absent";
       default:
         return "None";
+    }
+  }
+
+  // Helper function to convert string to AttendanceStatus enum
+  AttendanceStatus _stringToStatus(String status) {
+    switch (status.toLowerCase()) {
+      case "present":
+        return AttendanceStatus.present;
+      case "late":
+        return AttendanceStatus.late;
+      case "absent":
+        return AttendanceStatus.absent;
+      default:
+        return AttendanceStatus
+            .none; // Assuming `none` is a valid fallback case
+    }
+  }
+
+// **********Take attendance******************
+  List<Attendance> _attendanceList = [];
+  List<Attendance> get attendanceList => _attendanceList;
+  Future<void> takeAttendance(BuildContext context,
+      {required String className,
+      required String section,
+      required String date,
+      required String period,
+      required AttendanceData attendanceData,
+      Attendance? previousAttendance}) async {
+    try {
+      final response = await AttendanceServices().checkAttendance(
+          className: className, section: section, date: date, period: period);
+      if (response.statusCode == 200) {
+        _attendanceList = (response.data as List<dynamic>)
+            .map((result) => Attendance.fromJson(result))
+            .toList();
+        log("attendance list ==== ${attendanceList[0].recordedBy}");
+        final _teacherId = attendanceList[0].recordedBy;
+        if (_teacherId != null) {
+          CustomSnackbar.show(context,
+              message: "Attendance Already Taken", type: SnackbarType.info);
+          context.pushNamed(AppRouteConst.attendanceRouteName,
+              extra: attendanceData);
+        } else {
+          context.pushNamed(AppRouteConst.attendanceRouteName,
+              extra: attendanceData);
+        }
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+// ************get already taken attenndance status*************
+
+  AttendanceStatus getAlreadyTakenStatus(int studentId, int index) {
+    final _alreadyStatus =
+        _stringToStatus(_attendanceList[index].attendanceStatus ?? "");
+    return _alreadyStatus;
+  }
+
+// **********check attendance already taken**************
+  Future<void> checkAttendance(BuildContext context,
+      {required String className,
+      required String section,
+      required String date,
+      required String period,
+      required AttendanceData attendanceData}) async {
+    final response = await AttendanceServices().checkAttendance(
+        className: className, section: section, date: date, period: period);
+    if (response.statusCode == 200) {
+      final data = response.data;
+      if (data[0].length > 2) {
+        log(">>>>>>>>>>>>>>${response.data}");
+        CustomSnackbar.show(context,
+            message: "Attendance Already Taken", type: SnackbarType.warning);
+      } else {
+        context.pushNamed(AppRouteConst.attendanceRouteName,
+            extra: attendanceData);
+        log("no status>>>>>>>>>>>>>>${response.data}");
+      }
     }
   }
 
