@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -34,16 +33,15 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
     // Ensure `StudentIdController` fetches data on dropdown change
     final dropdownProvider = context.read<DropdownProvider>();
 
+    // Clear dropdown selections when page loads
+    dropdownProvider.clearSelectedItem('class');
+    dropdownProvider.clearSelectedItem('division');
+    dropdownProvider.clearSelectedItem('selectedStudent');
+    dropdownProvider.clearSelectedItem('selectedYear');
+    dropdownProvider.clearSelectedItem('selectedMonth');
+    dropdownProvider.clearSelectedItem('paymentMethod');
+    dropdownProvider.clearSelectedItem('paymentStatus');
 
-  // Clear dropdown selections when page loads
-  dropdownProvider.clearSelectedItem('class');
-  dropdownProvider.clearSelectedItem('division');
-  dropdownProvider.clearSelectedItem('selectedStudent');
-  dropdownProvider.clearSelectedItem('selectedYear');
-  dropdownProvider.clearSelectedItem('selectedMonth');
-  dropdownProvider.clearSelectedItem('paymentMethod');
-  dropdownProvider.clearSelectedItem('paymentStatus');
-  
     dropdownProvider.addListener(() {
       final selectedClass = dropdownProvider.getSelectedItem('class');
       final selectedDivision = dropdownProvider.getSelectedItem('division');
