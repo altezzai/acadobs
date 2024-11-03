@@ -9,6 +9,7 @@ import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/features/teacher/attendance/controller/attendance_controller.dart';
 import 'package:school_app/features/teacher/attendance/model/attendance_data.dart';
+import 'package:school_app/features/teacher/attendance/screens/attendance.dart';
 import 'package:school_app/features/teacher/attendance/widgets/already_taken_tile.dart';
 import 'package:school_app/features/teacher/attendance/widgets/attendance_tile.dart';
 
@@ -95,26 +96,70 @@ class TakeAttendance extends StatelessWidget {
                               final studentId = studentsList[index].id;
                               final teacherId =
                                   value.attendanceList[0].recordedBy;
-                              return Padding(
-                                padding: EdgeInsets.only(
-                                    bottom: Responsive.height * 1),
-                                child: teacherId != null
-                                    ? AlreadyTakenTile(
-                                        studentId:
-                                            studentsList[index].studentId ?? 0,
-                                        studentName: capitalizeFirstLetter(
-                                            studentsList[index].fullName ?? ""),
-                                        rollNo: (index + 1).toString(),
-                                        index: index,
-                                        // currentStatus: AttendanceStatus.present,
-                                      )
-                                    : AttendanceTile(
-                                        studentId: studentId ?? 0,
-                                        rollNo: (index + 1).toString(),
-                                        studentName: capitalizeFirstLetter(
-                                            studentsList[index].fullName ?? ""),
-                                      ),
-                              );
+                              final action = attendanceData.action;
+                              switch (action) {
+                                case AttendanceAction.markAttendance:
+                                  return Padding(
+                                    padding: EdgeInsets.only(
+                                        bottom: Responsive.height * 1),
+                                    child: teacherId != null
+                                        ? AlreadyTakenTile(
+                                            studentId:
+                                                studentsList[index].studentId ??
+                                                    0,
+                                            studentName: capitalizeFirstLetter(
+                                                studentsList[index].fullName ??
+                                                    ""),
+                                            rollNo: (index + 1).toString(),
+                                            index: index,
+                                            // currentStatus: AttendanceStatus.present,
+                                          )
+                                        : AttendanceTile(
+                                            studentId: studentId ?? 0,
+                                            rollNo: (index + 1).toString(),
+                                            studentName: capitalizeFirstLetter(
+                                                studentsList[index].fullName ??
+                                                    ""),
+                                          ),
+                                  );
+                                case AttendanceAction.markAllPresent:
+                                  // Show AttendanceTile with initial "Present" status
+                                  return Padding(
+                                    padding: EdgeInsets.only(
+                                        bottom: Responsive.height * 1),
+                                    child: AttendanceTile(
+                                      studentId: studentId ?? 0,
+                                      rollNo: (index + 1).toString(),
+                                      studentName: capitalizeFirstLetter(
+                                          studentsList[index].fullName ?? ""),
+                                      isAllPresent: true,
+                                      // Add an initial present status
+                                      // initialStatus: AttendanceStatus.present,
+                                    ),
+                                  );
+                                default:
+                                  return Container();
+                              }
+                              // return Padding(
+                              //   padding: EdgeInsets.only(
+                              //       bottom: Responsive.height * 1),
+                              //   child: teacherId != null
+                              //       ? AlreadyTakenTile(
+                              //           studentId:
+                              //               studentsList[index].studentId ?? 0,
+                              //           studentName: capitalizeFirstLetter(
+                              //               studentsList[index].fullName ?? ""),
+                              //           rollNo: (index + 1).toString(),
+                              //           index: index,
+                              //           // currentStatus: AttendanceStatus.present,
+                              //         )
+                              //       : AttendanceTile(
+                              //           studentId: studentId ?? 0,
+                              //           rollNo: (index + 1).toString(),
+                              //           studentName: capitalizeFirstLetter(
+                              //               studentsList[index].fullName ?? ""),
+                              //         ),
+                              // );
                             });
                       }),
                       SizedBox(

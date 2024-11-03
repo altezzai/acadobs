@@ -7,6 +7,7 @@ import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/teacher/attendance/model/attendance_data.dart';
 import 'package:school_app/features/teacher/attendance/model/attendance_model.dart';
+import 'package:school_app/features/teacher/attendance/screens/attendance.dart';
 import 'package:school_app/features/teacher/attendance/services/attendance_services.dart';
 
 // Enum to represent attendance status
@@ -17,10 +18,39 @@ class AttendanceController extends ChangeNotifier {
   bool get isloading => _isloading;
   final Map<int, AttendanceStatus> _attendanceStatus = {};
 
+  bool isAllPresent = false;
+
+  // Existing code for storing student statuses...
+  
+  // void markAllPresent() {
+  //   isAllPresent = true;
+  //   notifyListeners();
+  // }
+
+  // void resetAllPresent() {
+  //   isAllPresent = false;
+  //   notifyListeners();
+  // }
+
+  // AttendanceStatus getStatus(int studentId) {
+  //   if (isAllPresent && !_attendanceStatus.containsKey(studentId)) {
+  //     return AttendanceStatus.present;
+  //   }
+  //   return _attendanceStatus[studentId] ?? AttendanceStatus.absent;
+  // }
+
+  // void updateStatus(int studentId, AttendanceStatus status) {
+  //   isAllPresent = false;  // Turn off all-present mode once any status is updated
+  //   _attendanceStatus[studentId] = status;
+  //   notifyListeners();
+  // }
+
+// Function for get status
   AttendanceStatus getStatus(int studentId) {
     return _attendanceStatus[studentId] ?? AttendanceStatus.none;
   }
 
+//  Function for update status
   void updateStatus(int studentId, AttendanceStatus status) {
     _attendanceStatus[studentId] = status;
     notifyListeners();
@@ -80,6 +110,7 @@ class AttendanceController extends ChangeNotifier {
       required String date,
       required String period,
       required AttendanceData attendanceData,
+      required AttendanceAction action,
       Attendance? previousAttendance}) async {
     try {
       final response = await AttendanceServices().checkAttendance(
