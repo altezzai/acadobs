@@ -7,12 +7,14 @@ class AttendanceTile extends StatelessWidget {
   final int studentId; // Unique ID of the student
   final String studentName; // Name of the student
   final String rollNo;
+  final bool isAllPresent;
 
   const AttendanceTile({
     super.key,
     required this.studentId,
     required this.studentName,
-    required this.rollNo
+    required this.rollNo,
+    this.isAllPresent = false,
   });
 
   @override
@@ -114,6 +116,7 @@ class AttendanceTile extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () {
           // Update attendance status for the specific student
+
           controller.updateStatus(studentId, status);
         },
         style: ElevatedButton.styleFrom(
