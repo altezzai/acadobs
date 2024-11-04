@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/admin/duties/controller/duty_controller.dart';
 import 'package:school_app/features/admin/duties/widgets/duty_card.dart';
@@ -99,8 +100,10 @@ class _DutiesHomeScreenState extends State<DutiesHomeScreen> {
                         ),
                         child: DutyCard(
                           title: value.duties[index].dutyTitle ?? "",
-                          date: value.duties[index].createdAt.toString(),
-                          time: '09:00 am',
+                          date: DateFormatter.formatDateString(
+                              value.duties[index].createdAt.toString()),
+                          time: TimeFormatter.formatTimeFromString(
+                              value.duties[index].createdAt.toString()),
                         ),
                       );
                     },

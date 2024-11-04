@@ -6,4 +6,27 @@ class DutyServices {
     final Response response = await ApiServices.get("/duties");
     return response;
   }
+
+  Future<Response> addDuty({
+    required String duty_title,
+    required String description,
+    required String status,
+    required String remark,
+    required List<int> teachers,
+  }) async {
+    // Create the form data to pass to the API
+    final formData = {
+      'duty_title': duty_title,
+      'description': description,
+      'status': status,
+      'remark': remark,
+      'teachers': teachers
+    };
+
+    // Call the ApiServices post method with formData and isFormData: true
+    final Response response =
+        await ApiServices.post("/duties", formData, isFormData: true);
+
+    return response;
+  }
 }
