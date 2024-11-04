@@ -58,6 +58,7 @@ class _PaymentPageState extends State<PaymentPage> {
                 amountTitle: "1000",
                 name: "\tMuhammed Rafsal N",
                 time: "09:00 am",
+                transactionId: "",
                 description: "",
               ),
               const SizedBox(height: 20),
@@ -81,6 +82,8 @@ class _PaymentPageState extends State<PaymentPage> {
                     return PaymentCard(
                         amountTitle: value.payments[index].amountPaid ?? "",
                         name: value.payments[index].userId.toString(),
+                        transactionId:
+                            value.payments[index].transactionId.toString(),
                         time: TimeFormatter.formatTimeFromString(
                           value.payments[index].createdAt.toString(),
                         ),
@@ -130,6 +133,7 @@ class PaymentCard extends StatelessWidget {
   final String description;
   final String name;
   final String time;
+  final String transactionId;
 
   const PaymentCard({
     super.key,
@@ -137,6 +141,7 @@ class PaymentCard extends StatelessWidget {
     required this.name,
     required this.time,
     required this.description,
+    required this.transactionId,
   });
 
   @override
@@ -167,7 +172,7 @@ class PaymentCard extends StatelessWidget {
                   style: const TextStyle(fontWeight: FontWeight.bold)),
             ],
           ),
-          subtitle: Text(name),
+          subtitle: Text(transactionId),
           trailing: Text(
             time,
             style: const TextStyle(fontWeight: FontWeight.bold),

@@ -4,8 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
-import 'package:school_app/features/parent/events/widget/eventcard.dart'
-    as event_card;
 import 'package:school_app/features/parent/events/widget/eventcard.dart';
 
 class EventsPage extends StatefulWidget {
@@ -58,7 +56,7 @@ class _EventsPageState extends State<EventsPage> {
                 ),
               ),
               SizedBox(height: 10),
-              event_card.EventCard(
+              EventCard(
                 eventTitle: "Sports day",
                 eventDescription:
                     "National sports day will be conducted in our school...",

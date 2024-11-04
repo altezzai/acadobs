@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
+import 'package:school_app/features/parent/chat/screen/parentchatscreen.dart';
 import 'package:school_app/features/parent/payment/screen/PaymentScreen.dart';
 import 'package:school_app/features/parent/events/screen/eventscreen.dart';
 
@@ -35,6 +36,7 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
     const EventsPage(),
     const NoticePage(),
     const PaymentPage(),
+    ParentChatPage()
   ];
 
   @override
@@ -51,6 +53,7 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
             _currentIndex = index;
           });
         },
+        
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -71,6 +74,10 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.payment),
             label: 'Payments',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat),
+            label: 'chat',
           ),
         ],
       ),
