@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
-import 'package:school_app/base/utils/constants.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
@@ -63,13 +62,28 @@ class TakeAttendance extends StatelessWidget {
                   children: List.generate(
                     10,
                     (index) {
+                      final _previousPeriodList =
+                          attendanceController.alreadyTakenPeriodList;
                       final int _selectedPeriod =
                           int.parse(attendanceData.selectedPeriod);
+
+                      Color? periodColor;
+
+                      // Check if the period is completed (in previousPeriodList)
+                      if (_previousPeriodList.contains(index + 1)) {
+                        periodColor = Colors.red; // Color for completed periods
+                      }
+                      // If it’s the selected period and not completed, color it blue
+                      else if (index + 1 == _selectedPeriod) {
+                        periodColor = Colors.blue;
+                      }
+
                       return Expanded(
-                        child: index + 1 == _selectedPeriod
-                            ? _periodBox(context,
-                                period: index + 1, isSelectedPeriod: true)
-                            : _periodBox(context, period: index + 1),
+                        child: _periodBox(
+                          context,
+                          period: index + 1,
+                          color: periodColor,
+                        ),
                       );
                     },
                   ),
@@ -210,23 +224,29 @@ class TakeAttendance extends StatelessWidget {
   }
 
   // Individual period box
-  Widget _periodBox(context,
-      {required int period, bool isSelectedPeriod = false}) {
+  Widget _periodBox(
+    context, {
+    required int period,
+    bool isSelectedPeriod = false,
+    Color? color,
+  }) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 2), // Space between boxes
-      padding: const EdgeInsets.symmetric(
-        vertical: 4,
-      ), // Padding inside the box
+      padding:
+          const EdgeInsets.symmetric(vertical: 4), // Padding inside the box
       decoration: BoxDecoration(
-        color: isSelectedPeriod ? Colors.blue : whiteColor, // Box color
-        borderRadius: BorderRadius.circular(4),
+        color:
+            color ?? Colors.white, // Use the provided color or default to white
+        borderRadius: BorderRadius.circular(8),
         border: Border.all(color: Colors.black26, width: 1), // Optional border
       ),
       child: Center(
         child: Text(
           'P$period', // Display period number
           style: Theme.of(context).textTheme.bodySmall!.copyWith(
-              color: isSelectedPeriod ? whiteColor : blackColor, fontSize: 12),
+                color: isSelectedPeriod ? Colors.white : Colors.black,
+                fontSize: 12,
+              ),
         ),
       ),
     );

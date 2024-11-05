@@ -7,7 +7,7 @@ import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/teacher/attendance/model/attendance_data.dart';
 import 'package:school_app/features/teacher/attendance/model/attendance_model.dart';
-import 'package:school_app/features/teacher/attendance/screens/attendance.dart';
+
 import 'package:school_app/features/teacher/attendance/services/attendance_services.dart';
 
 // Enum to represent attendance status
@@ -21,7 +21,7 @@ class AttendanceController extends ChangeNotifier {
   bool isAllPresent = false;
 
   // Existing code for storing student statuses...
-  
+
   // void markAllPresent() {
   //   isAllPresent = true;
   //   notifyListeners();
@@ -102,23 +102,27 @@ class AttendanceController extends ChangeNotifier {
   }
 
 // **********Take attendance******************
-  List<Attendance> _attendanceList = [];
-  List<Attendance> get attendanceList => _attendanceList;
+  List<StudentAttendance> _attendanceList = [];
+  List<StudentAttendance> get attendanceList => _attendanceList;
+  List<int> _alreadyTakenPeriodList = [];
+  List<int> get alreadyTakenPeriodList => _alreadyTakenPeriodList;
   Future<void> takeAttendance(BuildContext context,
-      {required String className,
-      required String section,
-      required String date,
-      required String period,
+      {
       required AttendanceData attendanceData,
-      required AttendanceAction action,
       Attendance? previousAttendance}) async {
+        _alreadyTakenPeriodList.clear();
     try {
       final response = await AttendanceServices().checkAttendance(
-          className: className, section: section, date: date, period: period);
+          className: attendanceData.selectedClass, section: attendanceData.selectedDivision, date: attendanceData.selectedDate , period: attendanceData.selectedPeriod);
+      log(response.data.toString());
       if (response.statusCode == 200) {
-        _attendanceList = (response.data as List<dynamic>)
-            .map((result) => Attendance.fromJson(result))
+        _attendanceList = (response.data['students'] as List<dynamic>)
+            .map((result) => StudentAttendance.fromJson(result))
             .toList();
+        _alreadyTakenPeriodList = (response.data['completed_periods'] as List)
+            .map((e) => e as int)
+            .toList();
+        log(_alreadyTakenPeriodList.toString());
         log("attendance list ==== ${attendanceList[0].recordedBy}");
         final _teacherId = attendanceList[0].recordedBy;
         if (_teacherId != null) {
@@ -144,28 +148,28 @@ class AttendanceController extends ChangeNotifier {
     return _alreadyStatus;
   }
 
-// **********check attendance already taken**************
-  Future<void> checkAttendance(BuildContext context,
-      {required String className,
-      required String section,
-      required String date,
-      required String period,
-      required AttendanceData attendanceData}) async {
-    final response = await AttendanceServices().checkAttendance(
-        className: className, section: section, date: date, period: period);
-    if (response.statusCode == 200) {
-      final data = response.data;
-      if (data[0].length > 2) {
-        log(">>>>>>>>>>>>>>${response.data}");
-        CustomSnackbar.show(context,
-            message: "Attendance Already Taken", type: SnackbarType.warning);
-      } else {
-        context.pushNamed(AppRouteConst.attendanceRouteName,
-            extra: attendanceData);
-        log("no status>>>>>>>>>>>>>>${response.data}");
-      }
-    }
-  }
+// // **********check attendance already taken**************
+//   Future<void> checkAttendance(BuildContext context,
+//       {required String className,
+//       required String section,
+//       required String date,
+//       required String period,
+//       required AttendanceData attendanceData}) async {
+//     final response = await AttendanceServices().checkAttendance(
+//         className: className, section: section, date: date, period: period);
+//     if (response.statusCode == 200) {
+//       final data = response.data;
+//       if (data[0].length > 2) {
+//         log(">>>>>>>>>>>>>>${response.data}");
+//         CustomSnackbar.show(context,
+//             message: "Attendance Already Taken", type: SnackbarType.warning);
+//       } else {
+//         context.pushNamed(AppRouteConst.attendanceRouteName,
+//             extra: attendanceData);
+//         log("no status>>>>>>>>>>>>>>${response.data}");
+//       }
+//     }
+//   }
 
   //*************** */ submit attendance**************
   final AttendanceServices _attendanceService = AttendanceServices();
