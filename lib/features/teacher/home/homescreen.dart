@@ -68,7 +68,7 @@ class TeacherScreen extends StatelessWidget {
                   color: Colors.red,
                   text: 'Leave Request',
                   ontap: () {
-                    context.pushNamed(AppRouteConst.leaveRouteName);
+                    context.pushNamed(AppRouteConst.AddTeacherLeaveRequestRouteName);
                   }),
               SizedBox(
                 height: Responsive.height * 2,

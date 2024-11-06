@@ -13,6 +13,12 @@ import 'package:school_app/features/teacher/homework/widgets/date_picker.dart';
 class LeaveRequest extends StatelessWidget {
   LeaveRequest({super.key});
 
+  final TextEditingController _leaveTypeController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
