@@ -12,19 +12,43 @@ import 'package:school_app/features/admin/duties/services/duty_services.dart';
 class DutyController extends ChangeNotifier {
   bool _isloading = false;
   bool get isloading => _isloading;
-  List<Duty> _duties = [];
-  List<Duty> get duties => _duties;
+  List<DutyClass> _duties = [];
+  List<DutyClass> get duties => _duties;
+  List<AssignedTeacher> _assignedteachers = [];
+  List<AssignedTeacher> get assignedteachers => _assignedteachers;
 
   Future<void> getDuties() async {
     _isloading = true;
     try {
       final response = await DutyServices().getDuties();
       print("***********${response.statusCode}");
+      duties.clear();
       // print(response.toString());
       if (response.statusCode == 200) {
         _duties = (response.data as List<dynamic>)
-            .map((result) => Duty.fromJson(result))
+            .map((result) => DutyClass.fromJson(result))
             .toList();
+      }
+    } catch (e) {
+      // print(e);
+    }
+    _isloading = false;
+    notifyListeners();
+  }
+
+  // get assigned terachers
+  Future<void> getAssignedDuties({required String dutyid}) async {
+    _isloading = true;
+    try {
+      final response = await DutyServices().getAssignedDuties(dutyid: dutyid);
+      print("***********${response.statusCode}");
+      _assignedteachers.clear();
+      // print(response.toString());
+      if (response.statusCode == 200) {
+        _assignedteachers =
+            (response.data['assigned_teachers'] as List<dynamic>)
+                .map((result) => AssignedTeacher.fromJson(result))
+                .toList();
       }
     } catch (e) {
       // print(e);

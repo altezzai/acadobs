@@ -72,6 +72,9 @@ class _DutiesHomeScreenState extends State<DutiesHomeScreen> {
               title: "PTA meeting class XII",
               date: "15-06-24",
               time: "09:00 am",
+              onTap: () {
+                context.goNamed(AppRouteConst.AdminViewDutyRouteName);
+              },
             ),
             SizedBox(height: screenHeight * 0.03),
             Text(
@@ -104,6 +107,12 @@ class _DutiesHomeScreenState extends State<DutiesHomeScreen> {
                               value.duties[index].createdAt.toString()),
                           time: TimeFormatter.formatTimeFromString(
                               value.duties[index].createdAt.toString()),
+                          onTap: () {
+                            context.goNamed(
+                              AppRouteConst.AdminViewDutyRouteName,
+                              extra: value.duties[index],
+                            );
+                          },
                         ),
                       );
                     },

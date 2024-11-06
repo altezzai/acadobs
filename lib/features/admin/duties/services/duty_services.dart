@@ -7,6 +7,12 @@ class DutyServices {
     return response;
   }
 
+// get assigned teachers
+  Future<Response> getAssignedDuties({required String dutyid}) async {
+    final Response response = await ApiServices.get("/duties/$dutyid");
+    return response;
+  }
+
   Future<Response> addDuty({
     required String duty_title,
     required String description,
