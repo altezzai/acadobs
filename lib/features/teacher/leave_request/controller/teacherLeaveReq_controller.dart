@@ -1,8 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/core/controller/loading_provider.dart';
 import 'package:school_app/features/teacher/leave_request/model/teacherLeaveReq_model.dart';
 import 'package:school_app/features/teacher/leave_request/services/teacherLeaveReq_services.dart';
@@ -60,9 +58,9 @@ class TeacherLeaveRequestController extends ChangeNotifier {
   Future<void> addNewTeacherLeaveRequest(BuildContext context,
       {      
       required String teacherId,
-       required String leaveType,
+      required String leaveType,
       required String startDate,
-      required String  endDate,
+      required String endDate,
       required String reasonForLeave,}) async {
     final loadingProvider =
         Provider.of<LoadingProvider>(context, listen: false); //loading provider
@@ -77,9 +75,25 @@ class TeacherLeaveRequestController extends ChangeNotifier {
           reasonForLeave: reasonForLeave,
           );
       if (response.statusCode == 201) {
-        log(">>>>>>>>>>>>>Teacher Leave Request Added}");
-        context.goNamed(AppRouteConst.AdminteacherRouteName);
-      }
+      log(">>>>>>>>>>>>>Teacher Leave Request Added}");
+      // Show success message using Snackbar
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Leave request submitted successfully!'),
+          backgroundColor: Colors.green, // Set color for success
+        ),
+      );
+      // Navigate to the desired route
+      //context.goNamed(AppRouteConst.AdminteacherRouteName);
+    } else {
+      // Handle failure case here if needed
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to submit leave request. Please try again.'),
+          backgroundColor: Colors.red, // Set color for error
+        ),
+      );
+    }
     } catch (e) {
       log(e.toString());
     } finally {

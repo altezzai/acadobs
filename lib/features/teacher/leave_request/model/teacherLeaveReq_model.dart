@@ -47,8 +47,12 @@ class TeacherLeaveRequest {
         teacherId: json["teacher_id"],
         // == null ? null : int.tryParse(json["teacherId"]),
         leaveType: json["leave_type"],
-        startDate: json["start_date"] == null ? null : DateTime.tryParse(json["start_date"]),
-        endDate: json["end_date"] == null ? null : DateTime.tryParse(json["end_date"]),
+        startDate: json["start_date"]  != null
+            ? DateTime.tryParse(json["start_date"])
+            : null,
+        endDate: json["end_date"] != null
+            ? DateTime.tryParse(json["end_date"])
+            : null,
         reasonForLeave: json["reason_for_leave"],
         approvalStatus: json["approval_status"],
         approvedBy: json["approved_by"],
@@ -80,4 +84,15 @@ class TeacherLeaveRequest {
         "updated_at": updatedAt?.toIso8601String(),
     };
 
+}
+class EnumValues<T> {
+  Map<String, T> map;
+  late Map<T, String> reverseMap;
+
+  EnumValues(this.map);
+
+  Map<T, String> get reverse {
+    reverseMap = map.map((k, v) => MapEntry(v, k));
+    return reverseMap;
+  }
 }

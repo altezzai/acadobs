@@ -20,6 +20,7 @@ class AddTeacherLeaveRequest extends StatefulWidget {
 }
 
 class _AddTeacherLeaveRequestState extends State<AddTeacherLeaveRequest> {
+  
   String? selectedLeaveType;
 
   // textediting controllers
@@ -81,7 +82,7 @@ class _AddTeacherLeaveRequestState extends State<AddTeacherLeaveRequest> {
                  CustomDropdown(dropdownKey: 'leaveType',
                 label: 'Leave Type',
                 icon: Icons.person_2_outlined,
-                items: ['sick leave', 'casual leave', 'Other'],
+                items: ['Sick Leave', 'Casual Leave', 'Other'],
               ),
               SizedBox(
                 height: Responsive.height * 1,
@@ -124,6 +125,7 @@ class _AddTeacherLeaveRequestState extends State<AddTeacherLeaveRequest> {
                     final selectedLeaveType = context.read<DropdownProvider>()
                         .getSelectedItem('leaveType');
                     // final int? teacherId = int.tryParse(_teacherIdController.text);
+                    
                     
                     context.read<TeacherLeaveRequestController>().addNewTeacherLeaveRequest(context,
                        teacherId: _teacherIdController.text,  
