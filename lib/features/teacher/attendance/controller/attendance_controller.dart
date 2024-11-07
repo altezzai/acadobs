@@ -7,7 +7,6 @@ import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/teacher/attendance/model/attendance_data.dart';
 import 'package:school_app/features/teacher/attendance/model/attendance_model.dart';
-
 import 'package:school_app/features/teacher/attendance/services/attendance_services.dart';
 
 // Enum to represent attendance status
@@ -107,14 +106,18 @@ class AttendanceController extends ChangeNotifier {
   List<int> _alreadyTakenPeriodList = [];
   List<int> get alreadyTakenPeriodList => _alreadyTakenPeriodList;
   Future<void> takeAttendance(BuildContext context,
-      {
-      required AttendanceData attendanceData,
+      {required AttendanceData attendanceData,
       Attendance? previousAttendance}) async {
-        _alreadyTakenPeriodList.clear();
+    _alreadyTakenPeriodList.clear();
     try {
       final response = await AttendanceServices().checkAttendance(
-          className: attendanceData.selectedClass, section: attendanceData.selectedDivision, date: attendanceData.selectedDate , period: attendanceData.selectedPeriod);
+          className: attendanceData.selectedClass,
+          section: attendanceData.selectedDivision,
+          date: attendanceData.selectedDate,
+          period: attendanceData.selectedPeriod);
       log(response.data.toString());
+      // _attendanceList.clear();
+
       if (response.statusCode == 200) {
         _attendanceList = (response.data['students'] as List<dynamic>)
             .map((result) => StudentAttendance.fromJson(result))
