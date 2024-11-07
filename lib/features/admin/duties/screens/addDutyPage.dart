@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:file_picker/file_picker.dart'; // imported for date formatting
+import 'package:provider/provider.dart';
+import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
@@ -8,6 +10,7 @@ import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
+import 'package:school_app/features/admin/duties/controller/duty_controller.dart';
 
 class AddDutyPage extends StatefulWidget {
   @override
@@ -15,11 +18,12 @@ class AddDutyPage extends StatefulWidget {
 }
 
 class _AddDutyPageState extends State<AddDutyPage> {
-  final _formKey = GlobalKey<FormState>();
-
   String? selectedStaff;
   String? selectedFile;
   List<String> selectedStaffs = [];
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _remarkController = TextEditingController();
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
 
@@ -53,6 +57,7 @@ class _AddDutyPageState extends State<AddDutyPage> {
               // Title Input
               CustomTextfield(
                 hintText: 'Title',
+                controller: _titleController,
                 iconData: Icon(Icons.title),
                 hintStyle: TextStyle(fontSize: 14.0),
               ),
@@ -61,6 +66,16 @@ class _AddDutyPageState extends State<AddDutyPage> {
               // Description Input
               CustomTextfield(
                 hintText: 'Description',
+                controller: _descriptionController,
+                iconData: Icon(Icons.description),
+                keyBoardtype: TextInputType.multiline,
+                hintStyle: TextStyle(fontSize: 14.0),
+              ),
+              SizedBox(height: 20),
+
+              CustomTextfield(
+                hintText: 'remark',
+                controller: _remarkController,
                 iconData: Icon(Icons.description),
                 keyBoardtype: TextInputType.multiline,
                 hintStyle: TextStyle(fontSize: 14.0),
@@ -98,10 +113,18 @@ class _AddDutyPageState extends State<AddDutyPage> {
               ),
               SizedBox(height: 20),
 
+              CustomDropdown(
+                dropdownKey: 'status',
+                label: 'Status',
+                items: ['Pending', 'In Progress', 'Completed'],
+                icon: Icons.pending_actions,
+              ),
+              SizedBox(height: 20),
+
               // Select Staffs Dropdown
               Container(
                 child: CustomDropdown(
-                  dropdownKey: 'select staffs',
+                  dropdownKey: 'selectstaffs',
                   label: 'Select Staffs',
                   items: [
                     'Kaiya Mango',
@@ -158,12 +181,20 @@ class _AddDutyPageState extends State<AddDutyPage> {
                 child: CustomButton(
                   text: 'Submit',
                   onPressed: () {
-                    if (_formKey.currentState?.validate() ?? false) {
-                      // Handle form submission logic here
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Form successfully submitted!')),
-                      );
-                    }
+                    final status = context
+                        .read<DropdownProvider>()
+                        .getSelectedItem('status');
+                    //  final selectstaffs = context
+                    // .read<DropdownProvider>()
+                    // .getSelectedItem('selectstaffs');
+
+                    context.read<DutyController>().addDuty(
+                          context,
+                          duty_title: _titleController.text,
+                          description: _descriptionController.text,
+                          status: status,
+                          remark: _remarkController.text,
+                        );
                   },
                 ),
               ),

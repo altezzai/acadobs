@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:school_app/features/admin/duties/model/duty_model.dart';
+import 'package:school_app/features/admin/duties/screens/view_duty.dart';
 import 'package:school_app/features/admin/reports/screens/payment.dart';
 import 'package:school_app/features/admin/student/model/student_data.dart';
 import 'package:school_app/features/admin/student/screens/addAchivement.dart';
@@ -209,6 +211,17 @@ class Approuter {
         path: '/adminaddduty',
         pageBuilder: (context, state) {
           return MaterialPage(child: AddDutyPage());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.AdminViewDutyRouteName,
+        path: '/adminviewduty',
+        pageBuilder: (context, state) {
+          final DutyClass duties = state.extra as DutyClass;
+          return MaterialPage(
+              child: DutyView(
+            duties: duties,
+          ));
         },
       ),
       GoRoute(

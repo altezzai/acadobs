@@ -58,6 +58,9 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
                 ),
               ],
             ),
+            SizedBox(
+              height: 20,
+            ),
             // Row(
             //   children: [
             //     Expanded(
@@ -81,6 +84,8 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
             // ),
             TabBar(
               controller: _tabController,
+              indicatorColor: Colors.black,
+              labelColor: Colors.black,
               tabs: [
                 Tab(text: 'Payments'),
                 Tab(text: 'Donations'),
