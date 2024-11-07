@@ -46,7 +46,7 @@ class StudentServices {
       "mother_full_name": motherFullName,
       "blood_group": bloodGroup,
     };
-
+    
     // Call the ApiServices post method with formData and isFormData: true
     final Response response =
         await ApiServices.post("/students", formData, isFormData: true);
