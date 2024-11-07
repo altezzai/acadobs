@@ -235,13 +235,11 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
         selectedDate: selectedDate,
         action: action);
 
-    context.read<AttendanceController>().takeAttendance(context,
-        className: selectedClass,
-        section: selectedDivision,
-        date: selectedDate,
-        period: selectedPeriod,
-        attendanceData: attendanceData,
-        action: action // Pass the action to handle it on the next page
+    context.read<AttendanceController>().takeAttendance(
+          context,
+
+          attendanceData: attendanceData,
+          // Pass the action to handle it on the next page
         );
   }
 }
