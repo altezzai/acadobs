@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/features/admin/duties/controller/duty_controller.dart';
@@ -45,6 +48,10 @@ class _DutyViewState extends State<DutyView> {
               CustomAppbar(
                 title: widget.duties.dutyTitle ?? "",
                 isProfileIcon: false,
+                onTap: () {
+                  context.goNamed(AppRouteConst.bottomNavRouteName,
+                      extra: UserType.admin);
+                },
               ),
               SizedBox(
                 height: Responsive.height * .09,
