@@ -7,10 +7,12 @@ import 'package:school_app/features/admin/notices/controller/notice_controller.d
 import 'package:school_app/features/admin/payments/controller/payment_controller.dart';
 import 'package:school_app/features/admin/student/controller/achievement_controller.dart';
 import 'package:school_app/features/admin/teacher_section/controller/teacher_controller.dart';
+
 import 'package:school_app/features/teacher/attendance/controller/attendance_controller.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/features/admin/student/controller/student_controller.dart';
 import 'package:school_app/features/teacher/attendance/controller/tile_selection.dart';
+import 'package:school_app/features/teacher/leave_request/controller/teacherLeaveReq_controller.dart';
 
 getProviders() {
   return [
@@ -24,6 +26,7 @@ getProviders() {
     ChangeNotifierProvider(create: (_) => PaymentController()),
     ChangeNotifierProvider(create: (_) => StudentIdController()),
     ChangeNotifierProvider(create: (_) => TileSelectionProvider()),
+    ChangeNotifierProvider(create: (_) => TeacherLeaveRequestController()),
     ChangeNotifierProvider(create: (_) => DutyController()),
     ChangeNotifierProvider(create: (_) => AchievementController()),
   ];

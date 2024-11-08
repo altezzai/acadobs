@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
-import 'package:school_app/base/utils/constants.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
@@ -63,13 +62,28 @@ class TakeAttendance extends StatelessWidget {
                   children: List.generate(
                     10,
                     (index) {
+                      final _previousPeriodList =
+                          attendanceController.alreadyTakenPeriodList;
                       final int _selectedPeriod =
                           int.parse(attendanceData.selectedPeriod);
+
+                      // Determine color based on previous periods and selected period
+                      Color? periodColor;
+                      bool isSelectedPeriod = index + 1 == _selectedPeriod;
+
+                      if (_previousPeriodList.contains(index + 1)) {
+                        periodColor = Colors.red; // Color for completed periods
+                      } else if (isSelectedPeriod) {
+                        periodColor = Colors.blue;
+                      }
+
                       return Expanded(
-                        child: index + 1 == _selectedPeriod
-                            ? _periodBox(context,
-                                period: index + 1, isSelectedPeriod: true)
-                            : _periodBox(context, period: index + 1),
+                        child: _periodBox(
+                          context,
+                          period: index + 1,
+                          isSelectedPeriod: isSelectedPeriod,
+                          color: periodColor,
+                        ),
                       );
                     },
                   ),
@@ -140,26 +154,6 @@ class TakeAttendance extends StatelessWidget {
                                 default:
                                   return Container();
                               }
-                              // return Padding(
-                              //   padding: EdgeInsets.only(
-                              //       bottom: Responsive.height * 1),
-                              //   child: teacherId != null
-                              //       ? AlreadyTakenTile(
-                              //           studentId:
-                              //               studentsList[index].studentId ?? 0,
-                              //           studentName: capitalizeFirstLetter(
-                              //               studentsList[index].fullName ?? ""),
-                              //           rollNo: (index + 1).toString(),
-                              //           index: index,
-                              //           // currentStatus: AttendanceStatus.present,
-                              //         )
-                              //       : AttendanceTile(
-                              //           studentId: studentId ?? 0,
-                              //           rollNo: (index + 1).toString(),
-                              //           studentName: capitalizeFirstLetter(
-                              //               studentsList[index].fullName ?? ""),
-                              //         ),
-                              // );
                             });
                       }),
                       SizedBox(
@@ -210,23 +204,30 @@ class TakeAttendance extends StatelessWidget {
   }
 
   // Individual period box
-  Widget _periodBox(context,
-      {required int period, bool isSelectedPeriod = false}) {
+  // Individual period box
+  Widget _periodBox(BuildContext context,
+      {required int period, bool isSelectedPeriod = false, Color? color}) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 2), // Space between boxes
-      padding: const EdgeInsets.symmetric(
-        vertical: 4,
-      ), // Padding inside the box
+      padding: EdgeInsets.symmetric(
+        vertical: isSelectedPeriod ? 6 : 4,
+      ),
       decoration: BoxDecoration(
-        color: isSelectedPeriod ? Colors.blue : whiteColor, // Box color
-        borderRadius: BorderRadius.circular(4),
-        border: Border.all(color: Colors.black26, width: 1), // Optional border
+        color: color ?? Colors.white, // Box color
+        borderRadius: BorderRadius.circular(
+            isSelectedPeriod ? 8 : 4), // Larger border radius for selected
+        border: Border.all(color: Colors.black26, width: 1),
       ),
       child: Center(
         child: Text(
           'P$period', // Display period number
           style: Theme.of(context).textTheme.bodySmall!.copyWith(
-              color: isSelectedPeriod ? whiteColor : blackColor, fontSize: 12),
+                color: isSelectedPeriod ? Colors.white : Colors.black,
+                fontSize:
+                    isSelectedPeriod ? 14 : 12, // Larger font for selected
+                fontWeight:
+                    isSelectedPeriod ? FontWeight.bold : FontWeight.normal,
+              ),
         ),
       ),
     );
