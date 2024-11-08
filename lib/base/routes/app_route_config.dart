@@ -31,15 +31,6 @@ import 'package:school_app/features/parent/notices/screen/noticedetailedscreen.d
 import 'package:school_app/features/parent/notices/screen/noticescreen.dart';
 import 'package:school_app/features/parent/payment/screen/paymentdetailedscreen.dart';
 import 'package:school_app/features/parent/students/screen/studentdetails.dart';
-import 'package:school_app/features/parent/screen/PaymentScreen.dart';
-import 'package:school_app/features/parent/screen/eventdetailedscreen.dart';
-import 'package:school_app/features/parent/screen/eventscreen.dart';
-import 'package:school_app/features/parent/screen/homescreen.dart';
-import 'package:school_app/features/parent/screen/leaveRequestScreen.dart';
-import 'package:school_app/features/parent/screen/noticedetailedscreen.dart';
-import 'package:school_app/features/parent/screen/noticescreen.dart';
-import 'package:school_app/features/parent/screen/paymentdetailedscreen.dart';
-import 'package:school_app/features/parent/screen/studentdetails.dart';
 import 'package:school_app/features/teacher/attendance/model/attendance_data.dart';
 // import 'package:school_app/features/parent/screen/studentdetails.dart';
 import 'package:school_app/features/teacher/attendance/screens/take_attendance.dart';
