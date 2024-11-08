@@ -21,6 +21,16 @@ import 'package:school_app/features/admin/teacher_section/screens/add_teacher.da
 import 'package:school_app/features/admin/teacher_section/screens/teacherdetails.dart';
 import 'package:school_app/features/admin/teacher_section/screens/teachers_page.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+
+import 'package:school_app/features/parent/payment/screen/PaymentScreen.dart';
+import 'package:school_app/features/parent/events/screen/eventdetailedscreen.dart';
+import 'package:school_app/features/parent/events/screen/eventscreen.dart';
+import 'package:school_app/features/parent/home/screen/homescreen.dart';
+import 'package:school_app/features/parent/leaverequest/screen/leaveRequestScreen.dart';
+import 'package:school_app/features/parent/notices/screen/noticedetailedscreen.dart';
+import 'package:school_app/features/parent/notices/screen/noticescreen.dart';
+import 'package:school_app/features/parent/payment/screen/paymentdetailedscreen.dart';
+import 'package:school_app/features/parent/students/screen/studentdetails.dart';
 import 'package:school_app/features/parent/screen/PaymentScreen.dart';
 import 'package:school_app/features/parent/screen/eventdetailedscreen.dart';
 import 'package:school_app/features/parent/screen/eventscreen.dart';

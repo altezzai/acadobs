@@ -6,6 +6,7 @@ import 'package:school_app/features/admin/duties/controller/duty_controller.dart
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
 import 'package:school_app/features/admin/payments/controller/payment_controller.dart';
 import 'package:school_app/features/admin/teacher_section/controller/teacher_controller.dart';
+
 import 'package:school_app/features/teacher/attendance/controller/attendance_controller.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/features/admin/student/controller/student_controller.dart';

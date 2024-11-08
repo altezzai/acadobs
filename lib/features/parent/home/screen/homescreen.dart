@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
-import 'package:school_app/features/parent/screen/PaymentScreen.dart';
-import 'package:school_app/features/parent/screen/eventscreen.dart';
+import 'package:school_app/base/utils/date_formatter.dart';
+import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
+import 'package:school_app/features/parent/chat/screen/parentchatscreen.dart';
+import 'package:school_app/features/parent/payment/screen/PaymentScreen.dart';
+import 'package:school_app/features/parent/events/screen/eventscreen.dart';
 
-import 'package:school_app/features/parent/screen/noticescreen.dart';
-import 'package:school_app/features/parent/widgets/childcard.dart';
-import 'package:school_app/features/parent/widgets/eventcard.dart'
-    as event_card;
-import 'package:school_app/features/parent/widgets/noticecard.dart';
+import 'package:school_app/features/parent/notices/screen/noticescreen.dart';
+import 'package:school_app/features/parent/home/widgets/childcard.dart';
+
+import 'package:school_app/features/parent/events/widget/eventcard.dart';
+import 'package:school_app/features/parent/notices/widget/noticecard.dart';
 
 class ParentHomeScreen extends StatefulWidget {
   const ParentHomeScreen({super.key});
@@ -18,6 +22,12 @@ class ParentHomeScreen extends StatefulWidget {
 }
 
 class _ParentHomeScreenState extends State<ParentHomeScreen> {
+  @override
+  void initState() {
+    context.read<NoticeController>().getNotices();
+    super.initState();
+  }
+
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
@@ -26,6 +36,7 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
     const EventsPage(),
     const NoticePage(),
     const PaymentPage(),
+    ParentChatPage()
   ];
 
   @override
@@ -42,6 +53,7 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
             _currentIndex = index;
           });
         },
+        
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -62,6 +74,10 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.payment),
             label: 'Payments',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat),
+            label: 'chat',
           ),
         ],
       ),
@@ -220,16 +236,36 @@ class HomePage extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 10),
-                    const NoticeCard(
-                      noticeTitle: "PTA meeting class 09",
-                      date: "15 - 06 - 24",
-                      time: "09:00 am",
-                    ),
-                    const NoticeCard(
-                      noticeTitle: "PTA meeting class 02",
-                      date: "15 - 06 - 24",
-                      time: "09:00 am",
-                    ),
+                    Consumer<NoticeController>(
+                        builder: (context, value, child) {
+                      return ListView.builder(
+                        padding: EdgeInsets.zero,
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: value.notices.take(3).length,
+                        itemBuilder: (context, index) {
+                          return NoticeCard(
+                              description:
+                                  value.notices[index].description ?? "",
+                              noticeTitle: value.notices[index].title ?? "",
+                              date: DateFormatter.formatDateString(
+                                  value.notices[index].date.toString()),
+                              time: TimeFormatter.formatTimeFromString(
+                                  value.notices[index].createdAt.toString()));
+                        },
+                      );
+                    }),
+                    // const NoticeCard(
+                    //   noticeTitle: "PTA meeting class 09",
+                    //   date: "15 - 06 - 24",
+                    //   description: "",
+                    //   time: "09:00 am",
+                    // ),
+                    // const NoticeCard(
+                    //   noticeTitle: "PTA meeting class 02",
+                    //   date: "15 - 06 - 24",
+                    //   time: "09:00 am",
+                    // ),
                     const SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -255,14 +291,35 @@ class HomePage extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 10),
-                    const event_card.EventCard(
-                      eventTitle: "Sports day",
-                      eventDescription:
-                          "National sports day will be conducted\n in our school...",
-                      date: "15 - 06 - 24",
-                      imageProvider: AssetImage("assets/event.png"),
-                      time: '',
-                    ),
+                    Consumer<NoticeController>(
+                        builder: (context, value, child) {
+                      return ListView.builder(
+                        padding: EdgeInsets.zero,
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: value.events.take(2).length,
+                        itemBuilder: (context, index) {
+                          return EventCard(
+                            eventDescription:
+                                value.events[index].description ?? "",
+                            eventTitle: value.events[index].title ?? "",
+                            date: DateFormatter.formatDateString(
+                                value.events[index].eventDate.toString()),
+                            time: TimeFormatter.formatTimeFromString(
+                                value.events[index].createdAt.toString()),
+                            imageProvider: AssetImage("assets/event2.png"),
+                          );
+                        },
+                      );
+                    }),
+                    // const event_card.EventCard(
+                    //   eventTitle: "Sports day",
+                    //   eventDescription:
+                    //       "National sports day will be conducted\n in our school...",
+                    //   date: "15 - 06 - 24",
+                    //   imageProvider: AssetImage("assets/event.png"),
+                    //   time: '',
+                    // ),
                   ],
                 ),
               ),
