@@ -6,12 +6,14 @@ class AttendanceData {
   final String selectedDivision;
   final String selectedDate;
   final AttendanceAction action;
+  final List<int>? completedPeriods;
 
   AttendanceData({
     required this.selectedClass,
     required this.selectedPeriod,
     required this.selectedDivision,
     required this.selectedDate,
-    required this.action
+    required this.action,
+    this.completedPeriods
   });
 }
