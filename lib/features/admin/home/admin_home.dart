@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:school_app/core/shared_widgets/custom_name_container.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/core/shared_widgets/custom_name_container.dart';
 
 class AdminHomeScreen extends StatelessWidget {
   const AdminHomeScreen({super.key});
@@ -39,13 +39,20 @@ class AdminHomeScreen extends StatelessWidget {
                   ],
                 ),
                 const Spacer(),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 30),
-                  child: Image.asset('assets/admin.png'),
+                GestureDetector(
+                  onTap: () {
+                    context.goNamed(AppRouteConst.loginRouteName);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 30),
+                    child: Image.asset('assets/admin.png'),
+                  ),
                 ),
               ],
             ),
-            const SizedBox(height: 20),
+            SizedBox(
+              height: Responsive.height * 2,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -58,8 +65,7 @@ class AdminHomeScreen extends StatelessWidget {
                 CustomNameContainer(
                   text: "Teachers",
                   onPressed: () {
-                    context.pushNamed(
-                        AppRouteConst.AdminteacherRouteName);
+                    context.pushNamed(AppRouteConst.AdminteacherRouteName);
                   },
                 ),
               ],

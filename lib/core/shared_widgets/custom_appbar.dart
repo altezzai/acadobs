@@ -5,6 +5,7 @@ class CustomAppbar extends StatelessWidget {
   final bool isBackButton;
   final bool isProfileIcon;
   final String title;
+  final double verticalPadding;
   final VoidCallback? onTap; // Optional onTap callback for the back button
 
   const CustomAppbar({
@@ -13,13 +14,14 @@ class CustomAppbar extends StatelessWidget {
     this.isProfileIcon = true,
     required this.title, // Title for the app bar
     this.onTap,
+    this.verticalPadding = 4
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(
-        vertical: Responsive.height * 4,
+        vertical: Responsive.height * verticalPadding,
       ),
       child: Stack(
         alignment: Alignment.center, // Center the title

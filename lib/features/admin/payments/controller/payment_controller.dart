@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -53,9 +54,10 @@ class PaymentController extends ChangeNotifier {
     _isloading = false;
     notifyListeners();
   }
-
+// add payment
   Future<void> addPayment(
     BuildContext context, {
+    required int userId,
     required String amount_paid,
     required String payment_date,
     required String month,
@@ -63,20 +65,22 @@ class PaymentController extends ChangeNotifier {
     required String payment_method,
     required String transaction_id,
     required String payment_status,
+    File? file,
   }) async {
     final loadingProvider =
         Provider.of<LoadingProvider>(context, listen: false); //loading provider
     loadingProvider.setLoading(true); //start loader
     try {
       final response = await PaymentServices().addPayment(
-        amount_paid: amount_paid,
-        payment_date: payment_date,
-        month: month,
-        year: year,
-        payment_method: payment_method,
-        transaction_id: transaction_id,
-        payment_status: payment_status,
-      );
+          userId: userId,
+          amount_paid: amount_paid,
+          payment_date: payment_date,
+          month: month,
+          year: year,
+          payment_method: payment_method,
+          transaction_id: transaction_id,
+          payment_status: payment_status,
+          file: file);
       if (response.statusCode == 201) {
         log(">>>>>>${response.statusMessage}");
         context.goNamed(AppRouteConst.bottomNavRouteName,
@@ -92,6 +96,7 @@ class PaymentController extends ChangeNotifier {
 
   Future<void> addDonation(
     BuildContext context, {
+    required String userId,
     required String amount_donated,
     required String donation_date,
     required String purpose,

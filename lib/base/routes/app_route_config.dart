@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:school_app/features/admin/duties/model/duty_model.dart';
+import 'package:school_app/features/admin/duties/screens/view_duty.dart';
+import 'package:school_app/features/admin/reports/screens/payment.dart';
+import 'package:school_app/features/admin/student/model/student_data.dart';
 import 'package:school_app/features/admin/student/screens/addAchivement.dart';
 import 'package:school_app/features/admin/duties/screens/addDutyPage.dart';
 import 'package:school_app/features/admin/payments/screens/add_donation.dart';
 import 'package:school_app/features/admin/notices/screens/add_event.dart';
 import 'package:school_app/features/admin/notices/screens/add_notice.dart';
 import 'package:school_app/features/admin/payments/screens/add_payment.dart';
-import 'package:school_app/core/authentication/login.dart';
-import 'package:school_app/core/authentication/splashscreen.dart';
+import 'package:school_app/core/authentication/screens/login.dart';
+import 'package:school_app/core/authentication/screens/splashscreen.dart';
 import 'package:school_app/features/admin/student/screens/addhomwork.dart';
 import 'package:school_app/features/admin/student/screens/newstudent.dart';
 import 'package:school_app/features/admin/student/screens/studentdetails.dart';
 import 'package:school_app/features/admin/student/screens/studentpage.dart';
+import 'package:school_app/features/admin/teacher_section/model/teacher_model.dart';
 import 'package:school_app/features/admin/teacher_section/screens/add_teacher.dart';
 import 'package:school_app/features/admin/teacher_section/screens/teacherdetails.dart';
 import 'package:school_app/features/admin/teacher_section/screens/teachers_page.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+
 import 'package:school_app/features/parent/payment/screen/PaymentScreen.dart';
 import 'package:school_app/features/parent/events/screen/eventdetailedscreen.dart';
 import 'package:school_app/features/parent/events/screen/eventscreen.dart';
@@ -25,13 +31,24 @@ import 'package:school_app/features/parent/notices/screen/noticedetailedscreen.d
 import 'package:school_app/features/parent/notices/screen/noticescreen.dart';
 import 'package:school_app/features/parent/payment/screen/paymentdetailedscreen.dart';
 import 'package:school_app/features/parent/students/screen/studentdetails.dart';
+import 'package:school_app/features/parent/screen/PaymentScreen.dart';
+import 'package:school_app/features/parent/screen/eventdetailedscreen.dart';
+import 'package:school_app/features/parent/screen/eventscreen.dart';
+import 'package:school_app/features/parent/screen/homescreen.dart';
+import 'package:school_app/features/parent/screen/leaveRequestScreen.dart';
+import 'package:school_app/features/parent/screen/noticedetailedscreen.dart';
+import 'package:school_app/features/parent/screen/noticescreen.dart';
+import 'package:school_app/features/parent/screen/paymentdetailedscreen.dart';
+import 'package:school_app/features/parent/screen/studentdetails.dart';
+import 'package:school_app/features/teacher/attendance/model/attendance_data.dart';
 // import 'package:school_app/features/parent/screen/studentdetails.dart';
 import 'package:school_app/features/teacher/attendance/screens/take_attendance.dart';
 import 'package:school_app/features/teacher/duties/duty_detail.dart';
 import 'package:school_app/features/teacher/homework/screens/work.dart';
 import 'package:school_app/features/teacher/homework/screens/work_screen.dart';
 import 'package:school_app/features/teacher/homework/screens/work_view.dart';
-import 'package:school_app/features/teacher/leave_request/leave_request.dart';
+// import 'package:school_app/features/teacher/leave_request/screens/leave_request.dart';
+import 'package:school_app/features/teacher/leave_request/screens/add_teacher_leaverequest.dart';
 import 'package:school_app/features/teacher/mark_work/screens/mark_star.dart';
 import 'package:school_app/features/teacher/marks/screens/student_marklist.dart';
 import 'package:school_app/features/teacher/parent/screens/parents.dart';
@@ -69,7 +86,11 @@ class Approuter {
         name: AppRouteConst.attendanceRouteName,
         path: '/attendance',
         pageBuilder: (context, state) {
-          return MaterialPage(child: TakeAttendance());
+          final attendanceData = state.extra as AttendanceData;
+          return MaterialPage(
+              child: TakeAttendance(
+            attendanceData: attendanceData,
+          ));
         },
       ),
       GoRoute(
@@ -114,13 +135,13 @@ class Approuter {
           return MaterialPage(child: MarkStar());
         },
       ),
-      GoRoute(
-        name: AppRouteConst.leaveRouteName,
-        path: '/leave',
-        pageBuilder: (context, state) {
-          return MaterialPage(child: LeaveRequest());
-        },
-      ),
+      // GoRoute(
+      //   name: AppRouteConst.leaveRouteName,
+      //   path: '/leave',
+      //   pageBuilder: (context, state) {
+      //     return MaterialPage(child: LeaveRequest());
+      //   },
+      // ),
       GoRoute(
         name: AppRouteConst.studentRouteName,
         path: '/student',
@@ -153,12 +174,14 @@ class Approuter {
         name: AppRouteConst.AdminstudentdetailsRouteName,
         path: '/adminstudentdetails',
         pageBuilder: (context, state) {
-          final studentData = state.extra as Map<String, dynamic>;
+          final student = state.extra as Student;
+          // final studentData = state.extra as Map<String, dynamic>;
           return MaterialPage(
             child: StudentDetailPage(
-              name: studentData['name'],
-              studentClass: studentData['class'],
-              image: studentData['image'],
+              student: student,
+              // name: studentData['name'],
+              // studentClass: studentData['class'],
+              // image: studentData['image'],
             ),
           );
         },
@@ -181,12 +204,14 @@ class Approuter {
         name: AppRouteConst.AdminteacherdetailsRouteName,
         path: '/adminteacherdetails',
         pageBuilder: (context, state) {
-          final teacher = state.extra as Map<String, dynamic>;
+          // final teacher = state.extra as Map<String, dynamic>;
+          final teacher = state.extra as Teacher;
           return MaterialPage(
             child: TeacherDetailsPage(
-              name: teacher['name'],
-              studentClass: teacher['class'],
-              image: teacher['image'],
+              teacher: teacher,
+              // name: teacher['name'],
+              // studentClass: teacher['class'],
+              // image: teacher['image'],
             ),
           );
         },
@@ -196,6 +221,17 @@ class Approuter {
         path: '/adminaddduty',
         pageBuilder: (context, state) {
           return MaterialPage(child: AddDutyPage());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.AdminViewDutyRouteName,
+        path: '/adminviewduty',
+        pageBuilder: (context, state) {
+          final DutyClass duties = state.extra as DutyClass;
+          return MaterialPage(
+              child: DutyView(
+            duties: duties,
+          ));
         },
       ),
       GoRoute(
@@ -245,6 +281,13 @@ class Approuter {
         path: '/leaverequest',
         pageBuilder: (context, state) {
           return MaterialPage(child: LeaveRequestPage());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.AddTeacherLeaveRequestRouteName,
+        path: '/addteacherleaverequest',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: AddTeacherLeaveRequest());
         },
       ),
       GoRoute(
@@ -325,6 +368,13 @@ class Approuter {
         path: '/addteacher',
         pageBuilder: (context, state) {
           return MaterialPage(child: AddTeacher());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.PaymentReportRouteName,
+        path: '/paymentreport',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: PaymentReport());
         },
       ),
     ],

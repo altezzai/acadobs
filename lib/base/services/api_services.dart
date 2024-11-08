@@ -2,12 +2,12 @@ import 'package:dio/dio.dart';
 
 class ApiServices {
   static const String baseUrl = "https://schoolmanagement.altezzai.com/api";
-  
+
   static final Dio _dio = Dio(
     BaseOptions(
       baseUrl: baseUrl,
-      connectTimeout: const Duration(seconds: 30), 
-      receiveTimeout: const Duration(seconds: 30), 
+      connectTimeout: const Duration(seconds: 30),
+      receiveTimeout: const Duration(seconds: 30),
       followRedirects: true, // Follow redirects automatically
       headers: {
         'Content-Type': 'application/json',
@@ -16,9 +16,9 @@ class ApiServices {
   );
 
   // GET request
-  static Future<Response> get(String endpoint) async {
+  static Future<Response> get(String endpoint,{dynamic data}) async {
     try {
-      final Response response = await _dio.get(endpoint);
+      final Response response = await _dio.get(endpoint, data: data);
       return response;
     } on DioException catch (e) {
       throw Exception('Failed to load data: $e');
@@ -26,7 +26,8 @@ class ApiServices {
   }
 
   // POST request with dynamic data type (JSON or FormData)
-  static Future<Response> post(String endpoint, dynamic data, {bool isFormData = false}) async {
+  static Future<Response> post(String endpoint, dynamic data,
+      {bool isFormData = false}) async {
     try {
       dynamic requestData = isFormData && data is Map<String, dynamic>
           ? FormData.fromMap(data)
@@ -40,7 +41,8 @@ class ApiServices {
   }
 
   // PUT request with dynamic data type (JSON or FormData)
-  static Future<Response> put(String endpoint, dynamic data, {bool isFormData = false}) async {
+  static Future<Response> put(String endpoint, dynamic data,
+      {bool isFormData = false}) async {
     try {
       dynamic requestData = isFormData && data is Map<String, dynamic>
           ? FormData.fromMap(data)

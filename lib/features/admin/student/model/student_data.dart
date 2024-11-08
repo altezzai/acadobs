@@ -1,21 +1,21 @@
 // To parse this JSON data, do
 //
-//     final studentData = studentDataFromJson(jsonString);
+//     final student = studentFromJson(jsonString);
 
 import 'dart:convert';
 
-List<StudentData> studentDataFromJson(String str) => List<StudentData>.from(
-    json.decode(str).map((x) => StudentData.fromJson(x)));
+List<Student> studentFromJson(String str) =>
+    List<Student>.from(json.decode(str).map((x) => Student.fromJson(x)));
 
-String studentDataToJson(List<StudentData> data) =>
+String studentToJson(List<Student> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class StudentData {
+class Student {
   int? id;
   String? fullName;
   DateTime? dateOfBirth;
-  String? gender;
-  String? studentDatumClass;
+  Gender? gender;
+  int? studentClass;
   String? section;
   int? rollNumber;
   String? admissionNumber;
@@ -49,12 +49,12 @@ class StudentData {
   DateTime? createdAt;
   DateTime? updatedAt;
 
-  StudentData({
+  Student({
     this.id,
     this.fullName,
     this.dateOfBirth,
     this.gender,
-    this.studentDatumClass,
+    this.studentClass,
     this.section,
     this.rollNumber,
     this.admissionNumber,
@@ -86,17 +86,17 @@ class StudentData {
     this.insertedUserId,
     this.trash,
     this.createdAt,
-    this.updatedAt, DateTime? dateOfJoining, required String studentClass, required String division,
+    this.updatedAt,
   });
 
-  factory StudentData.fromJson(Map<String, dynamic> json) => StudentData(
+  factory Student.fromJson(Map<String, dynamic> json) => Student(
         id: json["id"],
         fullName: json["full_name"],
         dateOfBirth: json["date_of_birth"] == null
             ? null
             : DateTime.parse(json["date_of_birth"]),
-        gender: json["gender"],
-        studentDatumClass: json["class"],
+        gender: genderValues.map[json["gender"]]!,
+        studentClass: json["class"],
         section: json["section"],
         rollNumber: json["roll_number"],
         admissionNumber: json["admission_number"],
@@ -132,7 +132,7 @@ class StudentData {
             : DateTime.parse(json["created_at"]),
         updatedAt: json["updated_at"] == null
             ? null
-            : DateTime.parse(json["updated_at"]), studentClass: '', division: '',
+            : DateTime.parse(json["updated_at"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -140,8 +140,8 @@ class StudentData {
         "full_name": fullName,
         "date_of_birth":
             "${dateOfBirth!.year.toString().padLeft(4, '0')}-${dateOfBirth!.month.toString().padLeft(2, '0')}-${dateOfBirth!.day.toString().padLeft(2, '0')}",
-        "gender": gender,
-        "class": studentDatumClass,
+        "gender": genderValues.reverse[gender],
+        "class": studentClass,
         "section": section,
         "roll_number": rollNumber,
         "admission_number": admissionNumber,
@@ -175,4 +175,21 @@ class StudentData {
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
       };
+}
+
+enum Gender { FEMALE, GENDER_MALE, MALE }
+
+final genderValues = EnumValues(
+    {"female": Gender.FEMALE, "male": Gender.GENDER_MALE, "Male": Gender.MALE});
+
+class EnumValues<T> {
+  Map<String, T> map;
+  late Map<T, String> reverseMap;
+
+  EnumValues(this.map);
+
+  Map<T, String> get reverse {
+    reverseMap = map.map((k, v) => MapEntry(v, k));
+    return reverseMap;
+  }
 }

@@ -4,11 +4,13 @@ import 'package:school_app/base/utils/responsive.dart'; // Assuming you're using
 class CustomNameContainer extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
+  final double horizontalWidth;
 
   const CustomNameContainer({
     Key? key,
     required this.text,
     required this.onPressed,
+    this.horizontalWidth = 13.5
   }) : super(key: key);
 
   @override
@@ -18,7 +20,7 @@ class CustomNameContainer extends StatelessWidget {
       style: OutlinedButton.styleFrom(
         padding: EdgeInsets.symmetric(
           vertical: Responsive.height * 3,
-          horizontal: Responsive.width * 12,
+          horizontal: Responsive.width * horizontalWidth,
         ),
       ),
       child: Text(

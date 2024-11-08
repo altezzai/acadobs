@@ -7,6 +7,8 @@ class CustomDropdown extends StatelessWidget {
   final String label;
   final IconData icon;
   final List<String> items;
+  final ValueChanged<String?>? onChanged;
+  final validator;
 
   const CustomDropdown({
     Key? key,
@@ -14,6 +16,8 @@ class CustomDropdown extends StatelessWidget {
     required this.label,
     required this.icon,
     required this.items,
+    this.onChanged, // Add onChanged callback parameter
+    this.validator
   }) : super(key: key);
 
   @override
@@ -21,6 +25,7 @@ class CustomDropdown extends StatelessWidget {
     return Consumer<DropdownProvider>(
       builder: (context, dropdownProvider, child) {
         return DropdownButtonFormField<String>(
+          validator: validator,
           decoration: InputDecoration(
             labelText: label,
             border: OutlineInputBorder(
@@ -32,11 +37,10 @@ class CustomDropdown extends StatelessWidget {
               child: Icon(icon),
             ),
           ),
-          icon: const Icon(Icons.arrow_drop_down), // Dropdown icon
+          icon: const Icon(Icons.arrow_drop_down),
           value: dropdownProvider.getSelectedItem(dropdownKey).isNotEmpty
               ? dropdownProvider.getSelectedItem(dropdownKey)
               : null,
-          // hint: Text(label), // Hint text
           items: items.map((String value) {
             return DropdownMenuItem<String>(
               value: value,
@@ -46,12 +50,13 @@ class CustomDropdown extends StatelessWidget {
           onChanged: (String? newValue) {
             if (newValue != null) {
               dropdownProvider.setSelectedItem(dropdownKey, newValue);
+              onChanged?.call(newValue); // Invoke the callback if provided
             }
           },
-          dropdownColor: Colors.white, // Dropdown background color
-          style: const TextStyle(color: Colors.black), // Style dropdown text
-          menuMaxHeight: 200, // Sets a max height for the dropdown menu
-          borderRadius: BorderRadius.circular(24), // Dropdown menu shape
+          dropdownColor: Colors.white,
+          style: const TextStyle(color: Colors.black),
+          menuMaxHeight: 200,
+          borderRadius: BorderRadius.circular(24),
         );
       },
     );

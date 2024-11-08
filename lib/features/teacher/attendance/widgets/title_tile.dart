@@ -13,33 +13,33 @@ class TitleTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: GestureDetector(
-        onTap: onTap,
-        child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 10),
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
-            child: Row(
-              children: [
-                CircleAvatar(
-                  backgroundColor: Color(0xFFD9D9D9),
-                  radius: 25,
-                  child: Icon(
-                    icon,
-                    color: blackColor,
-                  ),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8), color: whiteColor),
+          child: Row(
+            children: [
+              CircleAvatar(
+                backgroundColor: Color(0xFFF4F4F4),
+                radius: 24,
+                child: Icon(
+                  icon,
+                  color: blackColor,
+                  size: 18,
                 ),
-                const SizedBox(width: 10),
-                Text(
-                  title,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(fontSize: 18),
-                )
-              ],
-            )),
-      ),
+              ),
+              const SizedBox(width: 10),
+              Text(
+                title,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium!
+                    .copyWith(fontSize: 14),
+              )
+            ],
+          )),
     );
   }
 }
