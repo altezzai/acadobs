@@ -11,7 +11,7 @@ class TeacherScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: Responsive.width * 7),
+        padding: EdgeInsets.symmetric(horizontal: 16),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -40,15 +40,15 @@ class TeacherScreen extends StatelessWidget {
                     ],
                   ),
                   const Spacer(),
-                 GestureDetector(
-                  onTap: () {
-                    context.goNamed(AppRouteConst.loginRouteName);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 30),
-                    child: Image.asset('assets/admin.png'),
+                  GestureDetector(
+                    onTap: () {
+                      context.goNamed(AppRouteConst.loginRouteName);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 30),
+                      child: Image.asset('assets/admin.png'),
+                    ),
                   ),
-                ),
                 ],
               ),
               SizedBox(
@@ -68,7 +68,8 @@ class TeacherScreen extends StatelessWidget {
                   color: Colors.red,
                   text: 'Leave Request',
                   ontap: () {
-                    context.pushNamed(AppRouteConst.AddTeacherLeaveRequestRouteName);
+                    context.pushNamed(
+                        AppRouteConst.AddTeacherLeaveRequestRouteName);
                   }),
               SizedBox(
                 height: Responsive.height * 2,
@@ -77,12 +78,14 @@ class TeacherScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomNameContainer(
+                    horizontalWidth: 14.2,
                     text: "Students",
                     onPressed: () {
                       context.pushNamed(AppRouteConst.studentRouteName);
                     },
                   ),
                   CustomNameContainer(
+                    horizontalWidth: 14.2,
                     text: "Parents",
                     onPressed: () {
                       context.pushNamed(AppRouteConst.parentRouteName);
