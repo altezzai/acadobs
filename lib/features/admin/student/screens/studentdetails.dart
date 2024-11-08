@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pie_chart/pie_chart.dart';
+import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/date_formatter.dart';
+import 'package:school_app/features/admin/student/controller/achievement_controller.dart';
 import 'package:school_app/features/admin/student/model/student_data.dart';
 import 'package:school_app/features/admin/student/screens/homeworkdetail.dart';
 
-class StudentDetailPage extends StatelessWidget {
+class StudentDetailPage extends StatefulWidget {
   // final String name;
   // final String studentClass;
   // final String image;
@@ -19,6 +22,17 @@ class StudentDetailPage extends StatelessWidget {
   });
 
   @override
+  State<StudentDetailPage> createState() => _StudentDetailPageState();
+}
+
+class _StudentDetailPageState extends State<StudentDetailPage> {
+  @override
+  void initState() {
+    context.read<AchievementController>().getAchievements();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
@@ -29,7 +43,7 @@ class StudentDetailPage extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          student.fullName ?? "",
+          widget.student.fullName ?? "",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: screenWidth * 0.06,
@@ -56,14 +70,14 @@ class StudentDetailPage extends StatelessWidget {
                 ),
                 SizedBox(height: screenHeight * 0.05),
                 Text(
-                  student.fullName ?? "",
+                  widget.student.fullName ?? "",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: screenWidth * 0.05,
                   ),
                 ),
                 Text(
-                  'Class: ${student.studentClass}',
+                  'Class: ${widget.student.studentClass}',
                   style: TextStyle(
                     fontSize: screenWidth * 0.04,
                     color: Colors.grey,
@@ -83,8 +97,7 @@ class StudentDetailPage extends StatelessWidget {
 
                   Container(
                     child: TabBar(
-                      isScrollable:
-                          false, // Set to false as the tabs are not scrollable
+                      isScrollable: false,
                       labelColor: Colors.black,
                       unselectedLabelColor: Colors.grey,
                       indicatorColor: Colors.black,
@@ -260,52 +273,25 @@ class StudentDetailPage extends StatelessWidget {
 }
 
 Widget _buildAchievementsContent() {
-  final List<Map<String, String>> achievements = [
-    {"position": "1st place", "event": "Quiz Competition", "date": "Today"},
-    {
-      "position": "2nd place",
-      "event": "Independence day Quiz",
-      "date": "Yesterday"
-    },
-    {
-      "position": "Participate",
-      "event": "Quiz Competition - District level",
-      "date": "Yesterday"
-    },
-    {"position": "1st place", "event": "Quiz Competition", "date": "Yesterday"},
-    {"position": "1st place", "event": "Quiz Competition", "date": "Yesterday"},
-    {"position": "1st place", "event": "Quiz Competition", "date": "Yesterday"},
-  ];
-
-  return ListView.builder(
-    physics: NeverScrollableScrollPhysics(),
-    shrinkWrap: true,
-    itemCount: achievements.length,
-    itemBuilder: (context, index) {
-      final achievement = achievements[index];
-      final String position = achievement['position']!;
-      final String event = achievement['event']!;
-      final String date = achievement['date']!;
-
-      Color medalColor;
-      if (position.contains("1st")) {
-        medalColor = Colors.yellow;
-      } else if (position.contains("2nd")) {
-        medalColor = Colors.green;
-      } else if (position.contains("Participate")) {
-        medalColor = Colors.blue;
-      } else {
-        medalColor = Colors.grey;
-      }
-
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (index == 0 || achievements[index - 1]['date'] != date)
+  return Consumer<AchievementController>(builder: (context, value, child) {
+    if (value.isloading) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    return ListView.builder(
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: value.achievements.length,
+      itemBuilder: (context, index) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             Padding(
               padding: const EdgeInsets.only(left: 15.0, top: 10.0),
               child: Text(
-                date,
+                DateFormatter.formatDateString(
+                    value.achievements[index].dateOfAchievement.toString()),
                 style: TextStyle(
                   fontWeight: FontWeight.normal,
                   fontSize: 16,
@@ -313,29 +299,30 @@ Widget _buildAchievementsContent() {
                 ),
               ),
             ),
-          ListTile(
-            leading: Icon(Icons.military_tech, color: medalColor),
-            title: Text(
-              position,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: Colors.black87, // Match with StudentDetailPage
+            ListTile(
+              leading: Icon(Icons.military_tech, color: Colors.greenAccent),
+              title: Text(
+                value.achievements[index].achievementTitle ?? "",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black87, // Match with StudentDetailPage
+                ),
+              ),
+              subtitle: Text(
+                value.achievements[index].awardingBody ?? "",
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[600], // Keep consistent
+                ),
               ),
             ),
-            subtitle: Text(
-              event,
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey[600], // Keep consistent
-              ),
-            ),
-          ),
-          Divider(thickness: 1.5, color: Colors.grey[300]),
-        ],
-      );
-    },
-  );
+            Divider(thickness: 1.5, color: Colors.grey[300]),
+          ],
+        );
+      },
+    );
+  });
 }
 
 Widget _buildScrollableExamsContent() {
