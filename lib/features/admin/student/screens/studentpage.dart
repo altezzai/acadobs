@@ -8,7 +8,6 @@ import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/admin/student/controller/student_controller.dart';
 
 class StudentsPage extends StatefulWidget {
-  
   @override
   _StudentsPageState createState() => _StudentsPageState();
 }
@@ -184,19 +183,18 @@ class _StudentsPageState extends State<StudentsPage> {
                                   ),
                                   trailing: TextButton(
                                     child: Text('View'),
-                                    onPressed: () =>
-                                        context.pushReplacementNamed(
-                                      AppRouteConst
-                                          .AdminstudentdetailsRouteName,
-                                      extra: value.students[index]
-                                      // {
-                                      //   'name': value.students[index].fullName,
-                                      //   'class': value
-                                      //       .students[index].studentClass
-                                      //       .toString(),
-                                      //   'image': 'student6.png',
-                                      // },
-                                    ),
+                                    onPressed: () => context.pushNamed(
+                                        AppRouteConst
+                                            .AdminstudentdetailsRouteName,
+                                        extra: value.students[index]
+                                        // {
+                                        //   'name': value.students[index].fullName,
+                                        //   'class': value
+                                        //       .students[index].studentClass
+                                        //       .toString(),
+                                        //   'image': 'student6.png',
+                                        // },
+                                        ),
                                   ),
                                 ),
                               ),

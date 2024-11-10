@@ -3,8 +3,16 @@ import 'package:go_router/go_router.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+
+import 'package:school_app/base/utils/capitalize_first_letter.dart';
+import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/core/shared_widgets/calender_widget.dart';
+import 'package:school_app/core/shared_widgets/custom_appbar.dart';
+import 'package:school_app/core/shared_widgets/profile_container.dart';
+
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/features/admin/student/controller/achievement_controller.dart';
+
 import 'package:school_app/features/admin/student/model/student_data.dart';
 import 'package:school_app/features/admin/student/screens/homeworkdetail.dart';
 
@@ -34,178 +42,106 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final double screenWidth = MediaQuery.of(context).size.width;
-    final double screenHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        title: Text(
-          widget.student.fullName ?? "",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: screenWidth * 0.06,
-            color: Colors.black,
-          ),
-        ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            context.pushReplacementNamed(AppRouteConst.AdminstudentRouteName);
-          },
-        ),
-      ),
-      body: Column(
-        children: [
-          Container(
-            padding: EdgeInsets.zero,
-            margin: EdgeInsets.zero,
-            child: Column(
-              children: [
-                CircleAvatar(
-                  radius: screenWidth * 0.15,
-                  backgroundImage: AssetImage('assets/student5.png'),
-                ),
-                SizedBox(height: screenHeight * 0.05),
-                Text(
-                  widget.student.fullName ?? "",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: screenWidth * 0.05,
-                  ),
-                ),
-                Text(
-                  'Class: ${widget.student.studentClass}',
-                  style: TextStyle(
-                    fontSize: screenWidth * 0.04,
-                    color: Colors.grey,
-                  ),
-                ),
-              ],
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          children: [
+            SizedBox(
+              height: Responsive.height * 2,
             ),
-          ),
-          Expanded(
-            child: DefaultTabController(
-              length: 4,
-              child: Column(
-                children: [
-                  // Add the statistics here
-                  _buildStatRow(), // NEW STATISTICS ROW
-                  SizedBox(height: 20),
-
-                  Container(
-                    child: TabBar(
-                      isScrollable: false,
+            CustomAppbar(
+              title: "Students",
+              isProfileIcon: false,
+              onTap: () {
+                context.pop();
+              },
+            ),
+            ProfileContainer(
+              imagePath: "assets/staff3.png",
+              name: capitalizeFirstLetter(student.fullName ?? ""),
+              description: "${student.studentClass} ${student.section}",
+            ),
+            Expanded(
+              child: DefaultTabController(
+                length: 4,
+                child: Column(
+                  children: [
+                    SizedBox(height: Responsive.height * 2),
+                    TabBar(
+                      isScrollable: true,
                       labelColor: Colors.black,
-                      unselectedLabelColor: Colors.grey,
+                      // unselectedLabelColor: Colors.grey,
                       indicatorColor: Colors.black,
-                      indicatorPadding: EdgeInsets.symmetric(horizontal: 0),
+                      tabAlignment: TabAlignment.start,
+                      indicatorPadding: EdgeInsets.symmetric(horizontal: -16),
+                      labelPadding: EdgeInsets.symmetric(horizontal: 16),
                       tabs: [
                         Tab(
-                          child: Container(
-                            width: 100, // Set the desired width
-                            alignment: Alignment.center,
-                            child: Text("Dashboard"),
-                          ),
+                          child: Text("Dashboard"),
                         ),
                         Tab(
-                          child: Container(
-                            width: 120, // Set the desired width
-                            alignment: Alignment.center,
-                            child: Text("Achievements"),
-                          ),
+                          child: Text("Achievements"),
                         ),
                         Tab(
-                          child: Container(
-                            width: 80, // Set the desired width
-                            alignment: Alignment.center,
-                            child: Text("Exam"),
-                          ),
+                          child: Text("Exam"),
                         ),
                         Tab(
-                          child: Container(
-                            width: 100, // Set the desired width
-                            alignment: Alignment.center,
-                            child: Text("Home Work"),
-                          ),
+                          child: Text("Home Work"),
                         ),
                       ],
                     ),
-                  ),
-
-                  SizedBox(height: 40),
-                  Expanded(
-                    child: TabBarView(
-                      children: [
-                        _buildScrollableDashboardContent(),
-                        Stack(
-                          children: [
-                            _buildScrollableAchievementsContent(),
-                            Positioned(
-                              bottom: 16,
-                              right: 16,
-                              child: FloatingActionButton(
-                                onPressed: () {
-                                  context.pushReplacementNamed(
-                                      AppRouteConst.AddAchivementsRouteName);
-                                },
-                                child: Icon(Icons.add),
-                                backgroundColor: Colors.black,
-                                foregroundColor: Colors.white,
-                              ),
+                    // SizedBox(height: 40),
+                    Expanded(
+                      child: TabBarView(
+                        physics: BouncingScrollPhysics(),
+                        children: [
+                          SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: Responsive.height * 2,
+                                ),
+                                Text("Attendance"),
+                                SizedBox(
+                                  height: Responsive.height * 2,
+                                ),
+                                CalenderWidget(),
+                              ],
                             ),
-                          ],
-                        ),
-                        _buildScrollableExamsContent(),
-                        _buildScrollableHomeWorksContent(context),
-                      ],
+                          ),
+                          // _buildScrollableDashboardContent(),
+                          Stack(
+                            children: [
+                              _buildScrollableAchievementsContent(),
+                              Positioned(
+                                bottom: 16,
+                                right: 16,
+                                child: FloatingActionButton(
+                                  onPressed: () {
+                                    context.pushReplacementNamed(
+                                        AppRouteConst.AddAchivementsRouteName);
+                                  },
+                                  child: Icon(Icons.add),
+                                  backgroundColor: Colors.black,
+                                  foregroundColor: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                          _buildScrollableExamsContent(),
+                          _buildScrollableHomeWorksContent(context),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Build the row showing "Present", "Absent", "Late" just above the TabBar
-  Widget _buildStatRow() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          _buildStatItem('23', 'Presents'),
-          _buildStatItem('7', 'Late'),
-          _buildStatItem('3', 'Absent'),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStatItem(String count, String label) {
-    return Column(
-      children: [
-        Text(
-          count,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 22,
-          ),
+          ],
         ),
-        SizedBox(height: 5),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.grey,
-          ),
-        ),
-      ],
+      ),
     );
   }
 

@@ -1,5 +1,5 @@
 import 'dart:developer';
-import 'package:file_picker/file_picker.dart';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +11,7 @@ import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
+import 'package:school_app/core/shared_widgets/custom_filepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/admin/payments/controller/payment_controller.dart';
 
@@ -22,25 +23,27 @@ class AddPaymentPage extends StatefulWidget {
 }
 
 class _AddPaymentPageState extends State<AddPaymentPage> {
-  String? selectedFile;
+  // String? selectedFile;
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _transactionController = TextEditingController();
+  late DropdownProvider dropdownProvider;
 
   @override
   void initState() {
     super.initState();
+
     // Ensure `StudentIdController` fetches data on dropdown change
-    final dropdownProvider = context.read<DropdownProvider>();
+    dropdownProvider = context.read<DropdownProvider>();
 
     // Clear dropdown selections when page loads
-    dropdownProvider.clearSelectedItem('class');
-    dropdownProvider.clearSelectedItem('division');
-    dropdownProvider.clearSelectedItem('selectedStudent');
-    dropdownProvider.clearSelectedItem('selectedYear');
-    dropdownProvider.clearSelectedItem('selectedMonth');
-    dropdownProvider.clearSelectedItem('paymentMethod');
-    dropdownProvider.clearSelectedItem('paymentStatus');
+    // dropdownProvider.clearSelectedItem('class');
+    // dropdownProvider.clearSelectedItem('division');
+    // dropdownProvider.clearSelectedItem('selectedStudent');
+    // dropdownProvider.clearSelectedItem('selectedYear');
+    // dropdownProvider.clearSelectedItem('selectedMonth');
+    // dropdownProvider.clearSelectedItem('paymentMethod');
+    // dropdownProvider.clearSelectedItem('paymentStatus');
 
     dropdownProvider.addListener(() {
       final selectedClass = dropdownProvider.getSelectedItem('class');
@@ -48,18 +51,6 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
       context.read<StudentIdController>().getStudentsFromClassAndDivision(
           className: selectedClass, section: selectedDivision);
     });
-  }
-
-  Future<void> pickFile() async {
-    FilePickerResult? result =
-        await FilePicker.platform.pickFiles(type: FileType.any);
-    if (result != null) {
-      setState(() {
-        selectedFile = result.files.single.name;
-      });
-    } else {
-      print('No file selected');
-    }
   }
 
   @override
@@ -198,34 +189,35 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                 ],
               ),
               const SizedBox(height: 16),
-              GestureDetector(
-                onTap: pickFile,
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(25.0),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 10.0, vertical: 12.0),
-                  child: Row(
-                    children: [
-                      Icon(Icons.attach_file, color: Colors.black),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          selectedFile ?? 'Add Receipt',
-                          style: TextStyle(
-                            color: selectedFile != null
-                                ? Colors.black
-                                : Colors.grey,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              // GestureDetector(
+              //   onTap: pickFile,
+              //   child: Container(
+              //     decoration: BoxDecoration(
+              //       border: Border.all(color: Colors.grey),
+              //       borderRadius: BorderRadius.circular(25.0),
+              //     ),
+              //     padding: const EdgeInsets.symmetric(
+              //         horizontal: 10.0, vertical: 12.0),
+              //     child: Row(
+              //       children: [
+              //         Icon(Icons.attach_file, color: Colors.black),
+              //         const SizedBox(width: 8),
+              //         Expanded(
+              //           child: Text(
+              //             selectedFile ?? 'Add Receipt',
+              //             style: TextStyle(
+              //               color: selectedFile != null
+              //                   ? Colors.black
+              //                   : Colors.grey,
+              //               fontSize: 16,
+              //             ),
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
+              CustomFilePicker(label: "Add Receipt"),
               const SizedBox(height: 45),
               Center(
                 child: CustomButton(
