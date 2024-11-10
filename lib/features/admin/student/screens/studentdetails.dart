@@ -3,16 +3,13 @@ import 'package:go_router/go_router.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
-
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
+import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/shared_widgets/calender_widget.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/profile_container.dart';
-
-import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/features/admin/student/controller/achievement_controller.dart';
-
 import 'package:school_app/features/admin/student/model/student_data.dart';
 import 'package:school_app/features/admin/student/screens/homeworkdetail.dart';
 
@@ -22,12 +19,12 @@ class StudentDetailPage extends StatefulWidget {
   // final String image;
   final Student student;
 
-  StudentDetailPage({
-    // required this.name,
-    // required this.studentClass,
-    // required this.image,
-    required this.student,
-  });
+  StudentDetailPage(
+      {
+      // required this.name,
+      // required this.studentClass,
+      // required this.image,
+      required this.student});
 
   @override
   State<StudentDetailPage> createState() => _StudentDetailPageState();
@@ -59,8 +56,9 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
             ),
             ProfileContainer(
               imagePath: "assets/staff3.png",
-              name: capitalizeFirstLetter(student.fullName ?? ""),
-              description: "${student.studentClass} ${student.section}",
+              name: capitalizeFirstLetter(widget.student.fullName ?? ""),
+              description:
+                  "${widget.student.studentClass} ${widget.student.section}",
             ),
             Expanded(
               child: DefaultTabController(
