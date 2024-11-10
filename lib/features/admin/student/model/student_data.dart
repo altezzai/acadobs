@@ -9,90 +9,88 @@ Student studentFromJson(String str) => Student.fromJson(json.decode(str));
 String studentToJson(Student data) => json.encode(data.toJson());
 
 class Student {
-  int? id;
-  String? fullName;
-  DateTime? dateOfBirth;
-  String? gender;
-  String? studentClass;
-  String? section;
-  int? rollNumber;
-  String? admissionNumber;
-  String? aadhaarNumber;
-  String? bloodGroup;
-  String? residentialAddress;
-  String? contactNumber;
-  String? email;
-  String? previousSchool;
-  String? fatherFullName;
-  String? motherFullName;
-  dynamic guardianFullName;
-  String? fatherContactNumber;
-  String? motherContactNumber;
-  String? parentEmail;
-  String? occupation;
-  String? fatherAadhaarNumber;
-  String? motherAadhaarNumber;
-  String? alternateEmergencyContact;
-  String? category;
-  String? siblingInformation;
-  int? transportRequirement;
-  int? hostelRequirement;
-  dynamic studentPhoto;
-  String? fatherMotherPhoto;
-  String? aadhaarCard;
-  String? previousSchoolTc;
-  String? birthCertificate;
-  dynamic insertedUserId;
-  dynamic trash;
-  DateTime? createdAt;
-  DateTime? updatedAt;
+    int? id;
+    String? fullName;
+    DateTime? dateOfBirth;
+    String? gender;
+    String? studentClass;
+    String? section;
+    int? rollNumber;
+    String? admissionNumber;
+    String? aadhaarNumber;
+    String? bloodGroup;
+    String? residentialAddress;
+    String? contactNumber;
+    String? email;
+    String? previousSchool;
+    String? fatherFullName;
+    String? motherFullName;
+    dynamic guardianFullName;
+    String? fatherContactNumber;
+    String? motherContactNumber;
+    String? parentEmail;
+    String? occupation;
+    String? fatherAadhaarNumber;
+    String? motherAadhaarNumber;
+    String? alternateEmergencyContact;
+    String? category;
+    String? siblingInformation;
+    int? transportRequirement;
+    int? hostelRequirement;
+    dynamic studentPhoto;
+    String? fatherMotherPhoto;
+    String? aadhaarCard;
+    String? previousSchoolTc;
+    String? birthCertificate;
+    dynamic insertedUserId;
+    dynamic trash;
+    DateTime? createdAt;
+    DateTime? updatedAt;
 
-  Student({
-    this.id,
-    this.fullName,
-    this.dateOfBirth,
-    this.gender,
-    this.studentClass,
-    this.section,
-    this.rollNumber,
-    this.admissionNumber,
-    this.aadhaarNumber,
-    this.bloodGroup,
-    this.residentialAddress,
-    this.contactNumber,
-    this.email,
-    this.previousSchool,
-    this.fatherFullName,
-    this.motherFullName,
-    this.guardianFullName,
-    this.fatherContactNumber,
-    this.motherContactNumber,
-    this.parentEmail,
-    this.occupation,
-    this.fatherAadhaarNumber,
-    this.motherAadhaarNumber,
-    this.alternateEmergencyContact,
-    this.category,
-    this.siblingInformation,
-    this.transportRequirement,
-    this.hostelRequirement,
-    this.studentPhoto,
-    this.fatherMotherPhoto,
-    this.aadhaarCard,
-    this.previousSchoolTc,
-    this.birthCertificate,
-    this.insertedUserId,
-    this.trash,
-    this.createdAt,
-    this.updatedAt,
-  });
+    Student({
+        this.id,
+        this.fullName,
+        this.dateOfBirth,
+        this.gender,
+        this.studentClass,
+        this.section,
+        this.rollNumber,
+        this.admissionNumber,
+        this.aadhaarNumber,
+        this.bloodGroup,
+        this.residentialAddress,
+        this.contactNumber,
+        this.email,
+        this.previousSchool,
+        this.fatherFullName,
+        this.motherFullName,
+        this.guardianFullName,
+        this.fatherContactNumber,
+        this.motherContactNumber,
+        this.parentEmail,
+        this.occupation,
+        this.fatherAadhaarNumber,
+        this.motherAadhaarNumber,
+        this.alternateEmergencyContact,
+        this.category,
+        this.siblingInformation,
+        this.transportRequirement,
+        this.hostelRequirement,
+        this.studentPhoto,
+        this.fatherMotherPhoto,
+        this.aadhaarCard,
+        this.previousSchoolTc,
+        this.birthCertificate,
+        this.insertedUserId,
+        this.trash,
+        this.createdAt,
+        this.updatedAt,
+    });
 
-  factory Student.fromJson(Map<String, dynamic> json) => Student(
+    factory Student.fromJson(Map<String, dynamic> json) => Student(
         id: json["id"],
         fullName: json["full_name"],
-        dateOfBirth: json["date_of_birth"] == null
-            ? null
-            : DateTime.parse(json["date_of_birth"]),
+        dateOfBirth: json["date_of_birth"] == null ? null : DateTime.parse(json["date_of_birth"]),
         gender: json["gender"],
         studentClass: json["class"],
         section: json["section"],
@@ -125,19 +123,14 @@ class Student {
         birthCertificate: json["birth_certificate"],
         insertedUserId: json["inserted_user_id"],
         trash: json["trash"],
-        createdAt: json["created_at"] == null
-            ? null
-            : DateTime.parse(json["created_at"]),
-        updatedAt: json["updated_at"] == null
-            ? null
-            : DateTime.parse(json["updated_at"]),
-      );
+        createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+    );
 
-  Map<String, dynamic> toJson() => {
+    Map<String, dynamic> toJson() => {
         "id": id,
         "full_name": fullName,
-        "date_of_birth":
-            "${dateOfBirth!.year.toString().padLeft(4, '0')}-${dateOfBirth!.month.toString().padLeft(2, '0')}-${dateOfBirth!.day.toString().padLeft(2, '0')}",
+        "date_of_birth": "${dateOfBirth!.year.toString().padLeft(4, '0')}-${dateOfBirth!.month.toString().padLeft(2, '0')}-${dateOfBirth!.day.toString().padLeft(2, '0')}",
         "gender": gender,
         "class": studentClass,
         "section": section,
@@ -172,5 +165,5 @@ class Student {
         "trash": trash,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
-      };
+    };
 }

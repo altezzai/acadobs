@@ -22,36 +22,21 @@ import 'package:school_app/features/admin/teacher_section/model/teacher_model.da
 import 'package:school_app/features/admin/teacher_section/screens/add_teacher.dart';
 import 'package:school_app/features/admin/teacher_section/screens/teacherdetails.dart';
 import 'package:school_app/features/admin/teacher_section/screens/teachers_page.dart';
-import 'package:school_app/features/parent/screen/PaymentScreen.dart';
-import 'package:school_app/features/parent/screen/eventdetailedscreen.dart';
-import 'package:school_app/features/parent/screen/eventscreen.dart';
-import 'package:school_app/features/parent/screen/homescreen.dart';
-import 'package:school_app/features/parent/screen/leaveRequestScreen.dart';
-import 'package:school_app/features/parent/screen/noticedetailedscreen.dart';
-import 'package:school_app/features/parent/screen/noticescreen.dart';
-import 'package:school_app/features/parent/screen/paymentdetailedscreen.dart';
-import 'package:school_app/features/parent/screen/studentdetails.dart';
-
-import 'package:school_app/core/navbar/screen/bottom_nav.dart';
-
-import 'package:school_app/features/parent/payment/screen/PaymentScreen.dart';
 import 'package:school_app/features/parent/events/screen/eventdetailedscreen.dart';
 import 'package:school_app/features/parent/events/screen/eventscreen.dart';
 import 'package:school_app/features/parent/home/screen/homescreen.dart';
+import 'package:school_app/features/parent/leave_request/screens/add_student_leaveReq.dart';
 import 'package:school_app/features/parent/notices/screen/noticedetailedscreen.dart';
 import 'package:school_app/features/parent/notices/screen/noticescreen.dart';
+import 'package:school_app/features/parent/payment/screen/PaymentScreen.dart';
 import 'package:school_app/features/parent/payment/screen/paymentdetailedscreen.dart';
 import 'package:school_app/features/parent/students/screen/studentdetails.dart';
-import 'package:school_app/features/parent/leave_request/screens/add_student_leaveReq.dart';
-
 import 'package:school_app/features/teacher/attendance/model/attendance_data.dart';
-// import 'package:school_app/features/parent/screen/studentdetails.dart';
 import 'package:school_app/features/teacher/attendance/screens/take_attendance.dart';
 import 'package:school_app/features/teacher/duties/duty_detail.dart';
 import 'package:school_app/features/teacher/homework/screens/work.dart';
 import 'package:school_app/features/teacher/homework/screens/work_screen.dart';
 import 'package:school_app/features/teacher/homework/screens/work_view.dart';
-// import 'package:school_app/features/teacher/leave_request/screens/leave_request.dart';
 import 'package:school_app/features/teacher/leave_request/screens/add_teacher_leaverequest.dart';
 import 'package:school_app/features/teacher/mark_work/screens/mark_star.dart';
 import 'package:school_app/features/teacher/marks/screens/student_marklist.dart';
