@@ -8,14 +8,13 @@ class CustomAppbar extends StatelessWidget {
   final double verticalPadding;
   final VoidCallback? onTap; // Optional onTap callback for the back button
 
-  const CustomAppbar({
-    super.key,
-    this.isBackButton = true,
-    this.isProfileIcon = true,
-    required this.title, // Title for the app bar
-    this.onTap,
-    this.verticalPadding = 4
-  });
+  const CustomAppbar(
+      {super.key,
+      this.isBackButton = true,
+      this.isProfileIcon = true,
+      required this.title, // Title for the app bar
+      this.onTap,
+      this.verticalPadding = 4});
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +49,7 @@ class CustomAppbar extends StatelessWidget {
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   fontWeight: FontWeight.w600,
+                  fontSize: 24,
                   overflow: TextOverflow.ellipsis,
                 ),
           ),

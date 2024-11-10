@@ -4,18 +4,16 @@
 
 import 'dart:convert';
 
-List<Student> studentFromJson(String str) =>
-    List<Student>.from(json.decode(str).map((x) => Student.fromJson(x)));
+Student studentFromJson(String str) => Student.fromJson(json.decode(str));
 
-String studentToJson(List<Student> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String studentToJson(Student data) => json.encode(data.toJson());
 
 class Student {
   int? id;
   String? fullName;
   DateTime? dateOfBirth;
-  Gender? gender;
-  int? studentClass;
+  String? gender;
+  String? studentClass;
   String? section;
   int? rollNumber;
   String? admissionNumber;
@@ -95,7 +93,7 @@ class Student {
         dateOfBirth: json["date_of_birth"] == null
             ? null
             : DateTime.parse(json["date_of_birth"]),
-        gender: genderValues.map[json["gender"]]!,
+        gender: json["gender"],
         studentClass: json["class"],
         section: json["section"],
         rollNumber: json["roll_number"],
@@ -140,7 +138,7 @@ class Student {
         "full_name": fullName,
         "date_of_birth":
             "${dateOfBirth!.year.toString().padLeft(4, '0')}-${dateOfBirth!.month.toString().padLeft(2, '0')}-${dateOfBirth!.day.toString().padLeft(2, '0')}",
-        "gender": genderValues.reverse[gender],
+        "gender": gender,
         "class": studentClass,
         "section": section,
         "roll_number": rollNumber,
@@ -175,21 +173,4 @@ class Student {
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
       };
-}
-
-enum Gender { FEMALE, GENDER_MALE, MALE }
-
-final genderValues = EnumValues(
-    {"female": Gender.FEMALE, "male": Gender.GENDER_MALE, "Male": Gender.MALE});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
 }

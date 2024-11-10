@@ -7,19 +7,25 @@ class ProfileTile extends StatelessWidget {
   final String description;
   final VoidCallback? onPressed;
   final IconData icon;
-   const ProfileTile({super.key, required this.name, required this.description, this.onPressed, required this.icon});
+  const ProfileTile(
+      {super.key,
+      required this.name,
+      required this.description,
+      this.onPressed,
+      required this.icon});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
-          border: Border.all(color: greyColor),
+          border: Border.all(color: Color(0xFFCCCCCC)),
           borderRadius: BorderRadius.circular(8)),
       child: Row(
         children: [
           const CircleAvatar(
             backgroundImage: AssetImage('assets/staff3.png'),
+            radius: 25,
           ),
           const SizedBox(
             width: 10,
@@ -31,21 +37,21 @@ class ProfileTile extends StatelessWidget {
                 name,
                 style: Theme.of(context)
                     .textTheme
-                    .bodySmall!
-                    .copyWith(color: blackColor),
+                    .bodyMedium!
+                    .copyWith(fontWeight: FontWeight.w500, fontSize: 16),
               ),
               Row(
                 children: [
-                   Icon(
-                    icon,
-                    size: 18,
-                  ),
+                  // Icon(
+                  //   icon,
+                  //   size: 18,
+                  // ),
                   Text(
                     description,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall!
-                        .copyWith(fontSize: 12),
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        fontSize: 14,
+                        color: Color(0xFF7C7C7C),
+                        fontWeight: FontWeight.w500),
                   ),
                 ],
               )
@@ -55,10 +61,8 @@ class ProfileTile extends StatelessWidget {
           IconButton(
             icon: Text(
               "View",
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall!
-                  .copyWith(color: blackColor, fontSize: 16),
+              style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                  color: blackColor, fontSize: 14, fontWeight: FontWeight.w500),
             ),
             onPressed: onPressed,
           )

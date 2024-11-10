@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/core/authentication/screens/login.dart';
+import 'package:school_app/core/authentication/screens/splashscreen.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/admin/duties/model/duty_model.dart';
+import 'package:school_app/features/admin/duties/screens/addDutyPage.dart';
 import 'package:school_app/features/admin/duties/screens/view_duty.dart';
+import 'package:school_app/features/admin/notices/screens/add_event.dart';
+import 'package:school_app/features/admin/notices/screens/add_notice.dart';
+import 'package:school_app/features/admin/payments/screens/add_donation.dart';
+import 'package:school_app/features/admin/payments/screens/add_payment.dart';
 import 'package:school_app/features/admin/reports/screens/payment.dart';
 import 'package:school_app/features/admin/student/model/student_data.dart';
 import 'package:school_app/features/admin/student/screens/addAchivement.dart';
-import 'package:school_app/features/admin/duties/screens/addDutyPage.dart';
-import 'package:school_app/features/admin/payments/screens/add_donation.dart';
-import 'package:school_app/features/admin/notices/screens/add_event.dart';
-import 'package:school_app/features/admin/notices/screens/add_notice.dart';
-import 'package:school_app/features/admin/payments/screens/add_payment.dart';
-import 'package:school_app/core/authentication/screens/login.dart';
-import 'package:school_app/core/authentication/screens/splashscreen.dart';
 import 'package:school_app/features/admin/student/screens/addhomwork.dart';
 import 'package:school_app/features/admin/student/screens/newstudent.dart';
 import 'package:school_app/features/admin/student/screens/studentdetails.dart';
@@ -20,7 +22,6 @@ import 'package:school_app/features/admin/teacher_section/model/teacher_model.da
 import 'package:school_app/features/admin/teacher_section/screens/add_teacher.dart';
 import 'package:school_app/features/admin/teacher_section/screens/teacherdetails.dart';
 import 'package:school_app/features/admin/teacher_section/screens/teachers_page.dart';
-import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/parent/screen/PaymentScreen.dart';
 import 'package:school_app/features/parent/screen/eventdetailedscreen.dart';
 import 'package:school_app/features/parent/screen/eventscreen.dart';
@@ -42,7 +43,6 @@ import 'package:school_app/features/teacher/leave_request/screens/add_teacher_le
 import 'package:school_app/features/teacher/mark_work/screens/mark_star.dart';
 import 'package:school_app/features/teacher/marks/screens/student_marklist.dart';
 import 'package:school_app/features/teacher/parent/screens/parents.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
 
 class Approuter {
   GoRouter router = GoRouter(

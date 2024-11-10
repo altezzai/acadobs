@@ -1,7 +1,10 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:school_app/base/services/api_services.dart';
+import 'package:school_app/core/controller/file_picker_provider.dart';
 
 class PaymentServices {
   Future<Response> getPayments() async {
@@ -15,7 +18,9 @@ class PaymentServices {
   }
 
 // add payment
-  Future<Response> addPayment({
+  Future<Response> addPayment(
+    BuildContext context,
+    {
     required int userId,
     required String amount_paid,
     required String payment_date,
@@ -24,9 +29,10 @@ class PaymentServices {
     required String payment_method,
     required String transaction_id,
     required String payment_status,
-    File? file, // Add file parameter
+    // File? file, // Add file parameter
   }) async {
     // Create FormData to pass to the API
+    final fileProvider = Provider.of<FilePickerProvider>(context, listen: false);
     final formData = FormData.fromMap({
       'user_id': 1,
       'amount_paid': amount_paid,
@@ -36,12 +42,7 @@ class PaymentServices {
       'payment_method': payment_method,
       'transaction_id': transaction_id,
       'payment_status': payment_status,
-      // Add the file with the field name 'file_upload' if provided
-      if (file != null)
-        'file_upload': await MultipartFile.fromFile(
-          file.path,
-          filename: file.path.split('/').last,
-        ),
+    'file_upload':await MultipartFile.fromFile(fileProvider.selectedFile!.path!)
     });
 
     // Call the ApiServices post method with FormData and isFormData: true

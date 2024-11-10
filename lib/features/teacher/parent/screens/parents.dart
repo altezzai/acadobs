@@ -4,7 +4,7 @@ import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/teacher/data/dropdown_data.dart';
 import 'package:school_app/features/teacher/parent/data/parent_data.dart';
-import 'package:school_app/features/teacher/widgets/profile_tile.dart';
+import 'package:school_app/core/shared_widgets/profile_tile.dart';
 
 // ignore: must_be_immutable
 class ParentsScreen extends StatelessWidget {
