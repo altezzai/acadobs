@@ -23,6 +23,8 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
   String? selectedFile;
 
   final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
 
   void _handleDateSelection(DateTime date) {
     setState(() {
@@ -84,20 +86,20 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            CustomDropdown(
-              dropdownKey: 'class',
-              label: 'Class',
-              items: ['V', 'VI', 'VII', 'VIII', 'IX', 'X'],
-              icon: Icons.class_,
-            ),
-            SizedBox(height: 16),
+            // CustomDropdown(
+            //   dropdownKey: 'class',
+            //   label: 'Class',
+            //   items: ['V', 'VI', 'VII', 'VIII', 'IX', 'X'],
+            //   icon: Icons.class_,
+            // ),
+            // SizedBox(height: 16),
 
-            CustomDropdown(
-              dropdownKey: 'division',
-              label: 'Division',
-              items: ['A', 'B', 'C'],
-              icon: Icons.category,
-            ),
+            // CustomDropdown(
+            //   dropdownKey: 'division',
+            //   label: 'Division',
+            //   items: ['A', 'B', 'C'],
+            //   icon: Icons.category,
+            // ),
 
             SizedBox(height: 16),
 
@@ -124,14 +126,56 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
 
             CustomTextfield(
               hintText: 'Title',
+              controller: _titleController,
               iconData: Icon(Icons.title),
             ),
             SizedBox(height: 16),
+            TextFormField(
+              controller: _descriptionController,
+              maxLines: 4,
+              decoration: InputDecoration(
+                hintText: 'Description',
+                labelText: 'Description',
+                labelStyle: TextStyle(
+                  color: Colors.grey, // Change label text color here
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                prefixIcon: Padding(
+                  padding: const EdgeInsets.only(
+                      bottom: 75.0), // Adjust this value to your needs
+                  child: Icon(Icons.description),
+                ),
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+              ),
+            ),
+            SizedBox(height: 16),
+            CustomDropdown(
+              dropdownKey: 'category',
+              label: 'Category',
+              items: [
+                'Academic',
+                'Extracurricular',
+                'Sports',
+                'Cultural',
+                'Research'
+              ],
+              icon: Icons.category,
+            ),
 
+            SizedBox(height: 16),
             CustomDropdown(
               dropdownKey: 'level',
               label: 'Level',
-              items: ['Beginner', 'Intermediate', 'Advanced'],
+              items: [
+                'Class',
+                'School',
+                'District',
+                'State',
+                'National',
+                'International'
+              ],
               icon: Icons.star,
             ),
 

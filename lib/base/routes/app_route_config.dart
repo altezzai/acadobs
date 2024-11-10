@@ -31,6 +31,19 @@ import 'package:school_app/features/parent/screen/noticedetailedscreen.dart';
 import 'package:school_app/features/parent/screen/noticescreen.dart';
 import 'package:school_app/features/parent/screen/paymentdetailedscreen.dart';
 import 'package:school_app/features/parent/screen/studentdetails.dart';
+
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+
+import 'package:school_app/features/parent/payment/screen/PaymentScreen.dart';
+import 'package:school_app/features/parent/events/screen/eventdetailedscreen.dart';
+import 'package:school_app/features/parent/events/screen/eventscreen.dart';
+import 'package:school_app/features/parent/home/screen/homescreen.dart';
+import 'package:school_app/features/parent/notices/screen/noticedetailedscreen.dart';
+import 'package:school_app/features/parent/notices/screen/noticescreen.dart';
+import 'package:school_app/features/parent/payment/screen/paymentdetailedscreen.dart';
+import 'package:school_app/features/parent/students/screen/studentdetails.dart';
+import 'package:school_app/features/parent/leave_request/screens/add_student_leaveReq.dart';
+
 import 'package:school_app/features/teacher/attendance/model/attendance_data.dart';
 // import 'package:school_app/features/parent/screen/studentdetails.dart';
 import 'package:school_app/features/teacher/attendance/screens/take_attendance.dart';
@@ -267,10 +280,10 @@ class Approuter {
         },
       ),
       GoRoute(
-        name: AppRouteConst.LeaveRequestRouteName,
-        path: '/leaverequest',
+        name: AppRouteConst.AddStudentLeaveRequestRouteName,
+        path: '/addstudentleaverequest',
         pageBuilder: (context, state) {
-          return MaterialPage(child: LeaveRequestPage());
+          return MaterialPage(child: AddStudentLeaveRequest());
         },
       ),
       GoRoute(

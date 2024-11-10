@@ -1,9 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/date_formatter.dart';
+import 'package:school_app/features/admin/payments/controller/payment_controller.dart';
 
-class PaymentPage extends StatelessWidget {
+class PaymentPage extends StatefulWidget {
   const PaymentPage({super.key});
+
+  @override
+  State<PaymentPage> createState() => _PaymentPageState();
+}
+
+class _PaymentPageState extends State<PaymentPage> {
+  @override
+  void initState() {
+    context.read<PaymentController>().getPayments();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +58,8 @@ class PaymentPage extends StatelessWidget {
                 amountTitle: "1000",
                 name: "\tMuhammed Rafsal N",
                 time: "09:00 am",
+                transactionId: "",
+                description: "",
               ),
               const SizedBox(height: 20),
 
@@ -56,26 +72,54 @@ class PaymentPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
-              PaymentCard(
-                amountTitle: "250",
-                name: "\tMuhammed Rafsal N",
-                time: "09:00 am",
-              ),
-              PaymentCard(
-                amountTitle: "1500",
-                name: "\tManuprasad K",
-                time: "09:00 am",
-              ),
-              PaymentCard(
-                amountTitle: "500",
-                name: "\tAswin Koroth",
-                time: "09:00 am",
-              ),
-              PaymentCard(
-                amountTitle: "1000",
-                name: "\tMuhammed Rafsal N",
-                time: "09:00 am",
-              ),
+              Consumer<PaymentController>(builder: (context, value, child) {
+                return ListView.builder(
+                  padding: EdgeInsets.zero,
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: value.payments.take(4).length,
+                  itemBuilder: (context, index) {
+                    return PaymentCard(
+                        amountTitle: value.payments[index].amountPaid ?? "",
+                        name: value.payments[index].userId.toString(),
+                        transactionId:
+                            value.payments[index].transactionId.toString(),
+                        time: TimeFormatter.formatTimeFromString(
+                          value.payments[index].createdAt.toString(),
+                        ),
+                        description:
+                            value.payments[index].paymentStatus.toString()
+                        // description:
+                        //     value.notices[index].description ?? "",
+                        // noticeTitle: value.notices[index].title ?? "",
+                        // date: DateFormatter.formatDateString(
+                        //     value.notices[index].date.toString()),
+                        // time: TimeFormatter.formatTimeFromString(
+                        //     value.notices[index].createdAt.toString())
+                        );
+                  },
+                );
+              }),
+              // PaymentCard(
+              //   amountTitle: "250",
+              //   name: "\tMuhammed Rafsal N",
+              //   time: "09:00 am",
+              // ),
+              // PaymentCard(
+              //   amountTitle: "1500",
+              //   name: "\tManuprasad K",
+              //   time: "09:00 am",
+              // ),
+              // PaymentCard(
+              //   amountTitle: "500",
+              //   name: "\tAswin Koroth",
+              //   time: "09:00 am",
+              // ),
+              // PaymentCard(
+              //   amountTitle: "1000",
+              //   name: "\tMuhammed Rafsal N",
+              //   time: "09:00 am",
+              // ),
             ],
           ),
         ),
@@ -86,14 +130,18 @@ class PaymentPage extends StatelessWidget {
 
 class PaymentCard extends StatelessWidget {
   final String amountTitle;
+  final String description;
   final String name;
   final String time;
+  final String transactionId;
 
   const PaymentCard({
     super.key,
     required this.amountTitle,
     required this.name,
     required this.time,
+    required this.description,
+    required this.transactionId,
   });
 
   @override
@@ -104,18 +152,9 @@ class PaymentCard extends StatelessWidget {
           AppRouteConst.ParentPaymentDetailedPageRouteName,
           extra: {
             'amount': amountTitle,
-            'description': "8th class 2nd Semester Fee",
+            'description': description,
           },
         );
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => PaymentDetailPage(
-        //       amount: amountTitle, // Pass amountTitle dynamically
-        //       description: "8th class 2nd Semester Fee",
-        //     ),
-        //   ),
-        // );
       },
       child: Card(
         child: ListTile(
@@ -133,7 +172,7 @@ class PaymentCard extends StatelessWidget {
                   style: const TextStyle(fontWeight: FontWeight.bold)),
             ],
           ),
-          subtitle: Text(name),
+          subtitle: Text(transactionId),
           trailing: Text(
             time,
             style: const TextStyle(fontWeight: FontWeight.bold),
