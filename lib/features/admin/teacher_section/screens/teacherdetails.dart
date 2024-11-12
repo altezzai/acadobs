@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/capitalize_first_letter.dart';
+import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/core/shared_widgets/custom_appbar.dart';
+import 'package:school_app/core/shared_widgets/profile_container.dart';
 import 'package:school_app/features/admin/teacher_section/model/teacher_model.dart';
-import 'package:school_app/features/admin/teacher_section/widgets/custom_header.dart';
 import 'package:school_app/features/admin/teacher_section/widgets/tab_section.dart';
 
 class TeacherDetailsPage extends StatelessWidget {
@@ -20,21 +23,38 @@ class TeacherDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double screenWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
-      appBar: _buildAppBar(context, screenWidth),
-      body: Column(
-        children: [
-          TeacherHeader(
-            image: 'student5.png',
-            name: teacher.fullName ?? "",
-            studentClass: teacher.classGradeHandling ?? "",
-          ),
-          Expanded(
-            child: TabSection(),
-          ),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          children: [
+            SizedBox(
+              height: Responsive.height * 2,
+            ),
+            CustomAppbar(
+              title: 'Teachers',
+              isProfileIcon: false,
+              onTap: () {
+                context
+                    .pushReplacementNamed(AppRouteConst.AdminteacherRouteName);
+              },
+            ),
+            ProfileContainer(
+              imagePath: "assets/staff3.png",
+              name: capitalizeFirstLetter(teacher.fullName ?? ""),
+              present: '27',
+              absent: '7',
+              late: '3',
+              description: teacher.classGradeHandling,
+            ),
+            SizedBox(
+              height: Responsive.height * 2,
+            ),
+            Expanded(
+              child: TabSection(),
+            ),
+          ],
+        ),
       ),
     );
   }
