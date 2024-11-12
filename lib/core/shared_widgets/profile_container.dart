@@ -6,11 +6,17 @@ class ProfileContainer extends StatelessWidget {
   final String imagePath;
   final String? description;
   final String name;
+  final String present;
+  final String absent;
+  final String late;
   const ProfileContainer(
       {super.key,
       required this.imagePath,
       this.description,
-      required this.name});
+      required this.name,
+      required this.present,
+      required this.absent,
+      required this.late});
 
   @override
   Widget build(BuildContext context) {
@@ -76,19 +82,19 @@ class ProfileContainer extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _numberColumn(number: "25", subText: "Present"),
+              _numberColumn(number: present, subText: "Present"),
               Container(
                 padding: EdgeInsets.symmetric(vertical: 26),
                 width: 3,
                 color: Color(0xFFF4F4F4),
               ),
-              _numberColumn(number: "25", subText: "Late"),
+              _numberColumn(number: late, subText: "Late"),
               Container(
                 padding: EdgeInsets.symmetric(vertical: 26),
                 width: 3,
                 color: Color(0xFFF4F4F4),
               ),
-              _numberColumn(number: "25", subText: "Absent"),
+              _numberColumn(number: absent, subText: "Absent"),
             ],
           ),
         )

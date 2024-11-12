@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pie_chart/pie_chart.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
@@ -12,19 +11,12 @@ import 'package:school_app/core/shared_widgets/profile_container.dart';
 import 'package:school_app/features/admin/student/controller/achievement_controller.dart';
 import 'package:school_app/features/admin/student/model/student_data.dart';
 import 'package:school_app/features/admin/student/screens/homeworkdetail.dart';
+import 'package:school_app/features/admin/student/widgets/daily_attendance_container.dart';
 
 class StudentDetailPage extends StatefulWidget {
-  // final String name;
-  // final String studentClass;
-  // final String image;
   final Student student;
 
-  StudentDetailPage(
-      {
-      // required this.name,
-      // required this.studentClass,
-      // required this.image,
-      required this.student});
+  StudentDetailPage({required this.student});
 
   @override
   State<StudentDetailPage> createState() => _StudentDetailPageState();
@@ -59,6 +51,9 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
               name: capitalizeFirstLetter(widget.student.fullName ?? ""),
               description:
                   "${widget.student.studentClass} ${widget.student.section}",
+              present: "25",
+              absent: "2",
+              late: "3",
             ),
             Expanded(
               child: DefaultTabController(
@@ -105,7 +100,11 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                                 SizedBox(
                                   height: Responsive.height * 2,
                                 ),
+                                DailyAttendanceContainer(),
                                 CalenderWidget(),
+                                SizedBox(
+                                  height: Responsive.height * 3,
+                                )
                               ],
                             ),
                           ),
@@ -139,62 +138,6 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildScrollableDashboardContent() {
-    return SingleChildScrollView(
-      child: _buildDashboardContent(),
-    );
-  }
-
-  Widget _buildDashboardContent() {
-    final Map<String, double> dataMap = {
-      "Presents": 23,
-      "Late": 7,
-      "Absent": 3,
-    };
-
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            "Attendance",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 22,
-              color: Colors.black87,
-            ),
-          ),
-          SizedBox(height: 60),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: PieChart(
-              dataMap: dataMap,
-              chartType: ChartType.disc,
-              colorList: [Colors.green, Colors.orange, Colors.red],
-              legendOptions: LegendOptions(
-                showLegends: true,
-                legendPosition: LegendPosition.right,
-                legendTextStyle: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                  color: Colors.black54,
-                ),
-              ),
-              chartValuesOptions: ChartValuesOptions(
-                showChartValues: true,
-                showChartValuesInPercentage: true,
-                chartValueBackgroundColor: Colors.transparent,
-                decimalPlaces: 1,
-              ),
-              ringStrokeWidth: 40,
-              baseChartColor: Colors.grey.shade300,
-            ),
-          ),
-        ],
       ),
     );
   }
