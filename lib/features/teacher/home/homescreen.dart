@@ -42,7 +42,7 @@ class TeacherScreen extends StatelessWidget {
                   const Spacer(),
                   GestureDetector(
                     onTap: () {
-                      context.goNamed(AppRouteConst.loginRouteName);
+                      context.goNamed(AppRouteConst.logoutRouteName);
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 30),
@@ -57,6 +57,7 @@ class TeacherScreen extends StatelessWidget {
               _customContainer(
                 color: Colors.green,
                 text: 'Homework',
+                icon: Icons.note_alt,
                 ontap: () {
                   context.pushNamed(AppRouteConst.homeworkRouteName);
                 },
@@ -67,6 +68,7 @@ class TeacherScreen extends StatelessWidget {
               _customContainer(
                   color: Colors.red,
                   text: 'Leave Request',
+                  icon: Icons.note,
                   ontap: () {
                     context.pushNamed(
                         AppRouteConst.AddTeacherLeaveRequestRouteName);

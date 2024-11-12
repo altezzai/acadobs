@@ -4,98 +4,94 @@
 
 import 'dart:convert';
 
-List<Student> studentFromJson(String str) =>
-    List<Student>.from(json.decode(str).map((x) => Student.fromJson(x)));
+Student studentFromJson(String str) => Student.fromJson(json.decode(str));
 
-String studentToJson(List<Student> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String studentToJson(Student data) => json.encode(data.toJson());
 
 class Student {
-  int? id;
-  String? fullName;
-  DateTime? dateOfBirth;
-  Gender? gender;
-  int? studentClass;
-  String? section;
-  int? rollNumber;
-  String? admissionNumber;
-  String? aadhaarNumber;
-  String? bloodGroup;
-  String? residentialAddress;
-  String? contactNumber;
-  String? email;
-  String? previousSchool;
-  String? fatherFullName;
-  String? motherFullName;
-  dynamic guardianFullName;
-  String? fatherContactNumber;
-  String? motherContactNumber;
-  String? parentEmail;
-  String? occupation;
-  String? fatherAadhaarNumber;
-  String? motherAadhaarNumber;
-  String? alternateEmergencyContact;
-  String? category;
-  String? siblingInformation;
-  int? transportRequirement;
-  int? hostelRequirement;
-  dynamic studentPhoto;
-  String? fatherMotherPhoto;
-  String? aadhaarCard;
-  String? previousSchoolTc;
-  String? birthCertificate;
-  dynamic insertedUserId;
-  dynamic trash;
-  DateTime? createdAt;
-  DateTime? updatedAt;
+    int? id;
+    String? fullName;
+    DateTime? dateOfBirth;
+    String? gender;
+    String? studentClass;
+    String? section;
+    int? rollNumber;
+    String? admissionNumber;
+    String? aadhaarNumber;
+    String? bloodGroup;
+    String? residentialAddress;
+    String? contactNumber;
+    String? email;
+    String? previousSchool;
+    String? fatherFullName;
+    String? motherFullName;
+    dynamic guardianFullName;
+    String? fatherContactNumber;
+    String? motherContactNumber;
+    String? parentEmail;
+    String? occupation;
+    String? fatherAadhaarNumber;
+    String? motherAadhaarNumber;
+    String? alternateEmergencyContact;
+    String? category;
+    String? siblingInformation;
+    int? transportRequirement;
+    int? hostelRequirement;
+    dynamic studentPhoto;
+    String? fatherMotherPhoto;
+    String? aadhaarCard;
+    String? previousSchoolTc;
+    String? birthCertificate;
+    dynamic insertedUserId;
+    dynamic trash;
+    DateTime? createdAt;
+    DateTime? updatedAt;
 
-  Student({
-    this.id,
-    this.fullName,
-    this.dateOfBirth,
-    this.gender,
-    this.studentClass,
-    this.section,
-    this.rollNumber,
-    this.admissionNumber,
-    this.aadhaarNumber,
-    this.bloodGroup,
-    this.residentialAddress,
-    this.contactNumber,
-    this.email,
-    this.previousSchool,
-    this.fatherFullName,
-    this.motherFullName,
-    this.guardianFullName,
-    this.fatherContactNumber,
-    this.motherContactNumber,
-    this.parentEmail,
-    this.occupation,
-    this.fatherAadhaarNumber,
-    this.motherAadhaarNumber,
-    this.alternateEmergencyContact,
-    this.category,
-    this.siblingInformation,
-    this.transportRequirement,
-    this.hostelRequirement,
-    this.studentPhoto,
-    this.fatherMotherPhoto,
-    this.aadhaarCard,
-    this.previousSchoolTc,
-    this.birthCertificate,
-    this.insertedUserId,
-    this.trash,
-    this.createdAt,
-    this.updatedAt,
-  });
+    Student({
+        this.id,
+        this.fullName,
+        this.dateOfBirth,
+        this.gender,
+        this.studentClass,
+        this.section,
+        this.rollNumber,
+        this.admissionNumber,
+        this.aadhaarNumber,
+        this.bloodGroup,
+        this.residentialAddress,
+        this.contactNumber,
+        this.email,
+        this.previousSchool,
+        this.fatherFullName,
+        this.motherFullName,
+        this.guardianFullName,
+        this.fatherContactNumber,
+        this.motherContactNumber,
+        this.parentEmail,
+        this.occupation,
+        this.fatherAadhaarNumber,
+        this.motherAadhaarNumber,
+        this.alternateEmergencyContact,
+        this.category,
+        this.siblingInformation,
+        this.transportRequirement,
+        this.hostelRequirement,
+        this.studentPhoto,
+        this.fatherMotherPhoto,
+        this.aadhaarCard,
+        this.previousSchoolTc,
+        this.birthCertificate,
+        this.insertedUserId,
+        this.trash,
+        this.createdAt,
+        this.updatedAt,
+    });
 
-  factory Student.fromJson(Map<String, dynamic> json) => Student(
+    factory Student.fromJson(Map<String, dynamic> json) => Student(
         id: json["id"],
         fullName: json["full_name"],
-        dateOfBirth: json["date_of_birth"] == null
-            ? null
-            : DateTime.parse(json["date_of_birth"]),
-        gender: genderValues.map[json["gender"]]!,
+        dateOfBirth: json["date_of_birth"] == null ? null : DateTime.parse(json["date_of_birth"]),
+        gender: json["gender"],
         studentClass: json["class"],
         section: json["section"],
         rollNumber: json["roll_number"],
@@ -127,20 +123,15 @@ class Student {
         birthCertificate: json["birth_certificate"],
         insertedUserId: json["inserted_user_id"],
         trash: json["trash"],
-        createdAt: json["created_at"] == null
-            ? null
-            : DateTime.parse(json["created_at"]),
-        updatedAt: json["updated_at"] == null
-            ? null
-            : DateTime.parse(json["updated_at"]),
-      );
+        createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+    );
 
-  Map<String, dynamic> toJson() => {
+    Map<String, dynamic> toJson() => {
         "id": id,
         "full_name": fullName,
-        "date_of_birth":
-            "${dateOfBirth!.year.toString().padLeft(4, '0')}-${dateOfBirth!.month.toString().padLeft(2, '0')}-${dateOfBirth!.day.toString().padLeft(2, '0')}",
-        "gender": genderValues.reverse[gender],
+        "date_of_birth": "${dateOfBirth!.year.toString().padLeft(4, '0')}-${dateOfBirth!.month.toString().padLeft(2, '0')}-${dateOfBirth!.day.toString().padLeft(2, '0')}",
+        "gender": gender,
         "class": studentClass,
         "section": section,
         "roll_number": rollNumber,
@@ -174,22 +165,5 @@ class Student {
         "trash": trash,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
-      };
-}
-
-enum Gender { FEMALE, GENDER_MALE, MALE }
-
-final genderValues = EnumValues(
-    {"female": Gender.FEMALE, "male": Gender.GENDER_MALE, "Male": Gender.MALE});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
+    };
 }

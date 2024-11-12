@@ -72,6 +72,7 @@ class PaymentController extends ChangeNotifier {
     loadingProvider.setLoading(true); //start loader
     try {
       final response = await PaymentServices().addPayment(
+        context,
           userId: userId,
           amount_paid: amount_paid,
           payment_date: payment_date,
@@ -80,7 +81,7 @@ class PaymentController extends ChangeNotifier {
           payment_method: payment_method,
           transaction_id: transaction_id,
           payment_status: payment_status,
-          file: file);
+          );
       if (response.statusCode == 201) {
         log(">>>>>>${response.statusMessage}");
         context.goNamed(AppRouteConst.bottomNavRouteName,

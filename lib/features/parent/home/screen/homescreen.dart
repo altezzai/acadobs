@@ -173,7 +173,7 @@ class HomePage extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () {
                           context.pushReplacementNamed(
-                            AppRouteConst.LeaveRequestRouteName,
+                            AppRouteConst.AddStudentLeaveRequestRouteName,
                           );
                         },
                         style: ElevatedButton.styleFrom(
