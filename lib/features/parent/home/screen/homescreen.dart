@@ -53,7 +53,6 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
             _currentIndex = index;
           });
         },
-        
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -98,7 +97,7 @@ class HomePage extends StatelessWidget {
           pinned: true,
           flexibleSpace: FlexibleSpaceBar(
             centerTitle: true,
-            title: const Row(
+            title: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
@@ -112,11 +111,16 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
                 Spacer(),
-                Padding(
-                  padding: EdgeInsets.only(right: 10),
-                  child: CircleAvatar(
-                    backgroundImage: AssetImage(
-                        'assets/child1.png'), // Placeholder for profile image
+                GestureDetector(
+                  onTap: () {
+                    // Navigate to the desired page
+                    context.pushNamed(AppRouteConst.logoutRouteName);
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 10),
+                    child: CircleAvatar(
+                      backgroundImage: AssetImage('assets/child1.png'),
+                    ),
                   ),
                 ),
               ],
