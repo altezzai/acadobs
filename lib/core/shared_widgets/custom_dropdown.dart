@@ -7,7 +7,7 @@ class CustomDropdown extends StatelessWidget {
   final String label;
   final IconData icon;
   final List<String> items;
-  final ValueChanged<String?>? onChanged;
+  final onChanged;
   final validator;
 
   const CustomDropdown(
