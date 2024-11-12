@@ -142,6 +142,9 @@ class _TeachersPageState extends State<TeachersPage> {
                 ),
               ],
             ),
+            SizedBox(
+              height: Responsive.height * 2,
+            ),
             Expanded(
               child:
                   Consumer<TeacherController>(builder: (context, value, child) {
@@ -152,9 +155,10 @@ class _TeachersPageState extends State<TeachersPage> {
                 }
                 return ListView.builder(
                   itemCount: value.teachers.length,
+                  padding: EdgeInsets.zero,
                   itemBuilder: (context, index) {
                     return Padding(
-                      padding: const EdgeInsets.only(top: 4),
+                      padding: const EdgeInsets.only(bottom: 4),
                       child: ProfileTile(
                         name: capitalizeFirstLetter(
                             value.teachers[index].fullName ?? ""),
@@ -171,6 +175,9 @@ class _TeachersPageState extends State<TeachersPage> {
                 );
               }),
             ),
+            SizedBox(
+              height: Responsive.height * 8.5,
+            )
           ],
         ),
       ),

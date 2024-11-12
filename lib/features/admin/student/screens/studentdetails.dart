@@ -89,22 +89,24 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                       child: TabBarView(
                         physics: BouncingScrollPhysics(),
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: Responsive.height * 2,
-                              ),
-                              Text("Attendance"),
-                              SizedBox(
-                                height: Responsive.height * 2,
-                              ),
-                              DailyAttendanceContainer(),
-                              CalenderWidget(),
-                              SizedBox(
-                                height: Responsive.height * 3,
-                              )
-                            ],
+                          SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: Responsive.height * 2,
+                                ),
+                                Text("Attendance"),
+                                SizedBox(
+                                  height: Responsive.height * 2,
+                                ),
+                                DailyAttendanceContainer(),
+                                CalenderWidget(),
+                                SizedBox(
+                                  height: Responsive.height * 3,
+                                )
+                              ],
+                            ),
                           ),
                           // _buildScrollableDashboardContent(),
                           Stack(
@@ -201,22 +203,24 @@ Widget _buildAchievementsContent() {
 }
 
 Widget _buildScrollableExamsContent() {
-  return Padding(
-    padding: const EdgeInsets.all(16.0),
-    child: Column(
-      children: [
-        _buildExamCard("XIIth", "1st semester", "Mid-term Exam", [
-          {"subject": "Mathematics", "mark": "86", "total": "100"},
-          {"subject": "Physics", "mark": "92", "total": "100"},
-          {"subject": "Chemistry", "mark": "88", "total": "100"},
-        ]),
-        SizedBox(height: 16),
-        _buildExamCard("XIIth", "1st semester", "Final Exam", [
-          {"subject": "Mathematics", "mark": "91", "total": "100"},
-          {"subject": "Physics", "mark": "89", "total": "100"},
-          {"subject": "Chemistry", "mark": "94", "total": "100"},
-        ]),
-      ],
+  return SingleChildScrollView(
+    child: Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
+          _buildExamCard("XIIth", "1st semester", "Mid-term Exam", [
+            {"subject": "Mathematics", "mark": "86", "total": "100"},
+            {"subject": "Physics", "mark": "92", "total": "100"},
+            {"subject": "Chemistry", "mark": "88", "total": "100"},
+          ]),
+          SizedBox(height: 16),
+          _buildExamCard("XIIth", "1st semester", "Final Exam", [
+            {"subject": "Mathematics", "mark": "91", "total": "100"},
+            {"subject": "Physics", "mark": "89", "total": "100"},
+            {"subject": "Chemistry", "mark": "94", "total": "100"},
+          ]),
+        ],
+      ),
     ),
   );
 }

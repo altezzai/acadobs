@@ -7,7 +7,6 @@ import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
-import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/profile_tile.dart';
 import 'package:school_app/features/admin/student/controller/student_controller.dart';
@@ -131,6 +130,18 @@ class _StudentsPageState extends State<StudentsPage> {
                     label: 'Class',
                     items: ['8', '9', '10'],
                     icon: Icons.school,
+                    onChanged: (selectedClass) {
+                      // Automatically fetch students when division is selected
+                      final selectedDivision = context
+                          .read<DropdownProvider>()
+                          .getSelectedItem(
+                              'division'); // Get the currently selected class
+                      context
+                          .read<StudentController>()
+                          .getStudentsClassAndDivision(
+                              classname: selectedClass,
+                              section: selectedDivision);
+                    },
                   ),
                 ),
                 const SizedBox(width: 5),
@@ -140,6 +151,18 @@ class _StudentsPageState extends State<StudentsPage> {
                     label: 'Division',
                     items: ['A', 'B', 'C'],
                     icon: Icons.group,
+                    onChanged: (selectedDivision) {
+                      // Automatically fetch students when division is selected
+                      final selectedClass = context
+                          .read<DropdownProvider>()
+                          .getSelectedItem(
+                              'class'); // Get the currently selected class
+                      context
+                          .read<StudentController>()
+                          .getStudentsClassAndDivision(
+                              classname: selectedClass,
+                              section: selectedDivision);
+                    },
                   ),
                 ),
               ],
@@ -147,36 +170,28 @@ class _StudentsPageState extends State<StudentsPage> {
             SizedBox(
               height: Responsive.height * 2,
             ),
-            CustomButton(
-                text: 'Submit',
-                onPressed: () {
-                  final selectedClass =
-                      context.read<DropdownProvider>().getSelectedItem('class');
-                  final selectedDivision = context
-                      .read<DropdownProvider>()
-                      .getSelectedItem('division');
-
-                  context.read<StudentController>().getStudentsClassAndDivision(
-                      classname: selectedClass, section: selectedDivision);
-                }),
             Expanded(
               child: Consumer<StudentController>(
                 builder: (context, value, child) {
                   if (value.isloading) {
-                    return Center(
+                    return const Center(
                       child: CircularProgressIndicator(),
                     );
                   }
                   return SingleChildScrollView(
+                    padding: EdgeInsets.zero, // Removes any default padding
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
+                          padding: EdgeInsets
+                              .zero, // Removes any extra padding at the top
                           itemCount: value.filteredstudents.length,
                           itemBuilder: (context, index) {
                             return Padding(
-                              padding: const EdgeInsets.only(top: 4),
+                              padding: const EdgeInsets.only(bottom: 4),
                               child: ProfileTile(
                                 name: capitalizeFirstLetter(
                                     value.filteredstudents[index].fullName ??
@@ -195,7 +210,7 @@ class _StudentsPageState extends State<StudentsPage> {
                         ),
                         SizedBox(
                           height: Responsive.height * 7.5,
-                        )
+                        ),
                       ],
                     ),
                   );
