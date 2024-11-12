@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/core/authentication/screens/login.dart';
 import 'package:school_app/core/authentication/screens/splashscreen.dart';
+import 'package:school_app/core/authentication/screens/logout.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/admin/duties/model/duty_model.dart';
 import 'package:school_app/features/admin/duties/screens/addDutyPage.dart';
@@ -57,6 +58,13 @@ class Approuter {
         path: '/login',
         pageBuilder: (context, state) {
           return MaterialPage(child: LoginPage());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.logoutRouteName,
+        path: '/logout',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: LogoutScreen());
         },
       ),
       GoRoute(

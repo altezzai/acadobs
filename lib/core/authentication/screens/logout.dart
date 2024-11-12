@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/responsive.dart';
-import 'package:school_app/core/shared_widgets/custom_name_container.dart';
+import 'package:school_app/core/shared_widgets/custom_button.dart';
 
-class AdminHomeScreen extends StatelessWidget {
-  const AdminHomeScreen({super.key});
+
+class LogoutScreen extends StatelessWidget {
+  const LogoutScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,11 +14,13 @@ class AdminHomeScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
+             SizedBox(
               height: Responsive.height * 7,
             ),
-            Row(
+           Row(
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,7 +44,8 @@ class AdminHomeScreen extends StatelessWidget {
                 const Spacer(),
                 GestureDetector(
                   onTap: () {
-                    context.goNamed(AppRouteConst.logoutRouteName);
+          //           context.pushReplacementNamed(AppRouteConst.bottomNavRouteName,
+          // extra: UserType.admin);
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 30),
@@ -51,26 +55,15 @@ class AdminHomeScreen extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: Responsive.height * 2,
+              height: Responsive.height * 8,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomNameContainer(
-                  text: "Students",
-                  onPressed: () {
-                    context.pushNamed(AppRouteConst.studentRouteName);
-                  },
-                ),
-                CustomNameContainer(
-                  text: "Teachers",
-                  onPressed: () {
-                    context.pushNamed(AppRouteConst.AdminteacherRouteName);
-                  },
-                ),
-              ],
-            ),
-            // ProfileTile(name: name, description: description, icon: icon)
+            // Logout Button
+             CustomButton(
+                    text: 'Logout',
+                    onPressed: () {
+                      context.goNamed(AppRouteConst.loginRouteName);
+                    },
+                  ),
           ],
         ),
       ),

@@ -1,6 +1,7 @@
 class AppRouteConst {
   static const String splashRouteName = 'splashscreen';
   static const String loginRouteName = 'login';
+  static const String logoutRouteName = 'logout';
   static const String homeRouteName = 'teacherhome';
   static const String attendanceRouteName = 'attendance';
   static const String marksRouteName = 'marks';
