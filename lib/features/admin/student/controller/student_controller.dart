@@ -13,6 +13,7 @@ import 'package:school_app/features/admin/student/services/studentservice.dart';
 class StudentController extends ChangeNotifier {
   bool _isloading = false;
   bool get isloading => _isloading;
+  
   List<Student> _students = [];
   List<Student> get students => _students;
 
