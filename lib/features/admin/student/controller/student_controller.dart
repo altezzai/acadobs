@@ -15,6 +15,8 @@ class StudentController extends ChangeNotifier {
   bool get isloading => _isloading;
   List<Student> _students = [];
   List<Student> get students => _students;
+  List<Student> _filteredstudents = [];
+  List<Student> get filteredstudents => _filteredstudents;
 
   // Fetch student details (GET request)
   Future<void> getStudentDetails() async {
@@ -24,6 +26,7 @@ class StudentController extends ChangeNotifier {
       print("***********${response.statusCode}");
       print(response.toString());
       if (response.statusCode == 200) {
+        _students.clear();
         _students = (response.data as List<dynamic>)
             .map((result) => Student.fromJson(result))
             .toList();
@@ -83,40 +86,28 @@ class StudentController extends ChangeNotifier {
       notifyListeners();
     }
   }
-  // Add student details (POST request)
-  // Future<void> addStudent(Student student) async {
-  //   try {
-  //     FormData formData = FormData.fromMap({
-  //       "full_name": student.fullName,
-  //       "date_of_birth": student.dateOfBirth,
-  //       "gender": student.gender,
-  //       "class": student.studentDatumClass,
-  //       "section": student.section,
-  //       "roll_number": student.rollNumber,
-  //       "admission_number": student.admissionNumber,
-  //       "aadhaar_number": student.aadhaarNumber,
-  //       "residential_address": student.residentialAddress,
-  //       "contact_number": student.contactNumber,
-  //       "email": student.email,
-  //       "father_full_name": student.fatherFullName,
-  //       "mother_full_name": student.motherFullName,
-  //       "blood_group": student.bloodGroup,
-  //       // Add other fields as needed
-  //     });
 
-  //     // Sending the POST request to add a student
-  //     final response = await SampleServices().addStudent("/students", formData);
-
-  //     // Check if the request was successful
-  //     if (response.statusCode == 201) {
-  //       print("Student added successfully: ${response.data}");
-  //       // Optionally refresh the student list after adding a new student
-  //       await getStudentDetails();
-  //     } else {
-  //       print("Failed to add student: ${response.statusCode}");
-  //     }
-  //   } catch (e) {
-  //     print("Error adding student: $e");
-  //   }
-  // }
+  // Fetch student class and division details (GET request)
+  Future<void> getStudentsClassAndDivision(
+      {required String classname, required String section}) async {
+    _isloading = true;
+    try {
+      final response = await StudentServices().getStudentsClassAndDivision(
+        classname: classname,
+        section: section,
+      );
+      print("***********${response.statusCode}");
+      print(response.toString());
+      if (response.statusCode == 200) {
+        _filteredstudents.clear();
+        _filteredstudents = (response.data as List<dynamic>)
+            .map((result) => Student.fromJson(result))
+            .toList();
+      }
+    } catch (e) {
+      print(e);
+    }
+    _isloading = false;
+    notifyListeners();
+  }
 }

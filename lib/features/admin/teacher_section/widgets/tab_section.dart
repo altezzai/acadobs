@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:school_app/features/admin/teacher_section/widgets/activity_tab.dart';
 import 'package:school_app/features/admin/teacher_section/widgets/dashboard_tab.dart';
 import 'package:school_app/features/admin/teacher_section/widgets/duties_tab.dart';
-import 'package:school_app/features/admin/teacher_section/widgets/stat_row.dart';
 
 class TabSection extends StatelessWidget {
   @override
@@ -11,7 +10,7 @@ class TabSection extends StatelessWidget {
       length: 3,
       child: Column(
         children: [
-          StatRow(),
+          // StatRow(),
           TabBar(
             labelColor: Colors.black,
             unselectedLabelColor: Colors.grey,
