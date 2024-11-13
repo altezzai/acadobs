@@ -350,6 +350,7 @@ class Approuter {
               child: PaymentDetailPage(
             amount: paymentData['amount'],
             description: paymentData['description'],
+            file: paymentData['file'],
           ));
         },
       ),
