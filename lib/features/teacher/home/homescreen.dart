@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_name_container.dart';
 
 class TeacherScreen extends StatelessWidget {
@@ -42,7 +43,8 @@ class TeacherScreen extends StatelessWidget {
                   const Spacer(),
                   GestureDetector(
                     onTap: () {
-                      context.goNamed(AppRouteConst.logoutRouteName);
+                      context.goNamed(AppRouteConst.logoutRouteName,
+                          extra: UserType.teacher);
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 30),

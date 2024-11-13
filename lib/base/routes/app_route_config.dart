@@ -63,10 +63,15 @@ class Approuter {
       GoRoute(
         name: AppRouteConst.logoutRouteName,
         path: '/logout',
-        pageBuilder: (context, state) {
-          return MaterialPage(child: LogoutScreen());
+        builder: (context, state) {
+          final userType = state.extra
+              as UserType; // Extract the userType passed via 'extra'
+          return LogoutScreen(
+              userType:
+                  userType); // Pass the extracted userType to the LogoutScreen
         },
       ),
+
       GoRoute(
         name: AppRouteConst.bottomNavRouteName,
         path: '/bottomNav',

@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/responsive.dart';
-import 'package:school_app/core/shared_widgets/custom_button.dart';
-
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 
 class LogoutScreen extends StatelessWidget {
-  const LogoutScreen({super.key});
+  final UserType userType; // UserType passed as a parameter
+
+  const LogoutScreen({super.key, required this.userType}); // Receive userType
 
   @override
   Widget build(BuildContext context) {
@@ -14,59 +15,89 @@ class LogoutScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-             SizedBox(
-              height: Responsive.height * 7,
-            ),
-           Row(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Hi ,',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineLarge!
-                          .copyWith(fontSize: 48),
-                    ),
-                    Text(
-                      'Vincent',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineLarge!
-                          .copyWith(color: const Color(0xff555555)),
-                    ),
-                  ],
-                ),
-                const Spacer(),
-                GestureDetector(
-                  onTap: () {
-          //           context.pushReplacementNamed(AppRouteConst.bottomNavRouteName,
-          // extra: UserType.admin);
+                // Back button
+                IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  onPressed: () {
+                    // Navigate based on the userType
+                    if (userType == UserType.parent) {
+                      context.pushReplacementNamed(
+                        AppRouteConst.ParentHomeRouteName, // Navigate to ParentHomeRoute
+                      );
+                    } else {
+                      // Navigate back to BottomNavScreen with the respective userType
+                      context.goNamed(
+                        AppRouteConst.bottomNavRouteName,
+                        extra: userType, // Pass the userType as extra
+                      );
+                    }
                   },
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 30),
-                    child: Image.asset('assets/admin.png'),
-                  ),
+                ),
+                // Edit profile button
+                IconButton(
+                  icon: Icon(Icons.edit),
+                  onPressed: () {},
                 ),
               ],
             ),
             SizedBox(
-              height: Responsive.height * 8,
+              height: Responsive.height * 2,
             ),
-            // Logout Button
-             CustomButton(
-                    text: 'Logout',
-                    onPressed: () {
+            // Profile Picture, Name, and Title
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircleAvatar(
+                  radius: 40,
+                  backgroundImage: AssetImage('assets/admin.png'),
+                ),
+                SizedBox(width: Responsive.width * 7),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Vincent',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            SizedBox(height: 16),
+            SizedBox(height: 24),
+            Expanded(
+              child: ListView(
+                children: [
+                  _buildListItem(Icons.task, 'Duties'),
+                  _buildListItem(Icons.payment, 'Payments'),
+                  _buildListItem(Icons.settings, 'Settings'),
+                  ListTile(
+                    leading: Icon(Icons.logout, color: Colors.red),
+                    title: Text('Log out', style: TextStyle(color: Colors.red)),
+                    onTap: () {
                       context.goNamed(AppRouteConst.loginRouteName);
                     },
                   ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildListItem(IconData icon, String text) {
+    return ListTile(
+      leading: Icon(icon),
+      title: Text(text),
+      onTap: () {
+        // Add respective action here
+      },
     );
   }
 }
