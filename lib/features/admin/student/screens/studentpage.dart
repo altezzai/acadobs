@@ -177,6 +177,17 @@ class _StudentsPageState extends State<StudentsPage> {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
+                  } else if (value.filteredstudents.isEmpty) {
+                    return Center(
+                      child: Column(
+                        children: [
+                          Image.asset(
+                            'assets/empty.png',
+                            height: Responsive.height * 45,
+                          ),
+                        ],
+                      ),
+                    );
                   }
                   return SingleChildScrollView(
                     padding: EdgeInsets.zero, // Removes any default padding
