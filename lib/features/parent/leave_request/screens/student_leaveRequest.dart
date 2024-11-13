@@ -5,8 +5,20 @@ import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/features/parent/leave_request/controller/studentLeaveReq_controller.dart';
 
-class StudentLeaveRequestScreen extends StatelessWidget {
+class StudentLeaveRequestScreen extends StatefulWidget {
   StudentLeaveRequestScreen({super.key});
+
+  @override
+  State<StudentLeaveRequestScreen> createState() =>
+      _StudentLeaveRequestScreenState();
+}
+
+class _StudentLeaveRequestScreenState extends State<StudentLeaveRequestScreen> {
+  @override
+  void initState() {
+    context.read<StudentLeaveRequestController>().getStudentDetails();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +68,9 @@ class StudentLeaveRequestScreen extends StatelessWidget {
                   style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
               ),
+              const SizedBox(
+                height: 10,
+              ),
               const Text(
                 "Today",
                 style: TextStyle(
@@ -65,8 +80,11 @@ class StudentLeaveRequestScreen extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               ListTile(
+                tileColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
                 title: Text(
-                  "",
+                  "Leave Request 13-11-2024",
                   maxLines: 1, // Set max lines to 1 to keep it in a single line
                   overflow: TextOverflow
                       .ellipsis, // Show ellipsis (...) if the text overflows
@@ -78,16 +96,19 @@ class StudentLeaveRequestScreen extends StatelessWidget {
                 ),
                 subtitle: Align(
                   alignment: Alignment.centerLeft,
-                  child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Colors.blue.withOpacity(0.1)),
-                      child:
-                          Text("", style: const TextStyle(color: Colors.blue))),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 5),
+                    child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: Colors.green.withOpacity(0.1)),
+                        child: Text("Approved",
+                            style: const TextStyle(color: Colors.green))),
+                  ),
                 ),
-                trailing: Text(""),
+                trailing: Text("9:00 AM"),
               ),
               const SizedBox(height: 20),
 
@@ -102,17 +123,22 @@ class StudentLeaveRequestScreen extends StatelessWidget {
               const SizedBox(height: 10),
               Consumer<StudentLeaveRequestController>(
                   builder: (context, value, child) {
-                return ListView.builder(
+                return ListView.separated(
+                  separatorBuilder: (context, index) => const SizedBox(
+                    height: 10,
+                  ),
                   padding: EdgeInsets.zero,
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: value.studentsLeaveRequest.take(4).length,
+                  itemCount: value.studentsLeaveRequest.length,
                   itemBuilder: (context, index) {
                     final leaveRequest = value.studentsLeaveRequest[index];
                     return ListTile(
-                      
+                      tileColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
                       title: Text(
-                        leaveRequest.leaveType ?? "",
+                        leaveRequest.leaveType ?? "S",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
