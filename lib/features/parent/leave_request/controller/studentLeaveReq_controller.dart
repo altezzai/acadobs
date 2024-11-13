@@ -16,7 +16,7 @@ class StudentLeaveRequestController extends ChangeNotifier {
   List<StudentLeaveRequest> get studentsLeaveRequest => _studentsLeaveRequest;
 
 // **********Get all students*****************
-  Future<void> getStudentDetails() async {
+  Future<void> getStudentLeaveRequests() async {
     _isloading = true;
     try {
       final response = await StudentLeaveRequestServices().getStudentLeaveRequest();
