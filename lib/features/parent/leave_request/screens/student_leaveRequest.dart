@@ -153,11 +153,21 @@ class _StudentLeaveRequestScreenState extends State<StudentLeaveRequestScreen> {
                               horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
-                            color: Colors.blue.withOpacity(0.1),
+                            color: leaveRequest.approvalStatus == "Approved"
+                                ? Colors.green.withOpacity(.1)
+                                : (leaveRequest.approvalStatus == "Pending"
+                                    ? Colors.red.withOpacity(.1)
+                                    : Colors.blue.withOpacity(.1)),
                           ),
                           child: Text(
                             leaveRequest.approvalStatus ?? "",
-                            style: const TextStyle(color: Colors.blue),
+                            style: TextStyle(
+                              color: leaveRequest.approvalStatus == "Approved"
+                                  ? Colors.green
+                                  : (leaveRequest.approvalStatus == "Pending"
+                                      ? Colors.red
+                                      : Colors.blue),
+                            ),
                           ),
                         ),
                       ),
