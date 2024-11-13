@@ -1,32 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/shared_widgets/calender_widget.dart';
-import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/profile_container.dart';
 import 'package:school_app/features/admin/student/controller/achievement_controller.dart';
-import 'package:school_app/features/admin/student/model/student_data.dart';
 import 'package:school_app/features/admin/student/widgets/daily_attendance_container.dart';
 
-class StudentDetailPage extends StatefulWidget {
-  final Student student;
+import 'core/shared_widgets/custom_appbar.dart';
 
-  StudentDetailPage({required this.student});
-
-  @override
-  State<StudentDetailPage> createState() => _StudentDetailPageState();
-}
-
-class _StudentDetailPageState extends State<StudentDetailPage> {
-  @override
-  void initState() {
-    context.read<AchievementController>().getAchievements();
-    super.initState();
-  }
-
+class StickyTabBarPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -51,39 +35,29 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                         },
                       ),
                       ProfileContainer(
-                        imagePath: "assets/staff3.png",
-                        name: capitalizeFirstLetter(
-                            widget.student.fullName ?? ""),
-                        description:
-                            "${widget.student.studentClass} ${widget.student.section}",
-                        present: "25",
-                        absent: "2",
-                        late: "3",
-                      ),
-                      // SizedBox(height: Responsive.height * 2),
+                          imagePath: "assets/staff3.png",
+                          name: "name",
+                          present: "25",
+                          absent: "3",
+                          late: "2"),
+                      SizedBox(height: Responsive.height * 2),
                     ],
                   ),
                 ),
               ),
               SliverAppBar(
-                automaticallyImplyLeading: false,
                 pinned: true,
                 floating: false,
-                backgroundColor: Colors.transparent,
-                bottom: PreferredSize(
-                  preferredSize: Size.fromHeight(0), // Adjust height here
-                  child: TabBar(
-                    labelColor: Colors.black,
-                    unselectedLabelColor: Colors.grey,
-                    indicatorColor:
-                        Colors.black, // Optional: Customize the indicator color
-                    tabs: [
-                      Tab(text: "Dashboard"),
-                      Tab(text: "Achievements"),
-                      Tab(text: "Exam"),
-                      Tab(text: "Homework"),
-                    ],
-                  ),
+                backgroundColor: Colors.white,
+                bottom: TabBar(
+                  labelColor: Colors.black,
+                  unselectedLabelColor: Colors.grey,
+                  tabs: [
+                    Tab(text: "Dashboard"),
+                    Tab(text: "Achievements"),
+                    Tab(text: "Exam"),
+                    Tab(text: "Homework"),
+                  ],
                 ),
               ),
             ];
