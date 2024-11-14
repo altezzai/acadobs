@@ -69,14 +69,17 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                 automaticallyImplyLeading: false,
                 pinned: true,
                 floating: false,
-                backgroundColor: Colors.transparent,
+                backgroundColor: Colors.grey.shade200,
                 bottom: PreferredSize(
                   preferredSize: Size.fromHeight(0), // Adjust height here
                   child: TabBar(
+                    isScrollable: true,
+                    tabAlignment: TabAlignment.start,
                     labelColor: Colors.black,
                     unselectedLabelColor: Colors.grey,
                     indicatorColor:
                         Colors.black, // Optional: Customize the indicator color
+                    labelPadding: EdgeInsets.symmetric(horizontal: 16.0),
                     tabs: [
                       Tab(text: "Dashboard"),
                       Tab(text: "Achievements"),
@@ -91,17 +94,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
           body: TabBarView(
             children: [
               // First Tab Content
-              ListView(
-                padding: const EdgeInsets.all(16.0),
-                children: [
-                  SizedBox(height: 20),
-                  Text("Attendance", style: TextStyle(fontSize: 20)),
-                  SizedBox(height: 20),
-                  DailyAttendanceContainer(),
-                  CalenderWidget(),
-                  SizedBox(height: 30),
-                ],
-              ),
+              _buildDashboardContent(),
               // Second Tab Content
               _buildAchievementsContent(),
               ListView(
@@ -123,6 +116,21 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
           ),
         ),
       ),
+    );
+  }
+
+  // dashboard content
+  Widget _buildDashboardContent() {
+    return ListView(
+      padding: const EdgeInsets.all(16.0),
+      children: [
+        SizedBox(height: 20),
+        Text("Attendance", style: TextStyle(fontSize: 20)),
+        SizedBox(height: 20),
+        DailyAttendanceContainer(),
+        CalenderWidget(),
+        // SizedBox(height: 30),
+      ],
     );
   }
 

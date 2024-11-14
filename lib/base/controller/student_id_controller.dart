@@ -37,4 +37,24 @@ class StudentIdController extends ChangeNotifier {
     selectedStudentId = studentId;
     notifyListeners();
   }
+
+  // selection student
+  int? _selectedStudentIndex;
+
+  bool isSelected(int index) => _selectedStudentIndex == index;
+
+  void toggleSelection(int index) {
+    if (_selectedStudentIndex == index) {
+      _selectedStudentIndex = null; // Deselect if already selected
+    } else {
+      _selectedStudentIndex = index; // Select new student
+    }
+    notifyListeners();
+  }
+
+  // Clear all selections
+  void clearSelection() {
+    _selectedStudentIndex = null;
+    notifyListeners();
+  }
 }
