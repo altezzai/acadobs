@@ -33,5 +33,6 @@ getProviders() {
     ChangeNotifierProvider(create: (_) => DutyController()),
     ChangeNotifierProvider(create: (_) => FilePickerProvider()),
     ChangeNotifierProvider(create: (_) => AchievementController()),
+    ChangeNotifierProvider(create: (_) => AchievementController()),
   ];
 }
