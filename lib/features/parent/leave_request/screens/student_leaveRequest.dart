@@ -130,7 +130,7 @@ class _StudentLeaveRequestScreenState extends State<StudentLeaveRequestScreen> {
                   padding: EdgeInsets.zero,
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: value.studentsLeaveRequest.length,
+                  itemCount: value.studentsLeaveRequest.take(4).length,
                   itemBuilder: (context, index) {
                     final leaveRequest = value.studentsLeaveRequest[index];
                     return ListTile(
