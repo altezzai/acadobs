@@ -7,6 +7,7 @@ import 'package:school_app/base/controller/student_id_controller.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
+import 'package:school_app/core/controller/file_picker_provider.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
@@ -30,6 +31,8 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _transactionController = TextEditingController();
   late DropdownProvider dropdownProvider;
+  late StudentIdController studentIdController;
+  late FilePickerProvider filePickerProvider;
 
   @override
   void initState() {
@@ -37,22 +40,20 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
 
     // Ensure `StudentIdController` fetches data on dropdown change
     dropdownProvider = context.read<DropdownProvider>();
+    studentIdController = context.read<StudentIdController>();
+    filePickerProvider = context.read<FilePickerProvider>();
 
     // Clear dropdown selections when page loads
-    // dropdownProvider.clearSelectedItem('class');
-    // dropdownProvider.clearSelectedItem('division');
-    // dropdownProvider.clearSelectedItem('selectedStudent');
-    // dropdownProvider.clearSelectedItem('selectedYear');
-    // dropdownProvider.clearSelectedItem('selectedMonth');
-    // dropdownProvider.clearSelectedItem('paymentMethod');
-    // dropdownProvider.clearSelectedItem('paymentStatus');
-
-    // dropdownProvider.addListener(() {
-    //   final selectedClass = dropdownProvider.getSelectedItem('class');
-    //   final selectedDivision = dropdownProvider.getSelectedItem('division');
-    // context.read<StudentIdController>().getStudentsFromClassAndDivision(
-    //     className: selectedClass, section: selectedDivision);
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      dropdownProvider.clearSelectedItem('class');
+      dropdownProvider.clearSelectedItem('division');
+      dropdownProvider.clearSelectedItem('selectedYear');
+      dropdownProvider.clearSelectedItem('selectedMonth');
+      dropdownProvider.clearSelectedItem('paymentStatus');
+      dropdownProvider.clearSelectedItem('paymentMethod');
+      filePickerProvider.clearFile();
+      studentIdController.clearSelection();
+    });
   }
 
   @override
@@ -241,8 +242,9 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                     final paymentStatus = context
                         .read<DropdownProvider>()
                         .getSelectedItem('paymentStatus');
-                    final studentId =
-                        context.read<StudentIdController>().selectedStudentId;
+                    final studentId = context
+                        .read<StudentIdController>()
+                        .getSelectedStudentId();
 
                     log(">>>>>>>>>>>>${studentId}");
                     context.read<PaymentController>().addPayment(
