@@ -111,10 +111,11 @@ class _LeaverequestScreenState extends State<LeaverequestScreen>
               time: TimeFormatter.formatTimeFromString(
                   studentLeaveRequest.createdAt.toString()),
               onTap: () {
-                // context.goNamed(
-                //   // AppRouteConst.AdminViewDutyRouteName,
-                //   // extra: value.duties[index],
-                // );
+
+                context.goNamed(
+                  AppRouteConst.studentLeaveRequestDetailsRouteName, extra: studentLeaveRequest,
+                  
+                );
               },
             ));
           });
@@ -146,10 +147,10 @@ class _LeaverequestScreenState extends State<LeaverequestScreen>
               time: TimeFormatter.formatTimeFromString(
                   teacherLeaveRequest.createdAt.toString()),
               onTap: () {
-                // context.goNamed(
-                //   // AppRouteConst.AdminViewDutyRouteName,
-                //   // extra: value.duties[index],
-                // );
+               context.goNamed(
+                  AppRouteConst.teacherLeaveRequestDetailsRouteName, extra: teacherLeaveRequest,
+                  
+                );
               },
             ));
     });
