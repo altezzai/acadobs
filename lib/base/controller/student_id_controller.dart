@@ -19,6 +19,7 @@ class StudentIdController extends ChangeNotifier {
           .getStudentsFromClassAndDivision(
               className: className, section: section);
       if (response.statusCode == 200) {
+        _students.clear();
         _students = (response.data as List<dynamic>).map((student) {
           return {
             'full_name': student['full_name'],
@@ -35,6 +36,34 @@ class StudentIdController extends ChangeNotifier {
 
   void setSelectedStudentId(String? studentId) {
     selectedStudentId = studentId;
+    notifyListeners();
+  }
+
+  // selection student
+  int? _selectedStudentIndex;
+
+  bool isSelected(int index) => _selectedStudentIndex == index;
+
+  void toggleSelection(int index) {
+    if (_selectedStudentIndex == index) {
+      _selectedStudentIndex = null; // Deselect if already selected
+    } else {
+      _selectedStudentIndex = index; // Select new student
+    }
+    notifyListeners();
+  }
+
+  int? getSelectedStudentId() {
+    if (_selectedStudentIndex != null) {
+      return students[_selectedStudentIndex!]['id'];
+    }
+    return null;
+  }
+
+  // Clear all selections
+  void clearSelection() {
+    _selectedStudentIndex = null;
+    _students.clear();
     notifyListeners();
   }
 }

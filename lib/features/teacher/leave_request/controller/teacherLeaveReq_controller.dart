@@ -16,7 +16,7 @@ class TeacherLeaveRequestController extends ChangeNotifier {
   List<TeacherLeaveRequest> get teachersLeaveRequest => _teachersLeaveRequest;
 
 // **********Get all teachers*****************
-  Future<void> getTeacherDetails() async {
+  Future<void> getTeacherLeaverequests() async {
     _isloading = true;
     try {
       final response =

@@ -7,18 +7,18 @@ class CustomDropdown extends StatelessWidget {
   final String label;
   final IconData icon;
   final List<String> items;
-  final ValueChanged<String?>? onChanged;
+  final onChanged;
   final validator;
 
-  const CustomDropdown({
-    Key? key,
-    required this.dropdownKey, // Unique key
-    required this.label,
-    required this.icon,
-    required this.items,
-    this.onChanged, // Add onChanged callback parameter
-    this.validator
-  }) : super(key: key);
+  const CustomDropdown(
+      {Key? key,
+      required this.dropdownKey, // Unique key
+      required this.label,
+      required this.icon,
+      required this.items,
+      this.onChanged, // Add onChanged callback parameter
+      this.validator})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

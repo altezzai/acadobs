@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_name_container.dart';
 
 class AdminHomeScreen extends StatelessWidget {
@@ -41,7 +42,8 @@ class AdminHomeScreen extends StatelessWidget {
                 const Spacer(),
                 GestureDetector(
                   onTap: () {
-                    context.goNamed(AppRouteConst.logoutRouteName);
+                    context.goNamed(AppRouteConst.logoutRouteName,
+                        extra: UserType.admin);
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 30),
@@ -51,6 +53,17 @@ class AdminHomeScreen extends StatelessWidget {
               ],
             ),
             SizedBox(
+              height: Responsive.height * 2,
+            ),
+             _customContainer(
+                  color: Colors.red,
+                  text: 'Leave Requests',
+                  icon: Icons.assignment_add,
+                  ontap: () {
+                    context.pushNamed(
+                        AppRouteConst.LeaveRequestScreenRouteName);
+                  }),
+                   SizedBox(
               height: Responsive.height * 2,
             ),
             Row(
@@ -71,6 +84,38 @@ class AdminHomeScreen extends StatelessWidget {
               ],
             ),
             // ProfileTile(name: name, description: description, icon: icon)
+          ],
+        ),
+      ),
+    );
+  }
+  Widget _customContainer({
+    required Color color,
+    required String text,
+    IconData icon = Icons.dashboard_customize_outlined,
+    required VoidCallback ontap,
+  }) {
+    return InkWell(
+      onTap: ontap,
+      child: Container(
+        padding: EdgeInsets.all(Responsive.height * 3),
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: Responsive.width * 3),
+              child: Icon(
+                icon,
+                color: Colors.white,
+              ),
+            ),
+            Text(
+              text,
+              style: const TextStyle(color: Colors.white, fontSize: 18),
+            ),
           ],
         ),
       ),

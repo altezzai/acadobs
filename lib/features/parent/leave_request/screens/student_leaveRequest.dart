@@ -16,7 +16,7 @@ class StudentLeaveRequestScreen extends StatefulWidget {
 class _StudentLeaveRequestScreenState extends State<StudentLeaveRequestScreen> {
   @override
   void initState() {
-    context.read<StudentLeaveRequestController>().getStudentDetails();
+    context.read<StudentLeaveRequestController>().getStudentLeaveRequests();
     super.initState();
   }
 

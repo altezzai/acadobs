@@ -7,12 +7,13 @@ class ProfileTile extends StatelessWidget {
   final String description;
   final VoidCallback? onPressed;
   final IconData icon;
-  const ProfileTile(
-      {super.key,
-      required this.name,
-      required this.description,
-      this.onPressed,
-      required this.icon});
+  const ProfileTile({
+    super.key,
+    required this.name,
+    required this.description,
+    this.onPressed,
+    this.icon = Icons.person_outline,
+  });
 
   @override
   Widget build(BuildContext context) {

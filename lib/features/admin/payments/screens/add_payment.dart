@@ -5,7 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/controller/student_id_controller.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
+import 'package:school_app/core/controller/file_picker_provider.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
@@ -14,6 +16,7 @@ import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/custom_filepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/admin/payments/controller/payment_controller.dart';
+import 'package:school_app/features/admin/payments/widgets/student_list_tile.dart';
 
 class AddPaymentPage extends StatefulWidget {
   const AddPaymentPage({super.key});
@@ -28,6 +31,8 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _transactionController = TextEditingController();
   late DropdownProvider dropdownProvider;
+  late StudentIdController studentIdController;
+  late FilePickerProvider filePickerProvider;
 
   @override
   void initState() {
@@ -35,21 +40,19 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
 
     // Ensure `StudentIdController` fetches data on dropdown change
     dropdownProvider = context.read<DropdownProvider>();
+    studentIdController = context.read<StudentIdController>();
+    filePickerProvider = context.read<FilePickerProvider>();
 
     // Clear dropdown selections when page loads
-    // dropdownProvider.clearSelectedItem('class');
-    // dropdownProvider.clearSelectedItem('division');
-    // dropdownProvider.clearSelectedItem('selectedStudent');
-    // dropdownProvider.clearSelectedItem('selectedYear');
-    // dropdownProvider.clearSelectedItem('selectedMonth');
-    // dropdownProvider.clearSelectedItem('paymentMethod');
-    // dropdownProvider.clearSelectedItem('paymentStatus');
-
-    dropdownProvider.addListener(() {
-      final selectedClass = dropdownProvider.getSelectedItem('class');
-      final selectedDivision = dropdownProvider.getSelectedItem('division');
-      context.read<StudentIdController>().getStudentsFromClassAndDivision(
-          className: selectedClass, section: selectedDivision);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      dropdownProvider.clearSelectedItem('class');
+      dropdownProvider.clearSelectedItem('division');
+      dropdownProvider.clearSelectedItem('selectedYear');
+      dropdownProvider.clearSelectedItem('selectedMonth');
+      dropdownProvider.clearSelectedItem('paymentStatus');
+      dropdownProvider.clearSelectedItem('paymentMethod');
+      filePickerProvider.clearFile();
+      studentIdController.clearSelection();
     });
   }
 
@@ -61,6 +64,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomAppbar(
                 title: "Add Payment",
@@ -80,6 +84,16 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                       label: 'Class',
                       items: ['8', '9', '10'],
                       icon: Icons.school,
+                      onChanged: (selectedClass) {
+                        final selectedDivision = context
+                            .read<DropdownProvider>()
+                            .getSelectedItem('division');
+                        context
+                            .read<StudentIdController>()
+                            .getStudentsFromClassAndDivision(
+                                className: selectedClass,
+                                section: selectedDivision);
+                      },
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -89,25 +103,46 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                       label: 'Division',
                       items: ['A', 'B', 'C'],
                       icon: Icons.group,
+                      onChanged: (selectedDivision) {
+                        final selectedClass = context
+                            .read<DropdownProvider>()
+                            .getSelectedItem('class');
+                        context
+                            .read<StudentIdController>()
+                            .getStudentsFromClassAndDivision(
+                                className: selectedClass,
+                                section: selectedDivision);
+                      },
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
-              Consumer<StudentIdController>(
-                builder: (context, studentController, child) {
-                  return CustomDropdown(
-                    dropdownKey: 'selectedStudent',
-                    label: 'Select student',
-                    items: studentController.students
-                        .map((student) =>
-                            '${student['id'].toString()}. ${student['full_name']}')
-                        .toList(),
-                    icon: Icons.person,
-                  );
-                },
+              SizedBox(
+                height: Responsive.height * 2,
               ),
-              const SizedBox(height: 16),
+              Text(
+                "Select Student",
+              ),
+              SizedBox(
+                height: Responsive.height * 1,
+              ),
+              Consumer<StudentIdController>(builder: (context, value, child) {
+                return ListView.builder(
+                    itemCount: value.students.length,
+                    shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 4),
+                        child: StudentListTile(
+                            rollNumber:
+                                (value.students[index]['id'].toString()),
+                            name: value.students[index]['full_name'],
+                            index: index),
+                      );
+                    });
+              }),
+              SizedBox(height: Responsive.height * 1),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -189,43 +224,12 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                 ],
               ),
               const SizedBox(height: 16),
-              // GestureDetector(
-              //   onTap: pickFile,
-              //   child: Container(
-              //     decoration: BoxDecoration(
-              //       border: Border.all(color: Colors.grey),
-              //       borderRadius: BorderRadius.circular(25.0),
-              //     ),
-              //     padding: const EdgeInsets.symmetric(
-              //         horizontal: 10.0, vertical: 12.0),
-              //     child: Row(
-              //       children: [
-              //         Icon(Icons.attach_file, color: Colors.black),
-              //         const SizedBox(width: 8),
-              //         Expanded(
-              //           child: Text(
-              //             selectedFile ?? 'Add Receipt',
-              //             style: TextStyle(
-              //               color: selectedFile != null
-              //                   ? Colors.black
-              //                   : Colors.grey,
-              //               fontSize: 16,
-              //             ),
-              //           ),
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              // ),
               CustomFilePicker(label: "Add Receipt"),
               const SizedBox(height: 45),
               Center(
                 child: CustomButton(
                   text: 'Submit',
                   onPressed: () {
-                    final selectedStudent = context
-                        .read<DropdownProvider>()
-                        .getSelectedItem('selectedStudent');
                     final selectedYear = context
                         .read<DropdownProvider>()
                         .getSelectedItem('selectedYear');
@@ -238,12 +242,14 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                     final paymentStatus = context
                         .read<DropdownProvider>()
                         .getSelectedItem('paymentStatus');
-                    final studentId = selectedStudent.split('.').first;
+                    final studentId = context
+                        .read<StudentIdController>()
+                        .getSelectedStudentId();
 
                     log(">>>>>>>>>>>>${studentId}");
                     context.read<PaymentController>().addPayment(
                           context,
-                          userId: int.parse(studentId),
+                          userId: int.parse(studentId.toString()),
                           amount_paid: _amountController.text,
                           payment_date: _dateController.text,
                           month: selectedMonth,

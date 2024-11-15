@@ -16,7 +16,6 @@ import 'package:school_app/features/teacher/attendance/controller/tile_selection
 import 'package:school_app/features/teacher/leave_request/controller/teacherLeaveReq_controller.dart';
 import 'package:school_app/features/parent/leave_request/controller/studentLeaveReq_controller.dart';
 
-
 getProviders() {
   return [
     ChangeNotifierProvider(create: (_) => DropdownProvider()),
@@ -29,16 +28,11 @@ getProviders() {
     ChangeNotifierProvider(create: (_) => PaymentController()),
     ChangeNotifierProvider(create: (_) => StudentIdController()),
     ChangeNotifierProvider(create: (_) => TileSelectionProvider()),
-
     ChangeNotifierProvider(create: (_) => TeacherLeaveRequestController()),
     ChangeNotifierProvider(create: (_) => StudentLeaveRequestController()),
-
     ChangeNotifierProvider(create: (_) => DutyController()),
-
-     ChangeNotifierProvider(create: (_) =>FilePickerProvider()),
-
-
+    ChangeNotifierProvider(create: (_) => FilePickerProvider()),
     ChangeNotifierProvider(create: (_) => AchievementController()),
-
+    ChangeNotifierProvider(create: (_) => AchievementController()),
   ];
 }

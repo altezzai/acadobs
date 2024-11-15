@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
 import 'package:school_app/features/parent/chat/screen/parentchatscreen.dart';
 import 'package:school_app/features/parent/payment/screen/PaymentScreen.dart';
@@ -116,7 +117,8 @@ class HomePage extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     // Navigate to the desired page
-                    context.pushNamed(AppRouteConst.logoutRouteName);
+                    context.goNamed(AppRouteConst.logoutRouteName,
+                        extra: UserType.parent);
                   },
                   child: Padding(
                     padding: EdgeInsets.only(right: 10),

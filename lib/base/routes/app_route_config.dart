@@ -23,9 +23,14 @@ import 'package:school_app/features/admin/teacher_section/model/teacher_model.da
 import 'package:school_app/features/admin/teacher_section/screens/add_teacher.dart';
 import 'package:school_app/features/admin/teacher_section/screens/teacherdetails.dart';
 import 'package:school_app/features/admin/teacher_section/screens/teachers_page.dart';
+import 'package:school_app/features/admin/leave_request/screens/leaveRequest_page.dart';
+import 'package:school_app/features/admin/leave_request/screens/student_leaveRequest_details.dart';
+import 'package:school_app/features/admin/leave_request/screens/teacher_leaveRequest_details.dart';
+
 import 'package:school_app/features/parent/events/screen/eventdetailedscreen.dart';
 import 'package:school_app/features/parent/events/screen/eventscreen.dart';
 import 'package:school_app/features/parent/home/screen/homescreen.dart';
+import 'package:school_app/features/parent/leave_request/model/studentLeaveReq_model.dart';
 import 'package:school_app/features/parent/leave_request/screens/add_student_leaveReq.dart';
 import 'package:school_app/features/parent/leave_request/screens/student_leaveRequest.dart';
 import 'package:school_app/features/parent/notices/screen/noticedetailedscreen.dart';
@@ -39,6 +44,7 @@ import 'package:school_app/features/teacher/duties/duty_detail.dart';
 import 'package:school_app/features/teacher/homework/screens/work.dart';
 import 'package:school_app/features/teacher/homework/screens/work_screen.dart';
 import 'package:school_app/features/teacher/homework/screens/work_view.dart';
+import 'package:school_app/features/teacher/leave_request/model/teacherLeaveReq_model.dart';
 import 'package:school_app/features/teacher/leave_request/screens/add_teacher_leaverequest.dart';
 import 'package:school_app/features/teacher/mark_work/screens/mark_star.dart';
 import 'package:school_app/features/teacher/marks/screens/student_marklist.dart';
@@ -64,10 +70,15 @@ class Approuter {
       GoRoute(
         name: AppRouteConst.logoutRouteName,
         path: '/logout',
-        pageBuilder: (context, state) {
-          return MaterialPage(child: LogoutScreen());
+        builder: (context, state) {
+          final userType = state.extra
+              as UserType; // Extract the userType passed via 'extra'
+          return LogoutScreen(
+              userType:
+                  userType); // Pass the extracted userType to the LogoutScreen
         },
       ),
+
       GoRoute(
         name: AppRouteConst.bottomNavRouteName,
         path: '/bottomNav',
@@ -295,6 +306,31 @@ class Approuter {
         path: '/addteacherleaverequest',
         pageBuilder: (context, state) {
           return MaterialPage(child: AddTeacherLeaveRequest());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.LeaveRequestScreenRouteName,
+        path: '/leaverequestscreen',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: LeaverequestScreen());
+        },
+      ),
+       GoRoute(
+        name: AppRouteConst.studentLeaveRequestDetailsRouteName,
+        path: '/studentleaverequestdetails',
+        
+        pageBuilder: (context, state) {
+          final StudentLeaveRequest studentleaverequests = state.extra as StudentLeaveRequest;
+          return MaterialPage(child: StudentLeaveRequestDetailsPage(studentleaverequests: studentleaverequests,));
+        },
+      ),
+       GoRoute(
+        name: AppRouteConst.teacherLeaveRequestDetailsRouteName,
+        path: '/teacherleaverequestdetails',
+        
+        pageBuilder: (context, state) {
+          final TeacherLeaveRequest teacherleaverequests = state.extra as TeacherLeaveRequest;
+          return MaterialPage(child: TeacherLeaveRequestDetailsPage(teacherleaverequests: teacherleaverequests,));
         },
       ),
       GoRoute(

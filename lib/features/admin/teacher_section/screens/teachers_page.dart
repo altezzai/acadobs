@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/capitalize_first_letter.dart';
+import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+import 'package:school_app/core/shared_widgets/custom_appbar.dart';
+import 'package:school_app/core/shared_widgets/profile_tile.dart';
 import 'package:school_app/features/admin/teacher_section/controller/teacher_controller.dart';
 
 class TeachersPage extends StatefulWidget {
@@ -61,37 +65,23 @@ class _TeachersPageState extends State<TeachersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        title: Text(
-          'Teachers',
-          style: TextStyle(
-              fontWeight: FontWeight.bold, fontSize: 25, color: Colors.black),
-        ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () =>
-              // Navigator.pop(context),
-              context.goNamed(
-            AppRouteConst.bottomNavRouteName,
-            extra: UserType.admin, // Pass the userType to the next screen
-          ),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: CircleAvatar(
-                backgroundImage: AssetImage('assets/student1.png')),
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          children: [
+            SizedBox(
+              height: Responsive.height * 2,
+            ),
+            CustomAppbar(
+              title: 'Teachers',
+              onTap: () {
+                context.goNamed(
+                  AppRouteConst.bottomNavRouteName,
+                  extra: UserType.admin,
+                );
+              },
+            ),
+            Row(
               children: [
                 Expanded(
                   flex: 3,
@@ -152,58 +142,44 @@ class _TeachersPageState extends State<TeachersPage> {
                 ),
               ],
             ),
-          ),
-          Expanded(
-            child:
-                Consumer<TeacherController>(builder: (context, value, child) {
-              if (value.isloading) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              return ListView.builder(
-                itemCount: value.teachers.length,
-                itemBuilder: (context, index) {
-                  // final teacher = filteredTeachers[index];
-                  // final teacher = value.teachers[index];
-                  return Card(
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 1, vertical: 5),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)),
-                    child: GestureDetector(
-                      // onTap: () => _navigateToTeacherDetails(context, teacher),
-                      child: ListTile(
-                          leading: CircleAvatar(
-                            backgroundImage: AssetImage('assets/student5.png'),
-                          ),
-                          title: Text(value.teachers[index].fullName ?? "",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.normal, fontSize: 16)),
-                          subtitle: Text(
-                              value.teachers[index].classGradeHandling ?? "",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.normal, fontSize: 15)),
-                          trailing: TextButton(
-                            child: Text('View'),
-                            onPressed: () => context.pushReplacementNamed(
-                                AppRouteConst.AdminteacherdetailsRouteName,
-                                extra: value.teachers[index]
-                                // {
-                                //   'name': value.teachers[index].fullName,
-                                //   'class':
-                                //       value.teachers[index].classGradeHandling,
-                                //   'image': 'student5.png',
-                                // },
-                                ),
-                          )),
-                    ),
+            SizedBox(
+              height: Responsive.height * 2,
+            ),
+            Expanded(
+              child:
+                  Consumer<TeacherController>(builder: (context, value, child) {
+                if (value.isloading) {
+                  return Center(
+                    child: CircularProgressIndicator(),
                   );
-                },
-              );
-            }),
-          ),
-        ],
+                }
+                return ListView.builder(
+                  itemCount: value.teachers.length,
+                  padding: EdgeInsets.zero,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 4),
+                      child: ProfileTile(
+                        name: capitalizeFirstLetter(
+                            value.teachers[index].fullName ?? ""),
+                        description:
+                            value.teachers[index].classGradeHandling ?? "",
+                        onPressed: () {
+                          context.goNamed(
+                              AppRouteConst.AdminteacherdetailsRouteName,
+                              extra: value.teachers[index]);
+                        },
+                      ),
+                    );
+                  },
+                );
+              }),
+            ),
+            SizedBox(
+              height: Responsive.height * 8.5,
+            )
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {

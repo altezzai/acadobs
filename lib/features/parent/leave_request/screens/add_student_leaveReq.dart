@@ -52,7 +52,8 @@ class _AddStudentLeaveRequestState extends State<AddStudentLeaveRequest> {
                 title: "Add Leave Requset",
                 isProfileIcon: false,
                 onTap: () {
-                  context.goNamed(AppRouteConst.ParentHomeRouteName);
+                  context
+                      .goNamed(AppRouteConst.StudentLeaveRequestViewRouteName);
                 },
               ),
               Text(
