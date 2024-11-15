@@ -118,8 +118,9 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
           itemCount: value.payments.length,
           itemBuilder: (context, index) {
             return PaymentItem(
-              amount: value.payments[index].amountPaid ?? "",
-              name: value.payments[index].transactionId ?? "",
+              amount:
+                  '${value.payments[index].amountPaid ?? ""} - ${value.payments[index].userId ?? ""}',
+              name: value.payments[index].paymentStatus ?? "",
               time: DateFormatter.formatDateString(
                   value.payments[index].paymentDate.toString()),
               status: value.payments[index].paymentStatus ?? "",
