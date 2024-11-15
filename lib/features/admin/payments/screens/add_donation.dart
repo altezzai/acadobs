@@ -62,193 +62,187 @@ class _AddDonationPageState extends State<AddDonationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Padding(
-        padding:
-            const EdgeInsets.all(16.0), // Add padding around the entire content
-        child: Column(
-          children: [
-            CustomAppbar(
-              title: "Add Donation",
-              isProfileIcon: false,
-              onTap: () {
-                context.goNamed(
-                  AppRouteConst.bottomNavRouteName,
-                  extra: UserType.admin, // Pass the userType to the next screen
-                );
-              },
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: CustomDropdown(
-                            dropdownKey: 'class',
-                            label: 'Class',
-                            items: ['8', '9', '10'],
-                            icon: Icons.school,
-                            onChanged: (selectedClass) {
-                              final selectedDivision = context
-                                  .read<DropdownProvider>()
-                                  .getSelectedItem('division');
-                              context
-                                  .read<StudentIdController>()
-                                  .getStudentsFromClassAndDivision(
-                                      className: selectedClass,
-                                      section: selectedDivision);
-                            },
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: CustomDropdown(
-                            dropdownKey: 'division',
-                            label: 'Division',
-                            items: ['A', 'B', 'C'],
-                            icon: Icons.group,
-                            onChanged: (selectedDivision) {
-                              final selectedClass = context
-                                  .read<DropdownProvider>()
-                                  .getSelectedItem('class');
-                              context
-                                  .read<StudentIdController>()
-                                  .getStudentsFromClassAndDivision(
-                                      className: selectedClass,
-                                      section: selectedDivision);
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: Responsive.height * 2,
-                    ),
-                    Text(
-                      "Select Student",
-                    ),
-                    SizedBox(
-                      height: Responsive.height * 1,
-                    ),
-                    Consumer<StudentIdController>(
-                      builder: (context, value, child) {
-                        return ListView.builder(
-                            itemCount: value.students.length,
-                            shrinkWrap: true,
-                            padding: EdgeInsets.zero,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.only(bottom: 4),
-                                child: StudentListTile(
-                                    rollNumber: (value.students[index]['id']
-                                        .toString()),
-                                    name: value.students[index]['full_name'],
-                                    index: index),
-                              );
-                            });
-                      },
-                    ),
-                    SizedBox(height: Responsive.height * 1),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Donation details',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        CustomTextfield(
-                          hintText: 'Title',
-                          controller: _purposeController,
-                          iconData: const Icon(Icons.title),
-                        ),
-                        const SizedBox(height: 16),
-                        CustomTextfield(
-                          hintText: 'Amount',
-                          controller: _amountController,
-                          iconData: const Icon(Icons.currency_rupee),
-                          keyBoardtype: TextInputType.number,
-                        ),
-                        const SizedBox(height: 16),
-                        CustomDatePicker(
-                            dateController: _dateController,
-                            onDateSelected: (selectedDate) {
-                              print(
-                                "End Date selected: $selectedDate",
-                              );
-                            },
-                            label: 'Donation Date'),
-                        const SizedBox(height: 16),
-                        CustomDropdown(
-                          dropdownKey: 'donationType',
-                          label: 'Donation Type',
-                          items: ['One-time', 'Recurring', 'Event-based'],
-                          icon: Icons.currency_rupee,
-                        ),
-                        const SizedBox(height: 16),
-                        CustomDropdown(
-                          dropdownKey: 'paymentMethod',
-                          label: 'Payment Method',
-                          items: [
-                            'Bank Transfer',
-                            'Cash',
-                            'Cheque',
-                            'Credit Card',
-                            'UPI'
-                          ],
-                          icon: Icons.currency_rupee,
-                        ),
-                        const SizedBox(height: 16),
-                        CustomTextfield(
-                          hintText: 'Transaction Id',
-                          controller: _transactionController,
-                          iconData: const Icon(Icons.currency_rupee),
-                          keyBoardtype: TextInputType.number,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    CustomFilePicker(label: "Add Receipt"),
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-              child: CustomButton(
-                text: 'Submit',
-                onPressed: () {
-                  final donationType = context
-                      .read<DropdownProvider>()
-                      .getSelectedItem('donationType');
-                  final paymentMethod = context
-                      .read<DropdownProvider>()
-                      .getSelectedItem('paymentMethod');
-                  final studentId = context
-                      .read<StudentIdController>()
-                      .getSelectedStudentId();
-
-                  log(">>>>>>>>>>>>${studentId}");
-                  context.read<PaymentController>().addDonation(
-                        context,
-                        userId: (studentId.toString()),
-                        amount_donated: _amountController.text,
-                        donation_date: _dateController.text,
-                        purpose: _purposeController.text,
-                        donation_type: donationType,
-                        payment_method: paymentMethod,
-                        transaction_id: _transactionController.text,
-                      );
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(
+              16.0), // Add padding around the entire content
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomAppbar(
+                title: "Add Donation",
+                isProfileIcon: false,
+                onTap: () {
+                  context.goNamed(
+                    AppRouteConst.bottomNavRouteName,
+                    extra:
+                        UserType.admin, // Pass the userType to the next screen
+                  );
                 },
               ),
-            ),
-          ],
+              Row(
+                children: [
+                  Expanded(
+                    child: CustomDropdown(
+                      dropdownKey: 'class',
+                      label: 'Class',
+                      items: ['8', '9', '10'],
+                      icon: Icons.school,
+                      onChanged: (selectedClass) {
+                        final selectedDivision = context
+                            .read<DropdownProvider>()
+                            .getSelectedItem('division');
+                        context
+                            .read<StudentIdController>()
+                            .getStudentsFromClassAndDivision(
+                                className: selectedClass,
+                                section: selectedDivision);
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: CustomDropdown(
+                      dropdownKey: 'division',
+                      label: 'Division',
+                      items: ['A', 'B', 'C'],
+                      icon: Icons.group,
+                      onChanged: (selectedDivision) {
+                        final selectedClass = context
+                            .read<DropdownProvider>()
+                            .getSelectedItem('class');
+                        context
+                            .read<StudentIdController>()
+                            .getStudentsFromClassAndDivision(
+                                className: selectedClass,
+                                section: selectedDivision);
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: Responsive.height * 2,
+              ),
+              Text(
+                "Select Student",
+              ),
+              SizedBox(
+                height: Responsive.height * 1,
+              ),
+              Consumer<StudentIdController>(
+                builder: (context, value, child) {
+                  return ListView.builder(
+                      itemCount: value.students.length,
+                      shrinkWrap: true,
+                      padding: EdgeInsets.zero,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 4),
+                          child: StudentListTile(
+                              rollNumber:
+                                  (value.students[index]['id'].toString()),
+                              name: value.students[index]['full_name'],
+                              index: index),
+                        );
+                      });
+                },
+              ),
+              SizedBox(height: Responsive.height * 1),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Donation details',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  CustomTextfield(
+                    hintText: 'Title',
+                    controller: _purposeController,
+                    iconData: const Icon(Icons.title),
+                  ),
+                  const SizedBox(height: 16),
+                  CustomTextfield(
+                    hintText: 'Amount',
+                    controller: _amountController,
+                    iconData: const Icon(Icons.currency_rupee),
+                    keyBoardtype: TextInputType.number,
+                  ),
+                  const SizedBox(height: 16),
+                  CustomDatePicker(
+                      dateController: _dateController,
+                      onDateSelected: (selectedDate) {
+                        print(
+                          "End Date selected: $selectedDate",
+                        );
+                      },
+                      label: 'Donation Date'),
+                  const SizedBox(height: 16),
+                  CustomDropdown(
+                    dropdownKey: 'donationType',
+                    label: 'Donation Type',
+                    items: ['One-time', 'Recurring', 'Event-based'],
+                    icon: Icons.currency_rupee,
+                  ),
+                  const SizedBox(height: 16),
+                  CustomDropdown(
+                    dropdownKey: 'paymentMethod',
+                    label: 'Payment Method',
+                    items: [
+                      'Bank Transfer',
+                      'Cash',
+                      'Cheque',
+                      'Credit Card',
+                      'UPI'
+                    ],
+                    icon: Icons.currency_rupee,
+                  ),
+                  const SizedBox(height: 16),
+                  CustomTextfield(
+                    hintText: 'Transaction Id',
+                    controller: _transactionController,
+                    iconData: const Icon(Icons.currency_rupee),
+                    keyBoardtype: TextInputType.number,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              CustomFilePicker(label: "Add Receipt"),
+              Padding(
+                padding: const EdgeInsets.only(top: 45),
+                child: CustomButton(
+                  text: 'Submit',
+                  onPressed: () {
+                    final donationType = context
+                        .read<DropdownProvider>()
+                        .getSelectedItem('donationType');
+                    final paymentMethod = context
+                        .read<DropdownProvider>()
+                        .getSelectedItem('paymentMethod');
+                    final studentId = context
+                        .read<StudentIdController>()
+                        .getSelectedStudentId();
+
+                    log(">>>>>>>>>>>>${studentId}");
+                    context.read<PaymentController>().addDonation(
+                          context,
+                          userId: (studentId.toString()),
+                          amount_donated: _amountController.text,
+                          donation_date: _dateController.text,
+                          purpose: _purposeController.text,
+                          donation_type: donationType,
+                          payment_method: paymentMethod,
+                          transaction_id: _transactionController.text,
+                        );
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

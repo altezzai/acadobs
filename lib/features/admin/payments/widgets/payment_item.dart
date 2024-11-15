@@ -19,11 +19,11 @@ class PaymentItem extends StatelessWidget {
       case 'Completed':
         return Colors.green;
       case 'Pending':
-        return Colors.yellow;
+        return Colors.orange;
       case 'Failed':
         return Colors.red;
       default:
-        return Colors.grey;
+        return Colors.green;
     }
   }
 
@@ -31,32 +31,42 @@ class PaymentItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: CircleAvatar(
-        backgroundColor: Colors.green[100],
-        child: Icon(Icons.currency_rupee, color: Colors.green),
+        backgroundColor: _getStatusColor().withOpacity(0.2),
+        child: Icon(Icons.currency_rupee, color: _getStatusColor()),
       ),
       title: Text(
         amount,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+        ),
       ),
-      subtitle: Text(
-        name,
-        style: TextStyle(fontSize: 16),
+      subtitle: Row(
+        mainAxisSize: MainAxisSize.min, // Shrinks the row to fit the child
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: _getStatusColor().withOpacity(0.2),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Text(
+              name,
+              style: TextStyle(
+                color: _getStatusColor(),
+                fontWeight: FontWeight.bold,
+                fontSize: 10,
+              ),
+            ),
+          ),
+        ],
       ),
       trailing: Row(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: MainAxisSize.min, // Keeps the trailing widget compact
         children: [
           Text(
             time,
             style: TextStyle(fontSize: 13),
-          ),
-          SizedBox(width: 10),
-          Container(
-            width: 12,
-            height: 12,
-            decoration: BoxDecoration(
-              color: _getStatusColor(), // Use color based on status
-              shape: BoxShape.circle,
-            ),
           ),
         ],
       ),
