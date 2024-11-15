@@ -29,7 +29,9 @@ class StudentListTile extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 15,
-                child: Text(rollNumber, style: TextStyle(fontSize: 12)),
+                backgroundColor: Colors.black26,
+                child: Text(rollNumber,
+                    style: TextStyle(fontSize: 12, color: Colors.black)),
               ),
               SizedBox(width: 10),
               Text(capitalizeFirstLetter(name), style: TextStyle(fontSize: 16)),
