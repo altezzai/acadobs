@@ -33,11 +33,19 @@ class AppRouteConst {
   static const String PaymentReportRouteName = 'paymentreport';
 
   static const String ParentHomeRouteName = 'parenthome';
-  static const String AddStudentLeaveRequestRouteName = 'addstudentleaverequest';
-  static const String AddTeacherLeaveRequestRouteName = 'addteacherleaverequest';
+
+  static const String StudentLeaveRequestViewRouteName =
+      'studentleaverequestview';
+  static const String AddStudentLeaveRequestRouteName =
+      'addstudentleaverequest';
+  static const String AddTeacherLeaveRequestRouteName =
+      'addteacherleaverequest';
+
+
   static const String LeaveRequestScreenRouteName = 'leaverequestscreen';
   static const String studentLeaveRequestDetailsRouteName = 'studentleaverequestdetails';
   static const String teacherLeaveRequestDetailsRouteName = 'teacherleaverequestdetails';
+
 
   static const String ParentStudentDetailRouteName = 'parentstudentdetail';
   static const String EventsPageRouteName = 'eventspage';
@@ -47,7 +55,6 @@ class AppRouteConst {
   static const String ParentPaymentPageRouteName = 'parentpaymentpage';
   static const String ParentPaymentDetailedPageRouteName =
       'parentpaymentdetailedpage';
-
 
   static const String bottomNavRouteName = 'bottomNav';
 }

@@ -1,16 +1,65 @@
+import 'dart:io';
+
+import 'package:http/http.dart' as http;
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 
 class PaymentDetailPage extends StatelessWidget {
   final String amount;
   final String description;
+  final String file;
 
   const PaymentDetailPage({
     super.key,
     required this.amount,
     required this.description,
+    required this.file,
   });
+
+  Future<void> _downloadFile(BuildContext context, String fileName) async {
+    try {
+      // Request storage permission
+      if (await Permission.storage.request().isGranted) {
+        // Construct the full file URL
+        final String baseUrl = 'https://schoolmanagement.altezzai.com/';
+        final String fileUrl = '$baseUrl$fileName';
+
+        // Send an HTTP GET request to download the file
+        final http.Response response = await http.get(Uri.parse(fileUrl));
+
+        if (response.statusCode == 200) {
+          // Get the local downloads directory
+          Directory? downloadsDirectory = await getExternalStorageDirectory();
+          String filePath = '${downloadsDirectory!.path}$fileName';
+          File file = File(filePath);
+
+          // Write the downloaded file to the local storage
+          await file.writeAsBytes(response.bodyBytes);
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('File downloaded to: $filePath')),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text('Failed to download file from server')),
+          );
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Storage permission denied')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error downloading file: $e')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +113,9 @@ class PaymentDetailPage extends StatelessWidget {
               const Spacer(),
               ElevatedButton(
                 onPressed: () {
-                  // Code to download receipt goes here
+                  _downloadFile(context, file);
+
+                  // Code to download receit goes here
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,

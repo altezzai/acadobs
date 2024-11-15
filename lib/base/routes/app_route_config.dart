@@ -32,6 +32,7 @@ import 'package:school_app/features/parent/events/screen/eventscreen.dart';
 import 'package:school_app/features/parent/home/screen/homescreen.dart';
 import 'package:school_app/features/parent/leave_request/model/studentLeaveReq_model.dart';
 import 'package:school_app/features/parent/leave_request/screens/add_student_leaveReq.dart';
+import 'package:school_app/features/parent/leave_request/screens/student_leaveRequest.dart';
 import 'package:school_app/features/parent/notices/screen/noticedetailedscreen.dart';
 import 'package:school_app/features/parent/notices/screen/noticescreen.dart';
 import 'package:school_app/features/parent/payment/screen/PaymentScreen.dart';
@@ -284,6 +285,16 @@ class Approuter {
         },
       ),
       GoRoute(
+        name: AppRouteConst.StudentLeaveRequestViewRouteName,
+        path: '/studentleaverequestview',
+        pageBuilder: (context, state) {
+          return MaterialPage(
+              child: StudentLeaveRequestScreen(
+           
+          ));
+        },
+      ),
+      GoRoute(
         name: AppRouteConst.AddStudentLeaveRequestRouteName,
         path: '/addstudentleaverequest',
         pageBuilder: (context, state) {
@@ -386,6 +397,7 @@ class Approuter {
               child: PaymentDetailPage(
             amount: paymentData['amount'],
             description: paymentData['description'],
+            file: paymentData['file'],
           ));
         },
       ),

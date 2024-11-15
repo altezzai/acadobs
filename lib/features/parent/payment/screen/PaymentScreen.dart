@@ -60,6 +60,7 @@ class _PaymentPageState extends State<PaymentPage> {
                 time: "09:00 am",
                 transactionId: "",
                 description: "",
+                fileUpload: "",
               ),
               const SizedBox(height: 20),
 
@@ -80,23 +81,25 @@ class _PaymentPageState extends State<PaymentPage> {
                   itemCount: value.payments.take(4).length,
                   itemBuilder: (context, index) {
                     return PaymentCard(
-                        amountTitle: value.payments[index].amountPaid ?? "",
-                        name: value.payments[index].userId.toString(),
-                        transactionId:
-                            value.payments[index].transactionId.toString(),
-                        time: TimeFormatter.formatTimeFromString(
-                          value.payments[index].createdAt.toString(),
-                        ),
-                        description:
-                            value.payments[index].paymentStatus.toString()
-                        // description:
-                        //     value.notices[index].description ?? "",
-                        // noticeTitle: value.notices[index].title ?? "",
-                        // date: DateFormatter.formatDateString(
-                        //     value.notices[index].date.toString()),
-                        // time: TimeFormatter.formatTimeFromString(
-                        //     value.notices[index].createdAt.toString())
-                        );
+                      amountTitle: value.payments[index].amountPaid ?? "",
+                      name: value.payments[index].userId.toString(),
+                      transactionId:
+                          value.payments[index].transactionId.toString(),
+                      time: TimeFormatter.formatTimeFromString(
+                        value.payments[index].createdAt.toString(),
+                      ),
+                      description:
+                          value.payments[index].paymentStatus.toString(),
+                      fileUpload: value.payments[index].fileUpload ?? "",
+
+                      // description:
+                      //     value.notices[index].description ?? "",
+                      // noticeTitle: value.notices[index].title ?? "",
+                      // date: DateFormatter.formatDateString(
+                      //     value.notices[index].date.toString()),
+                      // time: TimeFormatter.formatTimeFromString(
+                      //     value.notices[index].createdAt.toString())
+                    );
                   },
                 );
               }),
@@ -134,6 +137,7 @@ class PaymentCard extends StatelessWidget {
   final String name;
   final String time;
   final String transactionId;
+  final String fileUpload;
 
   const PaymentCard({
     super.key,
@@ -142,6 +146,7 @@ class PaymentCard extends StatelessWidget {
     required this.time,
     required this.description,
     required this.transactionId,
+    required this.fileUpload,
   });
 
   @override
@@ -153,6 +158,7 @@ class PaymentCard extends StatelessWidget {
           extra: {
             'amount': amountTitle,
             'description': description,
+            'file':fileUpload,
           },
         );
       },

@@ -86,7 +86,9 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
 }
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  const HomePage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -179,7 +181,7 @@ class HomePage extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () {
                           context.pushReplacementNamed(
-                            AppRouteConst.AddStudentLeaveRequestRouteName,
+                            AppRouteConst.StudentLeaveRequestViewRouteName,
                           );
                         },
                         style: ElevatedButton.styleFrom(
