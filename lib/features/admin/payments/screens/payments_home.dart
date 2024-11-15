@@ -107,24 +107,6 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
   }
 
   Widget _buildPaymentsList() {
-    // return ListView(
-    //   children: [
-    //     _buildDateHeader('Today'),
-    //     PaymentItem(
-    //         amount: '₹2500', name: 'Muhammed Rafsal N', time: '09:00 am'),
-    //     _buildDateHeader('Yesterday'),
-    //     PaymentItem(
-    //         amount: '₹2500', name: 'Muhammed Rafsal N', time: '09:00 am'),
-    //     PaymentItem(
-    //         amount: '₹2500', name: 'Muhammed Rafsal N', time: '09:00 am'),
-    //     PaymentItem(
-    //         amount: '₹2500', name: 'Muhammed Rafsal N', time: '09:00 am'),
-    //     PaymentItem(
-    //         amount: '₹2500', name: 'Muhammed Rafsal N', time: '08:00 am'),
-    //     PaymentItem(
-    //         amount: '₹2500', name: 'Muhammed Rafsal N', time: '09:00 am'),
-    //   ],
-    // );
     context.read<PaymentController>().getPayments();
     return Consumer<PaymentController>(builder: (context, value, child) {
       if (value.isloading) {
@@ -140,30 +122,13 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
               name: value.payments[index].transactionId ?? "",
               time: DateFormatter.formatDateString(
                   value.payments[index].paymentDate.toString()),
+              status: value.payments[index].paymentStatus ?? "",
             );
           });
     });
   }
 
   Widget _buildDonationsList() {
-    // return ListView(
-    //   children: [
-    //     _buildDateHeader('Today'),
-    //     PaymentItem(
-    //         amount: '₹250', name: 'Muhammed Rafsal N', time: '09:00 am'),
-    //     _buildDateHeader('Yesterday'),
-    //     PaymentItem(
-    //         amount: '₹1500', name: 'Muhammed Rafsal N', time: '09:00 am'),
-    //     PaymentItem(
-    //         amount: '₹700', name: 'Muhammed Rafsal N', time: '09:00 am'),
-    //     PaymentItem(
-    //         amount: '₹300', name: 'Muhammed Rafsal N', time: '09:00 am'),
-    //     PaymentItem(
-    //         amount: '₹2500', name: 'Muhammed Rafsal N', time: '08:00 am'),
-    //     PaymentItem(
-    //         amount: '₹400', name: 'Muhammed Rafsal N', time: '09:00 am'),
-    //   ],
-    // );
     context.read<PaymentController>().getDonations();
     return Consumer<PaymentController>(builder: (context, value, child) {
       if (value.isloading) {
