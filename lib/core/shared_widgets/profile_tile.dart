@@ -5,15 +5,16 @@ import 'package:school_app/base/utils/constants.dart';
 class ProfileTile extends StatelessWidget {
   final String name;
   final String description;
+  final String? imagePath;
   final VoidCallback? onPressed;
   final IconData icon;
-  const ProfileTile({
-    super.key,
-    required this.name,
-    required this.description,
-    this.onPressed,
-    this.icon = Icons.person_outline,
-  });
+  const ProfileTile(
+      {super.key,
+      required this.name,
+      required this.description,
+      this.onPressed,
+      this.icon = Icons.person_outline,
+      this.imagePath});
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +25,10 @@ class ProfileTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(8)),
       child: Row(
         children: [
-          const CircleAvatar(
-            backgroundImage: AssetImage('assets/staff3.png'),
+          CircleAvatar(
+            backgroundImage: NetworkImage(
+              imagePath ?? "",
+            ),
             radius: 25,
           ),
           const SizedBox(

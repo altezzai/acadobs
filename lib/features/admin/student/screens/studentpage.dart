@@ -204,6 +204,8 @@ class _StudentsPageState extends State<StudentsPage> {
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 4),
                               child: ProfileTile(
+                                imagePath:
+                                    value.filteredstudents[index].studentPhoto,
                                 name: capitalizeFirstLetter(
                                     value.filteredstudents[index].fullName ??
                                         ""),

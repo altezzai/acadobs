@@ -23,6 +23,10 @@ class Payment {
   String? fileUpload;
   DateTime? createdAt;
   DateTime? updatedAt;
+  String? fullName;
+  String? paymentClass;
+  String? section;
+  dynamic studentPhoto;
 
   Payment({
     this.id,
@@ -37,6 +41,10 @@ class Payment {
     this.fileUpload,
     this.createdAt,
     this.updatedAt,
+    this.fullName,
+    this.paymentClass,
+    this.section,
+    this.studentPhoto,
   });
 
   factory Payment.fromJson(Map<String, dynamic> json) => Payment(
@@ -58,6 +66,10 @@ class Payment {
         updatedAt: json["updated_at"] == null
             ? null
             : DateTime.parse(json["updated_at"]),
+        fullName: json["full_name"],
+        paymentClass: json["class"],
+        section: json["section"],
+        studentPhoto: json["student_photo"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -74,5 +86,9 @@ class Payment {
         "file_upload": fileUpload,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
+        "full_name": fullName,
+        "class": paymentClass,
+        "section": section,
+        "student_photo": studentPhoto,
       };
 }

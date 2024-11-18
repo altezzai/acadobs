@@ -160,6 +160,7 @@ class _TeachersPageState extends State<TeachersPage> {
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 4),
                       child: ProfileTile(
+                        imagePath: value.teachers[index].profilePhoto,
                         name: capitalizeFirstLetter(
                             value.teachers[index].fullName ?? ""),
                         description:

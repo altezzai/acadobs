@@ -22,6 +22,10 @@ class Donation {
   String? receiptUpload;
   DateTime? createdAt;
   DateTime? updatedAt;
+  String? fullName;
+  String? donationClass;
+  String? section;
+  dynamic studentPhoto;
 
   Donation({
     this.id,
@@ -35,6 +39,10 @@ class Donation {
     this.receiptUpload,
     this.createdAt,
     this.updatedAt,
+    this.fullName,
+    this.donationClass,
+    this.section,
+    this.studentPhoto,
   });
 
   factory Donation.fromJson(Map<String, dynamic> json) => Donation(
@@ -55,6 +63,10 @@ class Donation {
         updatedAt: json["updated_at"] == null
             ? null
             : DateTime.parse(json["updated_at"]),
+        fullName: json["full_name"],
+        donationClass: json["class"],
+        section: json["section"],
+        studentPhoto: json["student_photo"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -70,5 +82,9 @@ class Donation {
         "receipt_upload": receiptUpload,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
+        "full_name": fullName,
+        "class": donationClass,
+        "section": section,
+        "student_photo": studentPhoto,
       };
 }

@@ -23,52 +23,74 @@ class PaymentItem extends StatelessWidget {
       case 'Failed':
         return Colors.red;
       default:
-        return Colors.green;
+        return Colors.green; // Default color for unknown status
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: CircleAvatar(
-        backgroundColor: _getStatusColor().withOpacity(0.2),
-        child: Icon(Icons.currency_rupee, color: _getStatusColor()),
-      ),
-      title: Text(
-        amount,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 16,
+    return Container(
+      margin: const EdgeInsets.symmetric(
+          vertical: 2, horizontal: 2), // Space around each tile
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.grey.shade300, // Border color
+          width: 1.0, // Border width
         ),
+        borderRadius: BorderRadius.circular(8), // Rounded corners
       ),
-      subtitle: Row(
-        mainAxisSize: MainAxisSize.min, // Shrinks the row to fit the child
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: _getStatusColor().withOpacity(0.2),
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: Text(
-              name,
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: _getStatusColor().withOpacity(0.2),
+          child: Icon(Icons.currency_rupee, color: _getStatusColor()),
+        ),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              amount,
               style: TextStyle(
-                color: _getStatusColor(),
                 fontWeight: FontWeight.bold,
-                fontSize: 10,
+                fontSize: 16,
               ),
             ),
-          ),
-        ],
-      ),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min, // Keeps the trailing widget compact
-        children: [
-          Text(
-            time,
-            style: TextStyle(fontSize: 13),
-          ),
-        ],
+            SizedBox(height: 4), // Space between amount and name
+            Text(
+              name,
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey[600], // Subdued color for the name
+              ),
+            ),
+          ],
+        ),
+        trailing: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(
+              time,
+              style: TextStyle(fontSize: 13),
+            ),
+            SizedBox(height: 4), // Space between time and status
+            if (status != null)
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: _getStatusColor().withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Text(
+                  status!,
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                    color: _getStatusColor(),
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

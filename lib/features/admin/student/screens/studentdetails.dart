@@ -91,28 +91,31 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
               ),
             ];
           },
-          body: TabBarView(
-            children: [
-              // First Tab Content
-              _buildDashboardContent(),
-              // Second Tab Content
-              _buildAchievementsContent(),
-              ListView(
-                padding: const EdgeInsets.all(16.0),
-                children: [
-                  SizedBox(height: 20),
-                  Text("Transit Tab Content", style: TextStyle(fontSize: 20)),
-                ],
-              ),
-              // Third Tab Content
-              ListView(
-                padding: const EdgeInsets.all(16.0),
-                children: [
-                  SizedBox(height: 20),
-                  Text("Bike Tab Content", style: TextStyle(fontSize: 20)),
-                ],
-              ),
-            ],
+          body: Padding(
+            padding: const EdgeInsets.only(top: 40),
+            child: TabBarView(
+              children: [
+                // First Tab Content
+                _buildDashboardContent(),
+                // Second Tab Content
+                _buildAchievementsContent(),
+                ListView(
+                  padding: const EdgeInsets.all(16.0),
+                  children: [
+                    SizedBox(height: 20),
+                    Text("Transit Tab Content", style: TextStyle(fontSize: 20)),
+                  ],
+                ),
+                // Third Tab Content
+                ListView(
+                  padding: const EdgeInsets.all(16.0),
+                  children: [
+                    SizedBox(height: 20),
+                    Text("Bike Tab Content", style: TextStyle(fontSize: 20)),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
