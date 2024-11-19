@@ -57,4 +57,5 @@ class AppRouteConst {
       'parentpaymentdetailedpage';
 
   static const String bottomNavRouteName = 'bottomNav';
+  static const String teacherSelectionRouteName = 'teacherSelection';
 }

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:school_app/base/utils/urls.dart';
 
 class ApiServices {
   static const String baseUrl = "https://schoolmanagement.altezzai.com/api";
@@ -65,3 +66,5 @@ class ApiServices {
     }
   }
 }
+
+

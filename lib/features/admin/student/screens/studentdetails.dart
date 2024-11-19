@@ -127,7 +127,9 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
         SizedBox(height: 20),
         Text("Attendance", style: TextStyle(fontSize: 20)),
         SizedBox(height: 20),
-        DailyAttendanceContainer(),
+        DailyAttendanceContainer(
+          
+        ),
         CalenderWidget(),
         // SizedBox(height: 30),
       ],
