@@ -20,7 +20,7 @@ class Payment {
   String? paymentMethod;
   String? transactionId;
   String? paymentStatus;
-  String? fileUpload;
+  dynamic fileUpload;
   DateTime? createdAt;
   DateTime? updatedAt;
 

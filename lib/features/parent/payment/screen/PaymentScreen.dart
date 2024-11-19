@@ -90,7 +90,7 @@ class _PaymentPageState extends State<PaymentPage> {
                       ),
                       description:
                           value.payments[index].paymentStatus.toString(),
-                      fileUpload: value.payments[index].fileUpload ?? "",
+                      fileUpload: value.payments[index].fileUpload,
 
                       // description:
                       //     value.notices[index].description ?? "",
@@ -158,7 +158,7 @@ class PaymentCard extends StatelessWidget {
           extra: {
             'amount': amountTitle,
             'description': description,
-            'file':fileUpload,
+            'file': fileUpload,
           },
         );
       },
