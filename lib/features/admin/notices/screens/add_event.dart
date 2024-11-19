@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
@@ -70,27 +73,71 @@ class _AddEventPageState extends State<AddEventPage> {
               SizedBox(height: 16),
 
               // Add Cover Photo
+              // GestureDetector(
+              //   onTap: pickCoverPhoto, // Call pickCoverPhoto here
+              //   child: Container(
+              //     height: 150,
+              //     decoration: BoxDecoration(
+              //       border: Border.all(color: Colors.grey),
+              //       borderRadius: BorderRadius.circular(30),
+              //     ),
+              //     child: Center(
+              //       child: Column(
+              //         mainAxisAlignment: MainAxisAlignment.center,
+              //         children: [
+              //           Icon(Icons.camera_alt, size: 40),
+              //           SizedBox(height: 8),
+              //           Text(
+              //             coverPhoto ?? 'Add Cover Photo',
+              //             style: TextStyle(fontSize: 16),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              SizedBox(height: 20),
+
+              // Add Cover Photo
               GestureDetector(
-                onTap: pickCoverPhoto, // Call pickCoverPhoto here
-                child: Container(
-                  height: 150,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.camera_alt, size: 40),
-                        SizedBox(height: 8),
-                        Text(
-                          coverPhoto ?? 'Add Cover Photo',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ],
-                    ),
-                  ),
+                onTap: () {
+                  context
+                      .read<NoticeController>()
+                      .pickImage(ImageSource.gallery);
+                },
+                child: Consumer<NoticeController>(
+                  builder: (context, noticeController, _) {
+                    final file = noticeController.chosenFile;
+                    return Container(
+                      height: 150,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(30),
+                        image: file != null
+                            ? DecorationImage(
+                                image: FileImage(File(file.path)),
+                                fit: BoxFit.cover,
+                              )
+                            : null,
+                      ),
+                      child: file == null
+                          ? Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.camera_alt, size: 40),
+                                  SizedBox(height: 8),
+                                  Text(
+                                    'Add Cover Photo',
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : null,
+                    );
+                  },
                 ),
               ),
               SizedBox(height: 20),

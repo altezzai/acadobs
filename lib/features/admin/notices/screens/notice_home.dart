@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/constants.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/core/shared_widgets/add_button.dart';
@@ -34,83 +35,121 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
-            child: CustomAppbar(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CustomAppbar(
               title: "Notices and Events",
               isBackButton: false,
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 16, left: 16, right: 16),
-            child: Row(
+            Row(
               children: [
                 Expanded(
                   child: AddButton(
-                      iconPath: noticeIcon,
-                      onPressed: () {
-                        context.pushNamed(AppRouteConst.AddNoticeRouteName);
-                      },
-                      text: "Add Notice"),
+                    iconPath: noticeIcon,
+                    onPressed: () {
+                      context.pushNamed(AppRouteConst.AddNoticeRouteName);
+                    },
+                    text: "Add Notice",
+                  ),
                 ),
-                SizedBox(
-                  width: 16,
-                ),
+                SizedBox(width: 16),
                 Expanded(
                   child: AddButton(
-                      onPressed: () {
-                        context.pushNamed(AppRouteConst.AddEventRouteName);
-                      },
-                      iconPath: eventIcon,
-                      text: "Add Event"),
+                    onPressed: () {
+                      context.pushNamed(AppRouteConst.AddEventRouteName);
+                    },
+                    iconPath: eventIcon,
+                    text: "Add Event",
+                  ),
                 ),
               ],
             ),
-          ),
-          // Image.asset(
-          //   noticeIcon,
-          //   color: Colors.green,
-          // ),
-          TabBar(
-            controller: _tabController,
-            tabs: [
-              Tab(text: 'Notices'),
-              Tab(text: 'Events'),
-            ],
-          ),
-          Expanded(
-            child: TabBarView(
+            TabBar(
               controller: _tabController,
-              children: [
-                _buildNotices(),
-                _buildEvents(),
+              tabs: [
+                Tab(text: 'Notices'),
+                Tab(text: 'Events'),
               ],
             ),
-          ),
-        ],
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  _buildNotices(),
+                  _buildEvents(),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  /// Function to group items by date with sections for Upcoming and Tomorrow.
+  Map<String, List<T>> groupItemsByDateWithUpcoming<T>(
+    List<T> items,
+    DateTime Function(T) getDate,
+  ) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final tomorrow = today.add(Duration(days: 1));
+    final upcomingThreshold = today.add(Duration(days: 7));
+
+    Map<String, List<T>> groupedItems = {};
+
+    for (var item in items) {
+      final itemDate = getDate(item);
+      String formattedDate;
+
+      if (itemDate.isAfter(today) && itemDate.isBefore(tomorrow)) {
+        formattedDate = "Tomorrow";
+      } else if (itemDate.isAfter(tomorrow) &&
+          itemDate.isBefore(upcomingThreshold)) {
+        formattedDate = "Upcoming";
+      } else if (itemDate.isAtSameMomentAs(today)) {
+        formattedDate = "Today";
+      } else {
+        formattedDate = DateFormatter.formatDateString(itemDate.toString());
+      }
+
+      if (!groupedItems.containsKey(formattedDate)) {
+        groupedItems[formattedDate] = [];
+      }
+      groupedItems[formattedDate]!.add(item);
+    }
+
+    return Map.fromEntries(groupedItems.entries.toList()
+      ..sort((a, b) {
+        if (a.key == "Today") return -1;
+        if (a.key == "Tomorrow") return -1;
+        if (a.key == "Upcoming") return -1;
+        return b.key.compareTo(a.key);
+      }));
   }
 
   Widget _buildNotices() {
     context.read<NoticeController>().getNotices();
     return Consumer<NoticeController>(builder: (context, value, child) {
       if (value.isloading) {
-        return Center(
-          child: CircularProgressIndicator(),
-        );
+        return Center(child: CircularProgressIndicator());
       }
-      return ListView.builder(
-          itemCount: value.notices.length,
-          itemBuilder: (context, index) {
-            final notice = value.notices[index];
-            return NoticeItem(
-                title: notice.title ?? "",
-                date: DateFormatter.formatDateString(notice.date.toString()),
-                time: "9.00 AM");
-          });
+
+      final groupedNotices = groupItemsByDateWithUpcoming(
+        value.notices,
+        (notice) => DateTime.tryParse(notice.date.toString()) ?? DateTime.now(),
+      );
+
+      return _buildGroupedList(groupedNotices, (notice) {
+        return NoticeItem(
+          title: notice.title ?? "",
+          date: notice.description ?? "",
+          time: TimeFormatter.formatTimeFromString(notice.createdAt.toString()),
+        );
+      });
     });
   }
 
@@ -118,21 +157,59 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
     context.read<NoticeController>().getEvents();
     return Consumer<NoticeController>(builder: (context, value, child) {
       if (value.isloading) {
-        return Center(
-          child: CircularProgressIndicator(),
-        );
+        return Center(child: CircularProgressIndicator());
       }
-      return ListView.builder(
-          itemCount: value.events.length,
-          itemBuilder: (context, index) {
-            final event = value.events[index];
-            return EventItem(
-              title: event.title ?? "",
-              description: event.description ?? "",
-              date: DateFormatter.formatDateString(event.eventDate.toString()),
-              imagePath: 'assets/sports_day.png',
-            );
-          });
+
+      final groupedEvents = groupItemsByDateWithUpcoming(
+        value.events,
+        (event) =>
+            DateTime.tryParse(event.eventDate.toString()) ?? DateTime.now(),
+      );
+
+      return _buildGroupedList(groupedEvents, (event) {
+        return EventItem(
+          title: event.title ?? "",
+          description: event.description ?? "",
+          date: TimeFormatter.formatTimeFromString(event.createdAt.toString()),
+          imagePath: 'assets/sports_day.png',
+        );
+      });
     });
+  }
+
+  Widget _buildGroupedList<T>(
+      Map<String, List<T>> groupedItems, Widget Function(T) buildItem) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: groupedItems.entries.map((entry) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildDateHeader(entry.key),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                padding: EdgeInsets.zero,
+                itemCount: entry.value.length,
+                itemBuilder: (context, index) {
+                  return buildItem(entry.value[index]);
+                },
+              ),
+            ],
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  Widget _buildDateHeader(String date) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10, bottom: 5),
+      child: Text(
+        date,
+        style: textThemeData.bodyMedium,
+      ),
+    );
   }
 }

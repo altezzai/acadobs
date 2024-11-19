@@ -46,7 +46,7 @@ class ProfileContainer extends StatelessWidget {
                     border: Border.all(color: whiteColor, width: 2)),
                 child: CircleAvatar(
                   radius: avatarRadius,
-                  backgroundImage: AssetImage(imagePath),
+                  backgroundImage: NetworkImage(imagePath),
                 ),
               ),
             ),

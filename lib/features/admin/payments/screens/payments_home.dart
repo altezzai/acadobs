@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/theme/text_theme.dart';
+import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/constants.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/core/shared_widgets/add_button.dart';
@@ -39,49 +42,26 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
               children: [
                 Expanded(
                   child: AddButton(
-                      iconPath: paymentIcon,
-                      onPressed: () {
-                        context.pushNamed(AppRouteConst.AddPaymentRouteName);
-                      },
-                      text: "Add Payment"),
+                    iconPath: paymentIcon,
+                    onPressed: () {
+                      context.pushNamed(AppRouteConst.AddPaymentRouteName);
+                    },
+                    text: "Add Payment",
+                  ),
                 ),
-                SizedBox(
-                  width: 16,
-                ),
+                SizedBox(width: 16),
                 Expanded(
                   child: AddButton(
-                      iconPath: donationIcon,
-                      onPressed: () {
-                        context.pushNamed(AppRouteConst.AddDonationRouteName);
-                      },
-                      text: "Add Donation"),
+                    iconPath: donationIcon,
+                    onPressed: () {
+                      context.pushNamed(AppRouteConst.AddDonationRouteName);
+                    },
+                    text: "Add Donation",
+                  ),
                 ),
               ],
             ),
-            SizedBox(
-              height: 20,
-            ),
-            // Row(
-            //   children: [
-            //     Expanded(
-            //       child: CustomButton(
-            //         text: 'Add Payment',
-            //         onPressed: () {
-            //           context.pushNamed(AppRouteConst.AddPaymentRouteName);
-            //         },
-            //       ),
-            //     ),
-            //     SizedBox(width: 10),
-            //     Expanded(
-            //       child: CustomButton(
-            //         text: 'Add Donation',
-            //         onPressed: () {
-            //           context.pushNamed(AppRouteConst.AddDonationRouteName);
-            //         },
-            //       ),
-            //     ),
-            //   ],
-            // ),
+            SizedBox(height: 20),
             TabBar(
               controller: _tabController,
               indicatorColor: Colors.black,
@@ -95,7 +75,7 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  _buildPaymentsList(),
+                  SingleChildScrollView(child: _buildPaymentsList()),
                   _buildDonationsList(),
                 ],
               ),
@@ -106,26 +86,93 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
     );
   }
 
+  /// Reusable function to group items by date.
+  Map<String, List<T>> groupItemsByDate<T>(
+    List<T> items,
+    DateTime Function(T) getDate, // Function to extract the date from the item
+  ) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final yesterday = today.subtract(Duration(days: 1));
+
+    Map<String, List<T>> groupedItems = {};
+
+    for (var item in items) {
+      final itemDate = getDate(item);
+      String formattedDate;
+      if (itemDate.isAtSameMomentAs(today)) {
+        formattedDate = "Today";
+      } else if (itemDate.isAtSameMomentAs(yesterday)) {
+        formattedDate = "Yesterday";
+      } else {
+        formattedDate = DateFormat.yMMMMd().format(itemDate);
+      }
+
+      if (!groupedItems.containsKey(formattedDate)) {
+        groupedItems[formattedDate] = [];
+      }
+      groupedItems[formattedDate]!.add(item);
+    }
+
+    // Sort grouped dates with "Today" and "Yesterday" on top.
+    List<MapEntry<String, List<T>>> sortedEntries = [];
+    if (groupedItems.containsKey('Today')) {
+      sortedEntries.add(MapEntry('Today', groupedItems['Today']!));
+      groupedItems.remove('Today');
+    }
+    if (groupedItems.containsKey('Yesterday')) {
+      sortedEntries.add(MapEntry('Yesterday', groupedItems['Yesterday']!));
+      groupedItems.remove('Yesterday');
+    }
+
+    sortedEntries.addAll(
+        groupedItems.entries.toList()..sort((a, b) => b.key.compareTo(a.key)));
+
+    return Map.fromEntries(sortedEntries);
+  }
+
   Widget _buildPaymentsList() {
     context.read<PaymentController>().getPayments();
     return Consumer<PaymentController>(builder: (context, value, child) {
       if (value.isloading) {
-        return Center(
-          child: CircularProgressIndicator(),
-        );
+        return Center(child: CircularProgressIndicator());
       }
-      return ListView.builder(
-          itemCount: value.payments.length,
-          itemBuilder: (context, index) {
-            return PaymentItem(
-              amount:
-                  '${value.payments[index].amountPaid ?? ""} - ${value.payments[index].userId ?? ""}',
-              name: value.payments[index].paymentStatus ?? "",
-              time: DateFormatter.formatDateString(
-                  value.payments[index].paymentDate.toString()),
-              status: value.payments[index].paymentStatus ?? "",
+
+      final groupedPayments = groupItemsByDate(
+        value.payments,
+        (payment) =>
+            DateTime.tryParse(payment.paymentDate.toString()) ?? DateTime.now(),
+      );
+
+      return SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: groupedPayments.entries.map((entry) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildDateHeader(entry.key),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  padding: EdgeInsets.zero,
+                  itemCount: entry.value.length,
+                  itemBuilder: (context, index) {
+                    final payment = entry.value[index];
+                    return PaymentItem(
+                      amount: payment.amountPaid ?? "",
+                      name: capitalizeFirstLetter(payment.fullName ?? ""),
+                      time: TimeFormatter.formatTimeFromString(
+                          payment.createdAt.toString()),
+                      status: payment.paymentStatus ?? "",
+                    );
+                  },
+                ),
+              ],
             );
-          });
+          }).toList(),
+        ),
+      );
     });
   }
 
@@ -133,32 +180,63 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
     context.read<PaymentController>().getDonations();
     return Consumer<PaymentController>(builder: (context, value, child) {
       if (value.isloading) {
-        return Center(
-          child: CircularProgressIndicator(),
-        );
+        return Center(child: CircularProgressIndicator());
       }
-      return ListView.builder(
-          itemCount: value.donations.length,
-          itemBuilder: (context, index) {
-            return PaymentItem(
-              amount: value.donations[index].amountDonated ?? "",
-              name: value.donations[index].purpose ?? "",
-              time: DateFormatter.formatDateString(
-                  value.donations[index].donationDate.toString()),
+
+      final groupedDonations = groupItemsByDate(
+        value.donations,
+        (donation) =>
+            DateTime.tryParse(donation.donationDate.toString()) ??
+            DateTime.now(),
+      );
+
+      return SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: groupedDonations.entries.map((entry) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildDateHeader(entry.key),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  padding: EdgeInsets.zero,
+                  itemCount: entry.value.length,
+                  itemBuilder: (context, index) {
+                    final donation = entry.value[index];
+                    return PaymentItem(
+                      amount: donation.amountDonated ?? "",
+                      name: capitalizeFirstLetter(donation.fullName ?? ""),
+                      time: TimeFormatter.formatTimeFromString(
+                          donation.createdAt.toString()),
+                      status: donation.purpose ?? "",
+                    );
+                  },
+                ),
+              ],
             );
-          });
+          }).toList(),
+        ),
+      );
     });
   }
 
   Widget _buildDateHeader(String date) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Text(
-        date,
-        style: TextStyle(
-          fontWeight: FontWeight.normal,
-        ),
+      padding: const EdgeInsets.only(
+        top: 10,
+        bottom: 5,
       ),
+      child: Text(date, style: textThemeData.bodyMedium),
     );
+  }
+}
+
+extension DateOnlyCompare on DateTime {
+  bool isAtSameMomentAs(DateTime other) {
+    return this.year == other.year &&
+        this.month == other.month &&
+        this.day == other.day;
   }
 }

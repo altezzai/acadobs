@@ -5,6 +5,7 @@ import 'package:school_app/base/utils/constants.dart';
 class ProfileTile extends StatelessWidget {
   final String name;
   final String description;
+  // final String? imagePath;
   final VoidCallback? onPressed;
   final String? imageUrl;
   final IconData icon;

@@ -289,10 +289,7 @@ class Approuter {
         name: AppRouteConst.StudentLeaveRequestViewRouteName,
         path: '/studentleaverequestview',
         pageBuilder: (context, state) {
-          return MaterialPage(
-              child: StudentLeaveRequestScreen(
-           
-          ));
+          return MaterialPage(child: StudentLeaveRequestScreen());
         },
       ),
       GoRoute(
@@ -316,22 +313,28 @@ class Approuter {
           return MaterialPage(child: LeaverequestScreen());
         },
       ),
-       GoRoute(
+      GoRoute(
         name: AppRouteConst.studentLeaveRequestDetailsRouteName,
         path: '/studentleaverequestdetails',
-        
         pageBuilder: (context, state) {
-          final StudentLeaveRequest studentleaverequests = state.extra as StudentLeaveRequest;
-          return MaterialPage(child: StudentLeaveRequestDetailsPage(studentleaverequests: studentleaverequests,));
+          final StudentLeaveRequest studentleaverequests =
+              state.extra as StudentLeaveRequest;
+          return MaterialPage(
+              child: StudentLeaveRequestDetailsPage(
+            studentleaverequests: studentleaverequests,
+          ));
         },
       ),
-       GoRoute(
+      GoRoute(
         name: AppRouteConst.teacherLeaveRequestDetailsRouteName,
         path: '/teacherleaverequestdetails',
-        
         pageBuilder: (context, state) {
-          final TeacherLeaveRequest teacherleaverequests = state.extra as TeacherLeaveRequest;
-          return MaterialPage(child: TeacherLeaveRequestDetailsPage(teacherleaverequests: teacherleaverequests,));
+          final TeacherLeaveRequest teacherleaverequests =
+              state.extra as TeacherLeaveRequest;
+          return MaterialPage(
+              child: TeacherLeaveRequestDetailsPage(
+            teacherleaverequests: teacherleaverequests,
+          ));
         },
       ),
       GoRoute(
