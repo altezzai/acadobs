@@ -63,18 +63,19 @@ class DutyController extends ChangeNotifier {
     required String description,
     required String status,
     required String remark,
-    // required List<int> teachers,
+    required List<int> teachers,
   }) async {
     final loadingProvider =
         Provider.of<LoadingProvider>(context, listen: false); //loading provider
     loadingProvider.setLoading(true); //start loader
     try {
       final response = await DutyServices().addDuty(
-          duty_title: duty_title,
-          description: description,
-          status: status,
-          remark: remark,
-          teachers: [1, 2, 3]);
+        duty_title: duty_title,
+        description: description,
+        status: status,
+        remark: remark,
+        teachers: teachers,
+      );
       if (response.statusCode == 201) {
         log(">>>>>>${response.statusMessage}");
         context.goNamed(AppRouteConst.bottomNavRouteName,

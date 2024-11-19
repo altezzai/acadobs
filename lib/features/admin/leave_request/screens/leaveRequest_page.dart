@@ -112,7 +112,7 @@ class _LeaverequestScreenState extends State<LeaverequestScreen>
                   studentLeaveRequest.createdAt.toString()),
               onTap: () {
 
-                context.goNamed(
+                context.pushNamed(
                   AppRouteConst.studentLeaveRequestDetailsRouteName, extra: studentLeaveRequest,
                   
                 );
@@ -147,7 +147,7 @@ class _LeaverequestScreenState extends State<LeaverequestScreen>
               time: TimeFormatter.formatTimeFromString(
                   teacherLeaveRequest.createdAt.toString()),
               onTap: () {
-               context.goNamed(
+               context.pushNamed(
                   AppRouteConst.teacherLeaveRequestDetailsRouteName, extra: teacherLeaveRequest,
                   
                 );

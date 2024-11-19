@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:school_app/base/utils/responsive.dart';
 
 class DailyAttendanceContainer extends StatelessWidget {
-  const DailyAttendanceContainer({super.key});
+  // final Function(DateTime) onDateSelected;
+  const DailyAttendanceContainer({
+    super.key,
+    //  required this.onDateSelected,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +24,16 @@ class DailyAttendanceContainer extends StatelessWidget {
               const Text("22 Fri"),
               const Text("7/10"),
               Row(
-                children: const [
+                children: [
                   Text(
                     "Date",
                     style: TextStyle(color: Color(0xFF7C7C7C)),
                   ),
-                  Icon(Icons.keyboard_arrow_down_outlined),
+                  InkWell(
+                      onTap: () {
+                        _selectDate(context);
+                      },
+                      child: Icon(Icons.keyboard_arrow_down_outlined)),
                   Text("Today"),
                 ],
               ),
@@ -56,5 +64,31 @@ class DailyAttendanceContainer extends StatelessWidget {
         color: const Color(0xFF07C3A2),
       ),
     );
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    // final DateTime? pickedDate = await
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            textTheme: TextTheme(
+              // Adjust the font size for the calendar picker
+              bodyMedium: TextStyle(fontSize: 14), // Smaller font for dates
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+    // if (pickedDate != null) {
+    //   onDateSelected(pickedDate); // Trigger callback
+    //   dateController.text =
+    //       DateFormat('yyyy-MM-dd').format(pickedDate); // Update controller text
+    // }
   }
 }

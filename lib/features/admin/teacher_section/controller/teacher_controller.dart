@@ -13,6 +13,10 @@ class TeacherController extends ChangeNotifier {
   List<Teacher> _teachers = [];
   List<Teacher> get teachers => _teachers;
 
+  // List to store selected teacher IDs
+  List<int> _selectedTeacherIds = [];
+  List<int> get selectedTeacherIds => _selectedTeacherIds;
+
 // **********Get all teachers*****************
   Future<void> getTeacherDetails() async {
     _isloading = true;
@@ -31,30 +35,6 @@ class TeacherController extends ChangeNotifier {
     _isloading = false;
     notifyListeners();
   }
-
-  // Future<void> addTeacher() async {
-  //   try {
-  //     // Use the formData you've already defined
-  //     Response response =
-  //         await TeacherServices().addTeacher("/teachers", formData);
-  //     if (response.statusCode == 201) {
-  //       print("Teacher added successfully: ${response.data}");
-  //     } else {
-  //       print("Failed to add teacher: ${response.statusCode}");
-  //     }
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
-
-  // FormData formData = FormData.fromMap({
-  //   "name": "Soorya",
-  //   "date_of_birth": "1980-05-15",
-  //   "gender": "female",
-  //   "address": "123 Elm Street, Springfield",
-  //   "phone_number": "458734567368",
-  //   "email": "soo@example.com",
-  // });
 
   // ********Add New Teacher************
   Future<void> addNewTeacher(BuildContext context,
@@ -86,5 +66,27 @@ class TeacherController extends ChangeNotifier {
       loadingProvider.setLoading(false); // End loader
       notifyListeners();
     }
+  }
+
+  // ***********Select teacher for duties*****
+  // Toggle teacher selection
+  void toggleTeacherSelection(int teacherId) {
+    if (_selectedTeacherIds.contains(teacherId)) {
+      _selectedTeacherIds.remove(teacherId);
+    } else {
+      _selectedTeacherIds.add(teacherId);
+    }
+    notifyListeners();
+  }
+
+  // Check if a teacher is selected
+  bool isTeacherSelected(int teacherId) {
+    return _selectedTeacherIds.contains(teacherId);
+  }
+
+  // Clear the selection
+  void clearSelection() {
+    _selectedTeacherIds.clear();
+    notifyListeners();
   }
 }
