@@ -91,6 +91,7 @@ class _DutyViewState extends State<DutyView> {
               Consumer<DutyController>(builder: (context, value, child) {
                 return ListView.builder(
                     shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
                     itemCount: value.assignedteachers.length,
                     itemBuilder: (context, index) {
                       return Card(

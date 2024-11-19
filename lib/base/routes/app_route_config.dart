@@ -7,6 +7,7 @@ import 'package:school_app/core/authentication/screens/logout.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/admin/duties/model/duty_model.dart';
 import 'package:school_app/features/admin/duties/screens/addDutyPage.dart';
+import 'package:school_app/features/admin/duties/screens/teacher_selection_screen.dart';
 import 'package:school_app/features/admin/duties/screens/view_duty.dart';
 import 'package:school_app/features/admin/notices/screens/add_event.dart';
 import 'package:school_app/features/admin/notices/screens/add_notice.dart';
@@ -419,6 +420,13 @@ class Approuter {
         path: '/paymentreport',
         pageBuilder: (context, state) {
           return MaterialPage(child: PaymentReport());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.teacherSelectionRouteName,
+        path: '/teacherSelection',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: TeacherSelectionScreen());
         },
       ),
     ],

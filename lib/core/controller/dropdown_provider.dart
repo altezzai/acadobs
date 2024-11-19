@@ -21,8 +21,7 @@ class DropdownProvider with ChangeNotifier {
   }
 
   void clearSelectedItem(String key) {
-  _selectedItems[key] = "";
-  notifyListeners();
-}
-
+    _selectedItems[key] = "";
+    notifyListeners();
+  }
 }
