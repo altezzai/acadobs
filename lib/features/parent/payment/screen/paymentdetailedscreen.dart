@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
@@ -57,6 +58,7 @@ class _PaymentDetailPageState extends State<PaymentDetailPage> {
           )
               // SnackBar(content: Text('File downloaded to: $filePath')),
               );
+          OpenFile.open(filePath);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
