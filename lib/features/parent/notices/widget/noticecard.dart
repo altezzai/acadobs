@@ -7,6 +7,7 @@ class NoticeCard extends StatelessWidget {
   final String description;
   final String date;
   final String time;
+  final String fileUpload;
 
   const NoticeCard({
     super.key,
@@ -14,6 +15,7 @@ class NoticeCard extends StatelessWidget {
     required this.date,
     required this.description,
     required this.time,
+    required this.fileUpload,
   });
 
   @override
@@ -25,7 +27,7 @@ class NoticeCard extends StatelessWidget {
           extra: {
             'title': noticeTitle,
             'description': description,
-            'fileName': "event.png",
+            'fileUpload': fileUpload,
 
             // 'fileName': "Exam-details.pdf",
             'imageProvider': const AssetImage('assets/class12.png'),

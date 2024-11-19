@@ -46,9 +46,17 @@ class _PaymentDetailPageState extends State<PaymentDetailPage> {
           // Write the downloaded file to the local storage
           await file.writeAsBytes(response.bodyBytes);
 
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('File downloaded to: $filePath')),
-          );
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+              "Successfully downloaded",
+              style: TextStyle(color: Colors.green),
+            ),
+            backgroundColor: Colors.white,
+            shape:
+                BeveledRectangleBorder(borderRadius: BorderRadius.circular(5)),
+          )
+              // SnackBar(content: Text('File downloaded to: $filePath')),
+              );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
