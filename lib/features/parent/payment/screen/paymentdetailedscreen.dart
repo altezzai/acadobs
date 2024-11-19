@@ -8,10 +8,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 
-class PaymentDetailPage extends StatelessWidget {
+class PaymentDetailPage extends StatefulWidget {
   final String amount;
   final String description;
-  final String file;
+  final dynamic file;
 
   const PaymentDetailPage({
     super.key,
@@ -20,12 +20,18 @@ class PaymentDetailPage extends StatelessWidget {
     required this.file,
   });
 
+  @override
+  State<PaymentDetailPage> createState() => _PaymentDetailPageState();
+}
+
+class _PaymentDetailPageState extends State<PaymentDetailPage> {
   Future<void> _downloadFile(BuildContext context, String fileName) async {
     try {
       // Request storage permission
       if (await Permission.storage.request().isGranted) {
         // Construct the full file URL
-        final String baseUrl = 'https://schoolmanagement.altezzai.com/';
+        final String baseUrl =
+            'https://schoolmanagement.altezzai.com/admin/monthly_payments/';
         final String fileUrl = '$baseUrl$fileName';
 
         // Send an HTTP GET request to download the file
@@ -96,7 +102,7 @@ class PaymentDetailPage extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: Center(
                   child: Text(
-                    "₹ $amount",
+                    "₹ ${widget.amount}",
                     style: const TextStyle(
                       fontSize: 50,
                       fontWeight: FontWeight.bold,
@@ -107,13 +113,13 @@ class PaymentDetailPage extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Text(
-                description,
+                widget.description,
                 style: const TextStyle(fontSize: 18),
               ),
               const Spacer(),
               ElevatedButton(
                 onPressed: () {
-                  _downloadFile(context, file);
+                  _downloadFile(context, widget.file);
 
                   // Code to download receit goes here
                 },

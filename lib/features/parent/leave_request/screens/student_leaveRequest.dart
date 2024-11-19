@@ -130,7 +130,7 @@ class _StudentLeaveRequestScreenState extends State<StudentLeaveRequestScreen> {
                   padding: EdgeInsets.zero,
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: value.studentsLeaveRequest.take(4).length,
+                  itemCount: value.studentsLeaveRequest.length,
                   itemBuilder: (context, index) {
                     final leaveRequest = value.studentsLeaveRequest[index];
                     return ListTile(
@@ -138,7 +138,9 @@ class _StudentLeaveRequestScreenState extends State<StudentLeaveRequestScreen> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
                       title: Text(
-                        leaveRequest.leaveType ?? "S",
+                        'Leave Request ${DateFormatter.formatDateString(
+                          leaveRequest.startDate.toString(),
+                        )}',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
