@@ -1,16 +1,21 @@
+import 'dart:developer';
+
+import 'package:file_picker/file_picker.dart'; // imported for date formatting
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:file_picker/file_picker.dart'; // imported for date formatting
 import 'package:provider/provider.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/capitalize_first_letter.dart';
+import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
-import 'package:school_app/core/shared_widgets/custom_textfield.dart';
-import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
+import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/admin/duties/controller/duty_controller.dart';
+import 'package:school_app/features/admin/teacher_section/controller/teacher_controller.dart';
 
 class AddDutyPage extends StatefulWidget {
   @override
@@ -32,6 +37,25 @@ class _AddDutyPageState extends State<AddDutyPage> {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.any,
     );
+  }
+
+  late TeacherController teacherController;
+  late DropdownProvider dropdownProvider;
+  @override
+  void initState() {
+    super.initState();
+
+    teacherController = Provider.of<TeacherController>(context, listen: false);
+    dropdownProvider = context.read<DropdownProvider>();
+
+    // Clear dropdowns and selection after the build phase
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      dropdownProvider.clearAllDropdowns();
+
+      if (teacherController.selectedTeacherIds.isNotEmpty) {
+        teacherController.clearSelection();
+      }
+    });
   }
 
   // Variables to hold selected dates
@@ -120,20 +144,35 @@ class _AddDutyPageState extends State<AddDutyPage> {
                 icon: Icons.pending_actions,
               ),
               SizedBox(height: 20),
+              Text("Selected Teachers:"),
+              SizedBox(height: 10),
+              // Select Staffs
+              InkWell(
+                onTap: () {
+                  context.pushNamed(AppRouteConst.teacherSelectionRouteName);
+                },
+                child: Consumer<TeacherController>(
+                  builder: (context, value, child) {
+                    // Get names of selected teachers
+                    String selectedTeacherNames = value.selectedTeacherIds
+                        .map((id) => value.teachers
+                            .firstWhere((teacher) => teacher.id == id)
+                            .fullName)
+                        .join(", "); // Concatenate names with a comma
 
-              // Select Staffs Dropdown
-              Container(
-                child: CustomDropdown(
-                  dropdownKey: 'selectstaffs',
-                  label: 'Select Staffs',
-                  items: [
-                    'Kaiya Mango',
-                    'Lindsey Calzoni',
-                    'Adison Rhiel Madsen'
-                  ],
-                  icon: Icons.person,
+                    return TextFormField(
+                      decoration: InputDecoration(
+                        hintText: value.selectedTeacherIds.isEmpty
+                            ? "Select Staffs"
+                            : capitalizeEachWord(
+                                selectedTeacherNames), // Display selected names or placeholder
+                        enabled: false,
+                      ),
+                    );
+                  },
                 ),
               ),
+
               SizedBox(height: 20),
 
               // Selected Staffs Display
@@ -144,59 +183,29 @@ class _AddDutyPageState extends State<AddDutyPage> {
                   return _buildStaffChip(staff);
                 }).toList(),
               ),
-              SizedBox(height: 20),
-
-              // Add Documents Button
-              GestureDetector(
-                onTap: pickFile,
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(25.0),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 10.0, vertical: 12.0),
-                  child: Row(
-                    children: [
-                      Icon(Icons.attachment_rounded, color: Colors.black),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          selectedFile ?? 'Add Documents',
-                          style: TextStyle(
-                              color: selectedFile != null
-                                  ? Colors.black
-                                  : Colors.grey,
-                              fontSize: 14),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(height: 30),
+              SizedBox(height: Responsive.height * 1),
 
               // Submit Button
               Center(
-                child: CustomButton(
-                  text: 'Submit',
-                  onPressed: () {
-                    final status = context
-                        .read<DropdownProvider>()
-                        .getSelectedItem('status');
-                    //  final selectstaffs = context
-                    // .read<DropdownProvider>()
-                    // .getSelectedItem('selectstaffs');
-
-                    context.read<DutyController>().addDuty(
-                          context,
+                child: Consumer<TeacherController>(
+                    builder: (context, value, child) {
+                  return CustomButton(
+                    text: 'Submit',
+                    onPressed: () async {
+                      log("List of teacher ids selected: ==== ${value.selectedTeacherIds.toString()}");
+                      final status = context
+                          .read<DropdownProvider>()
+                          .getSelectedItem('status');
+                      context.read<DutyController>().addDuty(context,
                           duty_title: _titleController.text,
                           description: _descriptionController.text,
                           status: status,
                           remark: _remarkController.text,
-                        );
-                  },
-                ),
+                          teachers: value.selectedTeacherIds);
+                      // value.clearSelection();
+                    },
+                  );
+                }),
               ),
             ],
           ),

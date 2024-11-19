@@ -26,7 +26,7 @@ class DutyServices {
       'description': description,
       'status': status,
       'remark': remark,
-      'teachers': teachers
+      'teachers[]': teachers
     };
 
     // Call the ApiServices post method with formData and isFormData: true

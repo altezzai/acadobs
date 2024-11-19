@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/profile_tile.dart';
@@ -160,7 +161,8 @@ class _TeachersPageState extends State<TeachersPage> {
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 4),
                       child: ProfileTile(
-                        imagePath: value.teachers[index].profilePhoto,
+                        imageUrl:
+                            "${baseUrl}${Urls.studentPhotos}${value.teachers[index].profilePhoto}",
                         name: capitalizeFirstLetter(
                             value.teachers[index].fullName ?? ""),
                         description:

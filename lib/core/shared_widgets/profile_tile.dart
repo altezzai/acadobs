@@ -5,8 +5,9 @@ import 'package:school_app/base/utils/constants.dart';
 class ProfileTile extends StatelessWidget {
   final String name;
   final String description;
-  final String? imagePath;
+  // final String? imagePath;
   final VoidCallback? onPressed;
+  final String? imageUrl;
   final IconData icon;
   const ProfileTile(
       {super.key,
@@ -14,7 +15,7 @@ class ProfileTile extends StatelessWidget {
       required this.description,
       this.onPressed,
       this.icon = Icons.person_outline,
-      this.imagePath});
+      this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +27,7 @@ class ProfileTile extends StatelessWidget {
       child: Row(
         children: [
           CircleAvatar(
-            backgroundImage: NetworkImage(
-              imagePath ?? "",
-            ),
+            backgroundImage: NetworkImage(imageUrl ?? ""),
             radius: 25,
           ),
           const SizedBox(
