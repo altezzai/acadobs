@@ -86,6 +86,51 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
     );
   }
 
+  /// Reusable function to group items by date.
+  Map<String, List<T>> groupItemsByDate<T>(
+    List<T> items,
+    DateTime Function(T) getDate, // Function to extract the date from the item
+  ) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final yesterday = today.subtract(Duration(days: 1));
+
+    Map<String, List<T>> groupedItems = {};
+
+    for (var item in items) {
+      final itemDate = getDate(item);
+      String formattedDate;
+      if (itemDate.isAtSameMomentAs(today)) {
+        formattedDate = "Today";
+      } else if (itemDate.isAtSameMomentAs(yesterday)) {
+        formattedDate = "Yesterday";
+      } else {
+        formattedDate = DateFormat.yMMMMd().format(itemDate);
+      }
+
+      if (!groupedItems.containsKey(formattedDate)) {
+        groupedItems[formattedDate] = [];
+      }
+      groupedItems[formattedDate]!.add(item);
+    }
+
+    // Sort grouped dates with "Today" and "Yesterday" on top.
+    List<MapEntry<String, List<T>>> sortedEntries = [];
+    if (groupedItems.containsKey('Today')) {
+      sortedEntries.add(MapEntry('Today', groupedItems['Today']!));
+      groupedItems.remove('Today');
+    }
+    if (groupedItems.containsKey('Yesterday')) {
+      sortedEntries.add(MapEntry('Yesterday', groupedItems['Yesterday']!));
+      groupedItems.remove('Yesterday');
+    }
+
+    sortedEntries.addAll(
+        groupedItems.entries.toList()..sort((a, b) => b.key.compareTo(a.key)));
+
+    return Map.fromEntries(sortedEntries);
+  }
+
   Widget _buildPaymentsList() {
     context.read<PaymentController>().getPayments();
     return Consumer<PaymentController>(builder: (context, value, child) {
@@ -93,52 +138,16 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
         return Center(child: CircularProgressIndicator());
       }
 
-      // Get today's and yesterday's dates.
-      final now = DateTime.now();
-      final today = DateTime(now.year, now.month, now.day);
-      final yesterday = today.subtract(Duration(days: 1));
-
-      // Group payments by their respective dates.
-      Map<String, List> groupedPayments = {};
-
-      for (var payment in value.payments) {
-        final paymentDate = DateTime.tryParse(payment.paymentDate.toString());
-        if (paymentDate == null) continue;
-
-        String formattedDate;
-        if (paymentDate.isAtSameMomentAs(today)) {
-          formattedDate = "Today";
-        } else if (paymentDate.isAtSameMomentAs(yesterday)) {
-          formattedDate = "Yesterday";
-        } else {
-          formattedDate = DateFormat.yMMMMd().format(paymentDate);
-        }
-
-        if (!groupedPayments.containsKey(formattedDate)) {
-          groupedPayments[formattedDate] = [];
-        }
-        groupedPayments[formattedDate]!.add(payment);
-      }
-
-      // Sort the grouped dates such that "Today" and "Yesterday" are at the top,
-      // followed by other dates in descending order.
-      List<MapEntry<String, List>> sortedEntries = [];
-      if (groupedPayments.containsKey('Today')) {
-        sortedEntries.add(MapEntry('Today', groupedPayments['Today']!));
-        groupedPayments.remove('Today');
-      }
-      if (groupedPayments.containsKey('Yesterday')) {
-        sortedEntries.add(MapEntry('Yesterday', groupedPayments['Yesterday']!));
-        groupedPayments.remove('Yesterday');
-      }
-
-      sortedEntries.addAll(groupedPayments.entries.toList()
-        ..sort((a, b) => b.key.compareTo(a.key)));
+      final groupedPayments = groupItemsByDate(
+        value.payments,
+        (payment) =>
+            DateTime.tryParse(payment.paymentDate.toString()) ?? DateTime.now(),
+      );
 
       return SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: sortedEntries.map((entry) {
+          children: groupedPayments.entries.map((entry) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -154,7 +163,7 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
                       amount: payment.amountPaid ?? "",
                       name: capitalizeFirstLetter(payment.fullName ?? ""),
                       time: TimeFormatter.formatTimeFromString(
-                          value.payments[index].createdAt.toString()),
+                          payment.createdAt.toString()),
                       status: payment.paymentStatus ?? "",
                     );
                   },
@@ -174,54 +183,17 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
         return Center(child: CircularProgressIndicator());
       }
 
-      // Get today's and yesterday's dates.
-      final now = DateTime.now();
-      final today = DateTime(now.year, now.month, now.day);
-      final yesterday = today.subtract(Duration(days: 1));
-
-      // Group donations by their respective dates.
-      Map<String, List> groupedDonations = {};
-
-      for (var donation in value.donations) {
-        final donationDate =
-            DateTime.tryParse(donation.donationDate.toString());
-        if (donationDate == null) continue;
-
-        String formattedDate;
-        if (donationDate.isAtSameMomentAs(today)) {
-          formattedDate = "Today";
-        } else if (donationDate.isAtSameMomentAs(yesterday)) {
-          formattedDate = "Yesterday";
-        } else {
-          formattedDate = DateFormat.yMMMMd().format(donationDate);
-        }
-
-        if (!groupedDonations.containsKey(formattedDate)) {
-          groupedDonations[formattedDate] = [];
-        }
-        groupedDonations[formattedDate]!.add(donation);
-      }
-
-      // Sort the grouped dates such that "Today" and "Yesterday" are at the top,
-      // followed by other dates in descending order.
-      List<MapEntry<String, List>> sortedEntries = [];
-      if (groupedDonations.containsKey('Today')) {
-        sortedEntries.add(MapEntry('Today', groupedDonations['Today']!));
-        groupedDonations.remove('Today');
-      }
-      if (groupedDonations.containsKey('Yesterday')) {
-        sortedEntries
-            .add(MapEntry('Yesterday', groupedDonations['Yesterday']!));
-        groupedDonations.remove('Yesterday');
-      }
-
-      sortedEntries.addAll(groupedDonations.entries.toList()
-        ..sort((a, b) => b.key.compareTo(a.key)));
+      final groupedDonations = groupItemsByDate(
+        value.donations,
+        (donation) =>
+            DateTime.tryParse(donation.donationDate.toString()) ??
+            DateTime.now(),
+      );
 
       return SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: sortedEntries.map((entry) {
+          children: groupedDonations.entries.map((entry) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -237,7 +209,7 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
                       amount: donation.amountDonated ?? "",
                       name: capitalizeFirstLetter(donation.fullName ?? ""),
                       time: TimeFormatter.formatTimeFromString(
-                          value.donations[index].createdAt.toString()),
+                          donation.createdAt.toString()),
                       status: donation.purpose ?? "",
                     );
                   },
