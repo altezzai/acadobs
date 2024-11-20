@@ -70,7 +70,7 @@ class TeacherScreen extends StatelessWidget {
               _customContainer(
                   color: Colors.red,
                   text: 'Leave Request',
-                  icon: Icons.note,
+                  icon: Icons.assignment_add,
                   ontap: () {
                     context.pushNamed(
                         AppRouteConst.AddTeacherLeaveRequestRouteName);

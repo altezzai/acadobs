@@ -48,7 +48,7 @@ class _StudentLeaveRequestDetailsPageState extends State<StudentLeaveRequestDeta
               ),
               CustomAppbar(
                 
-                 title: '  Leave request for ${DateFormatter.formatDateString(widget.studentleaverequests.startDate.toString())}',
+                 title: '      Leave request for ${DateFormatter.formatDateString(widget.studentleaverequests.startDate.toString())}',
 
                 isProfileIcon: false,
                 onTap: () {
@@ -119,8 +119,8 @@ class _StudentLeaveRequestDetailsPageState extends State<StudentLeaveRequestDeta
   width: double.infinity,
   child: OutlinedButton(
     onPressed: () {
-      // Your cancel action, such as navigating back or resetting form
-      Navigator.pop(context); // This will navigate back to the previous screen
+     final leaveRequestId = widget.studentleaverequests.id; // Replace with actual ID field
+    context.read<StudentLeaveRequestController>().rejectLeaveRequest(context, leaveRequestId!); // This will navigate back to the previous screen
     },
     style: OutlinedButton.styleFrom(
       foregroundColor: Colors.black, // Text color
@@ -146,7 +146,8 @@ class _StudentLeaveRequestDetailsPageState extends State<StudentLeaveRequestDeta
 CustomButton(
     text: 'Approve',
     onPressed: () {
-      // Your onPressed function here
+       final leaveRequestId = widget.studentleaverequests.id; // Replace with actual ID field
+    context.read<StudentLeaveRequestController>().approveLeaveRequest(context, leaveRequestId!);// Your onPressed function here
     },
   ),
 

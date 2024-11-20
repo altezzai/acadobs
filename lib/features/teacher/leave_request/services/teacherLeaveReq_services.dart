@@ -38,4 +38,25 @@ class TeacherLeaveRequestServices {
       throw Exception('Failed to add TeacherLeaveRequest: $e');
     }
   }
+
+  
+Future<Response> approveLeaveRequest(int leaveRequestId) async {
+    final endpoint = '/leave-request/$leaveRequestId/approve';
+    try {
+      final Response response = await ApiServices.post(endpoint, null);
+      return response;
+    } on DioException catch (e) {
+      throw Exception('Failed to approve Leave Request: $e');
+    }
+  }
+
+  Future<Response> rejectLeaveRequest(int leaveRequestId) async {
+    final endpoint = '/leave-request/$leaveRequestId/reject';
+    try {
+      final Response response = await ApiServices.post(endpoint, null);
+      return response;
+    } on DioException catch (e) {
+      throw Exception('Failed to approve Leave Request: $e');
+    }
+  }
 }
