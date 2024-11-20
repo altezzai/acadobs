@@ -1,6 +1,5 @@
 import 'dart:developer';
-// import 'dart:io';
-
+import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:go_router/go_router.dart';
@@ -59,16 +58,19 @@ class NoticeController extends ChangeNotifier {
   }
 
   // add events
-  Future<void> addNotice(BuildContext context,
-      {required String audience_type,
-      required String title,
-      required String description,
-      required String date}) async {
+  Future<void> addNotice(
+    BuildContext context, {
+    required String audience_type,
+    required String title,
+    required String description,
+    required String date,
+    File? file,
+  }) async {
     final loadingProvider =
         Provider.of<LoadingProvider>(context, listen: false); //loading provider
     loadingProvider.setLoading(true); //start loader
     try {
-      final response = await NoticeServices().addNotice(
+      final response = await NoticeServices().addNotice(context,
           title: title,
           description: description,
           date: date,
