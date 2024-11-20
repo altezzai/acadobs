@@ -105,4 +105,69 @@ class StudentLeaveRequestController extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<void> approveLeaveRequest(BuildContext context, int leaveRequestId) async {
+  try {
+    final response = await StudentLeaveRequestServices().approveLeaveRequest(leaveRequestId);
+    if (response.statusCode == 200) {
+      log("Leave request approved successfully!");
+      // Show success message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Leave request approved successfully!'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else {
+      // Handle failure
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to approve leave request.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  } catch (e) {
+    log(e.toString());
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('An error occurred while approving leave request.'),
+        backgroundColor: Colors.red,
+      ),
+    );
+  }
+}
+
+ Future<void> rejectLeaveRequest(BuildContext context, int leaveRequestId) async {
+  try {
+    final response = await StudentLeaveRequestServices().rejectLeaveRequest(leaveRequestId);
+    if (response.statusCode == 200) {
+      log("Leave request rejected successfully!");
+      // Show success message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Leave request rejected successfully!'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else {
+      // Handle failure
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to reject leave request.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  } catch (e) {
+    log(e.toString());
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('An error occurred while rejecting leave request.'),
+        backgroundColor: Colors.red,
+      ),
+    );
+  }
+}
+
 }
