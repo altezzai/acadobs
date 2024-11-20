@@ -44,7 +44,7 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
                   child: AddButton(
                     iconPath: paymentIcon,
                     onPressed: () {
-                      context.pushNamed(AppRouteConst.AddPaymentRouteName);
+                      context.goNamed(AppRouteConst.AddPaymentRouteName);
                     },
                     text: "Add Payment",
                   ),
@@ -165,6 +165,9 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
                       time: TimeFormatter.formatTimeFromString(
                           payment.createdAt.toString()),
                       status: payment.paymentStatus ?? "",
+                      onTap: () {
+                        context.pushNamed(AppRouteConst.PaymentViewRouteName);
+                      },
                     );
                   },
                 ),
