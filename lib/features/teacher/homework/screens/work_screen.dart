@@ -1,17 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
-import 'package:school_app/features/teacher/homework/data/workdata.dart';
+import 'package:school_app/features/teacher/homework/controller/homework_controller.dart';
+import 'package:school_app/features/teacher/homework/model/homework_model';
 import 'package:school_app/features/teacher/homework/widgets/work_container.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/responsive.dart';
 
-class WorkScreen extends StatelessWidget {
+class WorkScreen extends StatefulWidget {
   WorkScreen({super.key});
 
-  // List<Work> work = workList;
+  @override
+  State<WorkScreen> createState() => _WorkScreenState();
+}
+
+class _WorkScreenState extends State<WorkScreen> {
+  @override
+  void initState() {
+    context.read<HomeworkController>().getHomework();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +51,6 @@ class WorkScreen extends StatelessWidget {
                 height: Responsive.height * 2,
               ),
               WorkContainer(
-                bcolor: Color(0xffFFFCCE),
-                icolor: Color(0xffBCB54F),
-                icon: Icons.business_center_outlined,
                 work: 'Homework',
                 sub: 'Maths',
                 onTap: () {
@@ -57,22 +65,42 @@ class WorkScreen extends StatelessWidget {
                 style: textThemeData.bodyMedium!.copyWith(fontSize: 17),
               ),
               SizedBox(
-                height: Responsive.height * 2,
+                height: Responsive.height * 1,
               ),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: workList.length,
-                itemBuilder: (context, index) {
-                  final workItem = workList[index];
-                  return WorkContainer(
-                    bcolor: workItem.backgroundColor,
-                    icolor: workItem.iconColor,
-                    icon: workItem.icon,
-                    work: workItem.workType,
-                    sub: workItem.subject,
-                    onTap: () => workItem.onTap(context),
-                  );
-                },
+              Consumer<HomeworkController>(builder: (context, value, child) {
+                if (value.isloading) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: value.homework.length,
+                  itemBuilder: (context, index) {
+                    // final workItem = workList[index];
+
+                    // Get the string representation of the assignment title
+                    final assignmentTitle = assignmentTitleValues
+                        .reverse[value.homework[index].assignmentTitle];
+
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 1),
+                      child: WorkContainer(
+                        // bcolor: workItem.backgroundColor,
+                        // icolor: workItem.iconColor,
+                        // icon: workItem.icon,
+                        work: assignmentTitle ??
+                            "No Title", // Fallback to "No Title" if null
+                        sub: subjectValues
+                                .reverse[value.homework[index].subject] ??
+                            "No Subject",
+                        // onTap: () => workItem.onTap(context),
+                      ),
+                    );
+                  },
+                );
+              }),
+              SizedBox(
+                height: Responsive.height * 1,
               ),
             ],
           ),

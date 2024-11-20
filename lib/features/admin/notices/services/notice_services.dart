@@ -1,6 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:provider/provider.dart';
 import 'package:school_app/base/services/api_services.dart';
+import 'package:school_app/core/controller/file_picker_provider.dart';
 
 class NoticeServices {
   // Get Notices
@@ -16,19 +19,24 @@ class NoticeServices {
   }
 
   // Add Notices
-  Future<Response> addNotice({
+  Future<Response> addNotice(
+    BuildContext context, {
     required String audience_type,
     required String title,
     required String description,
     required String date,
   }) async {
+    final fileProvider =
+        Provider.of<FilePickerProvider>(context, listen: false);
     // Create the form data to pass to the API
-    final formData = {
+    final formData = FormData.fromMap({
       'audience_type': audience_type,
       'title': title,
       'description': description,
       'date': date, // Make sure this date is a string
-    };
+      'file_upload':
+          await MultipartFile.fromFile(fileProvider.selectedFile!.path!)
+    });
 
     // Call the ApiServices post method with formData and isFormData: true
     final Response response =
