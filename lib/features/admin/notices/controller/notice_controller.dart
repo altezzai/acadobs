@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
+
 import 'package:flutter/widgets.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -64,6 +64,8 @@ class NoticeController extends ChangeNotifier {
     required String title,
     required String description,
     required String date,
+    String? className,
+    String? division,
     File? file,
   }) async {
     final loadingProvider =
@@ -74,6 +76,8 @@ class NoticeController extends ChangeNotifier {
           title: title,
           description: description,
           date: date,
+          className: className,
+          division: division,
           audience_type: audience_type);
       if (response.statusCode == 201) {
         log(">>>>>>${response.statusMessage}");

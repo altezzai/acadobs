@@ -249,7 +249,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                     log(">>>>>>>>>>>>${studentId}");
                     context.read<PaymentController>().addPayment(
                           context,
-                          userId: int.parse(studentId.toString()),
+                          userId: studentId ?? 0,
                           amount_paid: _amountController.text,
                           payment_date: _dateController.text,
                           month: selectedMonth,

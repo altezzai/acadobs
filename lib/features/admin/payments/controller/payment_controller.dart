@@ -98,7 +98,7 @@ class PaymentController extends ChangeNotifier {
 
   Future<void> addDonation(
     BuildContext context, {
-    required String userId,
+    required int userId,
     required String amount_donated,
     required String donation_date,
     required String purpose,
@@ -112,6 +112,7 @@ class PaymentController extends ChangeNotifier {
     loadingProvider.setLoading(true); //start loader
     try {
       final response = await PaymentServices().addDonation(context,
+      userId: userId,
           amount_donated: amount_donated,
           donation_date: donation_date,
           purpose: purpose,
