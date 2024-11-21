@@ -1,0 +1,153 @@
+// To parse this JSON data, do
+//
+//     final homework = homeworkFromJson(jsonString);
+
+import 'dart:convert';
+
+List<Homework> homeworkFromJson(String str) => List<Homework>.from(json.decode(str).map((x) => Homework.fromJson(x)));
+
+String homeworkToJson(List<Homework> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class Homework {
+    int? id;
+    int? teacherId;
+    ClassGrade? classGrade;
+    Section? section;
+    Subject? subject;
+    AssignmentTitle? assignmentTitle;
+    Description? description;
+    DateTime? assignedDate;
+    DateTime? dueDate;
+    SubmissionType? submissionType;
+    String? fileAttachment;
+    int? totalMarks;
+    Status? status;
+    DateTime? createdAt;
+    DateTime? updatedAt;
+
+    Homework({
+        this.id,
+        this.teacherId,
+        this.classGrade,
+        this.section,
+        this.subject,
+        this.assignmentTitle,
+        this.description,
+        this.assignedDate,
+        this.dueDate,
+        this.submissionType,
+        this.fileAttachment,
+        this.totalMarks,
+        this.status,
+        this.createdAt,
+        this.updatedAt,
+    });
+
+    factory Homework.fromJson(Map<String, dynamic> json) => Homework(
+        id: json["id"],
+        teacherId: json["teacher_id"],
+        classGrade: classGradeValues.map[json["class_grade"]]!,
+        section: sectionValues.map[json["section"]]!,
+        subject: subjectValues.map[json["subject"]]!,
+        assignmentTitle: assignmentTitleValues.map[json["assignment_title"]]!,
+        description: descriptionValues.map[json["description"]]!,
+        assignedDate: json["assigned_date"] == null ? null : DateTime.parse(json["assigned_date"]),
+        dueDate: json["due_date"] == null ? null : DateTime.parse(json["due_date"]),
+        submissionType: submissionTypeValues.map[json["submission_type"]]!,
+        fileAttachment: json["file_attachment"],
+        totalMarks: json["total_marks"],
+        status: statusValues.map[json["status"]]!,
+        createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "teacher_id": teacherId,
+        "class_grade": classGradeValues.reverse[classGrade],
+        "section": sectionValues.reverse[section],
+        "subject": subjectValues.reverse[subject],
+        "assignment_title": assignmentTitleValues.reverse[assignmentTitle],
+        "description": descriptionValues.reverse[description],
+        "assigned_date": "${assignedDate!.year.toString().padLeft(4, '0')}-${assignedDate!.month.toString().padLeft(2, '0')}-${assignedDate!.day.toString().padLeft(2, '0')}",
+        "due_date": "${dueDate!.year.toString().padLeft(4, '0')}-${dueDate!.month.toString().padLeft(2, '0')}-${dueDate!.day.toString().padLeft(2, '0')}",
+        "submission_type": submissionTypeValues.reverse[submissionType],
+        "file_attachment": fileAttachment,
+        "total_marks": totalMarks,
+        "status": statusValues.reverse[status],
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+    };
+}
+
+enum AssignmentTitle {
+    CHAPTER_5_WORKSHEET
+}
+
+final assignmentTitleValues = EnumValues({
+    "Chapter 5 Worksheet": AssignmentTitle.CHAPTER_5_WORKSHEET
+});
+
+enum ClassGrade {
+    GRADE_5,
+    GRADE_6
+}
+
+final classGradeValues = EnumValues({
+    "Grade 5": ClassGrade.GRADE_5,
+    "Grade 6": ClassGrade.GRADE_6
+});
+
+enum Description {
+    COMPLETE_ALL_EXERCISES_FROM_CHAPTER_5
+}
+
+final descriptionValues = EnumValues({
+    "Complete all exercises from Chapter 5.": Description.COMPLETE_ALL_EXERCISES_FROM_CHAPTER_5
+});
+
+enum Section {
+    A
+}
+
+final sectionValues = EnumValues({
+    "a": Section.A
+});
+
+enum Status {
+    PENDING
+}
+
+final statusValues = EnumValues({
+    "Pending": Status.PENDING
+});
+
+enum Subject {
+    HISTORY,
+    MATHEMATICS
+}
+
+final subjectValues = EnumValues({
+    "history": Subject.HISTORY,
+    "Mathematics": Subject.MATHEMATICS
+});
+
+enum SubmissionType {
+    ONLINE
+}
+
+final submissionTypeValues = EnumValues({
+    "Online": SubmissionType.ONLINE
+});
+
+class EnumValues<T> {
+    Map<String, T> map;
+    late Map<T, String> reverseMap;
+
+    EnumValues(this.map);
+
+    Map<T, String> get reverse {
+            reverseMap = map.map((k, v) => MapEntry(v, k));
+            return reverseMap;
+    }
+}

@@ -14,8 +14,12 @@ import 'package:school_app/features/admin/leave_request/screens/student_leaveReq
 import 'package:school_app/features/admin/leave_request/screens/teacher_leaveRequest_details.dart';
 import 'package:school_app/features/admin/notices/screens/add_event.dart';
 import 'package:school_app/features/admin/notices/screens/add_notice.dart';
+import 'package:school_app/features/admin/payments/model/donation_model.dart';
+import 'package:school_app/features/admin/payments/model/payment_model.dart';
 import 'package:school_app/features/admin/payments/screens/add_donation.dart';
 import 'package:school_app/features/admin/payments/screens/add_payment.dart';
+import 'package:school_app/features/admin/payments/screens/donation_view.dart';
+import 'package:school_app/features/admin/payments/screens/payment_view.dart';
 import 'package:school_app/features/admin/reports/screens/payment.dart';
 import 'package:school_app/features/admin/student/model/student_data.dart';
 import 'package:school_app/features/admin/student/screens/addAchivement.dart';
@@ -434,6 +438,28 @@ class Approuter {
         path: '/teacherSelection',
         pageBuilder: (context, state) {
           return MaterialPage(child: TeacherSelectionScreen());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.PaymentViewRouteName,
+        path: '/paymentview',
+        pageBuilder: (context, state) {
+          final payment = state.extra as Payment;
+          return MaterialPage(
+              child: PaymentView(
+            payment: payment,
+          ));
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.DonationViewRouteName,
+        path: '/donationview',
+        pageBuilder: (context, state) {
+          final donation = state.extra as Donation;
+          return MaterialPage(
+              child: DonationView(
+            donation: donation,
+          ));
         },
       ),
     ],

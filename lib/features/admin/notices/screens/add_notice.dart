@@ -5,6 +5,7 @@ import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
+import 'package:school_app/core/shared_widgets/custom_filepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
@@ -147,35 +148,7 @@ class _AddNoticePageState extends State<AddNoticePage> {
             ),
 
             SizedBox(height: 16),
-
-            // Document Upload Button
-            GestureDetector(
-              onTap: pickFile,
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(25.0),
-                ),
-                padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 15.0),
-                child: Row(
-                  children: [
-                    Icon(Icons.attachment_rounded, color: Colors.black),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        selectedFile ?? 'Document',
-                        style: TextStyle(
-                            color: selectedFile != null
-                                ? Colors.black
-                                : Colors.grey,
-                            fontSize: 14),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
+            CustomFilePicker(label: "Add Receipt"),
             SizedBox(height: 40),
             Center(
               child: CustomButton(
@@ -184,8 +157,7 @@ class _AddNoticePageState extends State<AddNoticePage> {
                   final selected_Audience = context
                       .read<DropdownProvider>()
                       .getSelectedItem('targetAudience');
-                  context.read<NoticeController>().addNotice(
-                    context,
+                  context.read<NoticeController>().addNotice(context,
                       audience_type: selected_Audience,
                       title: _titleController.text,
                       description: _descriptionController.text,

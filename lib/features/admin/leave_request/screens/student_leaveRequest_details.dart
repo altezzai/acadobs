@@ -4,14 +4,13 @@ import 'package:school_app/features/parent/leave_request/model/studentLeaveReq_m
 import 'package:school_app/features/parent/leave_request/controller/studentLeaveReq_controller.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
- import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/features/teacher/homework/widgets/view_container.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
-
 
 class StudentLeaveRequestDetailsPage extends StatefulWidget {
   final StudentLeaveRequest studentleaverequests;
@@ -26,7 +25,8 @@ class StudentLeaveRequestDetailsPage extends StatefulWidget {
       _StudentLeaveRequestDetailsPageState();
 }
 
-class _StudentLeaveRequestDetailsPageState extends State<StudentLeaveRequestDetailsPage> {
+class _StudentLeaveRequestDetailsPageState
+    extends State<StudentLeaveRequestDetailsPage> {
   @override
   void initState() {
     context.read<StudentLeaveRequestController>().getStudentLeaveRequests();
@@ -47,15 +47,14 @@ class _StudentLeaveRequestDetailsPageState extends State<StudentLeaveRequestDeta
                 height: Responsive.height * 2,
               ),
               CustomAppbar(
-                
-                 title: '  Leave request for ${DateFormatter.formatDateString(widget.studentleaverequests.startDate.toString())}',
-
+                title:
+                    '      Leave request for ${DateFormatter.formatDateString(widget.studentleaverequests.startDate.toString())}',
                 isProfileIcon: false,
                 onTap: () {
-                  context.goNamed(AppRouteConst.LeaveRequestScreenRouteName,
-                      );
+                  context.goNamed(
+                    AppRouteConst.LeaveRequestScreenRouteName,
+                  );
                 },
-                
               ),
               SizedBox(
                 height: Responsive.height * .09,
@@ -72,8 +71,9 @@ class _StudentLeaveRequestDetailsPageState extends State<StudentLeaveRequestDeta
                 'Leave request for ${DateFormatter.formatDateString(widget.studentleaverequests.startDate.toString())}',
                 style: textThemeData.headlineLarge!.copyWith(
                   fontSize: 20,
-                ),),
-                 SizedBox(
+                ),
+              ),
+              SizedBox(
                 height: Responsive.height * 1,
               ),
               Text(
@@ -82,7 +82,7 @@ class _StudentLeaveRequestDetailsPageState extends State<StudentLeaveRequestDeta
                   fontSize: 14,
                 ),
               ),
-               SizedBox(
+              SizedBox(
                 height: Responsive.height * 1,
               ),
               Text(
@@ -91,7 +91,7 @@ class _StudentLeaveRequestDetailsPageState extends State<StudentLeaveRequestDeta
                   fontSize: 14,
                 ),
               ),
-               SizedBox(
+              SizedBox(
                 height: Responsive.height * 1,
               ),
               Text(
@@ -100,7 +100,7 @@ class _StudentLeaveRequestDetailsPageState extends State<StudentLeaveRequestDeta
                   fontSize: 14,
                 ),
               ),
-                SizedBox(
+              SizedBox(
                 height: Responsive.height * 1,
               ),
               Text(
@@ -115,41 +115,49 @@ class _StudentLeaveRequestDetailsPageState extends State<StudentLeaveRequestDeta
               SizedBox(
                 height: Responsive.height * 3,
               ),
-    SizedBox(
-  width: double.infinity,
-  child: OutlinedButton(
-    onPressed: () {
-      // Your cancel action, such as navigating back or resetting form
-      Navigator.pop(context); // This will navigate back to the previous screen
-    },
-    style: OutlinedButton.styleFrom(
-      foregroundColor: Colors.black, // Text color
-      side: BorderSide(color: Colors.black), // Black border
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(25.0), // Rounded corners
-      ),
-    ),
-    child: Text(
-      'Cancel',
-      style: Theme.of(context).textTheme.bodySmall!.copyWith(
-        color: Colors.black,
-        fontWeight: FontWeight.w500,
-        fontSize: 16,
-      ),
-    ),
-  ),
-),
- SizedBox(
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton(
+                  onPressed: () {
+                    final leaveRequestId = widget.studentleaverequests
+                        .id; // Replace with actual ID field
+                    context
+                        .read<StudentLeaveRequestController>()
+                        .rejectLeaveRequest(context,
+                            leaveRequestId!); // This will navigate back to the previous screen
+                  },
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: Colors.black, // Text color
+                    side: BorderSide(color: Colors.black), // Black border
+                    shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(25.0), // Rounded corners
+                    ),
+                  ),
+                  child: Text(
+                    'Cancel',
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                        ),
+                  ),
+                ),
+              ),
+              SizedBox(
                 height: Responsive.height * 3,
               ),
-
-CustomButton(
-    text: 'Approve',
-    onPressed: () {
-      // Your onPressed function here
-    },
-  ),
-
+              CustomButton(
+                text: 'Approve',
+                onPressed: () {
+                  final leaveRequestId = widget
+                      .studentleaverequests.id; // Replace with actual ID field
+                  context
+                      .read<StudentLeaveRequestController>()
+                      .approveLeaveRequest(context,
+                          leaveRequestId!); // Your onPressed function here
+                },
+              ),
             ],
           ),
         ),

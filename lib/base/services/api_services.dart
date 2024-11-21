@@ -17,7 +17,7 @@ class ApiServices {
   );
 
   // GET request
-  static Future<Response> get(String endpoint,{dynamic data}) async {
+  static Future<Response> get(String endpoint, {dynamic data}) async {
     try {
       final Response response = await _dio.get(endpoint, data: data);
       return response;
@@ -66,5 +66,3 @@ class ApiServices {
     }
   }
 }
-
-

@@ -119,8 +119,9 @@ class _StudentLeaveRequestDetailsPageState extends State<TeacherLeaveRequestDeta
   width: double.infinity,
   child: OutlinedButton(
     onPressed: () {
-      // Your cancel action, such as navigating back or resetting form
-      Navigator.pop(context); // This will navigate back to the previous screen
+     
+      final leaveRequestId = widget.teacherleaverequests.id; // Replace with actual ID field
+    context.read<TeacherLeaveRequestController>().rejectLeaveRequest(context, leaveRequestId!); // This will navigate back to the previous screen
     },
     style: OutlinedButton.styleFrom(
       foregroundColor: Colors.black, // Text color
@@ -146,7 +147,8 @@ class _StudentLeaveRequestDetailsPageState extends State<TeacherLeaveRequestDeta
 CustomButton(
     text: 'Approve',
     onPressed: () {
-      // Your onPressed function here
+       final leaveRequestId = widget.teacherleaverequests.id; // Replace with actual ID field
+    context.read<TeacherLeaveRequestController>().approveLeaveRequest(context, leaveRequestId!);// Your onPressed function here
     },
   ),
 
