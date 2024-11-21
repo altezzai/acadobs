@@ -3,11 +3,13 @@ import 'package:school_app/base/utils/constants.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
+import 'package:school_app/features/teacher/marks/models/marks_upload_model.dart';
 import 'package:school_app/features/teacher/marks/widgets/mark_tile.dart';
 
 // ignore: must_be_immutable
 class StudentMarklist extends StatelessWidget {
-  StudentMarklist({super.key});
+  final MarksUploadModel marksUploadModel;
+  StudentMarklist({super.key, required this.marksUploadModel,});
 
   TextEditingController markController = TextEditingController();
   TextEditingController gradeController = TextEditingController();
