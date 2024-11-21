@@ -166,7 +166,10 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
                           payment.createdAt.toString()),
                       status: payment.paymentStatus ?? "",
                       onTap: () {
-                        context.pushNamed(AppRouteConst.PaymentViewRouteName);
+                        context.goNamed(
+                          AppRouteConst.PaymentViewRouteName,
+                          extra: entry.value[index],
+                        );
                       },
                     );
                   },
