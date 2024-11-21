@@ -217,6 +217,12 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
                       time: TimeFormatter.formatTimeFromString(
                           donation.createdAt.toString()),
                       status: donation.purpose ?? "",
+                      onTap: () {
+                        context.goNamed(
+                          AppRouteConst.DonationViewRouteName,
+                          extra: entry.value[index],
+                        );
+                      },
                     );
                   },
                 ),
