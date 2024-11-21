@@ -32,7 +32,7 @@ class PaymentServices {
     final fileProvider =
         Provider.of<FilePickerProvider>(context, listen: false);
     final formData = FormData.fromMap({
-      'user_id': 1,
+      'user_id': userId,
       'amount_paid': amount_paid,
       'payment_date': payment_date,
       'month': month,
@@ -54,6 +54,7 @@ class PaymentServices {
 // add donation
   Future<Response> addDonation(
     BuildContext context, {
+      required int userId,
     required String amount_donated,
     required String donation_date,
     required String purpose,
@@ -66,7 +67,7 @@ class PaymentServices {
         Provider.of<FilePickerProvider>(context, listen: false);
     // Create FormData to pass to the API
     final formData = FormData.fromMap({
-      'donor_id': '1',
+      'donor_id': userId,
       'amount_donated': amount_donated,
       'donation_date': donation_date,
       'purpose': purpose,

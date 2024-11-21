@@ -1,15 +1,15 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/core/controller/dropdown_provider.dart';
+import 'package:school_app/core/controller/file_picker_provider.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
+import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/custom_filepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
-import 'package:school_app/core/controller/dropdown_provider.dart';
-import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 
 class AddNoticePage extends StatefulWidget {
   @override
@@ -27,20 +27,26 @@ class _AddNoticePageState extends State<AddNoticePage> {
   final TextEditingController classController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  final List<String> classes = ['Class 1', 'Class 2', 'Class 3', 'Class 4'];
 
-  Future<void> pickFile() async {
-    // ignore: unused_local_variable
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.any,
-    );
+  late DropdownProvider dropdownProvider;
+  late FilePickerProvider filePickerProvider;
+  @override
+  void initState() {
+    super.initState();
+    dropdownProvider = Provider.of<DropdownProvider>(context, listen: false);
+    filePickerProvider = context.read<FilePickerProvider>();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      dropdownProvider.clearSelectedItem('class');
+      dropdownProvider.clearSelectedItem('division');
+      dropdownProvider.clearSelectedItem('targetAudience');
+      filePickerProvider.clearFile();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: SingleChildScrollView(
-      // Use SingleChildScrollView here
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -65,33 +71,38 @@ class _AddNoticePageState extends State<AddNoticePage> {
               dropdownKey: 'targetAudience',
               label: 'Select Audience',
               icon: Icons.school,
-              items: ['All', 'Teachers', 'Parents'],
+              items: ['All', 'Specific Class'],
             ),
             SizedBox(height: Responsive.height * 2),
             // Row for Class and Division Dropdowns
-            Row(
-              children: [
-                // Expanded dropdown for Class
-                Expanded(
-                  child: CustomDropdown(
-                    dropdownKey: 'classDropdown',
-                    label: 'Select Class',
-                    icon: Icons.school,
-                    items: ['Class 1', 'Class 2', 'Class 3'],
-                  ),
-                ),
-                SizedBox(width: 16), // Space between the dropdowns
-                // Expanded dropdown for Division
-                Expanded(
-                  child: CustomDropdown(
-                    dropdownKey: 'divisionDropdown',
-                    label: 'Select Division',
-                    icon: Icons.group,
-                    items: ['A', 'B', 'C'],
-                  ),
-                ),
-              ],
-            ),
+            Consumer<DropdownProvider>(builder: (context, value, child) {
+              final dropdownValue = value.getSelectedItem('targetAudience');
+              return dropdownValue == 'All'
+                  ? SizedBox.shrink()
+                  : Row(
+                      children: [
+                        // Expanded dropdown for Class
+                        Expanded(
+                          child: CustomDropdown(
+                            dropdownKey: 'class',
+                            label: 'Select Class',
+                            icon: Icons.school,
+                            items: ['8', '9', '10'],
+                          ),
+                        ),
+                        SizedBox(width: 16), // Space between the dropdowns
+                        // Expanded dropdown for Division
+                        Expanded(
+                          child: CustomDropdown(
+                            dropdownKey: 'division',
+                            label: 'Select Division',
+                            icon: Icons.group,
+                            items: ['A', 'B', 'C'],
+                          ),
+                        ),
+                      ],
+                    );
+            }),
             SizedBox(height: 16),
             // Date Picker
             CustomDatePicker(
@@ -157,7 +168,14 @@ class _AddNoticePageState extends State<AddNoticePage> {
                   final selected_Audience = context
                       .read<DropdownProvider>()
                       .getSelectedItem('targetAudience');
+                  String selectedClass =
+                      context.read<DropdownProvider>().getSelectedItem('class');
+                  String selectedDivision = context
+                      .read<DropdownProvider>()
+                      .getSelectedItem('division');
                   context.read<NoticeController>().addNotice(context,
+                      className: selectedClass,
+                      division: selectedDivision,
                       audience_type: selected_Audience,
                       title: _titleController.text,
                       description: _descriptionController.text,

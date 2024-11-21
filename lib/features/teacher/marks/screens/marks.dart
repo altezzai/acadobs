@@ -4,17 +4,15 @@ import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
+import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
+import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
-import 'package:school_app/features/teacher/data/dropdown_data.dart';
-
 
 // ignore: must_be_immutable
 class ProgressReport extends StatelessWidget {
   ProgressReport({super.key});
 
-  List<DropdownMenuItem<String>> allClasses = DropdownData.allClasses;
-  List<DropdownMenuItem<String>> allDivisions = DropdownData.allDivisions;
-  List<DropdownMenuItem<String>> subjects = DropdownData.subjects;
+  final TextEditingController _dateController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -27,40 +25,71 @@ class ProgressReport extends StatelessWidget {
               title: "Progress Report",
               isBackButton: false,
             ),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //   children: [
-            //     Expanded(
-            //       child: CustomDropdown(
-            //           icon: Icons.school,
-            //           label: "Select Class",
-            //           items: ["1", "2", "3", "4", "5"]),
-            //     ),
-            //     // SizedBox(width: Responsive.width * 6),
-            //     Expanded(
-            //       child: CustomDropdown(
-            //           icon: Icons.school,
-            //           label: "Select Period",
-            //           items: ["A", "B", "C", "D", "E"]),
-            //     ),
-            //   ],
-            // ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: CustomDropdown(
+                    dropdownKey: 'class',
+                    icon: Icons.school_outlined,
+                    label: "Select Class",
+                    items: ["6", "7", "8", "9", "10"],
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please select a class";
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                SizedBox(width: Responsive.width * 1),
+                Expanded(
+                  child: CustomDropdown(
+                    dropdownKey: 'division',
+                    icon: Icons.access_time,
+                    label: "Select Division",
+                    items: ["A", "B", "C", "D", "E"],
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please select a division";
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ],
+            ),
             SizedBox(height: Responsive.height * 1),
             CustomTextfield(
               hintText: "Exam",
               iconData: Icon(Icons.text_fields),
             ),
             SizedBox(height: Responsive.height * 1),
-
-            // Dropdown for Selecting Subjects
-            // CustomDropdown(icon: Icons.school, label: "Select Subject", items: [
-            //   "Physics",
-            //   "Chemistry",
-            // ]),
+            CustomDropdown(
+              dropdownKey: 'subject',
+              icon: Icons.access_time,
+              label: "Select Subject",
+              items: ["Physics", "Chemistry", "Mathematics"],
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Please select a subject";
+                }
+                return null;
+              },
+            ),
             SizedBox(height: Responsive.height * 1),
-            CustomTextfield(
-              hintText: "dd/mm/yyyy",
-              iconData: const Icon(Icons.calendar_month),
+            CustomDatePicker(
+              label: "Date",
+              dateController: _dateController,
+              onDateSelected: (selectedDate) {
+                print("Date selected: $selectedDate");
+              },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Please select a date";
+                }
+                return null;
+              },
             ),
             SizedBox(height: Responsive.height * 1),
             CustomTextfield(
@@ -69,7 +98,7 @@ class ProgressReport extends StatelessWidget {
             ),
             SizedBox(height: Responsive.height * 3),
             CustomButton(
-                text: "Enter Mark",
+                text: "Enter Marks",
                 onPressed: () {
                   context.pushNamed(AppRouteConst.marksRouteName);
                 })

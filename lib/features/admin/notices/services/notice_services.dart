@@ -25,12 +25,16 @@ class NoticeServices {
     required String title,
     required String description,
     required String date,
+    String? className,
+    String? division,
   }) async {
     final fileProvider =
         Provider.of<FilePickerProvider>(context, listen: false);
     // Create the form data to pass to the API
     final formData = FormData.fromMap({
       'audience_type': audience_type,
+      'class':className,
+      'division':division,
       'title': title,
       'description': description,
       'date': date, // Make sure this date is a string

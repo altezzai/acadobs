@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/constants.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
+import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/shared_widgets/add_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/admin/payments/controller/payment_controller.dart';
@@ -151,7 +152,9 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(height: Responsive.height * 1),
                 _buildDateHeader(entry.key),
+                SizedBox(height: Responsive.height * 1),
                 ListView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
@@ -174,6 +177,7 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
                     );
                   },
                 ),
+                SizedBox(height: Responsive.height * 1),
               ],
             );
           }).toList(),
@@ -203,7 +207,9 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(height: Responsive.height * 1),
                 _buildDateHeader(entry.key),
+                SizedBox(height: Responsive.height * 1),
                 ListView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
@@ -226,6 +232,7 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
                     );
                   },
                 ),
+                SizedBox(height: Responsive.height * 1),
               ],
             );
           }).toList(),
