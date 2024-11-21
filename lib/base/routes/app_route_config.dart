@@ -11,8 +11,10 @@ import 'package:school_app/features/admin/duties/screens/teacher_selection_scree
 import 'package:school_app/features/admin/duties/screens/view_duty.dart';
 import 'package:school_app/features/admin/notices/screens/add_event.dart';
 import 'package:school_app/features/admin/notices/screens/add_notice.dart';
+import 'package:school_app/features/admin/payments/model/payment_model.dart';
 import 'package:school_app/features/admin/payments/screens/add_donation.dart';
 import 'package:school_app/features/admin/payments/screens/add_payment.dart';
+import 'package:school_app/features/admin/payments/screens/payment_view.dart';
 import 'package:school_app/features/admin/reports/screens/payment.dart';
 import 'package:school_app/features/admin/student/model/student_data.dart';
 import 'package:school_app/features/admin/student/screens/addAchivement.dart';
@@ -430,6 +432,17 @@ class Approuter {
         path: '/teacherSelection',
         pageBuilder: (context, state) {
           return MaterialPage(child: TeacherSelectionScreen());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.PaymentViewRouteName,
+        path: '/paymentview',
+        pageBuilder: (context, state) {
+          final payment = state.extra as Payment;
+          return MaterialPage(
+              child: PaymentView(
+            payment: payment,
+          ));
         },
       ),
     ],
