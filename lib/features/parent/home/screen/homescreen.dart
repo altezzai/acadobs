@@ -25,6 +25,7 @@ class ParentHomeScreen extends StatefulWidget {
 class _ParentHomeScreenState extends State<ParentHomeScreen> {
   @override
   void initState() {
+    context.read<NoticeController>().getEvents();
     context.read<NoticeController>().getNotices();
     super.initState();
   }
