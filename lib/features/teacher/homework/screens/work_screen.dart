@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/teacher/homework/controller/homework_controller.dart';
-import 'package:school_app/features/teacher/homework/model/homework_model';
 import 'package:school_app/features/teacher/homework/widgets/work_container.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
@@ -76,25 +76,18 @@ class _WorkScreenState extends State<WorkScreen> {
                   physics: NeverScrollableScrollPhysics(),
                   itemCount: value.homework.length,
                   itemBuilder: (context, index) {
-                    // final workItem = workList[index];
-
-                    // Get the string representation of the assignment title
-                    final assignmentTitle = assignmentTitleValues
-                        .reverse[value.homework[index].assignmentTitle];
-
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 1),
                       child: WorkContainer(
-                        // bcolor: workItem.backgroundColor,
-                        // icolor: workItem.iconColor,
-                        // icon: workItem.icon,
-                        work: assignmentTitle ??
-                            "No Title", // Fallback to "No Title" if null
-                        sub: subjectValues
-                                .reverse[value.homework[index].subject] ??
-                            "No Subject",
-                        // onTap: () => workItem.onTap(context),
-                      ),
+                          // bcolor: workItem.backgroundColor,
+                          // icolor: workItem.iconColor,
+                          // icon: workItem.icon,
+                          work:
+                              value.homework[index].assignmentTitle.toString(),
+                          sub: capitalizeFirstLetter(
+                              value.homework[index].subject.toString())
+                          // onTap: () => workItem.onTap(context),
+                          ),
                     );
                   },
                 );

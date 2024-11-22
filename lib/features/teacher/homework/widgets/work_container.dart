@@ -61,7 +61,7 @@ class WorkContainer extends StatelessWidget {
               Text(
                 work,
                 style: textThemeData.headlineMedium?.copyWith(fontSize: 16) ??
-                    const TextStyle(fontSize: 16), // Null check
+                    const TextStyle(fontSize: 16),
               ),
               Text(
                 sub,
