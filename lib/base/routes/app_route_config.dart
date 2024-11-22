@@ -395,7 +395,7 @@ class Approuter {
               child: NoticeDetailPage(
             title: noticeData['title'],
             description: noticeData['description'],
-            fileName: noticeData['fileName'],
+            fileUpload: noticeData['fileUpload'],
             imageProvider: noticeData['imageProvider'],
           ));
         },

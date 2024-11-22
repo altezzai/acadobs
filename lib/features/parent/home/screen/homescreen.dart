@@ -25,6 +25,7 @@ class ParentHomeScreen extends StatefulWidget {
 class _ParentHomeScreenState extends State<ParentHomeScreen> {
   @override
   void initState() {
+    context.read<NoticeController>().getEvents();
     context.read<NoticeController>().getNotices();
     super.initState();
   }
@@ -250,7 +251,7 @@ class HomePage extends StatelessWidget {
                         padding: EdgeInsets.zero,
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: value.notices.take(3).length,
+                        itemCount: value.notices.take(2).length,
                         itemBuilder: (context, index) {
                           return NoticeCard(
                               description:
@@ -259,7 +260,9 @@ class HomePage extends StatelessWidget {
                               date: DateFormatter.formatDateString(
                                   value.notices[index].date.toString()),
                               time: TimeFormatter.formatTimeFromString(
-                                  value.notices[index].createdAt.toString()));
+                                  value.notices[index].createdAt.toString()),
+                              fileUpload:
+                                  value.notices[index].fileUpload ?? "");
                         },
                       );
                     }),

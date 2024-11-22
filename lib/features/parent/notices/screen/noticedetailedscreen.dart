@@ -126,48 +126,75 @@
 //   }
 // }
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
-import 'package:flutter/services.dart' show ByteData, rootBundle;
+import 'package:http/http.dart' as http;
 
 class NoticeDetailPage extends StatelessWidget {
   final String title;
   final String description;
-  final String fileName;
+  final String fileUpload;
   final ImageProvider imageProvider;
 
   const NoticeDetailPage({
     super.key,
     required this.title,
     required this.description,
-    required this.fileName,
+    required this.fileUpload,
     required this.imageProvider,
   });
 
-  Future<void> _downloadFile(BuildContext context) async {
+  Future<void> _downloadFile(BuildContext context, String fileName) async {
     try {
       // Request storage permission
       if (await Permission.storage.request().isGranted) {
-        // Retrieve the file from assets
-        ByteData data = await rootBundle.load('assets/$fileName');
-        List<int> bytes = data.buffer.asUint8List();
+        // Construct the full file URL
+        final String baseUrl =
+            'https://schoolmanagement.altezzai.com/admin/notices/';
+        final String fileUrl = '$baseUrl$fileName';
 
-        // Get the local downloads directory
-        Directory? downloadsDirectory = await getExternalStorageDirectory();
+        // Send an HTTP GET request to download the file
+        final http.Response response = await http.get(Uri.parse(fileUrl));
 
-        // Define the file path
-        String filePath = '${downloadsDirectory!.path}/$fileName';
-        File file = File(filePath);
+        if (response.statusCode == 200) {
+          // Get the local downloads directory
+          Directory? downloadsDirectory = await getExternalStorageDirectory();
+          String filePath = '${downloadsDirectory!.path}$fileName';
+          File file = File(filePath);
 
-        // Write the file to the local downloads folder
-        await file.writeAsBytes(bytes);
+          // Write the downloaded file to the local storage
+          await file.writeAsBytes(response.bodyBytes);
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('File downloaded to: $filePath')),
-        );
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+              "Successfully downloaded",
+              style: TextStyle(color: Colors.green),
+            ),
+            backgroundColor: Colors.white,
+            shape:
+                BeveledRectangleBorder(borderRadius: BorderRadius.circular(5)),
+          )
+              // SnackBar(content: Text('File downloaded to: $filePath')),
+              );
+          final result = await OpenFile.open(filePath);
+          if (result.type != ResultType.done) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Failed to open the file: ${result.message}'),
+              ),
+            );
+          }
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text('Failed to download file from server')),
+          );
+        }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Storage permission denied')),
@@ -242,7 +269,7 @@ class NoticeDetailPage extends StatelessWidget {
 
               // PDF Download Section
               GestureDetector(
-                onTap: () => _downloadFile(context),
+                onTap: () => _downloadFile(context, fileUpload),
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
@@ -263,7 +290,7 @@ class NoticeDetailPage extends StatelessWidget {
                           ),
                           const SizedBox(width: 10),
                           Text(
-                            fileName,
+                            fileUpload,
                             style: const TextStyle(
                               color: Colors.black,
                               fontSize: 16,
