@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/shared_widgets/calender_widget.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/profile_container.dart';
@@ -51,7 +52,8 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                         },
                       ),
                       ProfileContainer(
-                        imagePath: "assets/staff3.png",
+                        imagePath:
+                            "${baseUrl}${Urls.studentPhotos}${widget.student.studentPhoto}",
                         name: capitalizeFirstLetter(
                             widget.student.fullName ?? ""),
                         description:
@@ -91,28 +93,31 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
               ),
             ];
           },
-          body: TabBarView(
-            children: [
-              // First Tab Content
-              _buildDashboardContent(),
-              // Second Tab Content
-              _buildAchievementsContent(),
-              ListView(
-                padding: const EdgeInsets.all(16.0),
-                children: [
-                  SizedBox(height: 20),
-                  Text("Transit Tab Content", style: TextStyle(fontSize: 20)),
-                ],
-              ),
-              // Third Tab Content
-              ListView(
-                padding: const EdgeInsets.all(16.0),
-                children: [
-                  SizedBox(height: 20),
-                  Text("Bike Tab Content", style: TextStyle(fontSize: 20)),
-                ],
-              ),
-            ],
+          body: Padding(
+            padding: const EdgeInsets.only(top: 40),
+            child: TabBarView(
+              children: [
+                // First Tab Content
+                _buildDashboardContent(),
+                // Second Tab Content
+                _buildAchievementsContent(),
+                ListView(
+                  padding: const EdgeInsets.all(16.0),
+                  children: [
+                    SizedBox(height: 20),
+                    Text("Transit Tab Content", style: TextStyle(fontSize: 20)),
+                  ],
+                ),
+                // Third Tab Content
+                ListView(
+                  padding: const EdgeInsets.all(16.0),
+                  children: [
+                    SizedBox(height: 20),
+                    Text("Bike Tab Content", style: TextStyle(fontSize: 20)),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -127,9 +132,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
         SizedBox(height: 20),
         Text("Attendance", style: TextStyle(fontSize: 20)),
         SizedBox(height: 20),
-        DailyAttendanceContainer(
-          
-        ),
+        DailyAttendanceContainer(),
         CalenderWidget(),
         // SizedBox(height: 30),
       ],

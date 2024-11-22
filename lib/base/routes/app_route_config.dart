@@ -2,17 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/core/authentication/screens/login.dart';
-import 'package:school_app/core/authentication/screens/splashscreen.dart';
 import 'package:school_app/core/authentication/screens/logout.dart';
+import 'package:school_app/core/authentication/screens/splashscreen.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/admin/duties/model/duty_model.dart';
 import 'package:school_app/features/admin/duties/screens/addDutyPage.dart';
 import 'package:school_app/features/admin/duties/screens/teacher_selection_screen.dart';
 import 'package:school_app/features/admin/duties/screens/view_duty.dart';
+import 'package:school_app/features/admin/leave_request/screens/leaveRequest_page.dart';
+import 'package:school_app/features/admin/leave_request/screens/student_leaveRequest_details.dart';
+import 'package:school_app/features/admin/leave_request/screens/teacher_leaveRequest_details.dart';
 import 'package:school_app/features/admin/notices/screens/add_event.dart';
 import 'package:school_app/features/admin/notices/screens/add_notice.dart';
+import 'package:school_app/features/admin/payments/model/donation_model.dart';
+import 'package:school_app/features/admin/payments/model/payment_model.dart';
 import 'package:school_app/features/admin/payments/screens/add_donation.dart';
 import 'package:school_app/features/admin/payments/screens/add_payment.dart';
+import 'package:school_app/features/admin/payments/screens/donation_view.dart';
+import 'package:school_app/features/admin/payments/screens/payment_view.dart';
 import 'package:school_app/features/admin/reports/screens/payment.dart';
 import 'package:school_app/features/admin/student/model/student_data.dart';
 import 'package:school_app/features/admin/student/screens/addAchivement.dart';
@@ -24,10 +31,6 @@ import 'package:school_app/features/admin/teacher_section/model/teacher_model.da
 import 'package:school_app/features/admin/teacher_section/screens/add_teacher.dart';
 import 'package:school_app/features/admin/teacher_section/screens/teacherdetails.dart';
 import 'package:school_app/features/admin/teacher_section/screens/teachers_page.dart';
-import 'package:school_app/features/admin/leave_request/screens/leaveRequest_page.dart';
-import 'package:school_app/features/admin/leave_request/screens/student_leaveRequest_details.dart';
-import 'package:school_app/features/admin/leave_request/screens/teacher_leaveRequest_details.dart';
-
 import 'package:school_app/features/parent/events/screen/eventdetailedscreen.dart';
 import 'package:school_app/features/parent/events/screen/eventscreen.dart';
 import 'package:school_app/features/parent/home/screen/homescreen.dart';
@@ -48,6 +51,7 @@ import 'package:school_app/features/teacher/homework/screens/work_view.dart';
 import 'package:school_app/features/teacher/leave_request/model/teacherLeaveReq_model.dart';
 import 'package:school_app/features/teacher/leave_request/screens/add_teacher_leaverequest.dart';
 import 'package:school_app/features/teacher/mark_work/screens/mark_star.dart';
+import 'package:school_app/features/teacher/marks/models/marks_upload_model.dart';
 import 'package:school_app/features/teacher/marks/screens/student_marklist.dart';
 import 'package:school_app/features/teacher/parent/screens/parents.dart';
 
@@ -106,7 +110,11 @@ class Approuter {
         name: AppRouteConst.marksRouteName,
         path: '/marks',
         pageBuilder: (context, state) {
-          return MaterialPage(child: StudentMarklist());
+          final MarksUploadModel marksModel = state.extra as MarksUploadModel;
+          return MaterialPage(
+              child: StudentMarklist(
+            marksUploadModel: marksModel,
+          ));
         },
       ),
       GoRoute(
@@ -289,10 +297,7 @@ class Approuter {
         name: AppRouteConst.StudentLeaveRequestViewRouteName,
         path: '/studentleaverequestview',
         pageBuilder: (context, state) {
-          return MaterialPage(
-              child: StudentLeaveRequestScreen(
-           
-          ));
+          return MaterialPage(child: StudentLeaveRequestScreen());
         },
       ),
       GoRoute(
@@ -316,22 +321,28 @@ class Approuter {
           return MaterialPage(child: LeaverequestScreen());
         },
       ),
-       GoRoute(
+      GoRoute(
         name: AppRouteConst.studentLeaveRequestDetailsRouteName,
         path: '/studentleaverequestdetails',
-        
         pageBuilder: (context, state) {
-          final StudentLeaveRequest studentleaverequests = state.extra as StudentLeaveRequest;
-          return MaterialPage(child: StudentLeaveRequestDetailsPage(studentleaverequests: studentleaverequests,));
+          final StudentLeaveRequest studentleaverequests =
+              state.extra as StudentLeaveRequest;
+          return MaterialPage(
+              child: StudentLeaveRequestDetailsPage(
+            studentleaverequests: studentleaverequests,
+          ));
         },
       ),
-       GoRoute(
+      GoRoute(
         name: AppRouteConst.teacherLeaveRequestDetailsRouteName,
         path: '/teacherleaverequestdetails',
-        
         pageBuilder: (context, state) {
-          final TeacherLeaveRequest teacherleaverequests = state.extra as TeacherLeaveRequest;
-          return MaterialPage(child: TeacherLeaveRequestDetailsPage(teacherleaverequests: teacherleaverequests,));
+          final TeacherLeaveRequest teacherleaverequests =
+              state.extra as TeacherLeaveRequest;
+          return MaterialPage(
+              child: TeacherLeaveRequestDetailsPage(
+            teacherleaverequests: teacherleaverequests,
+          ));
         },
       ),
       GoRoute(
@@ -427,6 +438,28 @@ class Approuter {
         path: '/teacherSelection',
         pageBuilder: (context, state) {
           return MaterialPage(child: TeacherSelectionScreen());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.PaymentViewRouteName,
+        path: '/paymentview',
+        pageBuilder: (context, state) {
+          final payment = state.extra as Payment;
+          return MaterialPage(
+              child: PaymentView(
+            payment: payment,
+          ));
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.DonationViewRouteName,
+        path: '/donationview',
+        pageBuilder: (context, state) {
+          final donation = state.extra as Donation;
+          return MaterialPage(
+              child: DonationView(
+            donation: donation,
+          ));
         },
       ),
     ],

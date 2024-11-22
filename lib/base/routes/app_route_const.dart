@@ -31,6 +31,8 @@ class AppRouteConst {
   static const String AddHomeworkRouteName = 'addhomework';
   static const String AddTeacherRouteName = 'addteacher';
   static const String PaymentReportRouteName = 'paymentreport';
+  static const String PaymentViewRouteName = 'paymentview';
+  static const String DonationViewRouteName = 'donationview';
 
   static const String ParentHomeRouteName = 'parenthome';
 
@@ -41,11 +43,11 @@ class AppRouteConst {
   static const String AddTeacherLeaveRequestRouteName =
       'addteacherleaverequest';
 
-
   static const String LeaveRequestScreenRouteName = 'leaverequestscreen';
-  static const String studentLeaveRequestDetailsRouteName = 'studentleaverequestdetails';
-  static const String teacherLeaveRequestDetailsRouteName = 'teacherleaverequestdetails';
-
+  static const String studentLeaveRequestDetailsRouteName =
+      'studentleaverequestdetails';
+  static const String teacherLeaveRequestDetailsRouteName =
+      'teacherleaverequestdetails';
 
   static const String ParentStudentDetailRouteName = 'parentstudentdetail';
   static const String EventsPageRouteName = 'eventspage';

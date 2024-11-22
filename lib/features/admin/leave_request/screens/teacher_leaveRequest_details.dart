@@ -11,6 +11,7 @@ import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/features/teacher/homework/widgets/view_container.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
+import 'package:school_app/features/admin/leave_request/widgets/leaveRequest_card.dart';
 
 
 class TeacherLeaveRequestDetailsPage extends StatefulWidget {
@@ -35,6 +36,8 @@ class _StudentLeaveRequestDetailsPageState extends State<TeacherLeaveRequestDeta
 
   @override
   Widget build(BuildContext context) {
+    String? status = widget.teacherleaverequests.approvalStatus;
+
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: Responsive.width * 6),
@@ -60,10 +63,10 @@ class _StudentLeaveRequestDetailsPageState extends State<TeacherLeaveRequestDeta
               SizedBox(
                 height: Responsive.height * .09,
               ),
-              const ViewContainer(
-                bcolor: Color(0xffCEFFD3),
-                icolor: Color(0xff5DD168),
-                icon: Icons.punch_clock_sharp,
+               ViewContainer(
+                bcolor: LeaveRequestCard.getStatusColor(status).withOpacity(0.2),
+                icolor: LeaveRequestCard.getStatusColor(status),
+                icon:  status == "Approved"?Icons.verified:(status == "Pending"?Icons.access_time:Icons.cancel),
               ),
               SizedBox(
                 height: Responsive.height * 3,
@@ -119,8 +122,9 @@ class _StudentLeaveRequestDetailsPageState extends State<TeacherLeaveRequestDeta
   width: double.infinity,
   child: OutlinedButton(
     onPressed: () {
-      // Your cancel action, such as navigating back or resetting form
-      Navigator.pop(context); // This will navigate back to the previous screen
+     
+      final leaveRequestId = widget.teacherleaverequests.id; // Replace with actual ID field
+    context.read<TeacherLeaveRequestController>().rejectLeaveRequest(context, leaveRequestId!); // This will navigate back to the previous screen
     },
     style: OutlinedButton.styleFrom(
       foregroundColor: Colors.black, // Text color
@@ -146,7 +150,8 @@ class _StudentLeaveRequestDetailsPageState extends State<TeacherLeaveRequestDeta
 CustomButton(
     text: 'Approve',
     onPressed: () {
-      // Your onPressed function here
+       final leaveRequestId = widget.teacherleaverequests.id; // Replace with actual ID field
+    context.read<TeacherLeaveRequestController>().approveLeaveRequest(context, leaveRequestId!);// Your onPressed function here
     },
   ),
 

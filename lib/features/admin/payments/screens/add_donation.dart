@@ -1,4 +1,5 @@
 import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -9,11 +10,11 @@ import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/controller/file_picker_provider.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
+import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
+import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/custom_filepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
-import 'package:school_app/core/shared_widgets/custom_button.dart';
-import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/features/admin/payments/controller/payment_controller.dart';
 import 'package:school_app/features/admin/payments/widgets/student_list_tile.dart';
 
@@ -230,7 +231,7 @@ class _AddDonationPageState extends State<AddDonationPage> {
                     log(">>>>>>>>>>>>${studentId}");
                     context.read<PaymentController>().addDonation(
                           context,
-                          userId: (studentId.toString()),
+                          userId: studentId ?? 0,
                           amount_donated: _amountController.text,
                           donation_date: _dateController.text,
                           purpose: _purposeController.text,

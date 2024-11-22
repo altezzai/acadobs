@@ -2,33 +2,30 @@ import 'package:flutter/material.dart';
 
 class LeaveRequestCard extends StatelessWidget {
   final String title;
-  
+
   final String time;
   final String status;
   final void Function() onTap;
 
   const LeaveRequestCard({
     required this.title,
-    
     required this.time,
     required this.status,
     required this.onTap,
   });
 
-  Color _getStatusColor() {
+  static getStatusColor(String? status) {
     switch (status) {
       case 'Pending':
         return Colors.orange;
       case 'Approved':
         return Colors.green;
-      case 'Declined':
+      case 'Rejected':
         return Colors.red;
       default:
         return Colors.grey;
     }
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -55,16 +52,17 @@ class LeaveRequestCard extends StatelessWidget {
             Row(
               children: [
                 Container(
-                      padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: _getStatusColor().withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(30),
-                      ),child: Icon(
-                  Icons.assignment_add,
-                  color: _getStatusColor(),
-                  size: 30,
-                  
-                ),),
+                  padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: getStatusColor(status).withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: Icon(
+                    Icons.assignment_add,
+                    color: getStatusColor(status),
+                    size: 30,
+                  ),
+                ),
                 SizedBox(width: 10),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,18 +75,16 @@ class LeaveRequestCard extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 4),
-                    
-                    
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                       decoration: BoxDecoration(
-                        color: _getStatusColor().withOpacity(0.2),
+                        color: getStatusColor(status).withOpacity(0.2),
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: Text(
                         status,
                         style: TextStyle(
-                          color: _getStatusColor(),
+                          color: getStatusColor(status),
                           fontWeight: FontWeight.bold,
                           fontSize: 10,
                         ),

@@ -1,7 +1,9 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/core/controller/loading_provider.dart';
@@ -56,19 +58,26 @@ class NoticeController extends ChangeNotifier {
   }
 
   // add events
-  Future<void> addNotice(BuildContext context,
-      {required String audience_type,
-      required String title,
-      required String description,
-      required String date}) async {
+  Future<void> addNotice(
+    BuildContext context, {
+    required String audience_type,
+    required String title,
+    required String description,
+    required String date,
+    String? className,
+    String? division,
+    File? file,
+  }) async {
     final loadingProvider =
         Provider.of<LoadingProvider>(context, listen: false); //loading provider
     loadingProvider.setLoading(true); //start loader
     try {
-      final response = await NoticeServices().addNotice(
+      final response = await NoticeServices().addNotice(context,
           title: title,
           description: description,
           date: date,
+          className: className,
+          division: division,
           audience_type: audience_type);
       if (response.statusCode == 201) {
         log(">>>>>>${response.statusMessage}");
@@ -105,6 +114,28 @@ class NoticeController extends ChangeNotifier {
     } finally {
       loadingProvider.setLoading(false); // End loader
       notifyListeners();
+    }
+  }
+
+  // *********** Add cover photo***************
+  XFile? _chosenFile; // Chosen image file
+  final ImagePicker _picker = ImagePicker();
+
+  XFile? get chosenFile => _chosenFile;
+
+  // Function to pick an image from the camera or gallery
+  Future<void> pickImage(ImageSource source) async {
+    try {
+      final pickedFile = await _picker.pickImage(source: source);
+      if (pickedFile != null) {
+        log('Picked file path: ${pickedFile.path}');
+        _chosenFile = pickedFile;
+        notifyListeners(); // Notify listeners to rebuild UI
+      } else {
+        log('No image selected.');
+      }
+    } catch (e) {
+      log('Error picking image: $e');
     }
   }
 }

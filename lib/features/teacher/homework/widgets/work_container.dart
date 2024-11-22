@@ -9,19 +9,17 @@ class WorkContainer extends StatelessWidget {
   final IconData icon;
   final String work;
   final String sub;
-  final double brad;
   final String prefixText;
   final Color prefixColor;
   final VoidCallback? onTap;
 
   const WorkContainer({
     super.key,
-    required this.bcolor,
-    required this.icolor,
-    required this.icon,
+    this.bcolor = const Color(0xffFFFCCE),
+    this.icolor = const Color(0xffBCB54F),
+    this.icon = Icons.business_center_outlined,
     required this.sub,
     required this.work,
-    this.brad = 0,
     this.prefixText = "View",
     this.prefixColor = blackColor,
     this.onTap,
@@ -33,7 +31,8 @@ class WorkContainer extends StatelessWidget {
       padding: EdgeInsets.all(Responsive.height * 1.3),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(brad),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.grey.shade300, width: 1),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.shade300,
@@ -48,7 +47,7 @@ class WorkContainer extends StatelessWidget {
             radius: Responsive.radius * 6,
             backgroundColor: bcolor,
             child: Icon(
-              icon,
+              Icons.home_work_outlined,
               color: icolor,
               size: 25,
             ),
