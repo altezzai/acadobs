@@ -54,6 +54,8 @@ import 'package:school_app/features/teacher/mark_work/screens/mark_star.dart';
 import 'package:school_app/features/teacher/marks/models/marks_upload_model.dart';
 import 'package:school_app/features/teacher/marks/screens/student_marklist.dart';
 import 'package:school_app/features/teacher/parent/screens/parents.dart';
+import 'package:school_app/features/teacher/parent/notes/screens/notes.dart';
+import 'package:school_app/features/teacher/parent/notes/screens/add_note.dart';
 
 class Approuter {
   GoRouter router = GoRouter(
@@ -171,6 +173,27 @@ class Approuter {
         path: '/parent',
         pageBuilder: (context, state) {
           return MaterialPage(child: ParentsScreen());
+        },
+      ),
+       GoRoute(
+        name: AppRouteConst.NotesRouteName,
+        path: '/notes',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: NotesScreen());
+        },
+      ),
+       GoRoute(
+        name: AppRouteConst.AddNoteRouteName,
+        path: '/addnotes',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: AddNote());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.NoteDetailsRouteName,
+        path: '/notedetails',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: NotesScreen());
         },
       ),
       GoRoute(
