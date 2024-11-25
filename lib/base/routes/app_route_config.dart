@@ -45,6 +45,7 @@ import 'package:school_app/features/parent/students/screen/studentdetails.dart';
 import 'package:school_app/features/teacher/attendance/model/attendance_data.dart';
 import 'package:school_app/features/teacher/attendance/screens/take_attendance.dart';
 import 'package:school_app/features/teacher/duties/duty_detail.dart';
+import 'package:school_app/features/teacher/homework/screens/student_selection_screen.dart';
 import 'package:school_app/features/teacher/homework/screens/work.dart';
 import 'package:school_app/features/teacher/homework/screens/work_screen.dart';
 import 'package:school_app/features/teacher/homework/screens/work_view.dart';
@@ -440,6 +441,16 @@ class Approuter {
           return MaterialPage(child: TeacherSelectionScreen());
         },
       ),
+       GoRoute(
+        name: AppRouteConst.studentSelectionRouteName,
+        path: '/studentSelection',
+        pageBuilder: (context, state) {
+          final ClassAndDivision classAndDivision = state.extra as ClassAndDivision;
+          return MaterialPage(child: StudentSelectionScreen(
+            classAndDivision: classAndDivision,
+          ));
+        },
+      ),
       GoRoute(
         name: AppRouteConst.PaymentViewRouteName,
         path: '/paymentview',
@@ -464,4 +475,10 @@ class Approuter {
       ),
     ],
   );
+}
+
+class ClassAndDivision{
+  String className;
+  String section;
+  ClassAndDivision({required this.className, required this.section});
 }

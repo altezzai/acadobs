@@ -60,4 +60,5 @@ class AppRouteConst {
 
   static const String bottomNavRouteName = 'bottomNav';
   static const String teacherSelectionRouteName = 'teacherSelection';
+static const String studentSelectionRouteName = 'studentSelection';
 }
