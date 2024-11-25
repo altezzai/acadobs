@@ -45,6 +45,7 @@ import 'package:school_app/features/parent/students/screen/studentdetails.dart';
 import 'package:school_app/features/teacher/attendance/model/attendance_data.dart';
 import 'package:school_app/features/teacher/attendance/screens/take_attendance.dart';
 import 'package:school_app/features/teacher/duties/duty_detail.dart';
+import 'package:school_app/features/teacher/homework/model/homework_model.dart';
 import 'package:school_app/features/teacher/homework/screens/student_selection_screen.dart';
 import 'package:school_app/features/teacher/homework/screens/work.dart';
 import 'package:school_app/features/teacher/homework/screens/work_screen.dart';
