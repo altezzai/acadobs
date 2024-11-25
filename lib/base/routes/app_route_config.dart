@@ -136,7 +136,11 @@ class Approuter {
         name: AppRouteConst.workviewRouteName,
         path: '/workview',
         pageBuilder: (context, state) {
-          return MaterialPage(child: WorkView());
+          final work = state.extra as Homework;
+          return MaterialPage(
+              child: WorkView(
+            work: work,
+          ));
         },
       ),
       GoRoute(

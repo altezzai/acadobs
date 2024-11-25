@@ -46,9 +46,11 @@ class _HomeWorkState extends State<HomeWork> {
       dropdownProvider.clearSelectedItem('division');
       dropdownProvider.clearSelectedItem('submissionType');
       dropdownProvider.clearSelectedItem('status');
+
       if (studentIdController.selectedStudentIds.isNotEmpty) {
         studentIdController.clearSelection();
       }
+
     });
   }
 
@@ -145,6 +147,7 @@ class _HomeWorkState extends State<HomeWork> {
                   },
                 ),
               ),
+
               SizedBox(height: Responsive.height * 2),
               Row(
                 children: [

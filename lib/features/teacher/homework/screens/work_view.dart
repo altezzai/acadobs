@@ -4,11 +4,18 @@ import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
+import 'package:school_app/features/teacher/homework/model/homework_model.dart';
 import 'package:school_app/features/teacher/homework/widgets/view_container.dart';
 
-class WorkView extends StatelessWidget {
-  const WorkView({super.key});
+class WorkView extends StatefulWidget {
+  final Homework work;
+  WorkView({required this.work});
 
+  @override
+  State<WorkView> createState() => _WorkViewState();
+}
+
+class _WorkViewState extends State<WorkView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,15 +32,15 @@ class WorkView extends StatelessWidget {
               },
             ),
             const ViewContainer(
-              bcolor: Color(0xffFFCEDE),
-              icolor: Color(0xffB14F6F),
-              icon: Icons.text_snippet_outlined,
+              bcolor: Color(0xffFFFCCE),
+              icolor: const Color(0xffBCB54F),
+              icon: Icons.home_work_outlined,
             ),
             SizedBox(
               height: Responsive.height * 3,
             ),
             Text(
-              'Hindi Imposition',
+              widget.work.assignmentTitle ?? "",
               style: textThemeData.headlineLarge!.copyWith(
                 fontSize: 20,
               ),
@@ -42,7 +49,7 @@ class WorkView extends StatelessWidget {
               height: Responsive.height * 1,
             ),
             Text(
-              'You have to complete the registration of 12th class \nstudents before 2025',
+              widget.work.description ?? "",
               style: textThemeData.bodySmall!.copyWith(
                 fontSize: 14,
               ),
