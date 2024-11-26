@@ -16,7 +16,7 @@ class HomeworkServices {
     required String subject,
     required String assignment_title,
     required String description,
-    required String assignment_date,
+    required String assigned_date,
     required String due_date,
     required String submission_type,
     required String total_marks,
@@ -25,17 +25,19 @@ class HomeworkServices {
   }) async {
     // Create FormData to pass to the API
     final formData = FormData.fromMap({
+      'teacher_id': 1,
       'class_grade': class_grade,
       'section': section,
       'subject': subject,
       'assignment_title': assignment_title,
       'description': description,
-      'assignment_date': assignment_date,
+      'assigned_date': assigned_date,
       'due_date': due_date,
       'submission_type': submission_type,
       'total_marks': total_marks,
       'status': status,
-      'studentsId': [1, 2],
+      'studentsId': studentsId
+
     });
 
     // Call the ApiServices post method with FormData and isFormData: true

@@ -40,10 +40,10 @@ class HomeworkController extends ChangeNotifier {
     required String subject,
     required String assignment_title,
     required String description,
-    required String assignment_date,
+    required String assigned_date,
     required String due_date,
     required String submission_type,
-    required String total_marks,
+    required total_marks,
     required String status,
     required List<int> studentsId,
   }) async {
@@ -57,12 +57,13 @@ class HomeworkController extends ChangeNotifier {
           subject: subject,
           assignment_title: assignment_title,
           description: description,
-          assignment_date: assignment_date,
+          assigned_date: assigned_date,
           due_date: due_date,
           submission_type: submission_type,
           total_marks: total_marks,
           status: status,
           studentsId: [1, 2]);
+      log("Response++++=${response.data.toString()}");
       if (response.statusCode == 201) {
         log(">>>>>>${response.statusMessage}");
         context.goNamed(AppRouteConst.homeworkRouteName);

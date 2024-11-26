@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/controller/student_id_controller.dart';
+import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/responsive.dart';
@@ -45,7 +46,11 @@ class _HomeWorkState extends State<HomeWork> {
       dropdownProvider.clearSelectedItem('division');
       dropdownProvider.clearSelectedItem('submissionType');
       dropdownProvider.clearSelectedItem('status');
-      studentIdController.clearSelection();
+
+      if (studentIdController.selectedStudentIds.isNotEmpty) {
+        studentIdController.clearSelection();
+      }
+
     });
   }
 
@@ -106,6 +111,43 @@ class _HomeWorkState extends State<HomeWork> {
                   ),
                 ],
               ),
+              SizedBox(height: 20),
+              Text("Selected students:"),
+              SizedBox(height: 10),
+              // Select Staffs
+              InkWell(
+                onTap: () {
+                  final classGrade = context
+                      .read<DropdownProvider>()
+                      .getSelectedItem('classGrade');
+                  final division = context
+                      .read<DropdownProvider>()
+                      .getSelectedItem('division');
+                  final classAndDivision = ClassAndDivision(
+                      className: classGrade, section: division);
+                  context.pushNamed(AppRouteConst.studentSelectionRouteName,
+                      extra: classAndDivision);
+                },
+                child: Consumer<StudentIdController>(
+                  builder: (context, value, child) {
+                    // Get names of selected teachers
+                    // String selectedStudentNames = value.selectedStudentIds
+                    //     .map((id) => value.students
+                    //         .firstWhere((student) => student['id'] == id))
+                    //     .join(", "); // Concatenate names with a comma
+
+                    return TextFormField(
+                      decoration: InputDecoration(
+                        hintText: "Select Students",
+                        // : capitalizeEachWord(
+                        //     selectedStudentNames), // Display selected names or placeholder
+                        enabled: false,
+                      ),
+                    );
+                  },
+                ),
+              ),
+
               SizedBox(height: Responsive.height * 2),
               Row(
                 children: [
@@ -194,39 +236,39 @@ class _HomeWorkState extends State<HomeWork> {
               SizedBox(
                 height: Responsive.height * 10,
               ),
-              CustomButton(
-                  text: 'Submit',
-                  onPressed: () {
-                    final classGrade = context
-                        .read<DropdownProvider>()
-                        .getSelectedItem('classGrade');
-                    final division = context
-                        .read<DropdownProvider>()
-                        .getSelectedItem('division');
-                    final submissionType = context
-                        .read<DropdownProvider>()
-                        .getSelectedItem('submissionType');
-                    final status = context
-                        .read<DropdownProvider>()
-                        .getSelectedItem('status');
-                    final studentId = context
-                        .read<StudentIdController>()
-                        .getSelectedStudentId();
+              Consumer<StudentIdController>(builder: (context, value, child) {
+                return CustomButton(
+                    text: 'Submit',
+                    onPressed: () {
+                      final classGrade = context
+                          .read<DropdownProvider>()
+                          .getSelectedItem('classGrade');
+                      final division = context
+                          .read<DropdownProvider>()
+                          .getSelectedItem('division');
+                      final submissionType = context
+                          .read<DropdownProvider>()
+                          .getSelectedItem('submissionType');
+                      final status = context
+                          .read<DropdownProvider>()
+                          .getSelectedItem('status');
+                      final studentIds = value.selectedStudentIds;
 
-                    log(">>>>>>>>>>>>${studentId}");
-                    context.read<HomeworkController>().addHomework(context,
-                        class_grade: classGrade,
-                        section: division,
-                        subject: _subjectController.text,
-                        assignment_title: _titleController.text,
-                        description: _descriptionController.text,
-                        assignment_date: _startDateController.text,
-                        due_date: _endDateController.text,
-                        submission_type: submissionType,
-                        total_marks: _markController.text,
-                        status: status,
-                        studentsId: [1, 2]);
-                  }),
+                      log(">>>>>>>>>>>>${studentIds.toString()}");
+                      context.read<HomeworkController>().addHomework(context,
+                          class_grade: classGrade,
+                          section: division,
+                          subject: _subjectController.text,
+                          assignment_title: _titleController.text,
+                          description: _descriptionController.text,
+                          assigned_date: _startDateController.text,
+                          due_date: _endDateController.text,
+                          submission_type: submissionType,
+                          total_marks: _markController.text,
+                          status: status,
+                          studentsId: [1, 2]);
+                    });
+              }),
               SizedBox(
                 height: Responsive.height * 1,
               ),

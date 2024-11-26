@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:school_app/base/controller/student_id_controller.dart';
+import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/constants.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
@@ -7,12 +10,31 @@ import 'package:school_app/features/teacher/marks/models/marks_upload_model.dart
 import 'package:school_app/features/teacher/marks/widgets/mark_tile.dart';
 
 // ignore: must_be_immutable
-class StudentMarklist extends StatelessWidget {
+class StudentMarklist extends StatefulWidget {
   final MarksUploadModel marksUploadModel;
-  StudentMarklist({super.key, required this.marksUploadModel,});
+  StudentMarklist({
+    super.key,
+    required this.marksUploadModel,
+  });
 
+  @override
+  State<StudentMarklist> createState() => _StudentMarklistState();
+}
+
+class _StudentMarklistState extends State<StudentMarklist> {
   TextEditingController markController = TextEditingController();
+
   TextEditingController gradeController = TextEditingController();
+
+  late StudentIdController studentIdController;
+  @override
+  void initState() {
+    super.initState();
+    studentIdController = context.read<StudentIdController>();
+    studentIdController.getStudentsFromClassAndDivision(
+        className: widget.marksUploadModel.classGrade ?? "",
+        section: widget.marksUploadModel.section ?? "");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +45,8 @@ class StudentMarklist extends StatelessWidget {
         child: Column(
           children: [
             CustomAppbar(
-              title: "9th B",
+              title:
+                  "${widget.marksUploadModel.classGrade}th ${widget.marksUploadModel.section}",
               isBackButton: true,
               onTap: () {
                 Navigator.pop(context);
@@ -33,7 +56,7 @@ class StudentMarklist extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "01/09/2024",
+                  "${widget.marksUploadModel.date}",
                   style: Theme.of(context)
                       .textTheme
                       .bodySmall!
@@ -43,7 +66,7 @@ class StudentMarklist extends StatelessWidget {
                   width: 15,
                 ),
                 Text(
-                  "Total: 100",
+                  "Total: ${widget.marksUploadModel.totalMarks}",
                   style: Theme.of(context)
                       .textTheme
                       .bodySmall!
@@ -54,18 +77,22 @@ class StudentMarklist extends StatelessWidget {
             SizedBox(
               height: Responsive.height * 2,
             ),
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: 10,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return MarkTile(
-                    studentName: "Theodor",
-                    studentNumber: (index + 1).toString(),
-                    markController: markController,
-                    gradeController: gradeController);
-              },
-            ),
+            Consumer<StudentIdController>(builder: (context, value, child) {
+              return ListView.builder(
+                shrinkWrap: true,
+                itemCount: value.students.length,
+                physics: const NeverScrollableScrollPhysics(),
+                padding: EdgeInsets.zero,
+                itemBuilder: (context, index) {
+                  final student = value.students[index];
+                  return MarkTile(
+                      studentName: capitalizeFirstLetter(student['full_name']),
+                      studentNumber: (index + 1).toString(),
+                      markController: markController,
+                      gradeController: gradeController);
+                },
+              );
+            }),
             SizedBox(
               height: Responsive.height * 2,
             ),

@@ -93,49 +93,82 @@ class NoticeController extends ChangeNotifier {
   }
 
   // add events
-  Future<void> addEvent(BuildContext context,
-      {required String title,
-      required String description,
-      required String date,
-      String? coverPhoto}) async {
-    final loadingProvider =
-        Provider.of<LoadingProvider>(context, listen: false); //loading provider
-    loadingProvider.setLoading(true); //start loader
+  Future<void> addEvent(
+    BuildContext context, {
+    required String title,
+    required String description,
+    required String date,
+  }) async {
+    // final loadingProvider =
+    //     Provider.of<LoadingProvider>(context, listen: false); //loading provider
+    // loadingProvider.setLoading(true); //start loader
     try {
-      final response = await NoticeServices()
-          .addEvent(title: title, description: description, date: date);
+      final response = await NoticeServices().addEvent(
+          title: title,
+          description: description,
+          date: date,
+          images: _chosenFiles);
+      log(response.data.toString());
       if (response.statusCode == 201) {
         log(">>>>>>${response.statusMessage}");
+        log("Images to upload: ${chosenFiles?.map((e) => e.path).toList()}");
+
         context.goNamed(AppRouteConst.bottomNavRouteName,
             extra: UserType.admin);
       }
     } catch (e) {
       log(e.toString());
     } finally {
-      loadingProvider.setLoading(false); // End loader
+      // loadingProvider.setLoading(false); // End loader
       notifyListeners();
     }
   }
 
   // *********** Add cover photo***************
-  XFile? _chosenFile; // Chosen image file
+  // XFile? _chosenFile; // Chosen image file
+  // final ImagePicker _picker = ImagePicker();
+
+  // XFile? get chosenFile => _chosenFile;
+
+  // // Function to pick an image from the camera or gallery
+  // Future<void> pickImage(ImageSource source) async {
+  //   try {
+  //     final pickedFile = await _picker.pickImage(source: source);
+  //     if (pickedFile != null) {
+  //       log('Picked file path: ${pickedFile.path}');
+  //       _chosenFile = pickedFile;
+  //       notifyListeners(); // Notify listeners to rebuild UI
+  //     } else {
+  //       log('No image selected.');
+  //     }
+  //   } catch (e) {
+  //     log('Error picking image: $e');
+  //   }
+  // }
   final ImagePicker _picker = ImagePicker();
+  List<XFile> _chosenFiles =[]; // List to store selected images
 
-  XFile? get chosenFile => _chosenFile;
+  List<XFile>? get chosenFiles => _chosenFiles;
 
-  // Function to pick an image from the camera or gallery
-  Future<void> pickImage(ImageSource source) async {
+  // Function to pick multiple images from the gallery
+  Future<void> pickMultipleImages() async {
     try {
-      final pickedFile = await _picker.pickImage(source: source);
-      if (pickedFile != null) {
-        log('Picked file path: ${pickedFile.path}');
-        _chosenFile = pickedFile;
+      final pickedFiles = await _picker.pickMultiImage();
+      if (pickedFiles.isNotEmpty) {
+        log('Picked files count: ${pickedFiles.length}');
+        _chosenFiles = pickedFiles;
         notifyListeners(); // Notify listeners to rebuild UI
       } else {
-        log('No image selected.');
+        log('No images selected.');
       }
     } catch (e) {
-      log('Error picking image: $e');
+      log('Error picking images: $e');
     }
+  }
+
+  // Optional: Clear selected images
+  void clearSelectedImages() {
+    _chosenFiles = [];
+    notifyListeners();
   }
 }

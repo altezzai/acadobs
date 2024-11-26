@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/teacher/data/dropdown_data.dart';
@@ -22,36 +23,34 @@ class ParentsScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           children: [
-            
-              
-               Row(
-  crossAxisAlignment: CrossAxisAlignment.center,
-  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  children: [
-    Expanded(
-      child: CustomAppbar(
-        title: "Parents",
-        isProfileIcon: false,
-        onTap: () {
-          Navigator.pop(context);
-        },
-      ),
-    ),
-    Padding(
-      padding: const EdgeInsets.only(right: 8.0), // Adjust spacing as needed
-      child: IconButton(
-        icon: Icon(Icons.draw_sharp),
-        onPressed: () {
-          context.goNamed(AppRouteConst.NotesRouteName);
-        },
-         // Optional tooltip
-      ),
-    ),
-  ],
-),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: CustomAppbar(
+                    title: "Parents",
+                    isProfileIcon: false,
+                    onTap: () {
+                      context.goNamed(AppRouteConst.bottomNavRouteName,
+                          extra: UserType.teacher);
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      right: 8.0), // Adjust spacing as needed
+                  child: IconButton(
+                    icon: Icon(Icons.draw_sharp),
+                    onPressed: () {
+                      context.goNamed(AppRouteConst.NotesRouteName);
+                    },
+                    // Optional tooltip
+                  ),
+                ),
+              ],
+            ),
 
-              
-            
             CustomTextfield(
               hintText: "Search",
               iconData: Icon(Icons.search),

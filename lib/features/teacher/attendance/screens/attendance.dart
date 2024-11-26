@@ -237,9 +237,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
     context.read<AttendanceController>().takeAttendance(
           context,
-
           attendanceData: attendanceData,
-          // Pass the action to handle it on the next page
         );
   }
 }

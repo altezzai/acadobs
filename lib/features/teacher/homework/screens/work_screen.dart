@@ -79,21 +79,21 @@ class _WorkScreenState extends State<WorkScreen> {
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 1),
                       child: WorkContainer(
-                          // bcolor: workItem.backgroundColor,
-                          // icolor: workItem.iconColor,
-                          // icon: workItem.icon,
-                          work:
-                              value.homework[index].assignmentTitle.toString(),
-                          sub: capitalizeFirstLetter(
-                              value.homework[index].subject.toString())
-                          // onTap: () => workItem.onTap(context),
-                          ),
+                        work: value.homework[index].assignmentTitle.toString(),
+                        sub: capitalizeFirstLetter(
+                            value.homework[index].subject.toString()),
+                        onTap: () {
+                          context.pushReplacementNamed(
+                              AppRouteConst.workviewRouteName,
+                              extra: value.homework[index]);
+                        },
+                      ),
                     );
                   },
                 );
               }),
               SizedBox(
-                height: Responsive.height * 1,
+                height: Responsive.height * 5,
               ),
             ],
           ),
