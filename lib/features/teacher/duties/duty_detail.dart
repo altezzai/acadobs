@@ -19,7 +19,7 @@ class DutyDetailScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomAppbar(
-                title: '12th  class New student Registration of 2024',
+                title: '12th  class New student Registration',
                 isProfileIcon: false,
                 onTap: () {
                   Navigator.pop(context);

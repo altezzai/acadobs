@@ -181,14 +181,14 @@ class Approuter {
           return MaterialPage(child: ParentsScreen());
         },
       ),
-       GoRoute(
+      GoRoute(
         name: AppRouteConst.NotesRouteName,
         path: '/notes',
         pageBuilder: (context, state) {
           return MaterialPage(child: NotesScreen());
         },
       ),
-       GoRoute(
+      GoRoute(
         name: AppRouteConst.AddNoteRouteName,
         path: '/addnotes',
         pageBuilder: (context, state) {
@@ -469,12 +469,14 @@ class Approuter {
           return MaterialPage(child: TeacherSelectionScreen());
         },
       ),
-       GoRoute(
+      GoRoute(
         name: AppRouteConst.studentSelectionRouteName,
         path: '/studentSelection',
         pageBuilder: (context, state) {
-          final ClassAndDivision classAndDivision = state.extra as ClassAndDivision;
-          return MaterialPage(child: StudentSelectionScreen(
+          final ClassAndDivision classAndDivision =
+              state.extra as ClassAndDivision;
+          return MaterialPage(
+              child: StudentSelectionScreen(
             classAndDivision: classAndDivision,
           ));
         },
@@ -505,7 +507,7 @@ class Approuter {
   );
 }
 
-class ClassAndDivision{
+class ClassAndDivision {
   String className;
   String section;
   ClassAndDivision({required this.className, required this.section});
