@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/controller/student_id_controller.dart';
@@ -22,9 +24,12 @@ class StudentMarklist extends StatefulWidget {
 }
 
 class _StudentMarklistState extends State<StudentMarklist> {
-  TextEditingController markController = TextEditingController();
+// Maps to hold controllers for each student
+  final Map<int, TextEditingController> markControllers = {};
+  final Map<int, TextEditingController> gradeControllers = {};
 
-  TextEditingController gradeController = TextEditingController();
+  // List to store final data
+  final List<Map<String, dynamic>> studentMarksList = [];
 
   late StudentIdController studentIdController;
   @override
@@ -34,6 +39,24 @@ class _StudentMarklistState extends State<StudentMarklist> {
     studentIdController.getStudentsFromClassAndDivision(
         className: widget.marksUploadModel.classGrade ?? "",
         section: widget.marksUploadModel.section ?? "");
+  }
+
+  void collectStudentData() {
+    studentMarksList.clear(); // Clear previous data
+
+    for (int index = 0; index < studentIdController.students.length; index++) {
+      final student = studentIdController.students[index];
+      final marks = markControllers[index]?.text ?? "";
+      final attendanceStatus = "Present"; // You can make this dynamic if needed
+
+      studentMarksList.add({
+        "student_id": student['id'],
+        "marks": marks,
+        "attendance_status": attendanceStatus,
+      });
+    }
+
+    log("Collected Student Data: $studentMarksList");
   }
 
   @override
@@ -85,18 +108,28 @@ class _StudentMarklistState extends State<StudentMarklist> {
                 padding: EdgeInsets.zero,
                 itemBuilder: (context, index) {
                   final student = value.students[index];
+                  // Initialize controllers for each student if not already done
+                  markControllers.putIfAbsent(
+                      index, () => TextEditingController());
+                  gradeControllers.putIfAbsent(
+                      index, () => TextEditingController());
                   return MarkTile(
-                      studentName: capitalizeFirstLetter(student['full_name']),
-                      studentNumber: (index + 1).toString(),
-                      markController: markController,
-                      gradeController: gradeController);
+                    studentName: capitalizeFirstLetter(student['full_name']),
+                    studentNumber: (index + 1).toString(),
+                    markController: markControllers[index]!,
+                    gradeController: gradeControllers[index]!,
+                  );
                 },
               );
             }),
             SizedBox(
               height: Responsive.height * 2,
             ),
-            CustomButton(text: "Submit", onPressed: () {}),
+            CustomButton(
+                text: "Submit",
+                onPressed: () {
+                  collectStudentData();
+                }),
             SizedBox(
               height: Responsive.height * 2,
             ),
