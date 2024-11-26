@@ -86,7 +86,9 @@ class _NoticePageState extends State<NoticePage> {
                         date: DateFormatter.formatDateString(
                             value.notices[index].date.toString()),
                         time: TimeFormatter.formatTimeFromString(
-                            value.notices[index].createdAt.toString()));
+                            value.notices[index].createdAt.toString()),
+                        fileUpload: value.notices[index].fileUpload??"",    
+                            );
                   },
                 );
               })

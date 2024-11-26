@@ -5,6 +5,7 @@ import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/features/parent/leave_request/controller/studentLeaveReq_controller.dart';
 
+
 class StudentLeaveRequestScreen extends StatefulWidget {
   StudentLeaveRequestScreen({super.key});
 
@@ -83,6 +84,16 @@ class _StudentLeaveRequestScreenState extends State<StudentLeaveRequestScreen> {
                 tileColor: Colors.white,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
+                leading: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.green.withOpacity(0.1)),
+                    child: Icon(
+                      Icons.assignment_add,
+                      color: Colors.green,
+                    )),
                 title: Text(
                   "Leave Request 13-11-2024",
                   maxLines: 1, // Set max lines to 1 to keep it in a single line
@@ -137,6 +148,26 @@ class _StudentLeaveRequestScreenState extends State<StudentLeaveRequestScreen> {
                       tileColor: Colors.white,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
+                      leading: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: leaveRequest.approvalStatus == "Approved"
+                              ? Colors.green.withOpacity(.1)
+                              : (leaveRequest.approvalStatus == "Pending"
+                                  ? Colors.red.withOpacity(.1)
+                                  : Colors.blue.withOpacity(.1)),
+                        ),
+                        child: Icon(
+                          Icons.assignment_add,
+                          color: leaveRequest.approvalStatus == "Approved"
+                              ? Colors.green
+                              : (leaveRequest.approvalStatus == "Pending"
+                                  ? Colors.red
+                                  : Colors.blue),
+                        ),
+                      ),
                       title: Text(
                         'Leave Request ${DateFormatter.formatDateString(
                           leaveRequest.startDate.toString(),

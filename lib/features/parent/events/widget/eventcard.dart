@@ -32,6 +32,65 @@ class EventCard extends StatelessWidget {
           },
         );
       },
+      // child: Card(
+      //   shape:
+      //       RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+      //   child: ListTile(
+      //     leading: ClipRRect(
+      //       borderRadius: BorderRadius.circular(12.0),
+      //       child: Image(
+      //         image: imageProvider,
+      //         height: 100,
+      //         width: 100,
+      //         fit: BoxFit.cover,
+      //       ),
+      //     ),
+      //     title: Text(
+      //       eventTitle,
+      //       maxLines: 1, // Set max lines to 1 to keep it in a single line
+      //       overflow: TextOverflow
+      //           .ellipsis, // Show ellipsis (...) if the text overflows
+      //       style: TextStyle(
+      //         fontSize: MediaQuery.of(context).size.width *
+      //             0.045, // Responsive font size
+      //         fontWeight: FontWeight.bold,
+      //       ),
+      //     ),
+      //     subtitle: Column(
+      //       children: [
+      //         Text(
+      //           eventDescription,
+      //           maxLines: 2, // Limit description to avoid overflow
+      //           overflow:
+      //               TextOverflow.ellipsis, // Handle overflow with ellipsis
+      //           style: const TextStyle(
+      //             fontSize: 14,
+      //             color: Colors.grey,
+      //           ),
+      //         ),
+      //         Align(
+      //           alignment: Alignment.centerLeft,
+      //           child: Container(
+      //               padding: const EdgeInsets.symmetric(
+      //                   horizontal: 8, vertical: 4),
+      //               decoration: BoxDecoration(
+      //                   borderRadius: BorderRadius.circular(8),
+      //                   color: Colors.orange.withOpacity(0.1)),
+      //               child: Text(date,
+      //                   style: const TextStyle(color: Colors.orange))),
+      //         ),
+      //       ],
+      //     ),
+      //     trailing: Container(
+      //         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      //         decoration: BoxDecoration(
+      //             borderRadius: BorderRadius.circular(8),
+      //             color: Colors.orange.withOpacity(0.1)),
+      //         child:
+      //             Text(time, style: const TextStyle(color: Colors.orange))),
+      //     // trailing: Text(time),
+      //   ),
+      // )
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16.0),
@@ -102,13 +161,18 @@ class EventCard extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 10),
-                        Text(
-                          time,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Colors.black,
-                          ),
-                        ),
+                        Spacer(),
+                        Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: Colors.orange.withOpacity(0.1)),
+                            child: Text(
+                              time,
+                              style: const TextStyle(
+                                  color: Colors.orange, fontSize: 11),
+                            )),
                       ],
                     ),
                   ],
