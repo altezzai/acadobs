@@ -150,9 +150,12 @@ class _WorkScreenState extends State<WorkScreen> {
         backgroundColor: Colors.black,
         child: Padding(
           padding: const EdgeInsets.only(bottom: 14),
-          child: Text(
-            '+',
-            style: textThemeData.headlineLarge!.copyWith(color: Colors.white),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: Text(
+              '+',
+              style: textThemeData.headlineLarge!.copyWith(color: Colors.white),
+            ),
           ),
         ),
       ),
