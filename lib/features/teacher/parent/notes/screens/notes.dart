@@ -7,9 +7,10 @@ import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 
 
+
+
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 
-import 'package:school_app/features/teacher/parent/notes/screens/note_details.dart';
 
 // ignore: must_be_immutable
 class NotesScreen extends StatelessWidget {
@@ -131,16 +132,10 @@ class NotesScreen extends StatelessWidget {
             )
           : null,
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => NoteChatDetailPage(
-              name: name,
-              subject: subject,
-              imageUrl: imageUrl,
-            ),
-          ),
-        );
+       context.pushNamed(
+                  AppRouteConst.NoteDetailsRouteName, 
+                  
+                );
       },
     );
   }
