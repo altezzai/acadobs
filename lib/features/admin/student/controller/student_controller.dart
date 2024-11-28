@@ -19,6 +19,11 @@ class StudentController extends ChangeNotifier {
   List<Student> _filteredstudents = [];
   List<Student> get filteredstudents => _filteredstudents;
 
+  List<Student> _parents = [];
+  List<Student> get parents => _parents;
+  List<Student> _filteredparents = [];
+  List<Student> get filteredparents => _filteredparents;
+
   // Fetch student details (GET request)
   Future<void> getStudentDetails() async {
     _isloading = true;
@@ -102,6 +107,50 @@ class StudentController extends ChangeNotifier {
       if (response.statusCode == 200) {
         _filteredstudents.clear();
         _filteredstudents = (response.data as List<dynamic>)
+            .map((result) => Student.fromJson(result))
+            .toList();
+      }
+    } catch (e) {
+      print(e);
+    }
+    _isloading = false;
+    notifyListeners();
+  }
+
+  // Fetch Parent details (GET request)
+  Future<void> getParentDetails() async {
+    _isloading = true;
+    try {
+      final response = await StudentServices().getParent();
+      print("***********${response.statusCode}");
+      print(response.toString());
+      if (response.statusCode == 200) {
+        _parents.clear();
+        _parents = (response.data as List<dynamic>)
+            .map((result) => Student.fromJson(result))
+            .toList();
+      }
+    } catch (e) {
+      print(e);
+    }
+    _isloading = false;
+    notifyListeners();
+  }
+
+  // Fetch parent class and division details (GET request)
+  Future<void> getParentByClassAndDivision(
+      {required String classname, required String section}) async {
+    _isloading = true;
+    try {
+      final response = await StudentServices().getParentByClassAndDivision(
+        classname: classname,
+        section: section,
+      );
+      print("***********${response.statusCode}");
+      print(response.toString());
+      if (response.statusCode == 200) {
+        _filteredparents.clear();
+        _filteredparents = (response.data as List<dynamic>)
             .map((result) => Student.fromJson(result))
             .toList();
       }

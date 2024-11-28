@@ -1,15 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:school_app/base/utils/urls.dart';
+import 'package:school_app/features/admin/student/controller/student_controller.dart';
+import 'package:school_app/features/admin/student/model/student_data.dart';
 
-class NoteChatDetailPage extends StatelessWidget {
-  final String name;
-  final String subject;
-  final String imageUrl;
+class NoteChatDetailPage extends StatefulWidget {
+  final Student student;
+  // final String name;
+  // final String subject;
+  // final String imageUrl;
 
   NoteChatDetailPage({
-    required this.name,
-    required this.subject,
-    required this.imageUrl,
+    required this.student,
+    // required this.name,
+    // required this.subject,
+    // required this.imageUrl,
   });
+
+  @override
+  State<NoteChatDetailPage> createState() => _NoteChatDetailPageState();
+}
+
+class _NoteChatDetailPageState extends State<NoteChatDetailPage> {
+
+  @override
+  void initState() {
+    context.read<StudentController>().getParentDetails();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,23 +44,23 @@ class NoteChatDetailPage extends StatelessWidget {
         title: Row(
           children: [
             CircleAvatar(
-              backgroundImage: AssetImage(imageUrl),
+              backgroundImage: NetworkImage("${baseUrl}${Urls.parentPhotos}${widget.student.fatherMotherPhoto??""}"),
             ),
             SizedBox(width: 10),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  name,
+                  widget.student.guardianFullName??"",
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(
-                  subject,
-                  style: TextStyle(color: Colors.grey, fontSize: 12),
-                ),
+                // Text(
+                //   widget.subject,
+                //   style: TextStyle(color: Colors.grey, fontSize: 12),
+                // ),
               ],
             ),
           ],
@@ -107,7 +125,7 @@ class NoteChatDetailPage extends StatelessWidget {
             SizedBox(height: 10),
             _buildReply("shibu", "Why are you so mad?? don't you have any life",
                 'assets/angus.png'),
-            _buildReply("April Curtis", "What bro?", imageUrl),
+            _buildReply("April Curtis", "What bro?", widget.student.studentPhoto??""),
 
             // Comment Input Field
             Spacer(),

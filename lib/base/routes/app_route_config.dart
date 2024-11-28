@@ -55,6 +55,7 @@ import 'package:school_app/features/teacher/leave_request/screens/add_teacher_le
 import 'package:school_app/features/teacher/mark_work/screens/mark_star.dart';
 import 'package:school_app/features/teacher/marks/models/marks_upload_model.dart';
 import 'package:school_app/features/teacher/marks/screens/student_marklist.dart';
+import 'package:school_app/features/teacher/parent/notes/screens/note_details.dart';
 import 'package:school_app/features/teacher/parent/screens/parents.dart';
 import 'package:school_app/features/teacher/parent/notes/screens/notes.dart';
 import 'package:school_app/features/teacher/parent/notes/screens/add_note.dart';
@@ -199,13 +200,17 @@ class Approuter {
         name: AppRouteConst.NoteDetailsRouteName,
         path: '/notedetails',
         pageBuilder: (context, state) {
-          return MaterialPage(child: NotesScreen());
+          final Student student = state.extra as Student;
+          
+          return MaterialPage(child: NoteChatDetailPage(student: student,));
         },
       ),
+        
       GoRoute(
         name: AppRouteConst.AdminstudentRouteName,
         path: '/adminstudent',
         pageBuilder: (context, state) {
+          
           return MaterialPage(child: StudentsPage());
         },
       ),
