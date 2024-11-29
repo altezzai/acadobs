@@ -14,7 +14,7 @@ class NoticePage extends StatefulWidget {
 }
 
 class _NoticePageState extends State<NoticePage> {
-  @override 
+  @override
   void initState() {
     context.read<NoticeController>().getNotices();
     super.initState();
@@ -47,23 +47,67 @@ class _NoticePageState extends State<NoticePage> {
           padding: const EdgeInsets.all(16.0),
           child:
               Consumer<NoticeController>(builder: (context, controller, child) {
-            // Categorize notices into latest and previous based on the date
             final today = DateTime.now();
+
+            // Categorize notices into Upcoming, Latest, and Previous
+            final upcomingNotices = controller.notices
+                .where((notice) =>
+                    DateTime.parse(notice.date.toString()).isAfter(today))
+                .toList();
+
             final latestNotices = controller.notices
-                .where((notice) => DateTime.parse(notice.date.toString())
-                    .isAfter(today.subtract(const Duration(days: 1))))
+                .where((notice) =>
+                    DateTime.parse(notice.date.toString())
+                        .isAfter(today.subtract(const Duration(days: 1))) &&
+                    DateTime.parse(notice.date.toString()).isBefore(today))
                 .toList();
 
             final previousNotices = controller.notices
                 .where((notice) => DateTime.parse(notice.date.toString())
                     .isBefore(today.subtract(const Duration(days: 1))))
                 .toList();
+
+            // Sort notices
+            upcomingNotices.sort((a, b) => DateTime.parse(a.date.toString())
+                .compareTo(DateTime.parse(b.date.toString())));
+            latestNotices.sort((a, b) => DateTime.parse(b.date.toString())
+                .compareTo(DateTime.parse(a.date.toString())));
             previousNotices.sort((a, b) => DateTime.parse(b.date.toString())
                 .compareTo(DateTime.parse(a.date.toString())));
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Upcoming Notices Section
+                const Text(
+                  "Upcoming",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                upcomingNotices.isNotEmpty
+                    ? ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: upcomingNotices.length,
+                        itemBuilder: (context, index) {
+                          final notice = upcomingNotices[index];
+                          return NoticeCard(
+                            description: notice.description ?? "",
+                            noticeTitle: notice.title ?? "",
+                            date: DateFormatter.formatDateString(
+                                notice.date.toString()),
+                            time: TimeFormatter.formatTimeFromString(
+                                notice.createdAt.toString()),
+                            fileUpload: notice.fileUpload ?? "",
+                          );
+                        },
+                      )
+                    : const Text("No upcoming notices available."),
+                const SizedBox(height: 20),
+
                 // Latest Notices Section
                 const Text(
                   "Latest",

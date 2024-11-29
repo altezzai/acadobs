@@ -43,88 +43,71 @@ class _PaymentPageState extends State<PaymentPage> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                "Today",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 10),
-              PaymentCard(
-                amountTitle: "1000",
-                name: "\tMuhammed Rafsal N",
-                time: "09:00 am",
-                transactionId: "",
-                description: "",
-                fileUpload: "",
-              ),
-              const SizedBox(height: 20),
+          child: Consumer<PaymentController>(builder: (context, controller, _) {
+            // Sort payments by date (newest first)
+            final sortedPayments = controller.payments
+              ..sort((a, b) => b.paymentDate!.compareTo(a.paymentDate!));
 
-              // Yesterday Events Section
-              const Text(
-                "Yesterday",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 10),
-              Consumer<PaymentController>(builder: (context, value, child) {
-                return ListView.builder(
-                  padding: EdgeInsets.zero,
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: value.payments.take(4).length,
-                  itemBuilder: (context, index) {
-                    return PaymentCard(
-                      amountTitle: value.payments[index].amountPaid ?? "",
-                      name: value.payments[index].userId.toString(),
-                      transactionId:
-                          value.payments[index].transactionId.toString(),
-                      time: TimeFormatter.formatTimeFromString(
-                        value.payments[index].createdAt.toString(),
+            // Group payments by date
+            final groupedPayments = <String, List<dynamic>>{};
+            for (var payment in sortedPayments) {
+              final formattedDate = DateFormatter.formatDateString(
+                payment.paymentDate.toString(),
+              );
+              if (!groupedPayments.containsKey(formattedDate)) {
+                groupedPayments[formattedDate] = [];
+              }
+              groupedPayments[formattedDate]!.add(payment);
+            }
+
+            // Render grouped payments
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: groupedPayments.entries.map((entry) {
+                final date = entry.key;
+                final payments = entry.value;
+
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Display the date as a section header
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Text(
+                        date,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black54,
+                        ),
                       ),
-                      description:
-                          value.payments[index].paymentStatus.toString(),
-                      fileUpload: value.payments[index].fileUpload,
-
-                      // description:
-                      //     value.notices[index].description ?? "",
-                      // noticeTitle: value.notices[index].title ?? "",
-                      // date: DateFormatter.formatDateString(
-                      //     value.notices[index].date.toString()),
-                      // time: TimeFormatter.formatTimeFromString(
-                      //     value.notices[index].createdAt.toString())
-                    );
-                  },
+                    ),
+                    // Render payment cards for the given date
+                    ListView.builder(
+                      padding: EdgeInsets.zero,
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: payments.length,
+                      itemBuilder: (context, index) {
+                        final payment = payments[index];
+                        return PaymentCard(
+                          amountTitle: payment.amountPaid ?? "",
+                          name: payment.userId.toString(),
+                          paymentMethod: payment.paymentMethod ?? "",
+                          transactionId: payment.transactionId ??"",
+                          time: TimeFormatter.formatTimeFromString(
+                            payment.createdAt.toString(),
+                          ),
+                          description: payment.paymentStatus.toString(),
+                          fileUpload: payment.fileUpload,
+                        );
+                      },
+                    ),
+                  ],
                 );
-              }),
-              // PaymentCard(
-              //   amountTitle: "250",
-              //   name: "\tMuhammed Rafsal N",
-              //   time: "09:00 am",
-              // ),
-              // PaymentCard(
-              //   amountTitle: "1500",
-              //   name: "\tManuprasad K",
-              //   time: "09:00 am",
-              // ),
-              // PaymentCard(
-              //   amountTitle: "500",
-              //   name: "\tAswin Koroth",
-              //   time: "09:00 am",
-              // ),
-              // PaymentCard(
-              //   amountTitle: "1000",
-              //   name: "\tMuhammed Rafsal N",
-              //   time: "09:00 am",
-              // ),
-            ],
-          ),
+              }).toList(),
+            );
+          }),
         ),
       ),
     );
@@ -138,16 +121,17 @@ class PaymentCard extends StatelessWidget {
   final String time;
   final String transactionId;
   final String fileUpload;
+  final String paymentMethod;
 
-  const PaymentCard({
-    super.key,
-    required this.amountTitle,
-    required this.name,
-    required this.time,
-    required this.description,
-    required this.transactionId,
-    required this.fileUpload,
-  });
+  const PaymentCard(
+      {super.key,
+      required this.amountTitle,
+      required this.name,
+      required this.time,
+      required this.description,
+      required this.transactionId,
+      required this.fileUpload,
+      required this.paymentMethod});
 
   @override
   Widget build(BuildContext context) {
@@ -159,15 +143,25 @@ class PaymentCard extends StatelessWidget {
             'amount': amountTitle,
             'description': description,
             'file': fileUpload,
+            'transactionId' :transactionId,
           },
         );
       },
       child: Card(
         child: ListTile(
           leading: CircleAvatar(
-              backgroundColor: Colors.green[100],
-              child:
-                  const Icon(Icons.currency_rupee_sharp, color: Colors.green)),
+            backgroundColor: description == 'Completed'
+                ? Colors.green[100]
+                : description == 'Failed'
+                    ? Colors.red[100]
+                    : Colors.orange[100],
+            child: Icon(Icons.currency_rupee_sharp,
+                color: description == 'Completed'
+                    ? Colors.green
+                    : description == 'Failed'
+                        ? Colors.red
+                        : Colors.orange),
+          ),
           title: Row(
             children: [
               const Icon(
@@ -178,10 +172,52 @@ class PaymentCard extends StatelessWidget {
                   style: const TextStyle(fontWeight: FontWeight.bold)),
             ],
           ),
-          subtitle: Text(transactionId),
-          trailing: Text(
-            time,
-            style: const TextStyle(fontWeight: FontWeight.bold),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(paymentMethod),
+              Text(transactionId),
+            ],
+          ),
+          trailing: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                time,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 4),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8.0,
+                  vertical: 4.0,
+                ),
+                decoration: BoxDecoration(
+                  color: description == 'Completed'
+                      ? Colors.green[100]
+                      : description == 'Failed'
+                          ? Colors.red[100]
+                          : description == 'Pending'
+                              ? Colors.orange[100]
+                              : Colors.black,
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                child: Text(
+                  description,
+                  style: TextStyle(
+                    color: description == 'Completed'
+                        ? Colors.green
+                        : description == 'Failed'
+                            ? Colors.red
+                            : description == 'Pending'
+                                ? Colors.orange
+                                : Colors.black, // Default color for other cases
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
