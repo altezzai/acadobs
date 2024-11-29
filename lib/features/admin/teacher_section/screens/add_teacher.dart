@@ -52,7 +52,7 @@ class _AddTeacherState extends State<AddTeacher> {
                 title: "Add Teacher",
                 isProfileIcon: false,
                 onTap: () {
-                  context.goNamed(AppRouteConst.AdminteacherRouteName);
+                  context.pushNamed(AppRouteConst.AdminteacherRouteName);
                 },
               ),
               Text(

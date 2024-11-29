@@ -49,7 +49,7 @@ class _DutyViewState extends State<DutyView> {
                 title: widget.duties.dutyTitle ?? "",
                 isProfileIcon: false,
                 onTap: () {
-                  context.goNamed(AppRouteConst.bottomNavRouteName,
+                  context.pushNamed(AppRouteConst.bottomNavRouteName,
                       extra: UserType.admin);
                 },
               ),

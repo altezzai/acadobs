@@ -45,7 +45,7 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
                   child: AddButton(
                     iconPath: paymentIcon,
                     onPressed: () {
-                      context.goNamed(AppRouteConst.AddPaymentRouteName);
+                      context.pushNamed(AppRouteConst.AddPaymentRouteName);
                     },
                     text: "Add Payment",
                   ),
@@ -169,7 +169,7 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
                           payment.createdAt.toString()),
                       status: payment.paymentStatus ?? "",
                       onTap: () {
-                        context.goNamed(
+                        context.pushNamed(
                           AppRouteConst.PaymentViewRouteName,
                           extra: entry.value[index],
                         );
@@ -224,7 +224,7 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
                           donation.createdAt.toString()),
                       status: donation.purpose ?? "",
                       onTap: () {
-                        context.goNamed(
+                        context.pushNamed(
                           AppRouteConst.DonationViewRouteName,
                           extra: entry.value[index],
                         );

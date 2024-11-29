@@ -70,7 +70,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                 title: "Add Payment",
                 isProfileIcon: false,
                 onTap: () {
-                  context.goNamed(
+                  context.pushNamed(
                     AppRouteConst.bottomNavRouteName,
                     extra: UserType.admin,
                   );

@@ -74,7 +74,7 @@ class _AddDonationPageState extends State<AddDonationPage> {
                 title: "Add Donation",
                 isProfileIcon: false,
                 onTap: () {
-                  context.goNamed(
+                  context.pushNamed(
                     AppRouteConst.bottomNavRouteName,
                     extra:
                         UserType.admin, // Pass the userType to the next screen

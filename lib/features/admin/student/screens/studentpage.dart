@@ -54,7 +54,7 @@ class _StudentsPageState extends State<StudentsPage> {
             CustomAppbar(
               title: 'Students',
               onTap: () {
-                context.goNamed(
+                context.pushNamed(
                   AppRouteConst.bottomNavRouteName,
                   extra: UserType.admin,
                 );
@@ -236,7 +236,7 @@ class _StudentsPageState extends State<StudentsPage> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          context.goNamed(AppRouteConst.AddStudentRouteName);
+          context.pushNamed(AppRouteConst.AddStudentRouteName);
         },
         label: Text('Add New Student'),
         icon: Icon(Icons.add),

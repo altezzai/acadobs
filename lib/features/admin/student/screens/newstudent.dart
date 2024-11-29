@@ -86,7 +86,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            context.pushReplacementNamed(AppRouteConst.AdminstudentRouteName);
+            context.pushNamed(AppRouteConst.AdminstudentRouteName);
           },
         ),
         centerTitle: true,
@@ -322,7 +322,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 ),
                 SizedBox(height: 20),
 
-                _sectionTitle('Pervious School Details'),
+                _sectionTitle('Previous School Details'),
                 SizedBox(height: 10),
 
                 CustomTextfield(

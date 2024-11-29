@@ -42,7 +42,7 @@ class AdminHomeScreen extends StatelessWidget {
                 const Spacer(),
                 GestureDetector(
                   onTap: () {
-                    context.goNamed(AppRouteConst.logoutRouteName,
+                    context.pushNamed(AppRouteConst.logoutRouteName,
                         extra: UserType.admin);
                   },
                   child: Padding(
@@ -55,15 +55,14 @@ class AdminHomeScreen extends StatelessWidget {
             SizedBox(
               height: Responsive.height * 2,
             ),
-             _customContainer(
-                  color: Colors.red,
-                  text: 'Leave Requests',
-                  icon: Icons.assignment_add,
-                  ontap: () {
-                    context.pushNamed(
-                        AppRouteConst.LeaveRequestScreenRouteName);
-                  }),
-                   SizedBox(
+            _customContainer(
+                color: Colors.red,
+                text: 'Leave Requests',
+                icon: Icons.assignment_add,
+                ontap: () {
+                  context.pushNamed(AppRouteConst.LeaveRequestScreenRouteName);
+                }),
+            SizedBox(
               height: Responsive.height * 2,
             ),
             Row(
@@ -89,6 +88,7 @@ class AdminHomeScreen extends StatelessWidget {
       ),
     );
   }
+
   Widget _customContainer({
     required Color color,
     required String text,

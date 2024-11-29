@@ -1,7 +1,9 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
@@ -44,7 +46,8 @@ class _AddEventPageState extends State<AddEventPage> {
                 title: "Add Event",
                 isProfileIcon: false,
                 onTap: () {
-                  Navigator.pop(context);
+                  context.pushNamed(AppRouteConst.bottomNavRouteName,
+                      extra: UserType.admin);
                 },
               ),
               SizedBox(height: 20),
@@ -82,7 +85,7 @@ class _AddEventPageState extends State<AddEventPage> {
               //     ),
               //   ),
               // ),
-              SizedBox(height: 20),
+              SizedBox(height: 12),
 
               // Add Cover Photo
               GestureDetector(
