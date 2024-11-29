@@ -1,5 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:school_app/features/teacher/homework/model/homework_model';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/core/controller/loading_provider.dart';
+import 'package:school_app/features/teacher/homework/model/homework_model.dart';
 import 'package:school_app/features/teacher/homework/services/homework_service.dart';
 
 class HomeworkController extends ChangeNotifier {
@@ -24,5 +30,49 @@ class HomeworkController extends ChangeNotifier {
     }
     _isloading = false;
     notifyListeners();
+  }
+
+  // add homework
+  Future<void> addHomework(
+    BuildContext context, {
+    required String class_grade,
+    required String section,
+    required String subject,
+    required String assignment_title,
+    required String description,
+    required String assigned_date,
+    required String due_date,
+    required String submission_type,
+    required total_marks,
+    required String status,
+    required List<int> studentsId,
+  }) async {
+    final loadingProvider =
+        Provider.of<LoadingProvider>(context, listen: false); //loading provider
+    loadingProvider.setLoading(true); //start loader
+    try {
+      final response = await HomeworkServices().addHomework(context,
+          class_grade: class_grade,
+          section: section,
+          subject: subject,
+          assignment_title: assignment_title,
+          description: description,
+          assigned_date: assigned_date,
+          due_date: due_date,
+          submission_type: submission_type,
+          total_marks: total_marks,
+          status: status,
+          studentsId: [1, 2]);
+      log("Response++++=${response.data.toString()}");
+      if (response.statusCode == 201) {
+        log(">>>>>>${response.statusMessage}");
+        context.goNamed(AppRouteConst.homeworkRouteName);
+      }
+    } catch (e) {
+      log(e.toString());
+    } finally {
+      loadingProvider.setLoading(false); // End loader
+      notifyListeners();
+    }
   }
 }

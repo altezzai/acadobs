@@ -45,6 +45,8 @@ import 'package:school_app/features/parent/students/screen/studentdetails.dart';
 import 'package:school_app/features/teacher/attendance/model/attendance_data.dart';
 import 'package:school_app/features/teacher/attendance/screens/take_attendance.dart';
 import 'package:school_app/features/teacher/duties/duty_detail.dart';
+import 'package:school_app/features/teacher/homework/model/homework_model.dart';
+import 'package:school_app/features/teacher/homework/screens/student_selection_screen.dart';
 import 'package:school_app/features/teacher/homework/screens/work.dart';
 import 'package:school_app/features/teacher/homework/screens/work_screen.dart';
 import 'package:school_app/features/teacher/homework/screens/work_view.dart';
@@ -53,7 +55,10 @@ import 'package:school_app/features/teacher/leave_request/screens/add_teacher_le
 import 'package:school_app/features/teacher/mark_work/screens/mark_star.dart';
 import 'package:school_app/features/teacher/marks/models/marks_upload_model.dart';
 import 'package:school_app/features/teacher/marks/screens/student_marklist.dart';
+import 'package:school_app/features/teacher/parent/notes/screens/note_details.dart';
 import 'package:school_app/features/teacher/parent/screens/parents.dart';
+import 'package:school_app/features/teacher/parent/notes/screens/notes.dart';
+import 'package:school_app/features/teacher/parent/notes/screens/add_note.dart';
 
 class Approuter {
   GoRouter router = GoRouter(
@@ -135,7 +140,11 @@ class Approuter {
         name: AppRouteConst.workviewRouteName,
         path: '/workview',
         pageBuilder: (context, state) {
-          return MaterialPage(child: WorkView());
+          final work = state.extra as Homework;
+          return MaterialPage(
+              child: WorkView(
+            work: work,
+          ));
         },
       ),
       GoRoute(
@@ -174,9 +183,34 @@ class Approuter {
         },
       ),
       GoRoute(
+        name: AppRouteConst.NotesRouteName,
+        path: '/notes',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: NotesScreen());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.AddNoteRouteName,
+        path: '/addnotes',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: AddNote());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.NoteDetailsRouteName,
+        path: '/notedetails',
+        pageBuilder: (context, state) {
+          final Student student = state.extra as Student;
+          
+          return MaterialPage(child: NoteChatDetailPage(student: student,));
+        },
+      ),
+        
+      GoRoute(
         name: AppRouteConst.AdminstudentRouteName,
         path: '/adminstudent',
         pageBuilder: (context, state) {
+          
           return MaterialPage(child: StudentsPage());
         },
       ),
@@ -395,7 +429,7 @@ class Approuter {
               child: NoticeDetailPage(
             title: noticeData['title'],
             description: noticeData['description'],
-            fileName: noticeData['fileName'],
+            fileUpload: noticeData['fileUpload'],
             imageProvider: noticeData['imageProvider'],
           ));
         },
@@ -441,6 +475,18 @@ class Approuter {
         },
       ),
       GoRoute(
+        name: AppRouteConst.studentSelectionRouteName,
+        path: '/studentSelection',
+        pageBuilder: (context, state) {
+          final ClassAndDivision classAndDivision =
+              state.extra as ClassAndDivision;
+          return MaterialPage(
+              child: StudentSelectionScreen(
+            classAndDivision: classAndDivision,
+          ));
+        },
+      ),
+      GoRoute(
         name: AppRouteConst.PaymentViewRouteName,
         path: '/paymentview',
         pageBuilder: (context, state) {
@@ -464,4 +510,10 @@ class Approuter {
       ),
     ],
   );
+}
+
+class ClassAndDivision {
+  String className;
+  String section;
+  ClassAndDivision({required this.className, required this.section});
 }
