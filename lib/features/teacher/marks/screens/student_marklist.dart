@@ -8,6 +8,7 @@ import 'package:school_app/base/utils/constants.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
+import 'package:school_app/features/teacher/marks/controller/marks_controller.dart';
 import 'package:school_app/features/teacher/marks/models/marks_upload_model.dart';
 import 'package:school_app/features/teacher/marks/widgets/mark_tile.dart';
 
@@ -36,9 +37,11 @@ class _StudentMarklistState extends State<StudentMarklist> {
   void initState() {
     super.initState();
     studentIdController = context.read<StudentIdController>();
-    studentIdController.getStudentsFromClassAndDivision(
-        className: widget.marksUploadModel.classGrade ?? "",
-        section: widget.marksUploadModel.section ?? "");
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      studentIdController.getStudentsFromClassAndDivision(
+          className: widget.marksUploadModel.classGrade ?? "",
+          section: widget.marksUploadModel.section ?? "");
+    });
   }
 
   void collectStudentData() {
@@ -47,12 +50,16 @@ class _StudentMarklistState extends State<StudentMarklist> {
     for (int index = 0; index < studentIdController.students.length; index++) {
       final student = studentIdController.students[index];
       final marks = markControllers[index]?.text ?? "";
-      final attendanceStatus = "Present"; // You can make this dynamic if needed
+
+      if (marks.isEmpty) {
+        log("Error: Marks not entered for student ${student['id']}");
+        continue;
+      }
 
       studentMarksList.add({
         "student_id": student['id'],
         "marks": marks,
-        "attendance_status": attendanceStatus,
+        "attendance_status": "Present", // Example hardcoded value
       });
     }
 
@@ -62,80 +69,87 @@ class _StudentMarklistState extends State<StudentMarklist> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          children: [
-            CustomAppbar(
-              title:
-                  "${widget.marksUploadModel.classGrade}th ${widget.marksUploadModel.section}",
-              isBackButton: true,
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "${widget.marksUploadModel.date}",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodySmall!
-                      .copyWith(fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  width: 15,
-                ),
-                Text(
-                  "Total: ${widget.marksUploadModel.totalMarks}",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodySmall!
-                      .copyWith(fontWeight: FontWeight.bold, color: blackColor),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: Responsive.height * 2,
-            ),
-            Consumer<StudentIdController>(builder: (context, value, child) {
-              return ListView.builder(
-                shrinkWrap: true,
-                itemCount: value.students.length,
-                physics: const NeverScrollableScrollPhysics(),
-                padding: EdgeInsets.zero,
-                itemBuilder: (context, index) {
-                  final student = value.students[index];
-                  // Initialize controllers for each student if not already done
-                  markControllers.putIfAbsent(
-                      index, () => TextEditingController());
-                  gradeControllers.putIfAbsent(
-                      index, () => TextEditingController());
-                  return MarkTile(
-                    studentName: capitalizeFirstLetter(student['full_name']),
-                    studentNumber: (index + 1).toString(),
-                    markController: markControllers[index]!,
-                    gradeController: gradeControllers[index]!,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            children: [
+              CustomAppbar(
+                title:
+                    "${widget.marksUploadModel.classGrade}th ${widget.marksUploadModel.section}",
+                isBackButton: true,
+                onTap: () => Navigator.pop(context),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "${widget.marksUploadModel.date}",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall!
+                        .copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(width: 15),
+                  Text(
+                    "Total: ${widget.marksUploadModel.totalMarks}",
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        fontWeight: FontWeight.bold, color: blackColor),
+                  ),
+                ],
+              ),
+              SizedBox(height: Responsive.height * 2),
+              Consumer<StudentIdController>(
+                builder: (context, value, child) {
+                  if (value.students.isEmpty) {
+                    return Center(child: Text("No students found."));
+                  }
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: value.students.length,
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: EdgeInsets.zero,
+                    itemBuilder: (context, index) {
+                      final student = value.students[index];
+                      // Initialize controllers
+                      markControllers.putIfAbsent(
+                          index, () => TextEditingController());
+                      gradeControllers.putIfAbsent(
+                          index, () => TextEditingController());
+                      return MarkTile(
+                        studentName:
+                            capitalizeFirstLetter(student['full_name']),
+                        studentNumber: (index + 1).toString(),
+                        markController: markControllers[index]!,
+                        gradeController: gradeControllers[index]!,
+                      );
+                    },
                   );
                 },
-              );
-            }),
-            SizedBox(
-              height: Responsive.height * 2,
-            ),
-            CustomButton(
+              ),
+              SizedBox(height: Responsive.height * 2),
+              CustomButton(
                 text: "Submit",
                 onPressed: () {
                   collectStudentData();
-                }),
-            SizedBox(
-              height: Responsive.height * 2,
-            ),
-          ],
+                  log(studentMarksList.toString());
+                  context.read<MarksController>().addMarks(
+                        context: context,
+                        date: widget.marksUploadModel.date ?? "",
+                        title: widget.marksUploadModel.title ?? "",
+                        className: widget.marksUploadModel.classGrade ?? "",
+                        subject: widget.marksUploadModel.subject ?? "",
+                        section: widget.marksUploadModel.section ?? "",
+                        totalMarks: widget.marksUploadModel.totalMarks ?? 0,
+                        students: studentMarksList,
+                      );
+                },
+              ),
+              SizedBox(height: Responsive.height * 2),
+            ],
+          ),
         ),
       ),
-    ));
+    );
   }
 }

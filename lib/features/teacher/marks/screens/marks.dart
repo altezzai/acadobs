@@ -17,6 +17,7 @@ class ProgressReport extends StatelessWidget {
 
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _totalMarkController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +66,7 @@ class ProgressReport extends StatelessWidget {
             ),
             SizedBox(height: Responsive.height * 1),
             CustomTextfield(
+              controller: _titleController,
               hintText: "Exam",
               iconData: Icon(Icons.text_fields),
             ),
@@ -118,6 +120,7 @@ class ProgressReport extends StatelessWidget {
                   final marksModel = MarksUploadModel(
                       classGrade: selectedClass,
                       section: selectedDivision,
+                      title: _titleController.text,
                       date: _dateController.text,
                       subject: selectedSubject,
                       totalMarks: int.parse(_totalMarkController.text));
