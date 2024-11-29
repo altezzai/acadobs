@@ -82,7 +82,7 @@ class _WorkScreenState extends State<WorkScreen> {
                 title: 'Home Works',
                 isProfileIcon: false,
                 onTap: () {
-                  context.goNamed(
+                  context.pushNamed(
                     AppRouteConst.bottomNavRouteName,
                     extra: UserType.teacher,
                   );
@@ -128,7 +128,7 @@ class _WorkScreenState extends State<WorkScreen> {
                               work: homework.assignmentTitle ?? "Untitled",
                               sub: homework.subject ?? "No Subject",
                               onTap: () {
-                                context.pushReplacementNamed(
+                                context.pushNamed(
                                   AppRouteConst.workviewRouteName,
                                   extra: homework,
                                 );
@@ -147,7 +147,7 @@ class _WorkScreenState extends State<WorkScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.pushReplacementNamed(AppRouteConst.addworkRouteName);
+          context.pushNamed(AppRouteConst.addworkRouteName);
         },
         backgroundColor: Colors.black,
         child: Padding(

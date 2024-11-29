@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -45,7 +44,7 @@ class _ParentsScreenState extends State<ParentsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:Padding(
+      body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           children: [
@@ -58,7 +57,7 @@ class _ParentsScreenState extends State<ParentsScreen> {
                     title: "Parents",
                     isProfileIcon: false,
                     onTap: () {
-                      context.goNamed(AppRouteConst.bottomNavRouteName,
+                      context.pushNamed(AppRouteConst.bottomNavRouteName,
                           extra: UserType.teacher);
                     },
                   ),
@@ -69,7 +68,7 @@ class _ParentsScreenState extends State<ParentsScreen> {
                   child: IconButton(
                     icon: Icon(Icons.draw_sharp),
                     onPressed: () {
-                      context.goNamed(AppRouteConst.NotesRouteName);
+                      context.pushNamed(AppRouteConst.NotesRouteName);
                     },
                     // Optional tooltip
                   ),
@@ -223,17 +222,17 @@ class _ParentsScreenState extends State<ParentsScreen> {
                               child: ProfileTile(
                                 imageUrl:
                                     "${baseUrl}${Urls.parentPhotos}${value.parents[index].fatherMotherPhoto}",
-                                name: capitalizeFirstLetter(
-                                    value.filteredparents[index].guardianFullName ??
-                                        ""),
+                                name: capitalizeFirstLetter(value
+                                        .filteredparents[index]
+                                        .guardianFullName ??
+                                    ""),
                                 description:
                                     "${value.filteredparents[index].fullName} ${value.filteredparents[index].studentClass} ${value.filteredparents[index].section}",
                                 onPressed: () {
-       context.pushNamed(
-                  AppRouteConst.NoteDetailsRouteName, extra: value.parents[index]
-                  
-                );
-      },
+                                  context.pushNamed(
+                                      AppRouteConst.NoteDetailsRouteName,
+                                      extra: value.parents[index]);
+                                },
                               ),
                             );
                           },
@@ -252,7 +251,7 @@ class _ParentsScreenState extends State<ParentsScreen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          context.goNamed(AppRouteConst.AddStudentRouteName);
+          context.pushNamed(AppRouteConst.AddStudentRouteName);
         },
         label: Text('Add New Student'),
         icon: Icon(Icons.add),

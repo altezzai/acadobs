@@ -76,7 +76,7 @@ class _TeachersPageState extends State<TeachersPage> {
             CustomAppbar(
               title: 'Teachers',
               onTap: () {
-                context.goNamed(
+                context.pushNamed(
                   AppRouteConst.bottomNavRouteName,
                   extra: UserType.admin,
                 );
@@ -168,7 +168,7 @@ class _TeachersPageState extends State<TeachersPage> {
                         description:
                             value.teachers[index].classGradeHandling ?? "",
                         onPressed: () {
-                          context.goNamed(
+                          context.pushNamed(
                               AppRouteConst.AdminteacherdetailsRouteName,
                               extra: value.teachers[index]);
                         },
@@ -186,7 +186,7 @@ class _TeachersPageState extends State<TeachersPage> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          context.goNamed(AppRouteConst.AddTeacherRouteName);
+          context.pushNamed(AppRouteConst.AddTeacherRouteName);
         },
         label: Text('Add New Teacher'),
         icon: Icon(Icons.add),

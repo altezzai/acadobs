@@ -50,7 +50,6 @@ class _HomeWorkState extends State<HomeWork> {
       if (studentIdController.selectedStudentIds.isNotEmpty) {
         studentIdController.clearSelection();
       }
-
     });
   }
 
@@ -67,7 +66,7 @@ class _HomeWorkState extends State<HomeWork> {
                 title: 'Add Homework',
                 isProfileIcon: false,
                 onTap: () {
-                  context.pushReplacementNamed(AppRouteConst.homeworkRouteName);
+                  context.pushNamed(AppRouteConst.homeworkRouteName);
                 },
               ),
               Row(

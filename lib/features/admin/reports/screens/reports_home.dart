@@ -21,8 +21,7 @@ class ReportsHomeScreen extends StatelessWidget {
               icon: Icons.currency_rupee,
               color: Colors.green,
               onTap: () {
-                context
-                    .pushReplacementNamed(AppRouteConst.PaymentReportRouteName);
+                context.pushNamed(AppRouteConst.PaymentReportRouteName);
               },
             ),
             SizedBox(height: 16),

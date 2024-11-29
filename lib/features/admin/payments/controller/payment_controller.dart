@@ -85,7 +85,7 @@ class PaymentController extends ChangeNotifier {
       );
       if (response.statusCode == 201) {
         log(">>>>>>${response.statusMessage}");
-        context.goNamed(AppRouteConst.bottomNavRouteName,
+        context.pushNamed(AppRouteConst.bottomNavRouteName,
             extra: UserType.admin);
       }
     } catch (e) {
@@ -112,7 +112,7 @@ class PaymentController extends ChangeNotifier {
     loadingProvider.setLoading(true); //start loader
     try {
       final response = await PaymentServices().addDonation(context,
-      userId: userId,
+          userId: userId,
           amount_donated: amount_donated,
           donation_date: donation_date,
           purpose: purpose,
@@ -121,7 +121,7 @@ class PaymentController extends ChangeNotifier {
           transaction_id: transaction_id);
       if (response.statusCode == 201) {
         log(">>>>>>${response.statusMessage}");
-        context.goNamed(AppRouteConst.bottomNavRouteName,
+        context.pushNamed(AppRouteConst.bottomNavRouteName,
             extra: UserType.admin);
       }
     } catch (e) {
