@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -20,20 +19,20 @@ class AddTeacherLeaveRequest extends StatefulWidget {
 }
 
 class _AddTeacherLeaveRequestState extends State<AddTeacherLeaveRequest> {
-  
   String? selectedLeaveType;
 
   // textediting controllers
-  final TextEditingController _teacherIdController = TextEditingController(); 
+  final TextEditingController _teacherIdController = TextEditingController();
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
-  final TextEditingController _reasonForLeaveController = TextEditingController();
+  final TextEditingController _reasonForLeaveController =
+      TextEditingController();
 
- @override
+  @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
     _teacherIdController.dispose();
-   
+
     _startDateController.dispose();
     _endDateController.dispose();
     _reasonForLeaveController.dispose();
@@ -53,7 +52,7 @@ class _AddTeacherLeaveRequestState extends State<AddTeacherLeaveRequest> {
                 title: "Add Leave Requset",
                 isProfileIcon: false,
                 onTap: () {
-                  context.goNamed(AppRouteConst.AdminteacherRouteName);
+                  context.pushNamed(AppRouteConst.AdminteacherRouteName);
                 },
               ),
               Text(
@@ -79,7 +78,8 @@ class _AddTeacherLeaveRequestState extends State<AddTeacherLeaveRequest> {
               SizedBox(
                 height: Responsive.height * 1,
               ),
-                 CustomDropdown(dropdownKey: 'leaveType',
+              CustomDropdown(
+                dropdownKey: 'leaveType',
                 label: 'Leave Type',
                 icon: Icons.person_2_outlined,
                 items: ['Sick Leave', 'Casual Leave', 'Other'],
@@ -107,32 +107,32 @@ class _AddTeacherLeaveRequestState extends State<AddTeacherLeaveRequest> {
               SizedBox(
                 height: Responsive.height * 1,
               ),
-              
-              
               CustomTextfield(
                 controller: _reasonForLeaveController, //Add controller
                 hintText: 'Reason For Leave',
                 iconData: Icon(Icons.location_on),
-                
               ),
               SizedBox(
                 height: Responsive.height * 1,
               ),
-              
               CustomButton(
                   text: 'Submit',
                   onPressed: () {
-                    final selectedLeaveType = context.read<DropdownProvider>()
+                    final selectedLeaveType = context
+                        .read<DropdownProvider>()
                         .getSelectedItem('leaveType');
                     // final int? teacherId = int.tryParse(_teacherIdController.text);
-                    
-                    
-                    context.read<TeacherLeaveRequestController>().addNewTeacherLeaveRequest(context,
-                       teacherId: _teacherIdController.text,  
-                       leaveType: selectedLeaveType,        
-          startDate: _startDateController.text,
-          endDate: _endDateController.text,
-          reasonForLeave: _reasonForLeaveController.text,);
+
+                    context
+                        .read<TeacherLeaveRequestController>()
+                        .addNewTeacherLeaveRequest(
+                          context,
+                          teacherId: _teacherIdController.text,
+                          leaveType: selectedLeaveType,
+                          startDate: _startDateController.text,
+                          endDate: _endDateController.text,
+                          reasonForLeave: _reasonForLeaveController.text,
+                        );
                   }),
             ],
           ),

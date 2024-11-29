@@ -28,7 +28,7 @@ class _WorkViewState extends State<WorkView> {
               title: '',
               isProfileIcon: false,
               onTap: () {
-                context.goNamed(AppRouteConst.homeworkRouteName);
+                context.pushNamed(AppRouteConst.homeworkRouteName);
               },
             ),
             const ViewContainer(
@@ -78,8 +78,7 @@ class _WorkViewState extends State<WorkView> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      context.pushReplacementNamed(
-                          AppRouteConst.markstarRouteName);
+                      context.pushNamed(AppRouteConst.markstarRouteName);
                     },
                     child: Text(
                       'Mark Homework',

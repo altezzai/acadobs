@@ -43,7 +43,7 @@ class TeacherScreen extends StatelessWidget {
                   const Spacer(),
                   GestureDetector(
                     onTap: () {
-                      context.goNamed(AppRouteConst.logoutRouteName,
+                      context.pushNamed(AppRouteConst.logoutRouteName,
                           extra: UserType.teacher);
                     },
                     child: Padding(
