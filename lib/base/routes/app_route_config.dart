@@ -201,16 +201,18 @@ class Approuter {
         path: '/notedetails',
         pageBuilder: (context, state) {
           final Student student = state.extra as Student;
-          
-          return MaterialPage(child: NoteChatDetailPage(student: student,));
+
+          return MaterialPage(
+              child: NoteChatDetailPage(
+            student: student,
+          ));
         },
       ),
-        
+
       GoRoute(
         name: AppRouteConst.AdminstudentRouteName,
         path: '/adminstudent',
         pageBuilder: (context, state) {
-          
           return MaterialPage(child: StudentsPage());
         },
       ),
@@ -444,6 +446,7 @@ class Approuter {
             amount: paymentData['amount'],
             description: paymentData['description'],
             file: paymentData['file'],
+            transactionId: paymentData['transactionId'],
           ));
         },
       ),

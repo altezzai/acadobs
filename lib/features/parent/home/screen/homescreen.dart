@@ -34,7 +34,7 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
 
   final List<Widget> _pages = [
     const HomePage(),
-    const Text("Reports Page"),
+    // const Text("Reports Page"),
     const EventsPage(),
     const NoticePage(),
     const PaymentPage(),
@@ -60,10 +60,10 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
             icon: Icon(Icons.home),
             label: 'Home',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.article),
-            label: 'Reports',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.article),
+          //   label: 'Reports',
+          // ),
           BottomNavigationBarItem(
             icon: Icon(Icons.event),
             label: 'Events',
