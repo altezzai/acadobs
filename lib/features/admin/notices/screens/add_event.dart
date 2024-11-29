@@ -1,8 +1,6 @@
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
@@ -22,26 +20,14 @@ class _AddEventPageState extends State<AddEventPage> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 
-  Future<void> pickFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.any,
-    );
-    if (result != null && result.files.isNotEmpty) {
-      setState(() {
-        selectedFile = result.files.first.name;
-      });
-    }
-  }
-
-  Future<void> pickCoverPhoto() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.image,
-    );
-    if (result != null && result.files.isNotEmpty) {
-      setState(() {
-        coverPhoto = result.files.first.name;
-      });
-    }
+  late NoticeController noticeController;
+  @override
+  void initState() {
+    super.initState();
+    noticeController = Provider.of<NoticeController>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      noticeController.clearSelectedImages();
+    });
   }
 
   @override
@@ -101,45 +87,58 @@ class _AddEventPageState extends State<AddEventPage> {
               // Add Cover Photo
               GestureDetector(
                 onTap: () {
-                  context
-                      .read<NoticeController>()
-                      .pickImage(ImageSource.gallery);
+                  context.read<NoticeController>().pickMultipleImages();
                 },
                 child: Consumer<NoticeController>(
                   builder: (context, noticeController, _) {
-                    final file = noticeController.chosenFile;
+                    final files =
+                        noticeController.chosenFiles; // Access the chosen files
                     return Container(
                       height: 150,
                       width: double.infinity,
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey),
                         borderRadius: BorderRadius.circular(30),
-                        image: file != null
-                            ? DecorationImage(
-                                image: FileImage(File(file.path)),
-                                fit: BoxFit.cover,
-                              )
-                            : null,
                       ),
-                      child: file == null
-                          ? Center(
+                      child: files != null && files.isNotEmpty
+                          ? ListView.builder(
+                              scrollDirection:
+                                  Axis.horizontal, // Horizontal scrolling
+                              itemCount: files.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image.file(
+                                      File(files[index].path),
+                                      fit: BoxFit.cover,
+                                      height: 150,
+                                      width: 100, // Adjust width as needed
+                                    ),
+                                  ),
+                                );
+                              },
+                            )
+                          : Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(Icons.camera_alt, size: 40),
                                   SizedBox(height: 8),
                                   Text(
-                                    'Add Cover Photo',
+                                    'Add Event images',
                                     style: TextStyle(fontSize: 16),
                                   ),
                                 ],
                               ),
-                            )
-                          : null,
+                            ),
                     );
                   },
                 ),
               ),
+
               SizedBox(height: 20),
 
               // Title Input (styled similar to Add Notice)
@@ -190,36 +189,6 @@ class _AddEventPageState extends State<AddEventPage> {
               ),
               SizedBox(height: 16),
 
-              // Document Upload Button (styled like Add Notice)
-              GestureDetector(
-                onTap: pickFile,
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(25.0),
-                  ),
-                  padding:
-                      EdgeInsets.symmetric(vertical: 12.0, horizontal: 15.0),
-                  child: Row(
-                    children: [
-                      Icon(Icons.attachment_rounded, color: Colors.black),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          selectedFile ?? 'Document',
-                          style: TextStyle(
-                              color: selectedFile != null
-                                  ? Colors.black
-                                  : Colors.grey,
-                              fontSize: 14),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(height: 40),
-
               // Submit Button
               Center(
                 child: CustomButton(
@@ -230,8 +199,6 @@ class _AddEventPageState extends State<AddEventPage> {
                           title: _titleController.text,
                           description: _descriptionController.text,
                           date: _dateController.text,
-                          coverPhoto:
-                              coverPhoto, // Use the selected cover photo
                         );
                   },
                 ),

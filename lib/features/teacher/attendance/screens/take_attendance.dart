@@ -56,6 +56,13 @@ class TakeAttendance extends StatelessWidget {
                         : SizedBox()
                   ],
                 ),
+                Text(
+                  attendanceData.subject,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium!
+                      .copyWith(fontWeight: FontWeight.bold),
+                ),
                 SizedBox(height: Responsive.height * 2),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

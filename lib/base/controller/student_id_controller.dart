@@ -7,6 +7,10 @@ class StudentIdController extends ChangeNotifier {
   List<Map<String, dynamic>> _students = [];
   List<Map<String, dynamic>> get students => _students;
 
+    // List to store selected teacher IDs
+  List<int> _selectedStudentIds = [];
+  List<int> get selectedStudentIds => _selectedStudentIds;
+
   String? selectedStudentId;
 
   Future<void> getStudentsFromClassAndDivision({
@@ -64,6 +68,27 @@ class StudentIdController extends ChangeNotifier {
   void clearSelection() {
     _selectedStudentIndex = null;
     _students.clear();
+    notifyListeners();
+  }
+
+  // multiple students selection for homework assigning
+   void toggleStudentSelection(int studentId) {
+    if (_selectedStudentIds.contains(studentId)) {
+      _selectedStudentIds.remove(studentId);
+    } else {
+      selectedStudentIds.add(studentId);
+    }
+    notifyListeners();
+  }
+
+  // Check if a student is selected
+  bool isStudentSelected(int studentId) {
+    return selectedStudentIds.contains(studentId);
+  }
+
+  // Clear the selection
+  void clearStudentIdsSelection() {
+    selectedStudentIds.clear();
     notifyListeners();
   }
 }

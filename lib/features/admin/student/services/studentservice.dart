@@ -65,4 +65,24 @@ class StudentServices {
       throw Exception('Failed to load data: $e');
     }
   }
+  // GET parent
+  Future<Response> getParent() async {
+    try {
+      final Response response = await ApiServices.get('/searchParents');
+      return response;
+    } on DioException catch (e) {
+      throw Exception('Failed to load data: $e');
+    }
+  }
+  // student by class division
+  Future<Response> getParentByClassAndDivision(
+      {required String classname, required String section}) async {
+    try {
+      final Response response = await ApiServices.get(
+          '/getParentNameAndImageByClsAnDiv?class=$classname&section=$section');
+      return response;
+    } on DioException catch (e) {
+      throw Exception('Failed to load data: $e');
+    }
+  }
 }

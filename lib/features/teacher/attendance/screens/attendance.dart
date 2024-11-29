@@ -38,6 +38,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
       dropdownProvider.clearSelectedItem('class');
       dropdownProvider.clearSelectedItem('division');
       dropdownProvider.clearSelectedItem('period');
+      dropdownProvider.clearSelectedItem('subject');
     });
   }
 
@@ -65,6 +66,19 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                             _buildDropdownRow(),
                             SizedBox(height: Responsive.height * 2),
                             _buildDateAndPeriodRow(),
+                            SizedBox(height: Responsive.height * 2),
+                            CustomDropdown(
+                              dropdownKey: 'subject',
+                              icon: Icons.school_outlined,
+                              label: "Select Subject",
+                              items: ["Physics", "Chemistry", "Mathematics"],
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "Please select subject";
+                                }
+                                return null;
+                              },
+                            ),
                           ],
                         ),
 
@@ -227,19 +241,20 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     String selectedDivision =
         context.read<DropdownProvider>().getSelectedItem('division');
     String selectedDate = _dateController.text;
+    String selectedSubject =
+        context.read<DropdownProvider>().getSelectedItem('subject');
 
     final attendanceData = AttendanceData(
         selectedClass: selectedClass,
         selectedPeriod: selectedPeriod,
         selectedDivision: selectedDivision,
         selectedDate: selectedDate,
+        subject: selectedSubject,
         action: action);
 
     context.read<AttendanceController>().takeAttendance(
           context,
-
           attendanceData: attendanceData,
-          // Pass the action to handle it on the next page
         );
   }
 }
