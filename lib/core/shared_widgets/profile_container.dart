@@ -60,7 +60,7 @@ class ProfileContainer extends StatelessWidget {
           ],
         ),
         SizedBox(
-          height: Responsive.height * 7,
+          height: Responsive.height * 6,
         ),
         Text(
           "$description",
@@ -70,7 +70,7 @@ class ProfileContainer extends StatelessWidget {
               color: Color(0xFF7C7C7C)),
         ),
         SizedBox(
-          height: Responsive.height * 1,
+          height: Responsive.height * 2,
         ),
         Container(
           padding: EdgeInsets.symmetric(vertical: 14),

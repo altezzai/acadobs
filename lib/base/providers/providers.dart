@@ -1,5 +1,6 @@
 import 'package:provider/provider.dart';
 import 'package:school_app/base/controller/student_id_controller.dart';
+import 'package:school_app/core/authentication/controller/auth_controller.dart';
 import 'package:school_app/core/controller/date_provider.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/controller/file_picker_provider.dart';
@@ -39,5 +40,6 @@ getProviders() {
     ChangeNotifierProvider(create: (_) => DateProvider()),
     ChangeNotifierProvider(create: (_) => HomeworkController()),
      ChangeNotifierProvider(create: (_) => MarksController()),
+     ChangeNotifierProvider(create: (_) => AuthController()),
   ];
 }

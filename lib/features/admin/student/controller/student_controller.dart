@@ -4,9 +4,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/core/controller/loading_provider.dart';
+import 'package:school_app/features/admin/student/model/day_attendance_status.dart';
 import 'package:school_app/features/admin/student/model/student_data.dart';
 import 'package:school_app/features/admin/student/services/studentservice.dart';
 
@@ -159,5 +161,106 @@ class StudentController extends ChangeNotifier {
     }
     _isloading = false;
     notifyListeners();
+  }
+
+  // Day Attendance Status List
+  List<DayAttendanceStatus> _dayAttendanceStatus = [];
+  List<DayAttendanceStatus> get dayAttendanceStatus => _dayAttendanceStatus;
+
+  // Selected Date
+  DateTime _selectedDate = DateTime.now();
+  DateTime get selectedDate => _selectedDate;
+
+  // Loading State
+  bool _isLoadingTwo = false;
+  bool get isLoadingTwo => _isLoadingTwo;
+
+  // Formatted Date (Today, Yesterday, or Date String)
+  String get formattedDate {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final yesterday = today.subtract(const Duration(days: 1));
+    final selectedDay = DateTime(
+      _selectedDate.year,
+      _selectedDate.month,
+      _selectedDate.day,
+    );
+
+    if (selectedDay == today) {
+      return "Today";
+    } else if (selectedDay == yesterday) {
+      return "Yesterday";
+    } else {
+      return DateFormat('dd MMM yyyy').format(_selectedDate);
+    }
+  }
+
+  // Update Date and Fetch Data
+  Future<void> updateDate(DateTime newDate, {required String studentId}) async {
+    _selectedDate = newDate;
+    await getDayAttendance(studentId: studentId); // Automatically fetch attendance
+  }
+
+  // Fetch Attendance Data
+  Future<void> getDayAttendance({required String studentId}) async {
+    _isLoadingTwo = true;
+    notifyListeners();
+
+    try {
+      final response = await StudentServices().getDayAttendance(
+        studentId: studentId,
+        date: _selectedDate.toIso8601String(),
+      );
+      log("Attendance Response: ${response.data}");
+
+      if (response.statusCode == 200) {
+        // Map API Response to Model
+        _dayAttendanceStatus = (response.data as List<dynamic>)
+            .map((result) => DayAttendanceStatus.fromJson(result))
+            .toList();
+      } else {
+        // Handle non-200 response
+        _dayAttendanceStatus = [];
+        log("Non-200 response: ${response.statusCode}");
+      }
+    } catch (e) {
+      // Handle API Errors
+      log("Error fetching attendance: $e");
+      _dayAttendanceStatus = [];
+    } finally {
+      _isLoadingTwo = false;
+      notifyListeners(); // Notify listeners once at the end
+    }
+  }
+
+  // get today attendance
+   Future<void> getTodayAttendance({required String studentId}) async {
+    // _selectedDate = DateTime.now();
+    try {
+      final response = await StudentServices().getDayAttendance(
+        studentId: studentId,
+        date: DateTime.now().toString(),
+      );
+      log("Attendance Response: ${response.data}");
+
+      if (response.statusCode == 200) {
+        // Map API Response to Model
+        _dayAttendanceStatus = (response.data as List<dynamic>)
+            .map((result) => DayAttendanceStatus.fromJson(result))
+            .toList();
+        notifyListeners();
+      } else {
+        // Handle non-200 response (optional)
+        _dayAttendanceStatus = [];
+        log("Non-200 response: ${response.statusCode}");
+      }
+    } catch (e) {
+      // Handle API Errors
+      log("Error fetching attendance: $e");
+      _dayAttendanceStatus = [];
+    } finally {
+      // Notify Listeners after every attempt
+      notifyListeners();
+    }
   }
 }
