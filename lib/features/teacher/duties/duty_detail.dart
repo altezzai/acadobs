@@ -1,17 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/constants.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
-import 'package:school_app/features/teacher/homework/widgets/date_picker.dart';
+import 'package:school_app/features/admin/duties/controller/duty_controller.dart';
+import 'package:school_app/features/admin/duties/model/teacherDuty_model.dart';
 import 'package:school_app/features/teacher/homework/widgets/view_container.dart';
 
-class DutyDetailScreen extends StatelessWidget {
-  const DutyDetailScreen({super.key});
+class DutyDetailScreen extends StatefulWidget {
+  final DutyItem teacherDuty;
+  DutyDetailScreen({required this.teacherDuty});
 
+  @override
+  State<DutyDetailScreen> createState() => _DutyDetailScreenState();
+}
+
+class _DutyDetailScreenState extends State<DutyDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +30,7 @@ class DutyDetailScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomAppbar(
-                title: '12th  class New student Registration',
+                title: widget.teacherDuty.dutyTitle ?? "",
                 isProfileIcon: false,
                 onTap: () {
                   context.pushNamed(AppRouteConst.bottomNavRouteName,
@@ -38,7 +46,7 @@ class DutyDetailScreen extends StatelessWidget {
                 height: Responsive.height * 3,
               ),
               Text(
-                '12th  class New student Registration of 2024',
+                widget.teacherDuty.dutyTitle ?? "",
                 style: textThemeData.headlineLarge!.copyWith(
                   fontSize: 20,
                 ),
@@ -47,20 +55,33 @@ class DutyDetailScreen extends StatelessWidget {
                 height: Responsive.height * 1,
               ),
               Text(
-                'You have to complete the registration of 12th class \nstudents before 2025',
+                widget.teacherDuty.description ?? "",
                 style: textThemeData.bodySmall!.copyWith(
                   fontSize: 14,
                 ),
               ),
               SizedBox(height: Responsive.height * 3),
-              Row(
-                children: [
-                  const DatePicker(title: "Start Date"),
-                  SizedBox(width: Responsive.width * 2),
-                  const DatePicker(title: "End Date")
-                ],
-              ),
+              Text(widget.teacherDuty.status ?? "",
+                  style: textThemeData.bodyMedium),
               SizedBox(height: Responsive.height * 6),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.orange.withOpacity(0.6),
+                ),
+                onPressed: () {
+                  context.read<DutyController>().progressDuty(context,
+                      duty_id: widget.teacherDuty.id ?? 0);
+                },
+                child: Text(
+                  "In Progress",
+                  style: textThemeData.bodyMedium!.copyWith(
+                    color: whiteColor,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 19,
+                  ),
+                ),
+              ),
+              SizedBox(height: Responsive.height * 1),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xff14601C),

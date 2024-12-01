@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/controller/student_id_controller.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/core/authentication/controller/auth_controller.dart';
-import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 // import 'package:school_app/teacher/home/homescreen.dart';
@@ -97,11 +94,6 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(height: 20),
                   CustomButton(
                     onPressed: () {
-                      if (emailController.text == "admin" &&
-                          passwordController.text == "1234") {
-                        context.goNamed(AppRouteConst.bottomNavRouteName,
-                            extra: UserType.admin);
-                      }
                       context.read<AuthController>().login(
                           context: context,
                           email: emailController.text,
