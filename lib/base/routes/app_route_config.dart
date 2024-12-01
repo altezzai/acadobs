@@ -6,6 +6,7 @@ import 'package:school_app/core/authentication/screens/logout.dart';
 import 'package:school_app/core/authentication/screens/splashscreen.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/admin/duties/model/duty_model.dart';
+import 'package:school_app/features/admin/duties/model/teacherDuty_model.dart';
 import 'package:school_app/features/admin/duties/screens/addDutyPage.dart';
 import 'package:school_app/features/admin/duties/screens/teacher_selection_screen.dart';
 import 'package:school_app/features/admin/duties/screens/view_duty.dart';
@@ -126,7 +127,11 @@ class Approuter {
         name: AppRouteConst.dutiesRouteName,
         path: '/duties',
         pageBuilder: (context, state) {
-          return MaterialPage(child: DutyDetailScreen());
+          final DutyItem teacherDuty = state.extra as DutyItem;
+          return MaterialPage(
+              child: DutyDetailScreen(
+            teacherDuty: teacherDuty,
+          ));
         },
       ),
       GoRoute(

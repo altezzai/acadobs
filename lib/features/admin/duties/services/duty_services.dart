@@ -13,6 +13,13 @@ class DutyServices {
     return response;
   }
 
+  // get teacher duties
+  Future<Response> getTeacherDuties({required int teacherid}) async {
+    final Response response =
+        await ApiServices.get("/getTeacherDuties/$teacherid");
+    return response;
+  }
+
   Future<Response> addDuty({
     required String duty_title,
     required String description,
@@ -32,6 +39,20 @@ class DutyServices {
     // Call the ApiServices post method with formData and isFormData: true
     final Response response =
         await ApiServices.post("/duties", formData, isFormData: true);
+
+    return response;
+  }
+
+  Future<Response> progressDuty({
+    required int duty_id,
+  }) async {
+    // Create the form data to pass to the API
+    final formData = {'duty_id': duty_id};
+
+    // Call the ApiServices post method with formData and isFormData: true
+    final Response response = await ApiServices.post(
+        "/inProgressTeacherDuty/$duty_id", formData,
+        isFormData: true);
 
     return response;
   }
