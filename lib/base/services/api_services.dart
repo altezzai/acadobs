@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:school_app/base/interceptor/custom_interceptor.dart';
 
 class ApiServices {
   static const String baseUrl = "https://schoolmanagement.altezzai.com/api";
@@ -12,8 +13,17 @@ class ApiServices {
       headers: {
         'Content-Type': 'application/json',
       },
-    ),
-  );
+    )
+  ) ..interceptors.addAll([
+      CustomInterceptor(),
+      LogInterceptor(
+          error: true,
+          request: true,
+          requestBody: true,
+          requestHeader: true,
+          responseBody: true,
+          responseHeader: true)
+    ]);
 
   // GET request
   static Future<Response> get(String endpoint, {dynamic data}) async {
@@ -63,5 +73,11 @@ class ApiServices {
     } on DioException catch (e) {
       throw Exception('Failed to delete data: $e');
     }
+  }
+
+// ************ Logout *************
+  static Future<Response> logout(String endpoint) async {
+    final response = await _dio.post(endpoint);
+    return response;
   }
 }

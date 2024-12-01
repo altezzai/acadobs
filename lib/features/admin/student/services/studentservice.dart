@@ -85,4 +85,10 @@ class StudentServices {
       throw Exception('Failed to load data: $e');
     }
   }
+
+  // day attendance status
+  Future<Response> getDayAttendance({required String studentId, required String date}) async {
+    final Response response = await ApiServices.get("/getStudentAttendanceADay/$studentId?date=$date");
+    return response;
+  }
 }

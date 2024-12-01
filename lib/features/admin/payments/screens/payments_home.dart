@@ -8,8 +8,10 @@ import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/constants.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/shared_widgets/add_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
+import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/features/admin/payments/controller/payment_controller.dart';
 import 'package:school_app/features/admin/payments/widgets/payment_item.dart';
 
@@ -76,7 +78,10 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  SingleChildScrollView(child: _buildPaymentsList()),
+                  // _buildClassDivisionPayment(context: context),
+                  SingleChildScrollView(
+                    child: _buildPaymentsList(),
+                  ),
                   _buildDonationsList(),
                 ],
               ),
@@ -86,6 +91,98 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
       ),
     );
   }
+
+// ******************Payment in report page***************************
+  Widget _buildClassDivisionPayment({required BuildContext context}) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: CustomDropdown(
+                dropdownKey: 'class',
+                label: 'Class',
+                items: ['8', '9', '10'],
+                icon: Icons.school,
+                onChanged: (selectedClass) {
+                  final selectedDivision = context
+                      .read<DropdownProvider>()
+                      .getSelectedItem('division');
+                  context
+                      .read<PaymentController>()
+                      .getPaymentsByClassAndDivision(
+                        className: selectedClass,
+                        section: selectedDivision,
+                      );
+                },
+              ),
+            ),
+            const SizedBox(width: 5),
+            Expanded(
+              child: CustomDropdown(
+                dropdownKey: 'division',
+                label: 'Division',
+                items: ['A', 'B', 'C'],
+                icon: Icons.group,
+                onChanged: (selectedDivision) {
+                  final selectedClass =
+                      context.read<DropdownProvider>().getSelectedItem('class');
+                  context
+                      .read<PaymentController>()
+                      .getPaymentsByClassAndDivision(
+                        className: selectedClass,
+                        section: selectedDivision,
+                      );
+                },
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 10),
+        Expanded(
+          child: Consumer<PaymentController>(
+            builder: (context, value, child) {
+              // if (value.isloading) {
+              //   return const Center(child: CircularProgressIndicator());
+              // } else if (value.payments.isEmpty) {
+              //   return Center(
+              //     child: Column(
+              //       mainAxisAlignment: MainAxisAlignment.center,
+              //       children: [
+              //         Image.asset(
+              //           'assets/empty.png',
+              //           height: Responsive.height * 45,
+              //         ),
+              //         const SizedBox(height: 20),
+              //         const Text("No payments available"),
+              //       ],
+              //     ),
+              //   );
+              // }
+              return ListView.builder(
+                padding: EdgeInsets.zero,
+                itemCount: value.payments.length,
+                itemBuilder: (context, index) {
+                  final payment = value.payments[index];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: PaymentItem(
+                      amount: payment.amountPaid ?? "",
+                      name: payment.fullName ?? "",
+                      time: TimeFormatter.formatTimeFromString(
+                          payment.createdAt.toString()),
+                      status: payment.paymentStatus ?? "",
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+  // ******************End of Payment in report page***************************//
 
   /// Reusable function to group items by date.
   Map<String, List<T>> groupItemsByDate<T>(
@@ -147,40 +244,45 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
 
       return SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: groupedPayments.entries.map((entry) {
-            return Column(
+          children: [
+            SizedBox(height: Responsive.height * 2),
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: Responsive.height * 1),
-                _buildDateHeader(entry.key),
-                SizedBox(height: Responsive.height * 1),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.zero,
-                  itemCount: entry.value.length,
-                  itemBuilder: (context, index) {
-                    final payment = entry.value[index];
-                    return PaymentItem(
-                      amount: payment.amountPaid ?? "",
-                      name: capitalizeFirstLetter(payment.fullName ?? ""),
-                      time: TimeFormatter.formatTimeFromString(
-                          payment.createdAt.toString()),
-                      status: payment.paymentStatus ?? "",
-                      onTap: () {
-                        context.goNamed(
-                          AppRouteConst.PaymentViewRouteName,
-                          extra: entry.value[index],
+              children: groupedPayments.entries.map((entry) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: Responsive.height * 1),
+                    _buildDateHeader(entry.key),
+                    SizedBox(height: Responsive.height * 1),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      padding: EdgeInsets.zero,
+                      itemCount: entry.value.length,
+                      itemBuilder: (context, index) {
+                        final payment = entry.value[index];
+                        return PaymentItem(
+                          amount: payment.amountPaid ?? "",
+                          name: capitalizeFirstLetter(payment.fullName ?? ""),
+                          time: TimeFormatter.formatTimeFromString(
+                              payment.createdAt.toString()),
+                          status: payment.paymentStatus ?? "",
+                          onTap: () {
+                            context.goNamed(
+                              AppRouteConst.PaymentViewRouteName,
+                              extra: entry.value[index],
+                            );
+                          },
                         );
                       },
-                    );
-                  },
-                ),
-                SizedBox(height: Responsive.height * 1),
-              ],
-            );
-          }).toList(),
+                    ),
+                    SizedBox(height: Responsive.height * 1),
+                  ],
+                );
+              }).toList(),
+            ),
+          ],
         ),
       );
     });

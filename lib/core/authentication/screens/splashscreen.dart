@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/services/secure_storage_services.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -29,8 +33,28 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   _navigateToLogin() async {
-    await Future.delayed(const Duration(seconds: 3), () {});
-    context.pushReplacementNamed(AppRouteConst.loginRouteName);
+    await Future.delayed(const Duration(seconds: 3), () async {
+      final token = await SecureStorageService.getToken();
+      final userType = await SecureStorageService.getUserType();
+      if (token == null) {
+        // ignore: use_build_context_synchronously
+        context.pushReplacementNamed(AppRouteConst.loginRouteName);
+      } else {
+           if (userType == "student") {
+            context.pushReplacementNamed(
+        AppRouteConst.ParentHomeRouteName,
+      );
+        }
+        else if (userType == "teacher") {
+          context.goNamed(AppRouteConst.bottomNavRouteName,
+            extra: UserType.teacher);
+        }
+        else{
+          log("Error ===No user type specified");
+        }
+      }
+    });
+    // context.pushReplacementNamed(AppRouteConst.loginRouteName);
   }
 
   @override

@@ -5,8 +5,15 @@ import 'package:school_app/base/services/api_services.dart';
 import 'package:school_app/core/controller/file_picker_provider.dart';
 
 class PaymentServices {
+  // Get payments
   Future<Response> getPayments() async {
     final Response response = await ApiServices.get("/monthlyPayments");
+    return response;
+  }
+
+  // Get payments from class and division
+  Future<Response> getPaymentsByClassAndDivision({required String className, required String section}) async {
+    final Response response = await ApiServices.get("/getPaymentsByClassAndSection?class=$className&section=$section");
     return response;
   }
 
@@ -14,6 +21,7 @@ class PaymentServices {
     final Response response = await ApiServices.get("/donations");
     return response;
   }
+
 
 // add payment
   Future<Response> addPayment(

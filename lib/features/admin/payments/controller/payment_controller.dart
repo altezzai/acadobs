@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +17,8 @@ class PaymentController extends ChangeNotifier {
   List<Payment> _payments = [];
   List<Payment> get payments => _payments;
 
+  
+
   Future<void> getPayments() async {
     _isloading = true;
     try {
@@ -23,6 +26,7 @@ class PaymentController extends ChangeNotifier {
       print("***********${response.statusCode}");
       // print(response.toString());
       if (response.statusCode == 200) {
+        _payments.clear();
         _payments = (response.data as List<dynamic>)
             .map((result) => Payment.fromJson(result))
             .toList();
@@ -32,6 +36,27 @@ class PaymentController extends ChangeNotifier {
     }
     _isloading = false;
     notifyListeners();
+  }
+
+  // Get payments from class and division
+  Future<void> getPaymentsByClassAndDivision(
+      {required String className, required String section}) async {
+    _isloading = true;
+    _payments.clear();
+    try {
+      final response = await PaymentServices().getPaymentsByClassAndDivision(
+          className: className, section: section);
+      log("***********${response.statusCode}");
+      if (response.statusCode == 200) {
+        _payments.clear();
+        _payments = (response.data as List<dynamic>)
+            .map((result) => Payment.fromJson(result))
+            .toList();
+        log("payment response====${_payments.toString()}");
+      }
+    } catch (e) {
+      log(e.toString());
+    }
   }
 
   List<Donation> _donations = [];
@@ -112,7 +137,7 @@ class PaymentController extends ChangeNotifier {
     loadingProvider.setLoading(true); //start loader
     try {
       final response = await PaymentServices().addDonation(context,
-      userId: userId,
+          userId: userId,
           amount_donated: amount_donated,
           donation_date: donation_date,
           purpose: purpose,

@@ -1,9 +1,12 @@
 import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/core/authentication/controller/auth_controller.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 
 class LogoutScreen extends StatefulWidget {
@@ -180,7 +183,7 @@ class _LogoutScreenState extends State<LogoutScreen> {
                       style: TextStyle(color: Colors.red),
                     ),
                     onTap: () {
-                      context.goNamed(AppRouteConst.loginRouteName);
+                      context.read<AuthController>().logout(context: context);
                     },
                   ),
                 ],

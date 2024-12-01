@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/controller/student_id_controller.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/core/authentication/controller/auth_controller.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
-import 'package:school_app/core/navbar/screen/bottom_nav.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
 // import 'package:school_app/teacher/home/homescreen.dart';
 
 class LoginPage extends StatefulWidget {
@@ -22,28 +23,31 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
   }
 
-  String _username = '';
-  String _password = '';
+  // String _username = '';
+  // String _password = '';
 
-  // Function to handle login action
-  void _login(BuildContext context) {
-    if (_username == 'ajay' && _password == '1234') {
-      context.pushReplacementNamed(AppRouteConst.bottomNavRouteName,
-          extra: UserType.admin);
-    } else if (_username == 'soorya' && _password == '1234') {
-      context.pushReplacementNamed(AppRouteConst.bottomNavRouteName,
-          extra: UserType.teacher);
-    } else if (_username == 'manu' && _password == '1234') {
-      // Navigate to ParentHomeScreen for parent login
-      context.pushReplacementNamed(
-        AppRouteConst.ParentHomeRouteName,
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Invalid username or password')),
-      );
-    }
-  }
+  // // Function to handle login action
+  // void _login(BuildContext context) {
+  //   if (_username == 'ajay' && _password == '1234') {
+  //     context.pushReplacementNamed(AppRouteConst.bottomNavRouteName,
+  //         extra: UserType.admin);
+  //   } else if (_username == 'soorya' && _password == '1234') {
+  //     context.pushReplacementNamed(AppRouteConst.bottomNavRouteName,
+  //         extra: UserType.teacher);
+  //   } else if (_username == 'manu' && _password == '1234') {
+  //     // Navigate to ParentHomeScreen for parent login
+  //     context.pushReplacementNamed(
+  //       AppRouteConst.ParentHomeRouteName,
+  //     );
+  //   } else {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('Invalid username or password')),
+  //     );
+  //   }
+  // }
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -69,11 +73,12 @@ class _LoginPageState extends State<LoginPage> {
                   CustomTextfield(
                     hintText: "Username",
                     iconData: Icon(Icons.person_outline),
-                    onChanged: (value) {
-                      setState(() {
-                        _username = value; // Capture username input
-                      });
-                    },
+                    controller: emailController,
+                    // onChanged: (value) {
+                    //   setState(() {
+                    //     _username = value; // Capture username input
+                    //   });
+                    // },
                     onTap: null, // No tap event required for username input
                   ),
                   const SizedBox(height: 20),
@@ -81,16 +86,27 @@ class _LoginPageState extends State<LoginPage> {
                     hintText: "Password",
                     iconData: Icon(Icons.lock_outline),
                     isPasswordField: true,
-                    onChanged: (value) {
-                      setState(() {
-                        _password = value; // Capture password input
-                      });
-                    },
+                    controller: passwordController,
+                    // onChanged: (value) {
+                    //   setState(() {
+                    //     _password = value; // Capture password input
+                    //   });
+                    // },
                     onTap: null, // No tap event required for password input
                   ),
                   SizedBox(height: 20),
                   CustomButton(
-                    onPressed: () => _login(context),
+                    onPressed: () {
+                      if (emailController.text == "admin" &&
+                          passwordController.text == "1234") {
+                        context.goNamed(AppRouteConst.bottomNavRouteName,
+                            extra: UserType.admin);
+                      }
+                      context.read<AuthController>().login(
+                          context: context,
+                          email: emailController.text,
+                          password: passwordController.text);
+                    },
                     text: "Login",
                   ),
                   SizedBox(height: 20),
