@@ -59,7 +59,7 @@ class _PaymentViewState extends State<PaymentView> {
               title: "Payments",
               isProfileIcon: false,
               onTap: () {
-                context.goNamed(
+                context.pushNamed(
                   AppRouteConst.bottomNavRouteName,
                   extra: UserType.admin,
                 );

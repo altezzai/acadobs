@@ -73,7 +73,7 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            context.pushReplacementNamed(AppRouteConst.studentRouteName);
+            context.pushNamed(AppRouteConst.studentRouteName);
           },
         ),
         title: Text(

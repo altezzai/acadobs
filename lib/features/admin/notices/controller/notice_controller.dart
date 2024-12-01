@@ -81,7 +81,7 @@ class NoticeController extends ChangeNotifier {
           audience_type: audience_type);
       if (response.statusCode == 201) {
         log(">>>>>>${response.statusMessage}");
-        context.goNamed(AppRouteConst.bottomNavRouteName,
+        context.pushNamed(AppRouteConst.bottomNavRouteName,
             extra: UserType.admin);
       }
     } catch (e) {
@@ -113,7 +113,7 @@ class NoticeController extends ChangeNotifier {
         log(">>>>>>${response.statusMessage}");
         log("Images to upload: ${chosenFiles?.map((e) => e.path).toList()}");
 
-        context.goNamed(AppRouteConst.bottomNavRouteName,
+        context.pushNamed(AppRouteConst.bottomNavRouteName,
             extra: UserType.admin);
       }
     } catch (e) {
@@ -146,7 +146,7 @@ class NoticeController extends ChangeNotifier {
   //   }
   // }
   final ImagePicker _picker = ImagePicker();
-  List<XFile> _chosenFiles =[]; // List to store selected images
+  List<XFile> _chosenFiles = []; // List to store selected images
 
   List<XFile>? get chosenFiles => _chosenFiles;
 

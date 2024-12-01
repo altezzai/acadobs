@@ -29,7 +29,7 @@ class _DonationViewState extends State<DonationView> {
               title: 'Donations',
               isProfileIcon: false,
               onTap: () {
-                context.goNamed(
+                context.pushNamed(
                   AppRouteConst.bottomNavRouteName,
                   extra: UserType.admin,
                 );

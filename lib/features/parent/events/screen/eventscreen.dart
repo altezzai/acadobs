@@ -30,7 +30,6 @@ class _EventsPageState extends State<EventsPage> {
             context.pushReplacementNamed(
               AppRouteConst.ParentHomeRouteName,
             );
-            // Navigator.of(context).pop();
           },
         ),
         title: const Text(
@@ -43,81 +42,125 @@ class _EventsPageState extends State<EventsPage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Today Events Section
-              Text(
-                "Today",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 10),
-              EventCard(
-                eventTitle: "Sports day",
-                eventDescription:
-                    "National sports day will be conducted in our school...",
-                date: "15 - 06 - 24",
-                time: "09:00 am",
-                imageProvider: AssetImage('assets/event.png'),
-              ),
-              SizedBox(height: 20),
+          padding: const EdgeInsets.all(16.0),
+          child:
+              Consumer<NoticeController>(builder: (context, controller, child) {
+            final now = DateTime.now();
 
-              // Yesterday Events Section
-              Text(
-                "Yesterday",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+            // Categorize events
+            final upcomingEvents = controller.events
+                .where((event) =>
+                    DateTime.parse(event.eventDate.toString()).isAfter(now))
+                .toList();
+
+            final latestEvents = controller.events
+                .where((event) =>
+                    DateTime.parse(event.eventDate.toString())
+                        .isAfter(now.subtract(const Duration(days: 1))) &&
+                    DateTime.parse(event.eventDate.toString()).isBefore(now))
+                .toList();
+
+            final previousEvents = controller.events
+                .where((event) => DateTime.parse(event.eventDate.toString())
+                    .isBefore(now.subtract(const Duration(days: 1))))
+                .toList();
+
+            // Sort events
+            upcomingEvents.sort((a, b) => DateTime.parse(a.eventDate.toString())
+                .compareTo(DateTime.parse(b.eventDate.toString())));
+            latestEvents.sort((a, b) => DateTime.parse(b.eventDate.toString())
+                .compareTo(DateTime.parse(a.eventDate.toString())));
+            previousEvents.sort((a, b) => DateTime.parse(b.eventDate.toString())
+                .compareTo(DateTime.parse(a.eventDate.toString())));
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Upcoming Events Section
+                const Text(
+                  "Upcoming",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-              ),
-              SizedBox(height: 10),
-              Consumer<NoticeController>(builder: (context, value, child) {
-                return ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: value.events.length,
-                  itemBuilder: (context, index) {
-                    return EventCard(
-                      eventDescription: value.events[index].description ?? "",
-                      eventTitle: value.events[index].title ?? "",
-                      date: DateFormatter.formatDateString(
-                          value.events[index].eventDate.toString()),
-                      time: TimeFormatter.formatTimeFromString(
-                          value.events[index].createdAt.toString()),
-                      imageProvider: AssetImage("assets/event2.png"),
-                    );
-                  },
-                );
-              })
-              // event_card.EventCard(
-              //   eventTitle: "Cycle competition",
-              //   eventDescription:
-              //       "National sports day will be conducted in our school...",
-              //   date: "15 - 06 - 24",
-              //   time: "09:00 am",
-              //   imageProvider: AssetImage('assets/event2.png'),
-              // ),
-              // event_card.EventCard(
-              //   eventTitle: "Sports day",
-              //   eventDescription:
-              //       "National sports day will be conducted in our school...",
-              //   date: "15 - 06 - 24",
-              //   time: "09:00 am",
-              //   imageProvider: AssetImage('assets/event3.png'),
-              // ),
-              // event_card.EventCard(
-              //   eventTitle: "Sports day",
-              //   eventDescription:
-              //       "National sports day will be conducted in our school...",
-              //   date: "15 - 06 - 24",
-              //   time: "09:00 am",
-              //   imageProvider: AssetImage('assets/event4.png'),
-              // ),
-            ],
-          ),
+                const SizedBox(height: 10),
+                upcomingEvents.isNotEmpty
+                    ? ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: upcomingEvents.length,
+                        itemBuilder: (context, index) {
+                          final event = upcomingEvents[index];
+                          return EventCard(
+                            eventDescription: event.description ?? "",
+                            eventTitle: event.title ?? "",
+                            date: DateFormatter.formatDateString(
+                                event.eventDate.toString()),
+                            time: TimeFormatter.formatTimeFromString(
+                                event.createdAt.toString()),
+                            imageProvider:
+                                const AssetImage("assets/event2.png"),
+                          );
+                        },
+                      )
+                    : const Text("No upcoming events available."),
+                const SizedBox(height: 20),
+
+                // Latest Events Section
+                const Text(
+                  "Latest",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10),
+                latestEvents.isNotEmpty
+                    ? ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: latestEvents.length,
+                        itemBuilder: (context, index) {
+                          final event = latestEvents[index];
+                          return EventCard(
+                            eventDescription: event.description ?? "",
+                            eventTitle: event.title ?? "",
+                            date: DateFormatter.formatDateString(
+                                event.eventDate.toString()),
+                            time: TimeFormatter.formatTimeFromString(
+                                event.createdAt.toString()),
+                            imageProvider:
+                                const AssetImage("assets/event2.png"),
+                          );
+                        },
+                      )
+                    : const Text("No latest events available."),
+                const SizedBox(height: 20),
+
+                // Previous Events Section
+                const Text(
+                  "Previous",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10),
+                previousEvents.isNotEmpty
+                    ? ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: previousEvents.length,
+                        itemBuilder: (context, index) {
+                          final event = previousEvents[index];
+                          return EventCard(
+                            eventDescription: event.description ?? "",
+                            eventTitle: event.title ?? "",
+                            date: DateFormatter.formatDateString(
+                                event.eventDate.toString()),
+                            time: TimeFormatter.formatTimeFromString(
+                                event.createdAt.toString()),
+                            imageProvider:
+                                const AssetImage("assets/event2.png"),
+                          );
+                        },
+                      )
+                    : const Text("No previous events available."),
+              ],
+            );
+          }),
         ),
       ),
     );

@@ -58,7 +58,7 @@ class AchievementController extends ChangeNotifier {
       );
       if (response.statusCode == 201) {
         log(">>>>>>${response.statusMessage}");
-        context.goNamed(AppRouteConst.bottomNavRouteName,
+        context.pushNamed(AppRouteConst.bottomNavRouteName,
             extra: UserType.admin);
       }
     } catch (e) {

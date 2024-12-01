@@ -35,8 +35,7 @@ class TeacherDetailsPage extends StatelessWidget {
               title: 'Teachers',
               isProfileIcon: false,
               onTap: () {
-                context
-                    .pushReplacementNamed(AppRouteConst.AdminteacherRouteName);
+                context.pushNamed(AppRouteConst.AdminteacherRouteName);
               },
             ),
             ProfileContainer(
@@ -71,8 +70,8 @@ class TeacherDetailsPage extends StatelessWidget {
               color: Colors.black)),
       leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => context
-              .pushReplacementNamed(AppRouteConst.AdminteacherRouteName)),
+          onPressed: () =>
+              context.pushNamed(AppRouteConst.AdminteacherRouteName)),
     );
   }
 }

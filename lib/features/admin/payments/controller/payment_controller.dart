@@ -110,7 +110,7 @@ class PaymentController extends ChangeNotifier {
       );
       if (response.statusCode == 201) {
         log(">>>>>>${response.statusMessage}");
-        context.goNamed(AppRouteConst.bottomNavRouteName,
+        context.pushNamed(AppRouteConst.bottomNavRouteName,
             extra: UserType.admin);
       }
     } catch (e) {
@@ -146,7 +146,7 @@ class PaymentController extends ChangeNotifier {
           transaction_id: transaction_id);
       if (response.statusCode == 201) {
         log(">>>>>>${response.statusMessage}");
-        context.goNamed(AppRouteConst.bottomNavRouteName,
+        context.pushNamed(AppRouteConst.bottomNavRouteName,
             extra: UserType.admin);
       }
     } catch (e) {

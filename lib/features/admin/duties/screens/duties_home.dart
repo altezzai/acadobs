@@ -47,8 +47,7 @@ class _DutiesHomeScreenState extends State<DutiesHomeScreen> {
                   ),
                 ),
                 onPressed: () {
-                  context.pushReplacementNamed(
-                      AppRouteConst.AdminAddDutyRouteName);
+                  context.pushNamed(AppRouteConst.AdminAddDutyRouteName);
                 },
                 icon: Icon(Icons.event_note_outlined, color: Colors.white),
                 label: Text(
@@ -73,7 +72,7 @@ class _DutiesHomeScreenState extends State<DutiesHomeScreen> {
               date: "15-06-24",
               time: "09:00 am",
               onTap: () {
-                context.goNamed(AppRouteConst.AdminViewDutyRouteName);
+                context.pushNamed(AppRouteConst.AdminViewDutyRouteName);
               },
             ),
             SizedBox(height: screenHeight * 0.03),
@@ -108,7 +107,7 @@ class _DutiesHomeScreenState extends State<DutiesHomeScreen> {
                           time: TimeFormatter.formatTimeFromString(
                               value.duties[index].createdAt.toString()),
                           onTap: () {
-                            context.goNamed(
+                            context.pushNamed(
                               AppRouteConst.AdminViewDutyRouteName,
                               extra: value.duties[index],
                             );

@@ -47,7 +47,7 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
                   child: AddButton(
                     iconPath: paymentIcon,
                     onPressed: () {
-                      context.goNamed(AppRouteConst.AddPaymentRouteName);
+                      context.pushNamed(AppRouteConst.AddPaymentRouteName);
                     },
                     text: "Add Payment",
                   ),
@@ -241,39 +241,34 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
         (payment) =>
             DateTime.tryParse(payment.paymentDate.toString()) ?? DateTime.now(),
       );
-
       return SingleChildScrollView(
         child: Column(
           children: [
             SizedBox(height: Responsive.height * 2),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: groupedPayments.entries.map((entry) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: Responsive.height * 1),
-                    _buildDateHeader(entry.key),
-                    SizedBox(height: Responsive.height * 1),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      padding: EdgeInsets.zero,
-                      itemCount: entry.value.length,
-                      itemBuilder: (context, index) {
-                        final payment = entry.value[index];
-                        return PaymentItem(
-                          amount: payment.amountPaid ?? "",
-                          name: capitalizeFirstLetter(payment.fullName ?? ""),
-                          time: TimeFormatter.formatTimeFromString(
-                              payment.createdAt.toString()),
-                          status: payment.paymentStatus ?? "",
-                          onTap: () {
-                            context.goNamed(
-                              AppRouteConst.PaymentViewRouteName,
-                              extra: entry.value[index],
-                            );
-                          },
+
+              children: [
+                SizedBox(height: Responsive.height * 1),
+                _buildDateHeader(entry.key),
+                SizedBox(height: Responsive.height * 1),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  padding: EdgeInsets.zero,
+                  itemCount: entry.value.length,
+                  itemBuilder: (context, index) {
+                    final payment = entry.value[index];
+                    return PaymentItem(
+                      amount: payment.amountPaid ?? "",
+                      name: capitalizeFirstLetter(payment.fullName ?? ""),
+                      time: TimeFormatter.formatTimeFromString(
+                          payment.createdAt.toString()),
+                      status: payment.paymentStatus ?? "",
+                      onTap: () {
+                        context.pushNamed(
+                          AppRouteConst.PaymentViewRouteName,
+                          extra: entry.value[index],
                         );
                       },
                     ),
@@ -326,7 +321,7 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
                           donation.createdAt.toString()),
                       status: donation.purpose ?? "",
                       onTap: () {
-                        context.goNamed(
+                        context.pushNamed(
                           AppRouteConst.DonationViewRouteName,
                           extra: entry.value[index],
                         );

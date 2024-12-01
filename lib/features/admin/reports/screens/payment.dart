@@ -17,7 +17,7 @@ class PaymentReport extends StatelessWidget {
                 title: "Payment Report",
                 isBackButton: true,
                 onTap: () {
-                  context.goNamed(
+                  context.pushNamed(
                     AppRouteConst.bottomNavRouteName,
                     extra: UserType.admin,
                   );

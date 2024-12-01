@@ -57,7 +57,7 @@ class _MarkStarState extends State<MarkStar> {
             CustomAppbar(
               title: 'Hindi Imposition',
               onTap: () {
-                context.pushReplacementNamed(AppRouteConst.workviewRouteName);
+                context.pushNamed(AppRouteConst.workviewRouteName);
               },
             ),
             Center(

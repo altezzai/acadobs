@@ -58,7 +58,7 @@ class TeacherController extends ChangeNotifier {
           emailAddress: emailAddress);
       if (response.statusCode == 201) {
         log(">>>>>>>>>>>>>Teacher Added}");
-        context.goNamed(AppRouteConst.AdminteacherRouteName);
+        context.pushNamed(AppRouteConst.AdminteacherRouteName);
       }
     } catch (e) {
       log(e.toString());

@@ -66,7 +66,7 @@ class HomeworkController extends ChangeNotifier {
       log("Response++++=${response.data.toString()}");
       if (response.statusCode == 201) {
         log(">>>>>>${response.statusMessage}");
-        context.goNamed(AppRouteConst.homeworkRouteName);
+        context.pushNamed(AppRouteConst.homeworkRouteName);
       }
     } catch (e) {
       log(e.toString());

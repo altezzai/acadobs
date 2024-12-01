@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/controller/file_picker_provider.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
@@ -56,7 +59,8 @@ class _AddNoticePageState extends State<AddNoticePage> {
               title: "Add Notice",
               isProfileIcon: false,
               onTap: () {
-                Navigator.pop(context);
+                context.pushNamed(AppRouteConst.bottomNavRouteName,
+                    extra: UserType.admin);
               },
             ),
             Text(

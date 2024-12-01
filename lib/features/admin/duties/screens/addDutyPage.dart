@@ -74,7 +74,7 @@ class _AddDutyPageState extends State<AddDutyPage> {
                 title: "Add Duty",
                 isProfileIcon: false,
                 onTap: () {
-                  context.pushReplacementNamed(AppRouteConst.bottomNavRouteName,
+                  context.pushNamed(AppRouteConst.bottomNavRouteName,
                       extra: UserType.admin);
                 },
               ),

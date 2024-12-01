@@ -85,7 +85,7 @@ class StudentController extends ChangeNotifier {
           bloodGroup: bloodGroup);
       if (response.statusCode == 201) {
         log(">>>>>>>>>>>>>Student Added}");
-        context.goNamed(AppRouteConst.AdminstudentRouteName);
+        context.pushNamed(AppRouteConst.AdminstudentRouteName);
       }
     } catch (e) {
       log(e.toString());

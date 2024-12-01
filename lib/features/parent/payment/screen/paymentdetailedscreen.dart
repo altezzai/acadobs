@@ -13,13 +13,14 @@ class PaymentDetailPage extends StatefulWidget {
   final String amount;
   final String description;
   final dynamic file;
+  final String transactionId;
 
-  const PaymentDetailPage({
-    super.key,
-    required this.amount,
-    required this.description,
-    required this.file,
-  });
+  const PaymentDetailPage(
+      {super.key,
+      required this.amount,
+      required this.description,
+      required this.file,
+      required this.transactionId});
 
   @override
   State<PaymentDetailPage> createState() => _PaymentDetailPageState();
@@ -79,6 +80,7 @@ class _PaymentDetailPageState extends State<PaymentDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    String desc = widget.description;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -105,7 +107,11 @@ class _PaymentDetailPageState extends State<PaymentDetailPage> {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
-                  color: Colors.green.shade100,
+                  color: desc == 'Completed'
+                      ? Colors.green[100]
+                      : desc == 'Failed'
+                          ? Colors.red[100]
+                          : Colors.orange[100],
                 ),
                 height: 250,
                 width: 350,
@@ -113,19 +119,50 @@ class _PaymentDetailPageState extends State<PaymentDetailPage> {
                 child: Center(
                   child: Text(
                     "₹ ${widget.amount}",
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 50,
                       fontWeight: FontWeight.bold,
-                      color: Colors.green,
+                      color: widget.description == 'Completed'
+                          ? Colors.green
+                          : widget.description == 'Failed'
+                              ? Colors.red
+                              : Colors.orange,
                     ),
                   ),
                 ),
               ),
               const SizedBox(height: 10),
-              Text(
-                widget.description,
-                style: const TextStyle(fontSize: 18),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    desc == 'Completed'
+                        ? Icons.done_outline
+                        : desc == 'Failed'
+                            ? Icons.close
+                            : Icons.pending_actions,
+                    color: desc == 'Completed'
+                        ? Colors.green
+                        : desc == 'Failed'
+                            ? Colors.red
+                            : Colors.orange,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    widget.description,
+                    style: TextStyle(
+                        color: desc == 'Completed'
+                            ? Colors.green
+                            : desc == 'Failed'
+                                ? Colors.red
+                                : Colors.orange,
+                        fontSize: 18),
+                  ),
+                ],
               ),
+              Text("Transactiod Id:${widget.transactionId}"),
               const Spacer(),
               ElevatedButton(
                 onPressed: () {
