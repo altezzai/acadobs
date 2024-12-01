@@ -1,8 +1,10 @@
 import 'dart:developer';
+
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/services/secure_storage_services.dart';
 import 'package:school_app/core/controller/loading_provider.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/admin/duties/model/duty_model.dart';
@@ -63,8 +65,11 @@ class DutyController extends ChangeNotifier {
   // get teacher duties
   Future<void> getTeacherDuties() async {
     _isloading = true;
+    final teacherId = await SecureStorageService.getUserId();
+    log("Userid===== ${teacherId.toString()}");
     try {
-      final response = await DutyServices().getTeacherDuties(teacherid: 1);
+      final response = await DutyServices()
+          .getTeacherDuties(teacherid: int.parse(teacherId.toString()));
       print("***********${response.statusCode}");
       _teacherduties.clear();
       // print(response.toString());
@@ -80,6 +85,7 @@ class DutyController extends ChangeNotifier {
     notifyListeners();
   }
 
+// ******** Add Duty *******
   Future<void> addDuty(
     BuildContext context, {
     required String duty_title,
