@@ -40,16 +40,17 @@ class _SplashScreenState extends State<SplashScreen>
         // ignore: use_build_context_synchronously
         context.pushReplacementNamed(AppRouteConst.loginRouteName);
       } else {
-           if (userType == "student") {
-            context.pushReplacementNamed(
-        AppRouteConst.ParentHomeRouteName,
-      );
-        }
-        else if (userType == "teacher") {
+        if (userType == "student") {
+          context.pushReplacementNamed(
+            AppRouteConst.ParentHomeRouteName,
+          );
+        } else if (userType == "teacher") {
           context.goNamed(AppRouteConst.bottomNavRouteName,
-            extra: UserType.teacher);
-        }
-        else{
+              extra: UserType.teacher);
+        } else if (userType == "admin") {
+          context.goNamed(AppRouteConst.bottomNavRouteName,
+              extra: UserType.admin);
+        } else {
           log("Error ===No user type specified");
         }
       }
