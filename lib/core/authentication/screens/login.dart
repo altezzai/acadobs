@@ -107,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       RichText(
                         text: TextSpan(
-                          text: "Login credentials are provied by  ",
+                          text: "Login credentials are provided by  ",
                           style: TextStyle(color: Colors.grey[600]),
                           children: [
                             TextSpan(

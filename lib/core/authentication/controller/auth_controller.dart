@@ -26,15 +26,16 @@ class AuthController extends ChangeNotifier {
         log("User type from api===== ${response.data['user']["user_type"].toString()} ");
         log("User type from secure storage===== $userType ");
         if (userType == "student") {
-            context.pushReplacementNamed(
-        AppRouteConst.ParentHomeRouteName,
-      );
-        }
-        else if (userType == "teacher") {
+          context.pushReplacementNamed(
+            AppRouteConst.ParentHomeRouteName,
+          );
+        } else if (userType == "teacher") {
           context.goNamed(AppRouteConst.bottomNavRouteName,
-            extra: UserType.teacher);
-        }
-        else{
+              extra: UserType.teacher);
+        } else if (userType == "admin") {
+          context.goNamed(AppRouteConst.bottomNavRouteName,
+              extra: UserType.admin);
+        } else {
           log("Error ===No user type specified");
         }
       }
