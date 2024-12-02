@@ -85,7 +85,8 @@ class TeacherScreen extends StatelessWidget {
                     horizontalWidth: 14.2,
                     text: "Students",
                     onPressed: () {
-                      context.pushNamed(AppRouteConst.studentRouteName);
+                      context.pushNamed(AppRouteConst.studentRouteName,
+                          extra: UserType.teacher);
                     },
                   ),
                   CustomNameContainer(

@@ -177,7 +177,10 @@ class Approuter {
         name: AppRouteConst.studentRouteName,
         path: '/student',
         pageBuilder: (context, state) {
-          return MaterialPage(child: StudentsPage());
+          final UserType userType = state.extra as UserType;
+          return MaterialPage(child: StudentsPage(
+            userType: userType,
+          ));
         },
       ),
       GoRoute(
@@ -214,13 +217,13 @@ class Approuter {
         },
       ),
 
-      GoRoute(
-        name: AppRouteConst.AdminstudentRouteName,
-        path: '/adminstudent',
-        pageBuilder: (context, state) {
-          return MaterialPage(child: StudentsPage());
-        },
-      ),
+      // GoRoute(
+      //   name: AppRouteConst.AdminstudentRouteName,
+      //   path: '/adminstudent',
+      //   pageBuilder: (context, state) {
+      //     return MaterialPage(child: StudentsPage());
+      //   },
+      // ),
       GoRoute(
         name: AppRouteConst.AdminteacherRouteName,
         path: '/adminteacher',

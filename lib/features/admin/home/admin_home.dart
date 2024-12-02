@@ -71,7 +71,7 @@ class AdminHomeScreen extends StatelessWidget {
                 CustomNameContainer(
                   text: "Students",
                   onPressed: () {
-                    context.pushNamed(AppRouteConst.studentRouteName);
+                    context.pushNamed(AppRouteConst.studentRouteName, extra: UserType.admin);
                   },
                 ),
                 CustomNameContainer(
