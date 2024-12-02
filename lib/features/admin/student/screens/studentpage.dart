@@ -13,6 +13,9 @@ import 'package:school_app/core/shared_widgets/profile_tile.dart';
 import 'package:school_app/features/admin/student/controller/student_controller.dart';
 
 class StudentsPage extends StatefulWidget {
+  final UserType userType;
+
+  const StudentsPage({super.key, required this.userType});
   @override
   _StudentsPageState createState() => _StudentsPageState();
 }
@@ -27,19 +30,6 @@ class _StudentsPageState extends State<StudentsPage> {
     context.read<StudentController>().getStudentDetails();
   }
 
-  // void _filterStudents(String query) {
-  //   setState(() {
-  //     searchQuery = query;
-  //   });
-  // }
-
-  // void _filterByClass(String? newClass) {
-  //   if (newClass != null) {
-  //     setState(() {
-  //       selectedClass = newClass;
-  //     });
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -54,9 +44,13 @@ class _StudentsPageState extends State<StudentsPage> {
             CustomAppbar(
               title: 'Students',
               onTap: () {
+                widget.userType == UserType.admin ?
                 context.pushNamed(
                   AppRouteConst.bottomNavRouteName,
                   extra: UserType.admin,
+                ): context.pushNamed(
+                  AppRouteConst.bottomNavRouteName,
+                  extra: UserType.teacher,
                 );
               },
             ),
