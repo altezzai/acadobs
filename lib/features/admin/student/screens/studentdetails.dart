@@ -25,6 +25,9 @@ class StudentDetailPage extends StatefulWidget {
 class _StudentDetailPageState extends State<StudentDetailPage> {
   @override
   void initState() {
+    context
+        .read<AchievementController>()
+        .getAchievements(student_id: widget.student.id ?? 0);
     super.initState();
     // Fetch today's attendance on page build
     WidgetsBinding.instance.addPostFrameCallback((_) {

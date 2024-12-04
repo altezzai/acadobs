@@ -32,7 +32,7 @@ class SecureStorageService {
   // Get userid
   static Future<int?> getUserId() async {
     final user = await getUser();
-    return user?['id'];
+    return user?['user_id'];
   }
 
 // Get usermail

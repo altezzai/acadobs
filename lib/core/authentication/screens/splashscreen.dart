@@ -36,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen>
     await Future.delayed(const Duration(seconds: 3), () async {
       final token = await SecureStorageService.getToken();
       final userType = await SecureStorageService.getUserType();
-      if (token == null) {
+      if (token != null) {
         // ignore: use_build_context_synchronously
         context.pushReplacementNamed(AppRouteConst.loginRouteName);
       } else {
