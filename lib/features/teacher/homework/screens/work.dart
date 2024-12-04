@@ -265,7 +265,9 @@ class _HomeWorkState extends State<HomeWork> {
                           submission_type: submissionType,
                           total_marks: _markController.text,
                           status: status,
-                          studentsId: [1, 2]);
+                          studentsId: studentIds
+                              .map((int value) => value.toString())
+                              .toList());
                     });
               }),
               SizedBox(

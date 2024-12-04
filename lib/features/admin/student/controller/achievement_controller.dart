@@ -21,12 +21,24 @@ class AchievementController extends ChangeNotifier {
     try {
       final response =
           await AchievementService().getAchievements(student_id: student_id);
-      print("***********${response.statusCode}");
-      // print(response.toString());
+      log("***********${response.statusCode}");
+      log("***********${response.data.toString()}");
       if (response.statusCode == 200) {
-        _achievements = (response.data as List<dynamic>)
-            .map((result) => Achievement.fromJson(result))
-            .toList();
+        log("Started");
+        _achievements.clear();
+        log("One");
+
+        // Check if data is a single object
+        if (response.data is Map<String, dynamic>) {
+          _achievements.add(Achievement.fromJson(response.data));
+        } else if (response.data is List<dynamic>) {
+          _achievements = (response.data as List<dynamic>)
+              .map((result) => Achievement.fromJson(result))
+              .toList();
+        }
+
+        log("Two");
+        log("Achievement list***********${_achievements.toString()}");
       }
     } catch (e) {
       // print(e);
