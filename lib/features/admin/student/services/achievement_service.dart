@@ -3,8 +3,9 @@ import 'package:school_app/base/services/api_services.dart';
 
 class AchievementService {
   // Get Achievements
-  Future<Response> getAchievements() async {
-    final Response response = await ApiServices.get("/achievements");
+  Future<Response> getAchievements({required int student_id}) async {
+    final Response response =
+        await ApiServices.get("/achievements/$student_id");
     return response;
   }
 
