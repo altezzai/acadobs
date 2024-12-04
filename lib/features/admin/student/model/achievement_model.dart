@@ -7,9 +7,6 @@ import 'dart:convert';
 List<Achievement> achievementFromJson(String str) => List<Achievement>.from(
     json.decode(str).map((x) => Achievement.fromJson(x)));
 
-String achievementToJson(List<Achievement> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
 class Achievement {
   int? id;
   int? studentId;
@@ -57,18 +54,4 @@ class Achievement {
             : DateTime.parse(json["updated_at"]),
       );
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "student_id": studentId,
-        "achievement_title": achievementTitle,
-        "description": description,
-        "category": category,
-        "level": level,
-        "date_of_achievement":
-            "${dateOfAchievement!.year.toString().padLeft(4, '0')}-${dateOfAchievement!.month.toString().padLeft(2, '0')}-${dateOfAchievement!.day.toString().padLeft(2, '0')}",
-        "awarding_body": awardingBody,
-        "certificate": certificate,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-      };
 }
