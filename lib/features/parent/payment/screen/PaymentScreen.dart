@@ -26,7 +26,7 @@ class _PaymentPageState extends State<PaymentPage> {
         leading: IconButton(
           icon: const Icon(Icons.chevron_left, color: Colors.black),
           onPressed: () {
-            context.pushReplacementNamed(
+            context.pushNamed(
               AppRouteConst.ParentHomeRouteName,
             );
           },
@@ -137,7 +137,7 @@ class PaymentCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.pushReplacementNamed(
+        context.pushNamed(
           AppRouteConst.ParentPaymentDetailedPageRouteName,
           extra: {
             'amount': amountTitle,

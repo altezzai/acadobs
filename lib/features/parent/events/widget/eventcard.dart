@@ -22,7 +22,7 @@ class EventCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.pushReplacementNamed(
+        context.pushNamed(
           AppRouteConst.EventDetailedPageRouteName,
           extra: {
             'title': eventTitle,

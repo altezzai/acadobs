@@ -181,7 +181,7 @@ class HomePage extends StatelessWidget {
                     Center(
                       child: ElevatedButton(
                         onPressed: () {
-                          context.pushReplacementNamed(
+                          context.pushNamed(
                             AppRouteConst.StudentLeaveRequestViewRouteName,
                           );
                         },
@@ -233,7 +233,7 @@ class HomePage extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed: () {
-                            context.pushReplacementNamed(
+                            context.pushNamed(
                               AppRouteConst.ParentNoticePageRouteName,
                             );
                           },
@@ -290,7 +290,7 @@ class HomePage extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed: () {
-                            context.pushReplacementNamed(
+                            context.pushNamed(
                               AppRouteConst.EventsPageRouteName,
                             );
                           },
