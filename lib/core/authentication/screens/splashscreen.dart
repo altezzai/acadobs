@@ -48,7 +48,7 @@ class _SplashScreenState extends State<SplashScreen>
           context.goNamed(AppRouteConst.bottomNavRouteName,
               extra: UserType.teacher);
         } else if (userType == "admin") {
-          context.goNamed(AppRouteConst.bottomNavRouteName,
+          context.goNamed(AppRouteConst.bottomNavRouteName, 
               extra: UserType.admin);
         } else {
           log("Error ===No user type specified");
