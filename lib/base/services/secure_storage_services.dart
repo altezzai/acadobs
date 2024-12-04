@@ -1,5 +1,6 @@
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert'; // For JSON encoding/decoding
+
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class SecureStorageService {
   static final _storage = FlutterSecureStorage();
@@ -30,9 +31,9 @@ class SecureStorageService {
 
   /// *****Get individual user details*****
   // Get userid
-  static Future<int?> getUserId() async {
+  static Future<int> getUserId() async {
     final user = await getUser();
-    return user?['id'];
+    return user?['user_id'];
   }
 
 // Get usermail

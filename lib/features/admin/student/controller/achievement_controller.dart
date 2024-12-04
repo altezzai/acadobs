@@ -63,7 +63,8 @@ class AchievementController extends ChangeNotifier {
       }
     } catch (e) {
       log(e.toString());
-    } finally {
+    } 
+    finally {
       loadingProvider.setLoading(false); // End loader
       notifyListeners();
     }
