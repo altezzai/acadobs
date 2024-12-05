@@ -16,6 +16,8 @@ class PaymentController extends ChangeNotifier {
   bool get isloading => _isloading;
   List<Payment> _payments = [];
   List<Payment> get payments => _payments;
+  List<Payment> _filteredpayments = [];
+  List<Payment> get filteredpayments => _filteredpayments;
 
   
 
@@ -42,17 +44,17 @@ class PaymentController extends ChangeNotifier {
   Future<void> getPaymentsByClassAndDivision(
       {required String className, required String section}) async {
     _isloading = true;
-    _payments.clear();
+    _filteredpayments.clear();
     try {
       final response = await PaymentServices().getPaymentsByClassAndDivision(
           className: className, section: section);
       log("***********${response.statusCode}");
       if (response.statusCode == 200) {
-        _payments.clear();
-        _payments = (response.data as List<dynamic>)
+        _filteredpayments.clear();
+        _filteredpayments = (response.data as List<dynamic>)
             .map((result) => Payment.fromJson(result))
             .toList();
-        log("payment response====${_payments.toString()}");
+       
       }
     } catch (e) {
       log(e.toString());
