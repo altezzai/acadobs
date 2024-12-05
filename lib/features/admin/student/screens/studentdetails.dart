@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
-import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/shared_widgets/calender_widget.dart';
@@ -12,11 +13,13 @@ import 'package:school_app/features/admin/student/controller/achievement_control
 import 'package:school_app/features/admin/student/controller/student_controller.dart';
 import 'package:school_app/features/admin/student/model/student_data.dart';
 import 'package:school_app/features/admin/student/widgets/daily_attendance_container.dart';
+import 'package:school_app/features/teacher/homework/widgets/work_container.dart';
+import 'package:intl/intl.dart';
 
 class StudentDetailPage extends StatefulWidget {
   final Student student;
 
-  StudentDetailPage({required this.student});
+  const StudentDetailPage({required this.student, Key? key}) : super(key: key);
 
   @override
   State<StudentDetailPage> createState() => _StudentDetailPageState();
@@ -24,17 +27,64 @@ class StudentDetailPage extends StatefulWidget {
 
 class _StudentDetailPageState extends State<StudentDetailPage> {
   late AchievementController achievementController;
+
   @override
   void initState() {
-    // Fetch today's attendance on page build
-    achievementController = context.read<AchievementController>();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final controller = context.read<StudentController>();
-      controller.getDayAttendance(studentId: widget.student.id.toString());
-
-      achievementController.getAchievements(student_id: widget.student.id ?? 0);
-    });
     super.initState();
+    achievementController = context.read<AchievementController>();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final studentController = context.read<StudentController>();
+      studentController.getDayAttendance(
+          studentId: widget.student.id.toString());
+      achievementController.getAchievements(student_id: widget.student.id ?? 0);
+      studentController.getStudentHomework(studentId: widget.student.id ?? 0);
+    });
+  }
+
+  /// Utility to group items by date into "Today," "Yesterday," and specific dates
+  Map<String, List<T>> groupItemsByDate<T>(
+      List<T> items, DateTime Function(T) getDate) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final yesterday = today.subtract(const Duration(days: 1));
+
+    Map<String, List<T>> groupedItems = {};
+
+    for (var item in items) {
+      final itemDate =
+          DateTime(getDate(item).year, getDate(item).month, getDate(item).day);
+      String formattedDate;
+
+      if (itemDate == today) {
+        formattedDate = "Today";
+      } else if (itemDate == yesterday) {
+        formattedDate = "Yesterday";
+      } else {
+        formattedDate = DateFormat.yMMMMd().format(itemDate);
+      }
+
+      if (!groupedItems.containsKey(formattedDate)) {
+        groupedItems[formattedDate] = [];
+      }
+      groupedItems[formattedDate]!.add(item);
+    }
+
+    // Sort categories, with "Today" and "Yesterday" on top
+    List<MapEntry<String, List<T>>> sortedEntries = [];
+    if (groupedItems.containsKey("Today")) {
+      sortedEntries.add(MapEntry("Today", groupedItems["Today"]!));
+      groupedItems.remove("Today");
+    }
+    if (groupedItems.containsKey("Yesterday")) {
+      sortedEntries.add(MapEntry("Yesterday", groupedItems["Yesterday"]!));
+      groupedItems.remove("Yesterday");
+    }
+
+    sortedEntries.addAll(
+        groupedItems.entries.toList()..sort((a, b) => b.key.compareTo(a.key)));
+
+    return Map.fromEntries(sortedEntries);
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -46,9 +96,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            textTheme: const TextTheme(
-              bodyMedium: TextStyle(fontSize: 14),
-            ),
+            textTheme: const TextTheme(bodyMedium: TextStyle(fontSize: 14)),
           ),
           child: child!,
         );
@@ -77,9 +125,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Column(
                       children: [
-                        SizedBox(
-                          height: Responsive.height * 2,
-                        ),
+                        SizedBox(height: Responsive.height * 2),
                         CustomAppbar(
                           title: "Students",
                           isProfileIcon: false,
@@ -98,7 +144,6 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                           absent: "2",
                           late: "3",
                         ),
-                        // SizedBox(height: Responsive.height * 2),
                       ],
                     ),
                   ),
@@ -107,24 +152,19 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                   handle:
                       NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                   sliver: SliverAppBar(
-                    // automaticallyImplyLeading: false,
                     pinned: true,
-                    floating: false,
                     backgroundColor: Colors.grey.shade200,
                     bottom: PreferredSize(
-                      preferredSize: Size.fromHeight(0), // Adjust height here
+                      preferredSize: const Size.fromHeight(0),
                       child: TabBar(
                         isScrollable: true,
-                        tabAlignment: TabAlignment.start,
                         labelColor: Colors.black,
                         unselectedLabelColor: Colors.grey,
-                        indicatorColor: Colors
-                            .black, // Optional: Customize the indicator color
-                        labelPadding: EdgeInsets.symmetric(horizontal: 16.0),
-                        tabs: [
-                          Tab(
-                            text: "Dashboard",
-                          ),
+                        indicatorColor: Colors.black,
+                        labelPadding:
+                            const EdgeInsets.symmetric(horizontal: 16.0),
+                        tabs: const [
+                          Tab(text: "Dashboard"),
                           Tab(text: "Achievements"),
                           Tab(text: "Exam"),
                           Tab(text: "Homework"),
@@ -139,26 +179,10 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
               padding: const EdgeInsets.only(top: 40),
               child: TabBarView(
                 children: [
-                  // First Tab Content
                   _buildDashboardContent(),
-                  // Second Tab Content
                   _buildAchievementsContent(),
-                  ListView(
-                    padding: const EdgeInsets.all(16.0),
-                    children: [
-                      SizedBox(height: 20),
-                      Text("Transit Tab Content",
-                          style: TextStyle(fontSize: 20)),
-                    ],
-                  ),
-                  // Third Tab Content
-                  ListView(
-                    padding: const EdgeInsets.all(16.0),
-                    children: [
-                      SizedBox(height: 20),
-                      Text("Bike Tab Content", style: TextStyle(fontSize: 20)),
-                    ],
-                  ),
+                  Center(child: Text("Exam Content")),
+                  _buildHomeworkContent(),
                 ],
               ),
             ),
@@ -168,47 +192,20 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
     );
   }
 
-  // dashboard content
   Widget _buildDashboardContent() {
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       children: [
         SizedBox(height: Responsive.height * 8),
-        Text("Attendance", style: TextStyle(fontSize: 20)),
+        const Text("Attendance", style: TextStyle(fontSize: 20)),
         SizedBox(height: Responsive.height * 2),
         DailyAttendanceContainer(
           studentId: widget.student.id.toString(),
           onSelectDate: () => _selectDate(context),
         ),
-
         SizedBox(height: Responsive.height * 3),
         CalenderWidget(),
         SizedBox(height: Responsive.height * 8),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              height: 2,
-              width: Responsive.width * 40,
-              color: Colors.grey[400],
-            ),
-            Container(
-              height: 3,
-              width: 6,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                // shape: BoxShape.circle,
-                color: Colors.grey[400],
-              ),
-            ),
-            Container(
-              height: 2,
-              width: Responsive.width * 40,
-              color: Colors.grey[400],
-            ),
-          ],
-        )
-        // SizedBox(height: 30),
       ],
     );
   }
@@ -216,59 +213,96 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
   Widget _buildAchievementsContent() {
     return Consumer<AchievementController>(builder: (context, value, child) {
       if (value.isloading) {
-        return Center(
-          child: CircularProgressIndicator(),
-        );
+        return const Center(child: CircularProgressIndicator());
       }
-      return Column(
-        children: [
-          SizedBox(height: Responsive.height * 3),
-          ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: value.achievements.length,
-            itemBuilder: (context, index) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15.0, top: 10.0),
-                    child: Text(
-                      DateFormatter.formatDateString(value
-                          .achievements[index].dateOfAchievement
-                          .toString()),
-                      style: TextStyle(
-                        fontWeight: FontWeight.normal,
-                        fontSize: 16,
-                        color: Colors.black87, // Match with StudentDetailPage
-                      ),
-                    ),
-                  ),
-                  ListTile(
-                    leading:
-                        Icon(Icons.military_tech, color: Colors.greenAccent),
-                    title: Text(
-                      value.achievements[index].achievementTitle ?? "",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black87, // Match with StudentDetailPage
-                      ),
-                    ),
-                    subtitle: Text(
-                      value.achievements[index].awardingBody ?? "",
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey[600], // Keep consistent
-                      ),
-                    ),
-                  ),
-                  Divider(thickness: 1.5, color: Colors.grey[300]),
-                ],
-              );
-            },
-          ),
-        ],
+
+      final groupedAchievements = groupItemsByDate(
+        value.achievements,
+        (achievement) =>
+            DateTime.parse(achievement.dateOfAchievement.toString()),
+      );
+
+      return ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+        itemCount: groupedAchievements.length,
+        itemBuilder: (context, index) {
+          final entry = groupedAchievements.entries.elementAt(index);
+          final dateGroup = entry.key;
+          final achievements = entry.value;
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 10),
+              Text(
+                dateGroup,
+                style: textThemeData.bodyMedium,
+              ),
+              const SizedBox(height: 10),
+              ...achievements.map((achievement) => WorkContainer(
+                    sub: achievement.awardingBody ?? "",
+                    work: achievement.category ?? "",
+                    icon: Icons.military_tech,
+                    icolor: Colors.green,
+                    bcolor: Colors.green.withOpacity(0.2),
+                    onTap: () {
+                      context.pushNamed(
+                        AppRouteConst.AchivementDetailRouteName,
+                        extra: achievement,
+                      );
+                    },
+                  )),
+              const SizedBox(height: 20),
+            ],
+          );
+        },
+      );
+    });
+  }
+
+  Widget _buildHomeworkContent() {
+    return Consumer<StudentController>(builder: (context, value, child) {
+      if (value.isloading) {
+        return const Center(child: CircularProgressIndicator());
+      }
+
+      final groupedHomework = groupItemsByDate(
+        value.homeworks,
+        (homework) => DateTime.parse(homework.dueDate.toString()),
+      );
+
+      return ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+        itemCount: groupedHomework.length,
+        itemBuilder: (context, index) {
+          final entry = groupedHomework.entries.elementAt(index);
+          final dateGroup = entry.key;
+          final homeworks = entry.value;
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 10),
+              Text(
+                dateGroup,
+                style: textThemeData.bodyMedium,
+              ),
+              const SizedBox(height: 10),
+              ...homeworks.map((homework) => WorkContainer(
+                    sub: homework.status ?? "",
+                    work: homework.assignmentTitle ?? "",
+                    icon: Icons.home_work_outlined,
+                    onTap: () {
+                      context.pushNamed(
+                        AppRouteConst.workviewRouteName,
+                        extra: homework,
+                      );
+                    },
+                  )),
+              const SizedBox(height: 20),
+            ],
+          );
+        },
       );
     });
   }
