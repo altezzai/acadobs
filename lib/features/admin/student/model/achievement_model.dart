@@ -4,11 +4,10 @@
 
 import 'dart:convert';
 
-List<Achievement> achievementFromJson(String str) => List<Achievement>.from(
-    json.decode(str).map((x) => Achievement.fromJson(x)));
+Achievement achievementFromJson(String str) =>
+    Achievement.fromJson(json.decode(str));
 
-String achievementToJson(List<Achievement> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String achievementToJson(Achievement data) => json.encode(data.toJson());
 
 class Achievement {
   int? id;
