@@ -2,9 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
-import 'package:school_app/core/controller/loading_provider.dart';
+import 'package:school_app/base/services/secure_storage_services.dart';
 import 'package:school_app/features/teacher/homework/model/homework_model.dart';
 import 'package:school_app/features/teacher/homework/services/homework_service.dart';
 
@@ -45,13 +44,13 @@ class HomeworkController extends ChangeNotifier {
     required String submission_type,
     required total_marks,
     required String status,
-    required List<int> studentsId,
+    required List<String> studentsId,
   }) async {
-    final loadingProvider =
-        Provider.of<LoadingProvider>(context, listen: false); //loading provider
-    loadingProvider.setLoading(true); //start loader
     try {
+      final teacherId = await SecureStorageService.getUserId();
+      log("${teacherId.toString}");
       final response = await HomeworkServices().addHomework(context,
+          teacherId: teacherId,
           class_grade: class_grade,
           section: section,
           subject: subject,
@@ -62,7 +61,7 @@ class HomeworkController extends ChangeNotifier {
           submission_type: submission_type,
           total_marks: total_marks,
           status: status,
-          studentsId: [1, 2]);
+          studentsId: studentsId);
       log("Response++++=${response.data.toString()}");
       if (response.statusCode == 201) {
         log(">>>>>>${response.statusMessage}");
@@ -71,7 +70,6 @@ class HomeworkController extends ChangeNotifier {
     } catch (e) {
       log(e.toString());
     } finally {
-      loadingProvider.setLoading(false); // End loader
       notifyListeners();
     }
   }
