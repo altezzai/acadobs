@@ -58,7 +58,7 @@ class TeacherServices {
       'gender': gender,
       'address': address,
       'contact_number': contactNumber,
-      'email_address': emailAddress, // Make sure this date is a string
+      'email': emailAddress, // Make sure this date is a string
     };
 
     // Call the ApiServices post method with formData and isFormData: true

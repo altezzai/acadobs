@@ -11,6 +11,7 @@ class HomeworkServices {
   // add homework
   Future<Response> addHomework(
     BuildContext context, {
+    required int teacherId,
     required String class_grade,
     required String section,
     required String subject,
@@ -21,11 +22,11 @@ class HomeworkServices {
     required String submission_type,
     required String total_marks,
     required String status,
-    required List<int> studentsId,
+    required List<String> studentsId,
   }) async {
     // Create FormData to pass to the API
     final formData = FormData.fromMap({
-      'teacher_id': 1,
+      'teacher_id': teacherId,
       'class_grade': class_grade,
       'section': section,
       'subject': subject,
@@ -37,7 +38,6 @@ class HomeworkServices {
       'total_marks': total_marks,
       'status': status,
       'studentsId': studentsId
-
     });
 
     // Call the ApiServices post method with FormData and isFormData: true

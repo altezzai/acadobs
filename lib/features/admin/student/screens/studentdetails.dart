@@ -23,17 +23,18 @@ class StudentDetailPage extends StatefulWidget {
 }
 
 class _StudentDetailPageState extends State<StudentDetailPage> {
+  late AchievementController achievementController;
   @override
   void initState() {
-    context
-        .read<AchievementController>()
-        .getAchievements(student_id: widget.student.id ?? 0);
-    super.initState();
     // Fetch today's attendance on page build
+    achievementController = context.read<AchievementController>();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final controller = context.read<StudentController>();
       controller.getDayAttendance(studentId: widget.student.id.toString());
+
+      achievementController.getAchievements(student_id: widget.student.id ?? 0);
     });
+    super.initState();
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -219,48 +220,55 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
           child: CircularProgressIndicator(),
         );
       }
-      return ListView.builder(
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: value.achievements.length,
-        itemBuilder: (context, index) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 15.0, top: 10.0),
-                child: Text(
-                  DateFormatter.formatDateString(
-                      value.achievements[index].dateOfAchievement.toString()),
-                  style: TextStyle(
-                    fontWeight: FontWeight.normal,
-                    fontSize: 16,
-                    color: Colors.black87, // Match with StudentDetailPage
+      return Column(
+        children: [
+          SizedBox(height: Responsive.height * 3),
+          ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: value.achievements.length,
+            itemBuilder: (context, index) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15.0, top: 10.0),
+                    child: Text(
+                      DateFormatter.formatDateString(value
+                          .achievements[index].dateOfAchievement
+                          .toString()),
+                      style: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontSize: 16,
+                        color: Colors.black87, // Match with StudentDetailPage
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              ListTile(
-                leading: Icon(Icons.military_tech, color: Colors.greenAccent),
-                title: Text(
-                  value.achievements[index].achievementTitle ?? "",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black87, // Match with StudentDetailPage
+                  ListTile(
+                    leading:
+                        Icon(Icons.military_tech, color: Colors.greenAccent),
+                    title: Text(
+                      value.achievements[index].achievementTitle ?? "",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black87, // Match with StudentDetailPage
+                      ),
+                    ),
+                    subtitle: Text(
+                      value.achievements[index].awardingBody ?? "",
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[600], // Keep consistent
+                      ),
+                    ),
                   ),
-                ),
-                subtitle: Text(
-                  value.achievements[index].awardingBody ?? "",
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey[600], // Keep consistent
-                  ),
-                ),
-              ),
-              Divider(thickness: 1.5, color: Colors.grey[300]),
-            ],
-          );
-        },
+                  Divider(thickness: 1.5, color: Colors.grey[300]),
+                ],
+              );
+            },
+          ),
+        ],
       );
     });
   }
