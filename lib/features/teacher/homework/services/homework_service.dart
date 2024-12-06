@@ -22,10 +22,10 @@ class HomeworkServices {
     required String submission_type,
     required String total_marks,
     required String status,
-    required List<String> studentsId,
+    required List<int> studentsId,
   }) async {
     // Create FormData to pass to the API
-    final formData = FormData.fromMap({
+    final formData = {
       'teacher_id': teacherId,
       'class_grade': class_grade,
       'section': section,
@@ -37,8 +37,8 @@ class HomeworkServices {
       'submission_type': submission_type,
       'total_marks': total_marks,
       'status': status,
-      'studentsId': studentsId
-    });
+      'studentsId[]': studentsId
+    };
 
     // Call the ApiServices post method with FormData and isFormData: true
     final Response response =

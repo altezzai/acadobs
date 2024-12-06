@@ -125,6 +125,7 @@ class _WorkScreenState extends State<WorkScreen> {
                           itemBuilder: (context, index) {
                             final homework = entry.value[index];
                             return WorkContainer(
+                              icon: Icons.home_work_outlined,
                               work: homework.assignmentTitle ?? "Untitled",
                               sub: homework.subject ?? "No Subject",
                               onTap: () {
