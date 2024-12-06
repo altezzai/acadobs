@@ -181,8 +181,10 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                 children: [
                   _buildDashboardContent(),
                   _buildAchievementsContent(),
+
                   Center(child: Text("Exam Content")),
                   _buildHomeworkContent(),
+
                 ],
               ),
             ),

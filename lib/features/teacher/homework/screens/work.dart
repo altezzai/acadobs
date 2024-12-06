@@ -42,7 +42,7 @@ class _HomeWorkState extends State<HomeWork> {
     studentIdController = context.read<StudentIdController>();
     // Clear dropdown selections when page loads
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      dropdownProvider.clearSelectedItem('class');
+      dropdownProvider.clearSelectedItem('classGrade');
       dropdownProvider.clearSelectedItem('division');
       dropdownProvider.clearSelectedItem('submissionType');
       dropdownProvider.clearSelectedItem('status');
@@ -266,8 +266,7 @@ class _HomeWorkState extends State<HomeWork> {
                           total_marks: _markController.text,
                           status: status,
                           studentsId: studentIds
-                              .map((int value) => value.toString())
-                              .toList());
+                              );
                     });
               }),
               SizedBox(

@@ -44,7 +44,7 @@ class HomeworkController extends ChangeNotifier {
     required String submission_type,
     required total_marks,
     required String status,
-    required List<String> studentsId,
+    required List<int> studentsId,
   }) async {
     try {
       final teacherId = await SecureStorageService.getUserId();
