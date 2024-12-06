@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
-import 'package:school_app/features/admin/student/model/achievement_model.dart';
+import 'package:school_app/features/admin/student/model/student_homework.dart';
 import 'package:school_app/features/teacher/homework/widgets/view_container.dart';
 
-class AchievementDetail extends StatefulWidget {
-  final Achievement achievement;
-  AchievementDetail({required this.achievement});
+class AdminhomeworkDetail extends StatefulWidget {
+  final HomeworkDetail homework;
+  AdminhomeworkDetail({required this.homework});
 
   @override
-  State<AchievementDetail> createState() => _AchievementDetailState();
+  State<AdminhomeworkDetail> createState() => _AdminhomeworkDetailState();
 }
 
-class _AchievementDetailState extends State<AchievementDetail> {
+class _AdminhomeworkDetailState extends State<AdminhomeworkDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +23,7 @@ class _AchievementDetailState extends State<AchievementDetail> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomAppbar(
-              title: widget.achievement.category ?? "",
+              title: widget.homework.assignmentTitle ?? "",
               isProfileIcon: false,
               onTap: () {
                 Navigator.pop(context);
@@ -38,7 +38,7 @@ class _AchievementDetailState extends State<AchievementDetail> {
               height: Responsive.height * 3,
             ),
             Text(
-              widget.achievement.achievementTitle ?? "",
+              widget.homework.assignmentTitle ?? "",
               style: textThemeData.headlineLarge!.copyWith(
                 fontSize: 20,
               ),
@@ -47,7 +47,7 @@ class _AchievementDetailState extends State<AchievementDetail> {
               height: Responsive.height * 1,
             ),
             Text(
-              widget.achievement.awardingBody ?? "",
+              widget.homework.description ?? "",
               style: textThemeData.bodySmall!.copyWith(
                 fontSize: 14,
               ),
