@@ -22,7 +22,9 @@ import 'package:school_app/features/admin/payments/screens/add_payment.dart';
 import 'package:school_app/features/admin/payments/screens/donation_view.dart';
 import 'package:school_app/features/admin/payments/screens/payment_view.dart';
 import 'package:school_app/features/admin/reports/screens/payment.dart';
+import 'package:school_app/features/admin/student/model/achievement_model.dart';
 import 'package:school_app/features/admin/student/model/student_data.dart';
+import 'package:school_app/features/admin/student/screens/achievement_detail.dart';
 import 'package:school_app/features/admin/student/screens/addAchivement.dart';
 import 'package:school_app/features/admin/student/screens/addhomwork.dart';
 import 'package:school_app/features/admin/student/screens/newstudent.dart';
@@ -178,7 +180,8 @@ class Approuter {
         path: '/student',
         pageBuilder: (context, state) {
           final UserType userType = state.extra as UserType;
-          return MaterialPage(child: StudentsPage(
+          return MaterialPage(
+              child: StudentsPage(
             userType: userType,
           ));
         },
@@ -252,6 +255,17 @@ class Approuter {
         path: '/addachivement',
         pageBuilder: (context, state) {
           return MaterialPage(child: AddAchievementPage());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.AchivementDetailRouteName,
+        path: '/achivementdetail',
+        pageBuilder: (context, state) {
+          final Achievement achievement = state.extra as Achievement;
+          return MaterialPage(
+              child: AchievementDetail(
+            achievement: achievement,
+          ));
         },
       ),
       GoRoute(

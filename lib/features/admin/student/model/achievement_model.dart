@@ -53,5 +53,4 @@ class Achievement {
             ? null
             : DateTime.parse(json["updated_at"]),
       );
-
 }

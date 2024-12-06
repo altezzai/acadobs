@@ -12,6 +12,13 @@ class StudentServices {
     }
   }
 
+// GET homework
+  Future<Response> getStudentHomework({required int studentId}) async {
+    final Response response =
+        await ApiServices.get("/getStudentHomeworks/$studentId");
+    return response;
+  }
+
   // Add student
   Future<Response> addNewStudent({
     required String fullName,
@@ -65,6 +72,7 @@ class StudentServices {
       throw Exception('Failed to load data: $e');
     }
   }
+
   // GET parent
   Future<Response> getParent() async {
     try {
@@ -74,6 +82,7 @@ class StudentServices {
       throw Exception('Failed to load data: $e');
     }
   }
+
   // student by class division
   Future<Response> getParentByClassAndDivision(
       {required String classname, required String section}) async {
@@ -87,8 +96,10 @@ class StudentServices {
   }
 
   // day attendance status
-  Future<Response> getDayAttendance({required String studentId, required String date}) async {
-    final Response response = await ApiServices.get("/getStudentAttendanceADay/$studentId?date=$date");
+  Future<Response> getDayAttendance(
+      {required String studentId, required String date}) async {
+    final Response response = await ApiServices.get(
+        "/getStudentAttendanceADay/$studentId?date=$date");
     return response;
   }
 }

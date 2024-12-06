@@ -47,7 +47,7 @@ class WorkContainer extends StatelessWidget {
             radius: Responsive.radius * 6,
             backgroundColor: bcolor,
             child: Icon(
-              Icons.home_work_outlined,
+              icon,
               color: icolor,
               size: 25,
             ),
