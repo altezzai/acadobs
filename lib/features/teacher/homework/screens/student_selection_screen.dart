@@ -74,7 +74,7 @@ class _StudentSelectionState extends State<StudentSelectionScreen> {
               onPressed: () {
                 if (value.selectedStudentIds.isEmpty) {
                   CustomSnackbar.show(context,
-                      message: "Select Staffs to Continue",
+                      message: "Select Students to Continue",
                       type: SnackbarType.warning,
                       bottomPadding: Responsive.height * 10);
                 } else {

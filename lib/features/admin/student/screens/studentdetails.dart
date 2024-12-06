@@ -143,14 +143,14 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                   _buildDashboardContent(),
                   // Second Tab Content
                   _buildAchievementsContent(),
-                  ListView(
-                    padding: const EdgeInsets.all(16.0),
-                    children: [
-                      SizedBox(height: 20),
-                      Text("Transit Tab Content",
-                          style: TextStyle(fontSize: 20)),
-                    ],
-                  ),
+                  // ListView(
+                  //   padding: const EdgeInsets.all(16.0),
+                  //   children: [
+                  //     SizedBox(height: 20),
+                  //     Text("Transit Tab Content",
+                  //         style: TextStyle(fontSize: 20)),
+                  //   ],
+                  // ),
                   // Third Tab Content
                   ListView(
                     padding: const EdgeInsets.all(16.0),
