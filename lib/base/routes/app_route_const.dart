@@ -54,6 +54,10 @@ class AppRouteConst {
   static const String teacherLeaveRequestDetailsRouteName =
       'teacherleaverequestdetails';
 
+  static const String SubjectsPageRouteName = 'subjectspage';
+  static const String AddSubjectPageRouteName = 'addsubjectpage';
+  static const String EditSubjectPageRouteName = 'editsubjectpage';
+
   static const String ParentStudentDetailRouteName = 'parentstudentdetail';
   static const String EventsPageRouteName = 'eventspage';
   static const String EventDetailedPageRouteName = 'eventdetailedpage';
