@@ -55,8 +55,7 @@ class _StudentLeaveRequestDetailsPageState extends State<TeacherLeaveRequestDeta
 
                 isProfileIcon: false,
                 onTap: () {
-                  context.goNamed(AppRouteConst.LeaveRequestScreenRouteName,
-                      );
+                  context.pop();
                 },
                 
               ),

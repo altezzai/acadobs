@@ -54,6 +54,8 @@ class AppRouteConst {
       'studentleaverequestdetails';
   static const String teacherLeaveRequestDetailsRouteName =
       'teacherleaverequestdetails';
+  static const String TeacherLeaveRequestScreenRouteName =
+      'teacherleaverequestscreen';
 
   static const String SubjectsPageRouteName = 'subjectspage';
   static const String AddSubjectPageRouteName = 'addsubjectpage';
