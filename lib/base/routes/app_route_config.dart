@@ -32,10 +32,15 @@ import 'package:school_app/features/admin/student/screens/adminhomework_detail.d
 import 'package:school_app/features/admin/student/screens/newstudent.dart';
 import 'package:school_app/features/admin/student/screens/studentdetails.dart';
 import 'package:school_app/features/admin/student/screens/studentpage.dart';
+import 'package:school_app/features/admin/subjects/screens/Add_subject.dart';
+import 'package:school_app/features/admin/subjects/screens/edit_subject.dart';
+import 'package:school_app/features/admin/subjects/screens/subjects.dart';
 import 'package:school_app/features/admin/teacher_section/model/teacher_model.dart';
 import 'package:school_app/features/admin/teacher_section/screens/add_teacher.dart';
 import 'package:school_app/features/admin/teacher_section/screens/teacherdetails.dart';
 import 'package:school_app/features/admin/teacher_section/screens/teachers_page.dart';
+
+
 import 'package:school_app/features/parent/events/screen/eventdetailedscreen.dart';
 import 'package:school_app/features/parent/events/screen/eventscreen.dart';
 import 'package:school_app/features/parent/home/screen/homescreen.dart';
@@ -545,6 +550,28 @@ class Approuter {
               child: DonationView(
             donation: donation,
           ));
+        },
+      ),
+       
+        GoRoute(
+        name: AppRouteConst.SubjectsPageRouteName,
+        path: '/subjectspage',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: SubjectsScreen());
+        },
+      ),
+       GoRoute(
+        name: AppRouteConst.AddSubjectPageRouteName,
+        path: '/addsubjectpage',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: AddSubject());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.EditSubjectPageRouteName,
+        path: '/editsubjectpage',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: EditSubjectPage());
         },
       ),
     ],
