@@ -127,8 +127,9 @@ class DutyController extends ChangeNotifier {
       final response = await DutyServices().progressDuty(duty_id: duty_id);
       if (response.statusCode == 201) {
         log(">>>>>>${response.statusMessage}");
-        context.pushNamed(AppRouteConst.bottomNavRouteName,
-            extra: UserType.teacher);
+        // context.pushNamed(AppRouteConst.bottomNavRouteName,
+        //     extra: UserType.teacher);
+        await getTeacherDuties();
       }
     } catch (e) {
       log(e.toString());
