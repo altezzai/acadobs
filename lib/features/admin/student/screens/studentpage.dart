@@ -24,12 +24,23 @@ class _StudentsPageState extends State<StudentsPage> {
   // String searchQuery = "";
   // String selectedClass = "All";
 
+  late DropdownProvider dropdownprovider;
+
   @override
   void initState() {
-    super.initState();
-    context.read<StudentController>().getStudentDetails();
-  }
+    dropdownprovider = context.read<DropdownProvider>();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      dropdownprovider.clearSelectedItem('class');
+      dropdownprovider.clearSelectedItem('division');
 
+      context.read<StudentController>().clearStudentList();
+      // super.dispose();
+
+      context.read<StudentController>().getStudentDetails();
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,14 +55,15 @@ class _StudentsPageState extends State<StudentsPage> {
             CustomAppbar(
               title: 'Students',
               onTap: () {
-                widget.userType == UserType.admin ?
-                context.pushNamed(
-                  AppRouteConst.bottomNavRouteName,
-                  extra: UserType.admin,
-                ): context.pushNamed(
-                  AppRouteConst.bottomNavRouteName,
-                  extra: UserType.teacher,
-                );
+                widget.userType == UserType.admin
+                    ? context.pushNamed(
+                        AppRouteConst.bottomNavRouteName,
+                        extra: UserType.admin,
+                      )
+                    : context.pushNamed(
+                        AppRouteConst.bottomNavRouteName,
+                        extra: UserType.teacher,
+                      );
               },
             ),
             Padding(
