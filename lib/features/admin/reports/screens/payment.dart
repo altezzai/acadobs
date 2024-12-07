@@ -19,10 +19,20 @@ class PaymentReport extends StatefulWidget {
 }
 
 class _PaymentReportState extends State<PaymentReport> {
+late DropdownProvider dropdownprovider;
 
    @override
   void initState() {
+    dropdownprovider = context.read<DropdownProvider>();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      dropdownprovider.clearSelectedItem('class');
+      dropdownprovider.clearSelectedItem('division');
+
+      context.read<PaymentController>().clearPaymentList();
+      // super.dispose();
+    });
     super.initState();
+    
     context.read<PaymentController>().getPayments();
   }
   
@@ -113,7 +123,7 @@ class _PaymentReportState extends State<PaymentReport> {
                   child: Column(
                     children: [
                       Image.asset(
-                        'assets/empty.png',
+                        'assets/money.png',
                         height: Responsive.height * 45,
                       ),
                     ],

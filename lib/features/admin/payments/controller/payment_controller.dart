@@ -19,8 +19,6 @@ class PaymentController extends ChangeNotifier {
   List<Payment> _filteredpayments = [];
   List<Payment> get filteredpayments => _filteredpayments;
 
-  
-
   Future<void> getPayments() async {
     _isloading = true;
     try {
@@ -54,12 +52,19 @@ class PaymentController extends ChangeNotifier {
         _filteredpayments = (response.data as List<dynamic>)
             .map((result) => Payment.fromJson(result))
             .toList();
-       
       }
     } catch (e) {
       log(e.toString());
+    } finally {
+      _isloading = false;
+      notifyListeners();
     }
   }
+
+  void clearPaymentList() {
+  _filteredpayments.clear();
+  notifyListeners();
+}
 
   List<Donation> _donations = [];
   List<Donation> get donations => _donations;
