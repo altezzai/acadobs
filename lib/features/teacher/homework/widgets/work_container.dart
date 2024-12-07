@@ -27,63 +27,63 @@ class WorkContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(Responsive.height * 1.3),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey.shade300, width: 1),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.shade300,
-            blurRadius: 1,
-            // spreadRadius: 3,
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: Responsive.radius * 6,
-            backgroundColor: bcolor,
-            child: Icon(
-              icon,
-              color: icolor,
-              size: 25,
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.all(Responsive.height * 1.3),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: Colors.grey.shade300, width: 1),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade300,
+              blurRadius: 1,
+              // spreadRadius: 3,
             ),
-          ),
-          SizedBox(
-            width: Responsive.width * 4,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                work,
-                style: textThemeData.headlineMedium?.copyWith(fontSize: 16) ??
-                    const TextStyle(fontSize: 16),
+          ],
+        ),
+        child: Row(
+          children: [
+            CircleAvatar(
+              radius: Responsive.radius * 6,
+              backgroundColor: bcolor,
+              child: Icon(
+                icon,
+                color: icolor,
+                size: 25,
               ),
-              Text(
-                sub,
-                style: textThemeData.labelSmall?.copyWith(fontSize: 12) ??
-                    const TextStyle(fontSize: 12), // Null check
-              ),
-            ],
-          ),
-          Spacer(),
-          GestureDetector(
-            onTap: onTap,
-            child: Text(
+            ),
+            SizedBox(
+              width: Responsive.width * 4,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  work,
+                  style: textThemeData.headlineMedium?.copyWith(fontSize: 16) ??
+                      const TextStyle(fontSize: 16),
+                ),
+                Text(
+                  sub,
+                  style: textThemeData.labelSmall?.copyWith(fontSize: 12) ??
+                      const TextStyle(fontSize: 12), // Null check
+                ),
+              ],
+            ),
+            Spacer(),
+            Text(
               prefixText,
               style: textThemeData.headlineMedium
                       ?.copyWith(fontSize: 16, color: prefixColor) ??
                   const TextStyle(fontSize: 16),
             ),
-          ),
-          SizedBox(
-            width: Responsive.width * 4,
-          ),
-        ],
+            SizedBox(
+              width: Responsive.width * 4,
+            ),
+          ],
+        ),
       ),
     );
   }

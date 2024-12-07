@@ -56,4 +56,18 @@ class DutyServices {
 
     return response;
   }
+
+  Future<Response> completeDuty({
+    required int duty_id,
+  }) async {
+    // Create the form data to pass to the API
+    final formData = {'duty_id': duty_id};
+
+    // Call the ApiServices post method with formData and isFormData: true
+    final Response response = await ApiServices.post(
+        "/completeTeacherDuty/$duty_id", formData,
+        isFormData: true);
+
+    return response;
+  }
 }

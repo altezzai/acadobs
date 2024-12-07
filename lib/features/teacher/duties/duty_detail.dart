@@ -13,7 +13,8 @@ import 'package:school_app/features/teacher/homework/widgets/view_container.dart
 
 class DutyDetailScreen extends StatefulWidget {
   final DutyItem teacherDuty;
-  DutyDetailScreen({required this.teacherDuty});
+  final int index;
+  DutyDetailScreen({required this.teacherDuty, required this.index});
 
   @override
   State<DutyDetailScreen> createState() => _DutyDetailScreenState();
@@ -64,38 +65,51 @@ class _DutyDetailScreenState extends State<DutyDetailScreen> {
               Text(widget.teacherDuty.status ?? "",
                   style: textThemeData.bodyMedium),
               SizedBox(height: Responsive.height * 6),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.orange.withOpacity(0.6),
-                ),
-                onPressed: () {
-                  context.read<DutyController>().progressDuty(context,
-                      duty_id: widget.teacherDuty.id ?? 0);
-                },
-                child: Text(
-                  "In Progress",
-                  style: textThemeData.bodyMedium!.copyWith(
-                    color: whiteColor,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 19,
-                  ),
-                ),
-              ),
+              Consumer<DutyController>(builder: (context, value, child) {
+                final dutyStatus = value.teacherDuties[widget.index].status;
+                return dutyStatus == 'InProgress' || dutyStatus == 'Completed'
+                    ? SizedBox.shrink()
+                    : ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.orange.withOpacity(0.6),
+                        ),
+                        onPressed: () {
+                          context.read<DutyController>().progressDuty(context,
+                              duty_id: widget.teacherDuty.id ?? 0);
+                        },
+                        child: Text(
+                          "In Progress",
+                          style: textThemeData.bodyMedium!.copyWith(
+                            color: whiteColor,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 19,
+                          ),
+                        ),
+                      );
+              }),
               SizedBox(height: Responsive.height * 1),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xff14601C),
-                ),
-                onPressed: () {},
-                child: Text(
-                  "Mark as Completed",
-                  style: textThemeData.bodyMedium!.copyWith(
-                    color: whiteColor,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 19,
+              Consumer<DutyController>(builder: (context, value, child) {
+                final dutyStatus = value.teacherDuties[widget.index].status;
+                return ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xff14601C),
                   ),
-                ),
-              ),
+                  onPressed: () {
+                    context.read<DutyController>().completeDuty(context,
+                        duty_id: widget.teacherDuty.id ?? 0);
+                  },
+                  child: Text(
+                    dutyStatus == 'Completed'
+                        ? "Duty Completed"
+                        : "Mark as Completed",
+                    style: textThemeData.bodyMedium!.copyWith(
+                      color: whiteColor,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 19,
+                    ),
+                  ),
+                );
+              }),
             ],
           ),
         ),

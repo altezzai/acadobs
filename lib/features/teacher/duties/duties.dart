@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/constants.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
@@ -134,7 +135,8 @@ class _DutiesScreenState extends State<DutiesScreen> {
                                   onTap: () {
                                     context.pushNamed(
                                       AppRouteConst.dutiesRouteName,
-                                      extra: duty,
+                                      extra: DutyDetailArguments(
+                                          dutyItem: duty, index: index),
                                     );
                                   },
                                 );
