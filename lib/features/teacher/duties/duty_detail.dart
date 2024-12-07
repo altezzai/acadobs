@@ -66,9 +66,8 @@ class _DutyDetailScreenState extends State<DutyDetailScreen> {
                   style: textThemeData.bodyMedium),
               SizedBox(height: Responsive.height * 6),
               Consumer<DutyController>(builder: (context, value, child) {
-                final dutyId = widget.teacherDuty.id;
                 final dutyStatus = value.teacherDuties[widget.index].status;
-                return dutyStatus == 'InProgress'
+                return dutyStatus == 'InProgress' || dutyStatus == 'Completed'
                     ? SizedBox.shrink()
                     : ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -89,20 +88,28 @@ class _DutyDetailScreenState extends State<DutyDetailScreen> {
                       );
               }),
               SizedBox(height: Responsive.height * 1),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xff14601C),
-                ),
-                onPressed: () {},
-                child: Text(
-                  "Mark as Completed",
-                  style: textThemeData.bodyMedium!.copyWith(
-                    color: whiteColor,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 19,
+              Consumer<DutyController>(builder: (context, value, child) {
+                final dutyStatus = value.teacherDuties[widget.index].status;
+                return ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xff14601C),
                   ),
-                ),
-              ),
+                  onPressed: () {
+                    context.read<DutyController>().completeDuty(context,
+                        duty_id: widget.teacherDuty.id ?? 0);
+                  },
+                  child: Text(
+                    dutyStatus == 'Completed'
+                        ? "Duty Completed"
+                        : "Mark as Completed",
+                    style: textThemeData.bodyMedium!.copyWith(
+                      color: whiteColor,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 19,
+                    ),
+                  ),
+                );
+              }),
             ],
           ),
         ),

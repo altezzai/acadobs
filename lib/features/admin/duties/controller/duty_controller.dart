@@ -127,9 +127,28 @@ class DutyController extends ChangeNotifier {
       final response = await DutyServices().progressDuty(duty_id: duty_id);
       if (response.statusCode == 201) {
         log(">>>>>>${response.statusMessage}");
-        // context.pushNamed(AppRouteConst.bottomNavRouteName,
-        //     extra: UserType.teacher);
+        Navigator.pop(context);
         await getTeacherDuties();
+      }
+    } catch (e) {
+      log(e.toString());
+    } finally {
+      loadingProvider.setLoading(false); // End loader
+      notifyListeners();
+    }
+  }
+
+  Future<void> completeDuty(BuildContext context,
+      {required int duty_id}) async {
+    final loadingProvider =
+        Provider.of<LoadingProvider>(context, listen: false); //loading provider
+    loadingProvider.setLoading(true); //start loader
+    try {
+      final response = await DutyServices().completeDuty(duty_id: duty_id);
+      if (response.statusCode == 201) {
+        log(">>>>>>${response.statusMessage}");
+        Navigator.pop(context);
+        // await getTeacherDuties();
       }
     } catch (e) {
       log(e.toString());
