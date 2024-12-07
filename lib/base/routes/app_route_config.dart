@@ -24,9 +24,11 @@ import 'package:school_app/features/admin/payments/screens/payment_view.dart';
 import 'package:school_app/features/admin/reports/screens/payment.dart';
 import 'package:school_app/features/admin/student/model/achievement_model.dart';
 import 'package:school_app/features/admin/student/model/student_data.dart';
+import 'package:school_app/features/admin/student/model/student_homework.dart';
 import 'package:school_app/features/admin/student/screens/achievement_detail.dart';
 import 'package:school_app/features/admin/student/screens/addAchivement.dart';
 import 'package:school_app/features/admin/student/screens/addhomwork.dart';
+import 'package:school_app/features/admin/student/screens/adminhomework_detail.dart';
 import 'package:school_app/features/admin/student/screens/newstudent.dart';
 import 'package:school_app/features/admin/student/screens/studentdetails.dart';
 import 'package:school_app/features/admin/student/screens/studentpage.dart';
@@ -60,6 +62,7 @@ import 'package:school_app/features/teacher/homework/screens/work_screen.dart';
 import 'package:school_app/features/teacher/homework/screens/work_view.dart';
 import 'package:school_app/features/teacher/leave_request/model/teacherLeaveReq_model.dart';
 import 'package:school_app/features/teacher/leave_request/screens/add_teacher_leaverequest.dart';
+import 'package:school_app/features/teacher/leave_request/screens/teacher_leaverequestpage.dart';
 import 'package:school_app/features/teacher/mark_work/screens/mark_star.dart';
 import 'package:school_app/features/teacher/marks/models/marks_upload_model.dart';
 import 'package:school_app/features/teacher/marks/screens/student_marklist.dart';
@@ -274,6 +277,17 @@ class Approuter {
         },
       ),
       GoRoute(
+        name: AppRouteConst.AdminhomeworkDetailRouteName,
+        path: '/adminhomeworkdetail',
+        pageBuilder: (context, state) {
+          final HomeworkDetail homework = state.extra as HomeworkDetail;
+          return MaterialPage(
+              child: AdminhomeworkDetail(
+            homework: homework,
+          ));
+        },
+      ),
+      GoRoute(
         name: AppRouteConst.AddStudentRouteName,
         path: '/addstudent',
         pageBuilder: (context, state) {
@@ -406,6 +420,13 @@ class Approuter {
               child: TeacherLeaveRequestDetailsPage(
             teacherleaverequests: teacherleaverequests,
           ));
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.TeacherLeaveRequestScreenRouteName,
+        path: '/teacherleaverequestscreen',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: TeacherLeaverequestScreen());
         },
       ),
       GoRoute(

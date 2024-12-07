@@ -181,10 +181,8 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                 children: [
                   _buildDashboardContent(),
                   _buildAchievementsContent(),
-
                   Center(child: Text("Exam Content")),
                   _buildHomeworkContent(),
-
                 ],
               ),
             ),
@@ -270,7 +268,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
 
       final groupedHomework = groupItemsByDate(
         value.homeworks,
-        (homework) => DateTime.parse(homework.dueDate.toString()),
+        (homework) => DateTime.parse(homework.assignedDate.toString()),
       );
 
       return ListView.builder(
@@ -291,12 +289,12 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
               ),
               const SizedBox(height: 10),
               ...homeworks.map((homework) => WorkContainer(
-                    sub: homework.status ?? "",
+                    sub: homework.subject ?? "",
                     work: homework.assignmentTitle ?? "",
                     icon: Icons.home_work_outlined,
                     onTap: () {
                       context.pushNamed(
-                        AppRouteConst.workviewRouteName,
+                        AppRouteConst.AdminhomeworkDetailRouteName,
                         extra: homework,
                       );
                     },
