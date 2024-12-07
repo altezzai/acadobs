@@ -62,6 +62,7 @@ import 'package:school_app/features/teacher/homework/screens/work_screen.dart';
 import 'package:school_app/features/teacher/homework/screens/work_view.dart';
 import 'package:school_app/features/teacher/leave_request/model/teacherLeaveReq_model.dart';
 import 'package:school_app/features/teacher/leave_request/screens/add_teacher_leaverequest.dart';
+import 'package:school_app/features/teacher/leave_request/screens/teacher_leaverequestpage.dart';
 import 'package:school_app/features/teacher/mark_work/screens/mark_star.dart';
 import 'package:school_app/features/teacher/marks/models/marks_upload_model.dart';
 import 'package:school_app/features/teacher/marks/screens/student_marklist.dart';
@@ -419,6 +420,13 @@ class Approuter {
               child: TeacherLeaveRequestDetailsPage(
             teacherleaverequests: teacherleaverequests,
           ));
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.TeacherLeaveRequestScreenRouteName,
+        path: '/teacherleaverequestscreen',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: TeacherLeaverequestScreen());
         },
       ),
       GoRoute(
