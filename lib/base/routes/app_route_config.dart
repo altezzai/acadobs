@@ -21,7 +21,10 @@ import 'package:school_app/features/admin/payments/screens/add_donation.dart';
 import 'package:school_app/features/admin/payments/screens/add_payment.dart';
 import 'package:school_app/features/admin/payments/screens/donation_view.dart';
 import 'package:school_app/features/admin/payments/screens/payment_view.dart';
+import 'package:school_app/features/admin/reports/screens/class_report.dart';
 import 'package:school_app/features/admin/reports/screens/payment.dart';
+import 'package:school_app/features/admin/reports/screens/student_report.dart';
+import 'package:school_app/features/admin/reports/screens/teacher_report.dart';
 import 'package:school_app/features/admin/student/model/achievement_model.dart';
 import 'package:school_app/features/admin/student/model/student_data.dart';
 import 'package:school_app/features/admin/student/model/student_homework.dart';
@@ -518,6 +521,27 @@ class Approuter {
         path: '/paymentreport',
         pageBuilder: (context, state) {
           return MaterialPage(child: PaymentReport());
+        },
+      ),
+       GoRoute(
+        name: AppRouteConst.StudentReportRouteName,
+        path: '/studentreport',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: StudentReport());
+        },
+      ),
+       GoRoute(
+        name: AppRouteConst.TeacherReportRouteName,
+        path: '/teacherreport',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: TeacherReport());
+        },
+      ),
+       GoRoute(
+        name: AppRouteConst.ClassReportRouteName,
+        path: '/classreport',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: ClassReport());
         },
       ),
       GoRoute(
