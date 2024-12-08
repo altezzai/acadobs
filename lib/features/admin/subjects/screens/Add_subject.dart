@@ -52,7 +52,7 @@ class _AddSubjectState extends State<AddSubject> {
               hintText: 'Description',
               controller: _subjectDescriptionController,),
               SizedBox(height: Responsive.height * 2,),
-            
+            //Add button
             Padding(padding:EdgeInsets.only(bottom: Responsive.height*4),
             child: CustomButton(text: 'Add', onPressed: (){
               
