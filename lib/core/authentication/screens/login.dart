@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/controller/student_id_controller.dart';
+import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/core/authentication/controller/auth_controller.dart';
-import 'package:school_app/core/shared_widgets/custom_button.dart';
+import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 // import 'package:school_app/teacher/home/homescreen.dart';
 
@@ -92,15 +93,26 @@ class _LoginPageState extends State<LoginPage> {
                     onTap: null, // No tap event required for password input
                   ),
                   SizedBox(height: 20),
-                  CustomButton(
-                    onPressed: () {
-                      context.read<AuthController>().login(
-                          context: context,
-                          email: emailController.text,
-                          password: passwordController.text);
-                    },
-                    text: "Login",
-                  ),
+                  // CustomButton(
+                  //   onPressed: () {
+                  //     context.read<AuthController>().login(
+                  //         context: context,
+                  //         email: emailController.text,
+                  //         password: passwordController.text);
+                  //   },
+                  //   text: "Login",
+                  // ),
+                  Consumer<AuthController>(builder: (context, value, child) {
+                    return CommonButton(
+                      onPressed: () {
+                        context.read<AuthController>().login(
+                            context: context,
+                            email: emailController.text,
+                            password: passwordController.text);
+                      },
+                      widget: value.isloading ? ButtonLoading() : Text('Login'),
+                    );
+                  }),
                   SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
