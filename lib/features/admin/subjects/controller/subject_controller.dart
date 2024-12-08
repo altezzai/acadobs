@@ -2,13 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
-import 'package:school_app/core/controller/loading_provider.dart';
 
 import 'package:school_app/features/admin/subjects/model/subject_model.dart';
 import 'package:school_app/features/admin/subjects/services/subject_services.dart';
-
 
 class SubjectController extends ChangeNotifier {
   bool _isloading = false;
@@ -20,8 +17,7 @@ class SubjectController extends ChangeNotifier {
   Future<void> getSubjects() async {
     _isloading = true;
     try {
-      final response =
-          await SubjectServices().getsubject();
+      final response = await SubjectServices().getsubject();
       print("***********${response.statusCode}");
       print(response.toString());
       if (response.statusCode == 200) {
@@ -35,23 +31,20 @@ class SubjectController extends ChangeNotifier {
     _isloading = false;
     notifyListeners();
   }
-  
+
   Future<void> addNewSubjects(
     BuildContext context, {
     required String subject,
     required String description,
-   
   }) async {
-    final loadingProvider =
-        Provider.of<LoadingProvider>(context, listen: false); //loading provider
-    loadingProvider.setLoading(true); //start loader
+    // final loadingProvider =
+    //     Provider.of<LoadingProvider>(context, listen: false); //loading provider
+    // loadingProvider.setLoading(true); //start loader
+    _isloading = true;
     try {
-      //  _isloading = false;
-      final response =
-          await SubjectServices().addNewSubject(
+      final response = await SubjectServices().addNewSubject(
         subject: subject,
         description: description,
-       
       );
       if (response.statusCode == 201) {
         log(">>>>>>>>>>>>>Subject Added}");
@@ -63,7 +56,8 @@ class SubjectController extends ChangeNotifier {
           ),
         );
         // Navigate to the desired route
-        context.pushNamed(AppRouteConst.SubjectsPageRouteName,
+        context.pushNamed(
+          AppRouteConst.SubjectsPageRouteName,
         );
       } else {
         // Handle failure case here if needed
@@ -77,7 +71,9 @@ class SubjectController extends ChangeNotifier {
     } catch (e) {
       log(e.toString());
     } finally {
-      loadingProvider.setLoading(false); // End loader
+      // loadingProvider.setLoading(false); // End loader
+      _isloading = false;
       notifyListeners();
     }
-  }}
+  }
+}
