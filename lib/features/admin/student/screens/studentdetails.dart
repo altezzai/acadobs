@@ -157,6 +157,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                     bottom: PreferredSize(
                       preferredSize: const Size.fromHeight(0),
                       child: TabBar(
+                        tabAlignment: TabAlignment.start,
                         isScrollable: true,
                         labelColor: Colors.black,
                         unselectedLabelColor: Colors.grey,

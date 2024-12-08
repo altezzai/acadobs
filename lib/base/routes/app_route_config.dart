@@ -138,10 +138,11 @@ class Approuter {
         name: AppRouteConst.dutiesRouteName,
         path: '/duties',
         pageBuilder: (context, state) {
-          final DutyItem teacherDuty = state.extra as DutyItem;
+          final DutyDetailArguments args = state.extra as DutyDetailArguments;
           return MaterialPage(
               child: DutyDetailScreen(
-            teacherDuty: teacherDuty,
+            teacherDuty: args.dutyItem,
+            index: args.index,
           ));
         },
       ),
@@ -592,4 +593,10 @@ class ClassAndDivision {
   String className;
   String section;
   ClassAndDivision({required this.className, required this.section});
+}
+
+class DutyDetailArguments {
+  DutyItem dutyItem;
+  int index;
+  DutyDetailArguments({required this.dutyItem, required this.index});
 }

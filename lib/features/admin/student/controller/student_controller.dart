@@ -132,28 +132,50 @@ class StudentController extends ChangeNotifier {
   }
 
   // Fetch student class and division details (GET request)
-  Future<void> getStudentsClassAndDivision(
-      {required String classname, required String section}) async {
-    _isloading = true;
-    try {
-      final response = await StudentServices().getStudentsClassAndDivision(
-        classname: classname,
-        section: section,
-      );
-      print("***********${response.statusCode}");
-      print(response.toString());
-      if (response.statusCode == 200) {
-        _filteredstudents.clear();
-        _filteredstudents = (response.data as List<dynamic>)
-            .map((result) => Student.fromJson(result))
-            .toList();
-      }
-    } catch (e) {
-      print(e);
+Future<void> getStudentsClassAndDivision({
+  required String classname,
+  required String section,
+}) async {
+  _isloading = true; // Set loading state to true
+  notifyListeners(); // Notify listeners to update the UI
+
+  try {
+    // Call the API to fetch student data
+    final response = await StudentServices().getStudentsClassAndDivision(
+      classname: classname,
+      section: section,
+    );
+
+    // Log the response for debugging purposes
+    print("Response Status Code: ${response.statusCode}");
+    print("Response Body: ${response.data}");
+
+    if (response.statusCode == 200 && response.data is List) {
+      // Successfully received data, map and update the filtered students list
+      _filteredstudents = (response.data as List<dynamic>)
+          .map((student) => Student.fromJson(student))
+          .toList();
+    } else {
+      // Handle unexpected response format or status
+      _filteredstudents.clear(); // Clear the list if response is invalid
+      print("Unexpected response: ${response.statusCode}");
     }
+  } catch (e) {
+    // Log the error and clear the student list on failure
+    print("Error fetching student data: $e");
+    _filteredstudents.clear();
+  } finally {
+    // Reset the loading state and notify listeners
     _isloading = false;
     notifyListeners();
   }
+}
+// Clear the filtered students list
+void clearStudentList() {
+  _filteredstudents.clear();
+  notifyListeners();
+}
+
 
   // Fetch Parent details (GET request)
   Future<void> getParentDetails() async {
