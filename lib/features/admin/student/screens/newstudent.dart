@@ -86,7 +86,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            context.pushNamed(AppRouteConst.AdminstudentRouteName);
+            Navigator.pop(context);
           },
         ),
         centerTitle: true,
