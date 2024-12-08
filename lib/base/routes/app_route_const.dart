@@ -32,7 +32,11 @@ class AppRouteConst {
   static const String AddDonationRouteName = 'addDonation';
   static const String AddHomeworkRouteName = 'addhomework';
   static const String AddTeacherRouteName = 'addteacher';
+
   static const String PaymentReportRouteName = 'paymentreport';
+  static const String StudentReportRouteName = 'studentreport';
+  static const String TeacherReportRouteName = 'teacherreport';
+  static const String ClassReportRouteName = 'classreport';
   static const String PaymentViewRouteName = 'paymentview';
   static const String DonationViewRouteName = 'donationview';
 

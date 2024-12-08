@@ -30,7 +30,7 @@ class ReportsHomeScreen extends StatelessWidget {
               icon: Icons.person_outline,
               color: Colors.blue,
               onTap: () {
-                // Navigate to Student Report page
+                context.pushNamed(AppRouteConst.StudentReportRouteName);// Navigate to Student Report page
               },
             ),
             SizedBox(height: 16),
@@ -39,7 +39,7 @@ class ReportsHomeScreen extends StatelessWidget {
               icon: Icons.person_rounded,
               color: Colors.red,
               onTap: () {
-                // Navigate to Teacher Report page
+                context.pushNamed(AppRouteConst.TeacherReportRouteName);// Navigate to Teacher Report page
               },
             ),
             SizedBox(height: 16),
@@ -48,7 +48,7 @@ class ReportsHomeScreen extends StatelessWidget {
               icon: Icons.school_outlined,
               color: Colors.purple,
               onTap: () {
-                // Navigate to Class Report page
+                context.pushNamed(AppRouteConst.ClassReportRouteName);// Navigate to Class Report page
               },
             ),
           ],
