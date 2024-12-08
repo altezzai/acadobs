@@ -11,6 +11,7 @@ import 'package:school_app/features/admin/notices/controller/notice_controller.d
 import 'package:school_app/features/admin/payments/controller/payment_controller.dart';
 import 'package:school_app/features/admin/student/controller/achievement_controller.dart';
 import 'package:school_app/features/admin/student/controller/student_controller.dart';
+import 'package:school_app/features/admin/subjects/controller/subject_controller.dart';
 import 'package:school_app/features/admin/teacher_section/controller/teacher_controller.dart';
 import 'package:school_app/features/parent/leave_request/controller/studentLeaveReq_controller.dart';
 import 'package:school_app/features/teacher/attendance/controller/attendance_controller.dart';
@@ -41,5 +42,6 @@ getProviders() {
     ChangeNotifierProvider(create: (_) => HomeworkController()),
      ChangeNotifierProvider(create: (_) => MarksController()),
      ChangeNotifierProvider(create: (_) => AuthController()),
+     ChangeNotifierProvider(create: (_) => SubjectController()),
   ];
 }

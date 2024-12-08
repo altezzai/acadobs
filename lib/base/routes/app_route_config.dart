@@ -32,6 +32,7 @@ import 'package:school_app/features/admin/student/screens/adminhomework_detail.d
 import 'package:school_app/features/admin/student/screens/newstudent.dart';
 import 'package:school_app/features/admin/student/screens/studentdetails.dart';
 import 'package:school_app/features/admin/student/screens/studentpage.dart';
+import 'package:school_app/features/admin/subjects/model/subject_model.dart';
 import 'package:school_app/features/admin/subjects/screens/Add_subject.dart';
 import 'package:school_app/features/admin/subjects/screens/edit_subject.dart';
 import 'package:school_app/features/admin/subjects/screens/subjects.dart';
@@ -578,8 +579,10 @@ class Approuter {
         name: AppRouteConst.EditSubjectPageRouteName,
         path: '/editsubjectpage',
         pageBuilder: (context, state) {
-          return MaterialPage(child: EditSubjectPage());
-        },
+        final Subject subjects= state.extra as Subject;
+        
+          return MaterialPage(child: EditSubjectPage(subjects:subjects));
+        }
       ),
     ],
   );
