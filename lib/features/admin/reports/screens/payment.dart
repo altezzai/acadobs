@@ -74,7 +74,7 @@ late DropdownProvider dropdownprovider;
               child: CustomDropdown(
                 dropdownKey: 'class',
                 label: 'Class',
-                items: ['8', '9', '10'],
+                items: ['5', '6', '7','8','9','10'],
                 icon: Icons.school,
                 onChanged: (selectedClass) {
                   final selectedDivision = context

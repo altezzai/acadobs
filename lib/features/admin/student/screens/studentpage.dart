@@ -88,44 +88,6 @@ class _StudentsPageState extends State<StudentsPage> {
                           fontSize: 16, fontWeight: FontWeight.normal),
                     ),
                   ),
-                  // SizedBox(width: 8),
-                  // Flexible(
-                  //   child: Container(
-                  //     padding: EdgeInsets.symmetric(horizontal: 12),
-                  //     decoration: BoxDecoration(
-                  //       color: Colors.grey.shade100,
-                  //       borderRadius: BorderRadius.circular(30),
-                  //       border: Border.all(color: Colors.grey.shade300),
-                  //     ),
-                  //     child: DropdownButton<String>(
-                  //       value: selectedClass,
-                  //       underline: SizedBox(),
-                  //       isExpanded: true,
-                  //       items: <String>[
-                  //         'All',
-                  //         'V',
-                  //         'VI',
-                  //         'VII',
-                  //         'VIII',
-                  //         'IX',
-                  //         'X',
-                  //       ].map((String value) {
-                  //         return DropdownMenuItem<String>(
-                  //           value: value,
-                  //           child: Text(
-                  //             value,
-                  //             overflow: TextOverflow.ellipsis,
-                  //           ),
-                  //         );
-                  //       }).toList(),
-                  //       onChanged: (newValue) {
-                  //         if (newValue != null) {
-                  //           _filterByClass(newValue);
-                  //         }
-                  //       },
-                  //     ),
-                  //   ),
-                  // ),
                 ],
               ),
             ),
@@ -135,7 +97,7 @@ class _StudentsPageState extends State<StudentsPage> {
                   child: CustomDropdown(
                     dropdownKey: 'class',
                     label: 'Class',
-                    items: ['8', '9', '10'],
+                    items: ['5', '6', '7','8','9','10'],
                     icon: Icons.school,
                     onChanged: (selectedClass) {
                       // Automatically fetch students when division is selected
