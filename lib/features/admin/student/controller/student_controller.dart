@@ -1,6 +1,7 @@
 // import 'dart:developer';
 // import 'package:dio/dio.dart';
 import 'dart:developer';
+//import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -97,6 +98,7 @@ class StudentController extends ChangeNotifier {
     required String fatherFullName,
     required String motherFullName,
     required String bloodGroup,
+    String? studentPhoto
   }) async {
     _isloading = true;
     try {
@@ -114,10 +116,28 @@ class StudentController extends ChangeNotifier {
           email: email,
           fatherFullName: fatherFullName,
           motherFullName: motherFullName,
-          bloodGroup: bloodGroup);
+          bloodGroup: bloodGroup,
+          studentPhotoPath: studentPhoto);
       if (response.statusCode == 201) {
         log(">>>>>>>>>>>>>Student Added}");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Student Added successfully!'),
+            backgroundColor: Colors.green, // Set color for success
+          ),
+        );
+        // Navigate to the desired route
+        
         context.pushNamed(AppRouteConst.AdminstudentRouteName);
+      }
+       else {
+        // Handle failure case here if needed
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to add student. Please try again.'),
+            backgroundColor: Colors.red, // Set color for error
+          ),
+        );
       }
     } catch (e) {
       log(e.toString());
