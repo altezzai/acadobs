@@ -2,10 +2,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
-import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/features/teacher/attendance/controller/attendance_controller.dart';
 import 'package:school_app/features/teacher/attendance/model/attendance_data.dart';
 import 'package:school_app/features/teacher/attendance/screens/attendance.dart';
@@ -177,8 +178,7 @@ class TakeAttendance extends StatelessWidget {
                         final teacherId = value.attendanceList[0].recordedBy;
                         return teacherId != null
                             ? SizedBox()
-                            : CustomButton(
-                                text: "Submit",
+                            : CommonButton(
                                 onPressed: () {
                                   log(">>>>>>>>>>${value.getStatus(1)}");
                                   log(">>>>>>>>>>>>>>>>${attendanceStatusList}");
@@ -194,7 +194,29 @@ class TakeAttendance extends StatelessWidget {
                                               attendanceData.selectedPeriod,
                                           recordedBy: 1,
                                           students: attendanceStatusList);
-                                });
+                                },
+                                widget: value.isloading
+                                    ? ButtonLoading()
+                                    : Text('Submit'),
+                              );
+                        // CustomButton(
+                        //     text: "Submit",
+                        //     onPressed: () {
+                        //       log(">>>>>>>>>>${value.getStatus(1)}");
+                        //       log(">>>>>>>>>>>>>>>>${attendanceStatusList}");
+                        //       context
+                        //           .read<AttendanceController>()
+                        //           .submitAttendance(context,
+                        //               date: attendanceData.selectedDate,
+                        //               classGrade:
+                        //                   attendanceData.selectedClass,
+                        //               section:
+                        //                   attendanceData.selectedDivision,
+                        //               periodNumber:
+                        //                   attendanceData.selectedPeriod,
+                        //               recordedBy: 1,
+                        //               students: attendanceStatusList);
+                        //     });
                       }),
                       SizedBox(
                         height: Responsive.height * 3,

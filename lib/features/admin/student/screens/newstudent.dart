@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
-import 'package:school_app/core/shared_widgets/custom_button.dart';
+import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
@@ -22,7 +23,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
   String? selectedParentPhoto;
   String? selectedAadharPhoto;
   String? selectedTransferCertificate;
-
+  
   final TextEditingController _dateOfJoiningController =
       TextEditingController();
   final TextEditingController _dateOfBirthController = TextEditingController();
@@ -60,19 +61,24 @@ class _AddStudentPageState extends State<AddStudentPage> {
     super.dispose();
   }
 
-  Future<void> pickFile(Function(String) onFilePicked) async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.any,
-    );
+ Future<void> pickFile(Function(String) onFilePicked) async {
+  FilePickerResult? result = await FilePicker.platform.pickFiles(
+    type: FileType.any,
+  );
 
-    if (result != null) {
+  if (result != null) {
+    if (result.files.single.path != null) {
       setState(() {
-        onFilePicked(result.files.single.name);
+        onFilePicked(result.files.single.path!);
       });
     } else {
-      print('No file selected');
+      print('Selected file path is null.');
     }
+  } else {
+    print('No file selected');
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -354,9 +360,9 @@ class _AddStudentPageState extends State<AddStudentPage> {
 
                 GestureDetector(
                     onTap: () async {
-                      await pickFile((fileName) {
+                      await pickFile((filePath) {
                         setState(() {
-                          selectedStudentPhoto = fileName;
+                          selectedStudentPhoto = filePath;
                         });
                       });
                     },
@@ -496,14 +502,22 @@ class _AddStudentPageState extends State<AddStudentPage> {
 
                 SizedBox(height: 40),
 
-                Center(
-                  child: CustomButton(
-                    text: 'Submit',
+                Center(child: Consumer<StudentController>(
+                        builder: (context, value, child) {
+                  return CommonButton(
                     onPressed: () {
                       _submitForm(context);
                     },
-                  ),
-                ),
+                    widget: value.isloading ? ButtonLoading() : Text('Submit'),
+                  );
+                })
+                    //  CustomButton(
+                    //   text: 'Submit',
+                    //   onPressed: () {
+                    //     _submitForm(context);
+                    //   },
+                    // ),
+                    ),
                 SizedBox(height: 30),
               ],
             ),
@@ -557,15 +571,10 @@ class _AddStudentPageState extends State<AddStudentPage> {
           email: _emailController.text,
           fatherFullName: _fatherFullNameController.text,
           motherFullName: _motherFullNameController.text,
-          bloodGroup: _bloodgroupController.text);
+          bloodGroup: _bloodgroupController.text,
+          studentPhoto:selectedStudentPhoto);
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Student added successfully!'),
-          backgroundColor: Colors.green,
-          duration: Duration(seconds: 3),
-        ),
-      );
+      
 
       _clearFormFields();
     } catch (e) {
@@ -593,6 +602,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
     _emailController.clear();
     _fatherFullNameController.clear();
     _motherFullNameController.clear();
+    
     context.read<DropdownProvider>().clearAllDropdowns();
   }
 

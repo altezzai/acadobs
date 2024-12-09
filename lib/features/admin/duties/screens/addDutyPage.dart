@@ -5,12 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
-import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
@@ -189,8 +190,7 @@ class _AddDutyPageState extends State<AddDutyPage> {
               Center(
                 child: Consumer<TeacherController>(
                     builder: (context, value, child) {
-                  return CustomButton(
-                    text: 'Submit',
+                  return CommonButton(
                     onPressed: () async {
                       log("List of teacher ids selected: ==== ${value.selectedTeacherIds.toString()}");
                       final status = context
@@ -202,9 +202,25 @@ class _AddDutyPageState extends State<AddDutyPage> {
                           status: status,
                           remark: _remarkController.text,
                           teachers: value.selectedTeacherIds);
-                      // value.clearSelection();
                     },
+                    widget: value.isloading ? ButtonLoading() : Text('Submit'),
                   );
+                  // CustomButton(
+                  //   text: 'Submit',
+                  //   onPressed: () async {
+                  //     log("List of teacher ids selected: ==== ${value.selectedTeacherIds.toString()}");
+                  //     final status = context
+                  //         .read<DropdownProvider>()
+                  //         .getSelectedItem('status');
+                  //     context.read<DutyController>().addDuty(context,
+                  //         duty_title: _titleController.text,
+                  //         description: _descriptionController.text,
+                  //         status: status,
+                  //         remark: _remarkController.text,
+                  //         teachers: value.selectedTeacherIds);
+                  //     // value.clearSelection();
+                  //   },
+                  // );
                 }),
               ),
             ],

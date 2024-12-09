@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
+import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
-import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
+import 'package:school_app/features/teacher/marks/controller/marks_controller.dart';
 import 'package:school_app/features/teacher/marks/models/marks_upload_model.dart';
 
 // ignore: must_be_immutable
@@ -104,8 +106,8 @@ class ProgressReport extends StatelessWidget {
               iconData: Icon(Icons.book),
             ),
             SizedBox(height: Responsive.height * 3),
-            CustomButton(
-                text: "Enter Marks",
+            Consumer<MarksController>(builder: (context, value, child) {
+              return CommonButton(
                 onPressed: () {
                   final selectedClass =
                       context.read<DropdownProvider>().getSelectedItem('class');
@@ -126,7 +128,33 @@ class ProgressReport extends StatelessWidget {
                       totalMarks: int.parse(_totalMarkController.text));
                   context.pushNamed(AppRouteConst.marksRouteName,
                       extra: marksModel);
-                })
+                },
+                widget: value.isloading ? ButtonLoading() : Text('Enter Marks'),
+              );
+            }),
+            // CustomButton(
+            //     text: "Enter Marks",
+            //     onPressed: () {
+            //       final selectedClass =
+            //           context.read<DropdownProvider>().getSelectedItem('class');
+            //       final selectedDivision = context
+            //           .read<DropdownProvider>()
+            //           .getSelectedItem('division');
+            //       final selectedSubject = context
+            //           .read<DropdownProvider>()
+            //           .getSelectedItem('subject');
+
+            //       // adding to model
+            //       final marksModel = MarksUploadModel(
+            //           classGrade: selectedClass,
+            //           section: selectedDivision,
+            //           title: _titleController.text,
+            //           date: _dateController.text,
+            //           subject: selectedSubject,
+            //           totalMarks: int.parse(_totalMarkController.text));
+            //       context.pushNamed(AppRouteConst.marksRouteName,
+            //           extra: marksModel);
+            //     })
           ],
         ),
       ),

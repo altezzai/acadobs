@@ -5,12 +5,13 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/controller/student_id_controller.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/controller/file_picker_provider.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
-import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/custom_filepicker.dart';
@@ -214,34 +215,64 @@ class _AddDonationPageState extends State<AddDonationPage> {
               const SizedBox(height: 16),
               CustomFilePicker(label: "Add Receipt"),
               Padding(
-                padding: const EdgeInsets.only(top: 45),
-                child: CustomButton(
-                  text: 'Submit',
-                  onPressed: () {
-                    final donationType = context
-                        .read<DropdownProvider>()
-                        .getSelectedItem('donationType');
-                    final paymentMethod = context
-                        .read<DropdownProvider>()
-                        .getSelectedItem('paymentMethod');
-                    final studentId = context
-                        .read<StudentIdController>()
-                        .getSelectedStudentId();
+                  padding: const EdgeInsets.only(top: 45),
+                  child: Consumer<PaymentController>(
+                      builder: (context, value, child) {
+                    return CommonButton(
+                      onPressed: () {
+                        final donationType = context
+                            .read<DropdownProvider>()
+                            .getSelectedItem('donationType');
+                        final paymentMethod = context
+                            .read<DropdownProvider>()
+                            .getSelectedItem('paymentMethod');
+                        final studentId = context
+                            .read<StudentIdController>()
+                            .getSelectedStudentId();
 
-                    log(">>>>>>>>>>>>${studentId}");
-                    context.read<PaymentController>().addDonation(
-                          context,
-                          userId: studentId ?? 0,
-                          amount_donated: _amountController.text,
-                          donation_date: _dateController.text,
-                          purpose: _purposeController.text,
-                          donation_type: donationType,
-                          payment_method: paymentMethod,
-                          transaction_id: _transactionController.text,
-                        );
-                  },
-                ),
-              ),
+                        log(">>>>>>>>>>>>${studentId}");
+                        context.read<PaymentController>().addDonation(
+                              context,
+                              userId: studentId ?? 0,
+                              amount_donated: _amountController.text,
+                              donation_date: _dateController.text,
+                              purpose: _purposeController.text,
+                              donation_type: donationType,
+                              payment_method: paymentMethod,
+                              transaction_id: _transactionController.text,
+                            );
+                      },
+                      widget:
+                          value.isloading ? ButtonLoading() : Text('Submit'),
+                    );
+                  })
+                  // CustomButton(
+                  //   text: 'Submit',
+                  //   onPressed: () {
+                  //     final donationType = context
+                  //         .read<DropdownProvider>()
+                  //         .getSelectedItem('donationType');
+                  //     final paymentMethod = context
+                  //         .read<DropdownProvider>()
+                  //         .getSelectedItem('paymentMethod');
+                  //     final studentId = context
+                  //         .read<StudentIdController>()
+                  //         .getSelectedStudentId();
+
+                  //     log(">>>>>>>>>>>>${studentId}");
+                  //     context.read<PaymentController>().addDonation(
+                  //           context,
+                  //           userId: studentId ?? 0,
+                  //           amount_donated: _amountController.text,
+                  //           donation_date: _dateController.text,
+                  //           purpose: _purposeController.text,
+                  //           donation_type: donationType,
+                  //           payment_method: paymentMethod,
+                  //           transaction_id: _transactionController.text,
+                  //         );
+                  //   },
+                  // ),
+                  ),
             ],
           ),
         ),

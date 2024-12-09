@@ -1,3 +1,5 @@
+//import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:school_app/base/services/api_services.dart';
 
@@ -35,6 +37,7 @@ class StudentServices {
     required String fatherFullName,
     required String motherFullName,
     required String bloodGroup,
+    String? studentPhotoPath,
   }) async {
     // Create the form data to pass to the API
     final formData = {
@@ -52,6 +55,10 @@ class StudentServices {
       "father_full_name": fatherFullName,
       "mother_full_name": motherFullName,
       "blood_group": bloodGroup,
+      if (studentPhotoPath != null) // Only include if the photo is provided
+        "student_photo": await MultipartFile.fromFile(studentPhotoPath, filename: studentPhotoPath.split('/').last),
+    
+
     };
 
     // Call the ApiServices post method with formData and isFormData: true

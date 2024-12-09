@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
+import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/admin/duties/controller/duty_controller.dart';
 import 'package:school_app/features/admin/duties/widgets/duty_card.dart';
@@ -90,8 +91,9 @@ class _DutiesHomeScreenState extends State<DutiesHomeScreen> {
                 builder: (context, value, child) {
                   if (value.isloading) {
                     return Center(
-                      child: CircularProgressIndicator(),
-                    );
+                        child: Loading(
+                      color: Colors.grey,
+                    ));
                   }
                   return ListView.builder(
                     itemCount: value.duties.length,

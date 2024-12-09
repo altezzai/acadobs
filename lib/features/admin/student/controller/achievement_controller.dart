@@ -2,9 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
-import 'package:school_app/core/controller/loading_provider.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/admin/student/model/achievement_model.dart';
 import 'package:school_app/features/admin/student/services/achievement_service.dart';
@@ -57,9 +55,7 @@ class AchievementController extends ChangeNotifier {
     required String level,
     required String date_of_achievement,
   }) async {
-    final loadingProvider =
-        Provider.of<LoadingProvider>(context, listen: false); //loading provider
-    loadingProvider.setLoading(true); //start loader
+    _isloading = true;
     try {
       final response = await AchievementService().addAchievement(
         student_id: student_id,
@@ -77,7 +73,7 @@ class AchievementController extends ChangeNotifier {
     } catch (e) {
       log(e.toString());
     } finally {
-      loadingProvider.setLoading(false); // End loader
+      _isloading = false;
       notifyListeners();
     }
   }
