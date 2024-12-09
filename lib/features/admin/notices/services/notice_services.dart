@@ -66,12 +66,12 @@ class NoticeServices {
       required String date,
       required List<XFile> images}) async {
     // Create the form data to pass to the API
-    final formData = FormData.fromMap({
+    final formData = {
       'title': title,
       'description': description,
       'event_date': date, // Make sure this date is a string
       // if (images != null)
-        'images': await Future.wait(
+        'images[]': await Future.wait(
           images.map(
             (image) async => await MultipartFile.fromFile(
               image.path,
@@ -79,7 +79,7 @@ class NoticeServices {
             ),
           ),
         ),
-    });
+    };
     // Log formData for debugging
 
     // Call the ApiServices post method with formData and isFormData: true

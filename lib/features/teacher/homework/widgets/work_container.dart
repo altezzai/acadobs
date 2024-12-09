@@ -64,6 +64,7 @@ class WorkContainer extends StatelessWidget {
                   work,
                   style: textThemeData.headlineMedium?.copyWith(fontSize: 16) ??
                       const TextStyle(fontSize: 16),
+                  overflow: TextOverflow.ellipsis,
                 ),
                 Text(
                   sub,
@@ -76,12 +77,12 @@ class WorkContainer extends StatelessWidget {
             Text(
               prefixText,
               style: textThemeData.headlineMedium
-                      ?.copyWith(fontSize: 16, color: prefixColor) ??
-                  const TextStyle(fontSize: 16),
+                      ?.copyWith(fontSize: 12, color: prefixColor) ??
+                  const TextStyle(fontSize: 12),
             ),
-            SizedBox(
-              width: Responsive.width * 4,
-            ),
+            // SizedBox(
+            //   width: Responsive.width * 4,
+            // ),
           ],
         ),
       ),

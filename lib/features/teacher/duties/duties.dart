@@ -6,6 +6,8 @@ import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/constants.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
+import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/admin/duties/controller/duty_controller.dart';
 import 'package:school_app/features/teacher/homework/widgets/work_container.dart';
@@ -84,7 +86,16 @@ class _DutiesScreenState extends State<DutiesScreen> {
             Consumer<DutyController>(
               builder: (context, value, child) {
                 if (value.isloading) {
-                  return const Center(child: CircularProgressIndicator());
+                  return Column(
+                    children: [
+                      SizedBox(
+                        height: Responsive.height * 38,
+                      ),
+                      Loading(
+                        color: Colors.grey,
+                      ),
+                    ],
+                  );
                 }
 
                 // Group duties by date

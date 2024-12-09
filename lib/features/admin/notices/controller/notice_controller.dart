@@ -4,9 +4,7 @@ import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
-import 'package:school_app/core/controller/loading_provider.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/admin/notices/models/event_model.dart';
 import 'package:school_app/features/admin/notices/models/notice_model.dart';
@@ -42,6 +40,7 @@ class NoticeController extends ChangeNotifier {
   List<Event> get events => _events;
 
   Future<void> getEvents() async {
+    _isloading =true;
     try {
       final response = await NoticeServices().getEvents();
       print("***********${response.statusCode}");
@@ -54,6 +53,7 @@ class NoticeController extends ChangeNotifier {
     } catch (e) {
       // print(e);
     }
+    _isloading = false;
     notifyListeners();
   }
 
@@ -68,9 +68,10 @@ class NoticeController extends ChangeNotifier {
     String? division,
     File? file,
   }) async {
-    final loadingProvider =
-        Provider.of<LoadingProvider>(context, listen: false); //loading provider
-    loadingProvider.setLoading(true); //start loader
+    // final loadingProvider =
+    //     Provider.of<LoadingProvider>(context, listen: false); //loading provider
+    // loadingProvider.setLoading(true); //start loader
+    _isloading = true;
     try {
       final response = await NoticeServices().addNotice(context,
           title: title,
@@ -87,7 +88,8 @@ class NoticeController extends ChangeNotifier {
     } catch (e) {
       log(e.toString());
     } finally {
-      loadingProvider.setLoading(false); // End loader
+      // loadingProvider.setLoading(false); // End loader
+      _isloading = false;
       notifyListeners();
     }
   }
@@ -102,6 +104,7 @@ class NoticeController extends ChangeNotifier {
     // final loadingProvider =
     //     Provider.of<LoadingProvider>(context, listen: false); //loading provider
     // loadingProvider.setLoading(true); //start loader
+    _isloading = true;
     try {
       final response = await NoticeServices().addEvent(
           title: title,
@@ -120,6 +123,7 @@ class NoticeController extends ChangeNotifier {
       log(e.toString());
     } finally {
       // loadingProvider.setLoading(false); // End loader
+      _isloading =false;
       notifyListeners();
     }
   }

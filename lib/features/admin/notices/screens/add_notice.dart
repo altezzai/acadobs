@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/controller/file_picker_provider.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
-import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/custom_filepicker.dart';
@@ -165,9 +166,8 @@ class _AddNoticePageState extends State<AddNoticePage> {
             SizedBox(height: 16),
             CustomFilePicker(label: "Add Receipt"),
             SizedBox(height: 40),
-            Center(
-              child: CustomButton(
-                text: 'Submit',
+            Consumer<NoticeController>(builder: (context, value, child) {
+              return CommonButton(
                 onPressed: () {
                   final selected_Audience = context
                       .read<DropdownProvider>()
@@ -185,8 +185,31 @@ class _AddNoticePageState extends State<AddNoticePage> {
                       description: _descriptionController.text,
                       date: _dateController.text);
                 },
-              ),
-            ),
+                widget: value.isloading ? Loading() : Text('Submit'),
+              );
+            }),
+            // Center(
+            //   child: CustomButton(
+            //     text: 'Submit',
+            //     onPressed: () {
+            //       final selected_Audience = context
+            //           .read<DropdownProvider>()
+            //           .getSelectedItem('targetAudience');
+            //       String selectedClass =
+            //           context.read<DropdownProvider>().getSelectedItem('class');
+            //       String selectedDivision = context
+            //           .read<DropdownProvider>()
+            //           .getSelectedItem('division');
+            //       context.read<NoticeController>().addNotice(context,
+            //           className: selectedClass,
+            //           division: selectedDivision,
+            //           audience_type: selected_Audience,
+            //           title: _titleController.text,
+            //           description: _descriptionController.text,
+            //           date: _dateController.text);
+            //     },
+            //   ),
+            // ),
           ],
         ),
       ),

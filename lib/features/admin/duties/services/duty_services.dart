@@ -20,6 +20,13 @@ class DutyServices {
     return response;
   }
 
+   // get teacher Single duty
+  Future<Response> getTeacherSingleDuty({required int teacherId, required int dutyId}) async {
+    final Response response =
+        await ApiServices.get("/getTeacher/$teacherId/sigleDuty/$dutyId");
+    return response;
+  }
+
   Future<Response> addDuty({
     required String duty_title,
     required String description,

@@ -1,11 +1,13 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
-import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
@@ -193,9 +195,8 @@ class _AddEventPageState extends State<AddEventPage> {
               SizedBox(height: 16),
 
               // Submit Button
-              Center(
-                child: CustomButton(
-                  text: 'Submit',
+              Consumer<NoticeController>(builder: (context, value, child) {
+                return CommonButton(
                   onPressed: () {
                     context.read<NoticeController>().addEvent(
                           context,
@@ -204,8 +205,22 @@ class _AddEventPageState extends State<AddEventPage> {
                           date: _dateController.text,
                         );
                   },
-                ),
-              ),
+                  widget: value.isloading ? Loading() : Text('Submit'),
+                );
+              }),
+              // Center(
+              //   child: CustomButton(
+              //     text: 'Submit',
+              //     onPressed: () {
+              //       context.read<NoticeController>().addEvent(
+              //             context,
+              //             title: _titleController.text,
+              //             description: _descriptionController.text,
+              //             date: _dateController.text,
+              //           );
+              //     },
+              //   ),
+              // ),
             ],
           ),
         ),
