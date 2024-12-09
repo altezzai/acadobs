@@ -4,15 +4,18 @@ import 'package:flutter/widgets.dart';
 import 'package:school_app/features/teacher/marks/services/mark_services.dart';
 
 class MarksController extends ChangeNotifier {
+  bool _isloading = false;
+  bool get isloading => _isloading;
   Future<void> addMarks(
       {required BuildContext context,
-        required String date,
+      required String date,
       required String className,
       required String subject,
       required String section,
       required String title,
       required int totalMarks,
       required List<Map<String, dynamic>> students}) async {
+    _isloading = true;
     try {
       final response = await MarkServices().addMarks(
           date: date,
@@ -29,6 +32,9 @@ class MarksController extends ChangeNotifier {
       }
     } catch (e) {
       log(e.toString());
+    } finally {
+      _isloading = false;
+      notifyListeners();
     }
   }
 }

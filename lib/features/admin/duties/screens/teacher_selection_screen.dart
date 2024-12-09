@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/base/utils/responsive.dart';
-import 'package:school_app/core/shared_widgets/custom_button.dart';
+import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/features/admin/duties/widgets/staff_selection_card.dart';
 import 'package:school_app/features/admin/teacher_section/controller/teacher_controller.dart';
 
@@ -63,9 +64,8 @@ class _TeacherSelectionScreenState extends State<TeacherSelectionScreen> {
       floatingActionButton:
           Consumer<TeacherController>(builder: (context, value, child) {
         return Padding(
-          padding: const EdgeInsets.all(16),
-          child: CustomButton(
-              text: "Select",
+            padding: const EdgeInsets.all(16),
+            child: CommonButton(
               onPressed: () {
                 if (value.selectedTeacherIds.isEmpty) {
                   CustomSnackbar.show(context,
@@ -75,8 +75,22 @@ class _TeacherSelectionScreenState extends State<TeacherSelectionScreen> {
                 } else {
                   Navigator.pop(context);
                 }
-              }),
-        );
+              },
+              widget: value.isloading ? ButtonLoading() : Text('Select'),
+            )
+            //  CustomButton(
+            //     text: "Select",
+            //     onPressed: () {
+            //       if (value.selectedTeacherIds.isEmpty) {
+            //         CustomSnackbar.show(context,
+            //             message: "Select Staffs to Continue",
+            //             type: SnackbarType.warning,
+            //             bottomPadding: Responsive.height * 10);
+            //       } else {
+            //         Navigator.pop(context);
+            //       }
+            //     }),
+            );
       }),
     );
   }

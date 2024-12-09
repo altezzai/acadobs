@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 //import 'package:school_app/base/providers/providers.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
-import 'package:school_app/base/utils/button_loading.dart';
+import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
@@ -81,7 +81,7 @@ class _AddSubjectState extends State<AddSubject> {
                             description: _subjectDescriptionController.text,
                           );
                     },
-                    widget: value.isloading ? ButtonLoading() : Text('Add'),
+                    widget: value.isloading ? Loading() : Text('Add'),
                   );
                 })
                 //  CustomButton(text: 'Add', onPressed: (){

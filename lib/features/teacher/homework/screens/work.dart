@@ -7,10 +7,11 @@ import 'package:school_app/base/controller/student_id_controller.dart';
 import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
+import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
+import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
-import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
@@ -236,38 +237,70 @@ class _HomeWorkState extends State<HomeWork> {
                 height: Responsive.height * 10,
               ),
               Consumer<StudentIdController>(builder: (context, value, child) {
-                return CustomButton(
-                    text: 'Submit',
-                    onPressed: () {
-                      final classGrade = context
-                          .read<DropdownProvider>()
-                          .getSelectedItem('classGrade');
-                      final division = context
-                          .read<DropdownProvider>()
-                          .getSelectedItem('division');
-                      final submissionType = context
-                          .read<DropdownProvider>()
-                          .getSelectedItem('submissionType');
-                      final status = context
-                          .read<DropdownProvider>()
-                          .getSelectedItem('status');
-                      final studentIds = value.selectedStudentIds;
+                return CommonButton(
+                  onPressed: () {
+                    final classGrade = context
+                        .read<DropdownProvider>()
+                        .getSelectedItem('classGrade');
+                    final division = context
+                        .read<DropdownProvider>()
+                        .getSelectedItem('division');
+                    final submissionType = context
+                        .read<DropdownProvider>()
+                        .getSelectedItem('submissionType');
+                    final status = context
+                        .read<DropdownProvider>()
+                        .getSelectedItem('status');
+                    final studentIds = value.selectedStudentIds;
 
-                      log(">>>>>>>>>>>>${studentIds.toString()}");
-                      context.read<HomeworkController>().addHomework(context,
-                          class_grade: classGrade,
-                          section: division,
-                          subject: _subjectController.text,
-                          assignment_title: _titleController.text,
-                          description: _descriptionController.text,
-                          assigned_date: _startDateController.text,
-                          due_date: _endDateController.text,
-                          submission_type: submissionType,
-                          total_marks: _markController.text,
-                          status: status,
-                          studentsId: studentIds
-                              );
-                    });
+                    log(">>>>>>>>>>>>${studentIds.toString()}");
+                    context.read<HomeworkController>().addHomework(context,
+                        class_grade: classGrade,
+                        section: division,
+                        subject: _subjectController.text,
+                        assignment_title: _titleController.text,
+                        description: _descriptionController.text,
+                        assigned_date: _startDateController.text,
+                        due_date: _endDateController.text,
+                        submission_type: submissionType,
+                        total_marks: _markController.text,
+                        status: status,
+                        studentsId: studentIds);
+                  },
+                  widget: value.isloading ? ButtonLoading() : Text('Submit'),
+                );
+                // CustomButton(
+                //     text: 'Submit',
+                //     onPressed: () {
+                //       final classGrade = context
+                //           .read<DropdownProvider>()
+                //           .getSelectedItem('classGrade');
+                //       final division = context
+                //           .read<DropdownProvider>()
+                //           .getSelectedItem('division');
+                //       final submissionType = context
+                //           .read<DropdownProvider>()
+                //           .getSelectedItem('submissionType');
+                //       final status = context
+                //           .read<DropdownProvider>()
+                //           .getSelectedItem('status');
+                //       final studentIds = value.selectedStudentIds;
+
+                //       log(">>>>>>>>>>>>${studentIds.toString()}");
+                //       context.read<HomeworkController>().addHomework(context,
+                //           class_grade: classGrade,
+                //           section: division,
+                //           subject: _subjectController.text,
+                //           assignment_title: _titleController.text,
+                //           description: _descriptionController.text,
+                //           assigned_date: _startDateController.text,
+                //           due_date: _endDateController.text,
+                //           submission_type: submissionType,
+                //           total_marks: _markController.text,
+                //           status: status,
+                //           studentsId: studentIds
+                //               );
+                //     });
               }),
               SizedBox(
                 height: Responsive.height * 1,

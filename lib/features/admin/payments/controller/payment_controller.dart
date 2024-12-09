@@ -3,9 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
-import 'package:school_app/core/controller/loading_provider.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/admin/payments/model/donation_model.dart';
 import 'package:school_app/features/admin/payments/model/payment_model.dart';
@@ -62,9 +60,9 @@ class PaymentController extends ChangeNotifier {
   }
 
   void clearPaymentList() {
-  _filteredpayments.clear();
-  notifyListeners();
-}
+    _filteredpayments.clear();
+    notifyListeners();
+  }
 
   List<Donation> _donations = [];
   List<Donation> get donations => _donations;
@@ -100,9 +98,7 @@ class PaymentController extends ChangeNotifier {
     required String payment_status,
     File? file,
   }) async {
-    final loadingProvider =
-        Provider.of<LoadingProvider>(context, listen: false); //loading provider
-    loadingProvider.setLoading(true); //start loader
+    _isloading = true;
     try {
       final response = await PaymentServices().addPayment(
         context,
@@ -123,7 +119,7 @@ class PaymentController extends ChangeNotifier {
     } catch (e) {
       log(e.toString());
     } finally {
-      loadingProvider.setLoading(false); // End loader
+      _isloading = false;
       notifyListeners();
     }
   }
@@ -139,9 +135,7 @@ class PaymentController extends ChangeNotifier {
     required String transaction_id,
     File? file,
   }) async {
-    final loadingProvider =
-        Provider.of<LoadingProvider>(context, listen: false); //loading provider
-    loadingProvider.setLoading(true); //start loader
+    _isloading = true;
     try {
       final response = await PaymentServices().addDonation(context,
           userId: userId,
@@ -159,7 +153,7 @@ class PaymentController extends ChangeNotifier {
     } catch (e) {
       log(e.toString());
     } finally {
-      loadingProvider.setLoading(false); // End loader
+      _isloading = false;
       notifyListeners();
     }
   }

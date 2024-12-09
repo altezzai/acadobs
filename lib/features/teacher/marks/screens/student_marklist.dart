@@ -3,11 +3,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/controller/student_id_controller.dart';
+import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/constants.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
-import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/features/teacher/marks/controller/marks_controller.dart';
 import 'package:school_app/features/teacher/marks/models/marks_upload_model.dart';
 import 'package:school_app/features/teacher/marks/widgets/mark_tile.dart';
@@ -128,23 +129,42 @@ class _StudentMarklistState extends State<StudentMarklist> {
                 },
               ),
               SizedBox(height: Responsive.height * 2),
-              CustomButton(
-                text: "Submit",
-                onPressed: () {
-                  collectStudentData();
-                  log(studentMarksList.toString());
-                  context.read<MarksController>().addMarks(
-                        context: context,
-                        date: widget.marksUploadModel.date ?? "",
-                        title: widget.marksUploadModel.title ?? "",
-                        className: widget.marksUploadModel.classGrade ?? "",
-                        subject: widget.marksUploadModel.subject ?? "",
-                        section: widget.marksUploadModel.section ?? "",
-                        totalMarks: widget.marksUploadModel.totalMarks ?? 0,
-                        students: studentMarksList,
-                      );
-                },
-              ),
+              Consumer<MarksController>(builder: (context, value, child) {
+                return CommonButton(
+                  onPressed: () {
+                    collectStudentData();
+                    log(studentMarksList.toString());
+                    context.read<MarksController>().addMarks(
+                          context: context,
+                          date: widget.marksUploadModel.date ?? "",
+                          title: widget.marksUploadModel.title ?? "",
+                          className: widget.marksUploadModel.classGrade ?? "",
+                          subject: widget.marksUploadModel.subject ?? "",
+                          section: widget.marksUploadModel.section ?? "",
+                          totalMarks: widget.marksUploadModel.totalMarks ?? 0,
+                          students: studentMarksList,
+                        );
+                  },
+                  widget: value.isloading ? ButtonLoading() : Text('Submit'),
+                );
+              }),
+              // CustomButton(
+              //   text: "Submit",
+              //   onPressed: () {
+              //     collectStudentData();
+              //     log(studentMarksList.toString());
+              //     context.read<MarksController>().addMarks(
+              //           context: context,
+              //           date: widget.marksUploadModel.date ?? "",
+              //           title: widget.marksUploadModel.title ?? "",
+              //           className: widget.marksUploadModel.classGrade ?? "",
+              //           subject: widget.marksUploadModel.subject ?? "",
+              //           section: widget.marksUploadModel.section ?? "",
+              //           totalMarks: widget.marksUploadModel.totalMarks ?? 0,
+              //           students: studentMarksList,
+              //         );
+              //   },
+              // ),
               SizedBox(height: Responsive.height * 2),
             ],
           ),

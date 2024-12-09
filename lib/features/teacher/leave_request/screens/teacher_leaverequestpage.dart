@@ -4,9 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 
-
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
@@ -14,23 +14,19 @@ import 'package:school_app/features/admin/leave_request/widgets/leaveRequest_car
 
 import 'package:school_app/features/teacher/leave_request/controller/teacherLeaveReq_controller.dart';
 
-
 class TeacherLeaverequestScreen extends StatefulWidget {
   @override
-  _TeacherLeaverequestScreenState createState() => _TeacherLeaverequestScreenState();
+  _TeacherLeaverequestScreenState createState() =>
+      _TeacherLeaverequestScreenState();
 }
 
-class _TeacherLeaverequestScreenState extends State<TeacherLeaverequestScreen>
-   {
- 
-
-
+class _TeacherLeaverequestScreenState extends State<TeacherLeaverequestScreen> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-     body: Padding(
+      body: Padding(
         padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,7 +49,8 @@ class _TeacherLeaverequestScreenState extends State<TeacherLeaverequestScreen>
               color: Colors.red,
               text: 'Requests For Leave',
               icon: Icons.assignment_add,
-              ontap: () => context.pushNamed(AppRouteConst.AddTeacherLeaveRequestRouteName),
+              ontap: () => context
+                  .pushNamed(AppRouteConst.AddTeacherLeaveRequestRouteName),
             ),
             SizedBox(height: screenHeight * 0.03),
             // Today's Leave Requests
@@ -68,7 +65,7 @@ class _TeacherLeaverequestScreenState extends State<TeacherLeaverequestScreen>
             SizedBox(height: screenHeight * 0.03),
             // Leave Requests List
             Expanded(
-              child:_buildTeacherLeaveRequests(),
+              child: _buildTeacherLeaveRequests(),
             ),
           ],
         ),
@@ -76,43 +73,43 @@ class _TeacherLeaverequestScreenState extends State<TeacherLeaverequestScreen>
     );
   }
 
-  
-
   Widget _buildTeacherLeaveRequests() {
     context.read<TeacherLeaveRequestController>().getTeacherLeaverequests();
     return Consumer<TeacherLeaveRequestController>(
         builder: (context, value, child) {
       if (value.isloading) {
         return Center(
-          child: CircularProgressIndicator(),
+          child: Loading(
+            color: Colors.grey,
+          ),
         );
       }
       return ListView.builder(
           itemCount: value.teachersLeaveRequest.length,
           itemBuilder: (context, index) {
             final teacherLeaveRequest = value.teachersLeaveRequest[index];
-            return  Padding(
-                        padding: EdgeInsets.only(
-                          bottom: 15,
-
-                        ), child:LeaveRequestCard(
-             title: 'Leave request for ${DateFormatter.formatDateString(teacherLeaveRequest.startDate.toString())}',
-
-              
-              status: teacherLeaveRequest.approvalStatus ?? "",
-              time: TimeFormatter.formatTimeFromString(
-                  teacherLeaveRequest.createdAt.toString()),
-              onTap: () {
-               context.pushNamed(
-                  AppRouteConst.teacherLeaveRequestDetailsRouteName, extra: teacherLeaveRequest,
-                  
-                );
-              },
-            ));
-    });
+            return Padding(
+                padding: EdgeInsets.only(
+                  bottom: 15,
+                ),
+                child: LeaveRequestCard(
+                  title:
+                      'Leave request for ${DateFormatter.formatDateString(teacherLeaveRequest.startDate.toString())}',
+                  status: teacherLeaveRequest.approvalStatus ?? "",
+                  time: TimeFormatter.formatTimeFromString(
+                      teacherLeaveRequest.createdAt.toString()),
+                  onTap: () {
+                    context.pushNamed(
+                      AppRouteConst.teacherLeaveRequestDetailsRouteName,
+                      extra: teacherLeaveRequest,
+                    );
+                  },
+                ));
+          });
     });
   }
-   Widget _customContainer({
+
+  Widget _customContainer({
     required Color color,
     required String text,
     IconData icon = Icons.dashboard_customize_outlined,

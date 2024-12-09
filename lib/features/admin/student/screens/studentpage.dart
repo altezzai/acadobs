@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
@@ -97,7 +98,7 @@ class _StudentsPageState extends State<StudentsPage> {
                   child: CustomDropdown(
                     dropdownKey: 'class',
                     label: 'Class',
-                    items: ['5', '6', '7','8','9','10'],
+                    items: ['5', '6', '7', '8', '9', '10'],
                     icon: Icons.school,
                     onChanged: (selectedClass) {
                       // Automatically fetch students when division is selected
@@ -144,7 +145,9 @@ class _StudentsPageState extends State<StudentsPage> {
                 builder: (context, value, child) {
                   if (value.isloading) {
                     return const Center(
-                      child: CircularProgressIndicator(),
+                      child: Loading(
+                        color: Colors.grey,
+                      ),
                     );
                   } else if (value.filteredstudents.isEmpty) {
                     return Center(

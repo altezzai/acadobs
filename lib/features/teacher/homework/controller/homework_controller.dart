@@ -46,6 +46,7 @@ class HomeworkController extends ChangeNotifier {
     required String status,
     required List<int> studentsId,
   }) async {
+    _isloading = true;
     try {
       final teacherId = await SecureStorageService.getUserId();
       log("${teacherId.toString}");
@@ -70,6 +71,7 @@ class HomeworkController extends ChangeNotifier {
     } catch (e) {
       log(e.toString());
     } finally {
+      _isloading = false;
       notifyListeners();
     }
   }
