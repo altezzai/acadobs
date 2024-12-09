@@ -5,12 +5,13 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/controller/student_id_controller.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/controller/file_picker_provider.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
-import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/custom_filepicker.dart';
@@ -226,41 +227,75 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
               const SizedBox(height: 16),
               CustomFilePicker(label: "Add Receipt"),
               const SizedBox(height: 45),
-              Center(
-                child: CustomButton(
-                  text: 'Submit',
-                  onPressed: () {
-                    final selectedYear = context
-                        .read<DropdownProvider>()
-                        .getSelectedItem('selectedYear');
-                    final selectedMonth = context
-                        .read<DropdownProvider>()
-                        .getSelectedItem('selectedMonth');
-                    final paymentMethod = context
-                        .read<DropdownProvider>()
-                        .getSelectedItem('paymentMethod');
-                    final paymentStatus = context
-                        .read<DropdownProvider>()
-                        .getSelectedItem('paymentStatus');
-                    final studentId = context
-                        .read<StudentIdController>()
-                        .getSelectedStudentId();
+              Center(child: Consumer<PaymentController>(
+                      builder: (context, value, child) {
+                return CommonButton(
+                    onPressed: () {
+                      final selectedYear = context
+                          .read<DropdownProvider>()
+                          .getSelectedItem('selectedYear');
+                      final selectedMonth = context
+                          .read<DropdownProvider>()
+                          .getSelectedItem('selectedMonth');
+                      final paymentMethod = context
+                          .read<DropdownProvider>()
+                          .getSelectedItem('paymentMethod');
+                      final paymentStatus = context
+                          .read<DropdownProvider>()
+                          .getSelectedItem('paymentStatus');
+                      final studentId = context
+                          .read<StudentIdController>()
+                          .getSelectedStudentId();
 
-                    log(">>>>>>>>>>>>${studentId}");
-                    context.read<PaymentController>().addPayment(
-                          context,
-                          userId: studentId ?? 0,
-                          amount_paid: _amountController.text,
-                          payment_date: _dateController.text,
-                          month: selectedMonth,
-                          year: selectedYear,
-                          payment_method: paymentMethod,
-                          transaction_id: _transactionController.text,
-                          payment_status: paymentStatus,
-                        );
-                  },
-                ),
-              ),
+                      log(">>>>>>>>>>>>${studentId}");
+                      context.read<PaymentController>().addPayment(
+                            context,
+                            userId: studentId ?? 0,
+                            amount_paid: _amountController.text,
+                            payment_date: _dateController.text,
+                            month: selectedMonth,
+                            year: selectedYear,
+                            payment_method: paymentMethod,
+                            transaction_id: _transactionController.text,
+                            payment_status: paymentStatus,
+                          );
+                    },
+                    widget: value.isloading ? ButtonLoading() : Text('Submit'));
+              })
+                  // CustomButton(
+                  //   text: 'Submit',
+                  //   onPressed: () {
+                  //     final selectedYear = context
+                  //         .read<DropdownProvider>()
+                  //         .getSelectedItem('selectedYear');
+                  //     final selectedMonth = context
+                  //         .read<DropdownProvider>()
+                  //         .getSelectedItem('selectedMonth');
+                  //     final paymentMethod = context
+                  //         .read<DropdownProvider>()
+                  //         .getSelectedItem('paymentMethod');
+                  //     final paymentStatus = context
+                  //         .read<DropdownProvider>()
+                  //         .getSelectedItem('paymentStatus');
+                  //     final studentId = context
+                  //         .read<StudentIdController>()
+                  //         .getSelectedStudentId();
+
+                  //     log(">>>>>>>>>>>>${studentId}");
+                  //     context.read<PaymentController>().addPayment(
+                  //           context,
+                  //           userId: studentId ?? 0,
+                  //           amount_paid: _amountController.text,
+                  //           payment_date: _dateController.text,
+                  //           month: selectedMonth,
+                  //           year: selectedYear,
+                  //           payment_method: paymentMethod,
+                  //           transaction_id: _transactionController.text,
+                  //           payment_status: paymentStatus,
+                  //         );
+                  //   },
+                  // ),
+                  ),
             ],
           ),
         ),

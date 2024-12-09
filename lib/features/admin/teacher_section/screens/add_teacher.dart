@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
-import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/admin/teacher_section/controller/teacher_controller.dart';
@@ -123,8 +124,8 @@ class _AddTeacherState extends State<AddTeacher> {
               SizedBox(
                 height: Responsive.height * 30,
               ),
-              CustomButton(
-                  text: 'Submit',
+              Consumer<TeacherController>(builder: (context, value, child) {
+                return CommonButton(
                   onPressed: () {
                     final selectedGender = context
                         .read<DropdownProvider>()
@@ -136,7 +137,24 @@ class _AddTeacherState extends State<AddTeacher> {
                         address: _addressController.text,
                         contactNumber: _phoneController.text,
                         emailAddress: _emailController.text);
-                  }),
+                  },
+                  widget: value.isloading ? ButtonLoading() : Text('Submit'),
+                );
+              })
+              // CustomButton(
+              //     text: 'Submit',
+              //     onPressed: () {
+              //       final selectedGender = context
+              //           .read<DropdownProvider>()
+              //           .getSelectedItem('gender');
+              //       context.read<TeacherController>().addNewTeacher(context,
+              //           fullName: _nameController.text,
+              //           dateOfBirth: _dateOfBirthController.text,
+              //           gender: selectedGender,
+              //           address: _addressController.text,
+              //           contactNumber: _phoneController.text,
+              //           emailAddress: _emailController.text);
+              //     }),
             ],
           ),
         ),

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
-import 'package:school_app/core/shared_widgets/custom_button.dart';
+import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
@@ -496,14 +497,22 @@ class _AddStudentPageState extends State<AddStudentPage> {
 
                 SizedBox(height: 40),
 
-                Center(
-                  child: CustomButton(
-                    text: 'Submit',
+                Center(child: Consumer<StudentController>(
+                        builder: (context, value, child) {
+                  return CommonButton(
                     onPressed: () {
                       _submitForm(context);
                     },
-                  ),
-                ),
+                    widget: value.isloading ? ButtonLoading() : Text('Submit'),
+                  );
+                })
+                    //  CustomButton(
+                    //   text: 'Submit',
+                    //   onPressed: () {
+                    //     _submitForm(context);
+                    //   },
+                    // ),
+                    ),
                 SizedBox(height: 30),
               ],
             ),

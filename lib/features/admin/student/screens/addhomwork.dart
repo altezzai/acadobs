@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
-import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 
 class AddHomeworkPage extends StatefulWidget {
@@ -153,18 +153,29 @@ class _AddHomeworkPageState extends State<AddHomeworkPage> {
 
             // Submit Button
             Center(
-              child: CustomButton(
-                text: 'Submit',
-                onPressed: () {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    // Handle form submission logic here
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Form successfully submitted!')),
-                    );
-                  }
-                },
-              ),
-            ),
+                child: CommonButton(
+              onPressed: () {
+                if (_formKey.currentState?.validate() ?? false) {
+                  // Handle form submission logic here
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Form successfully submitted!')),
+                  );
+                }
+              },
+              widget: Text('Submit'),
+            )
+                // CustomButton(
+                //   text: 'Submit',
+                //   onPressed: () {
+                //     if (_formKey.currentState?.validate() ?? false) {
+                //       // Handle form submission logic here
+                //       ScaffoldMessenger.of(context).showSnackBar(
+                //         SnackBar(content: Text('Form successfully submitted!')),
+                //       );
+                //     }
+                //   },
+                // ),
+                ),
           ],
         ),
       ),

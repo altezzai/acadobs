@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/controller/student_id_controller.dart';
-import 'package:school_app/base/utils/button_loading.dart';
+import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/core/authentication/controller/auth_controller.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
@@ -110,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                             email: emailController.text,
                             password: passwordController.text);
                       },
-                      widget: value.isloading ? ButtonLoading() : Text('Login'),
+                      widget: value.isloading ? Loading() : Text('Login'),
                     );
                   }),
                   SizedBox(height: 20),

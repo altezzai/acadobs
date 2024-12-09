@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
@@ -191,7 +192,9 @@ class _ParentsScreenState extends State<ParentsScreen> {
                 builder: (context, value, child) {
                   if (value.isloading) {
                     return const Center(
-                      child: CircularProgressIndicator(),
+                      child: Loading(
+                        color: Colors.grey,
+                      ),
                     );
                   } else if (value.filteredparents.isEmpty) {
                     return Center(

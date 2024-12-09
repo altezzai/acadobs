@@ -2,21 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/core/shared_widgets/common_button.dart';
 
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 
-
-
-
-import 'package:school_app/core/shared_widgets/custom_button.dart';
-
-
 // ignore: must_be_immutable
 class NotesScreen extends StatelessWidget {
   NotesScreen({super.key});
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +21,11 @@ class NotesScreen extends StatelessWidget {
             CustomAppbar(
               title: "Notes",
               isProfileIcon: false,
-              onTap:   () {
-          context.goNamed(AppRouteConst.parentRouteName,
-            );
-        },
+              onTap: () {
+                context.goNamed(
+                  AppRouteConst.parentRouteName,
+                );
+              },
             ),
             CustomTextfield(
               hintText: "Search for parents",
@@ -89,15 +83,23 @@ class NotesScreen extends StatelessWidget {
                   ),
                 ],
               ),
-            ), SizedBox(
+            ),
+            SizedBox(
               height: Responsive.height * 1,
             ),
-                   CustomButton(
-                    onPressed: () {
-          context.goNamed(AppRouteConst.AddNoteRouteName);
-        },
-                    text: "Add New Note",
-                  ), SizedBox(
+            CommonButton(
+              onPressed: () {
+                context.goNamed(AppRouteConst.AddNoteRouteName);
+              },
+              widget: Text('Add New Note'),
+            ),
+            //            CustomButton(
+            //             onPressed: () {
+            //   context.goNamed(AppRouteConst.AddNoteRouteName);
+            // },
+            //             text: "Add New Note",
+            //           ),
+            SizedBox(
               height: Responsive.height * 2,
             ),
           ],
@@ -105,6 +107,7 @@ class NotesScreen extends StatelessWidget {
       ),
     );
   }
+
   Widget _buildParentTile(BuildContext context,
       {required String name,
       required String subject,
@@ -132,10 +135,9 @@ class NotesScreen extends StatelessWidget {
             )
           : null,
       onTap: () {
-       context.pushNamed(
-                  AppRouteConst.NoteDetailsRouteName, 
-                  
-                );
+        context.pushNamed(
+          AppRouteConst.NoteDetailsRouteName,
+        );
       },
     );
   }
