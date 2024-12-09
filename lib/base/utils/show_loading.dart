@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:school_app/base/utils/responsive.dart';
 
-class ButtonLoading extends StatelessWidget {
+class Loading extends StatelessWidget {
   final Color? color;
   final double sizeMultiplier;
 
-  const ButtonLoading({
+  const Loading({
     super.key,
     this.color = Colors.white,
     this.sizeMultiplier = 6,

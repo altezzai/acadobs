@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/services/secure_storage_services.dart';
+import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/core/controller/loading_provider.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/admin/duties/model/duty_model.dart';
@@ -62,7 +63,7 @@ class DutyController extends ChangeNotifier {
     notifyListeners();
   }
 
-  // get teacher duties
+  // *********Get teacher duties
   Future<void> getTeacherDuties() async {
     _isloading = true;
     final teacherId = await SecureStorageService.getUserId();
@@ -83,6 +84,39 @@ class DutyController extends ChangeNotifier {
     }
     _isloading = false;
     notifyListeners();
+  }
+
+  // *******Get teacher single duty
+  Map<String, dynamic> _singleTeacherDuty = {};
+  Map<String, dynamic> get singleTeacherDuty => _singleTeacherDuty;
+
+  Future<void> getTeacherSingleDuty({required int dutyId}) async {
+    _isloading = true;
+    notifyListeners(); // Notify listeners before fetching data
+    final teacherId = await SecureStorageService.getUserId();
+    log("UserID: $teacherId");
+
+    try {
+      final response = await DutyServices().getTeacherSingleDuty(
+        teacherId: int.parse(teacherId.toString()),
+        dutyId: dutyId,
+      );
+      log("Response Data: ${response.data}");
+      if (response.statusCode == 200) {
+        final dutiesList = response.data['duties'] as List;
+        if (dutiesList.isNotEmpty) {
+          _singleTeacherDuty = dutiesList[0]; // Assign the first duty
+          log("Single Duty Updated: $_singleTeacherDuty");
+        } else {
+          log("No duties found for the teacher.");
+        }
+      }
+    } catch (e) {
+      log("Error Fetching Duty: $e");
+    } finally {
+      _isloading = false;
+      notifyListeners(); // Ensure UI updates
+    }
   }
 
 // ******** Add Duty *******
@@ -120,40 +154,38 @@ class DutyController extends ChangeNotifier {
 
   Future<void> progressDuty(BuildContext context,
       {required int duty_id}) async {
-    final loadingProvider =
-        Provider.of<LoadingProvider>(context, listen: false); //loading provider
-    loadingProvider.setLoading(true); //start loader
     try {
       final response = await DutyServices().progressDuty(duty_id: duty_id);
       if (response.statusCode == 201) {
         log(">>>>>>${response.statusMessage}");
+        CustomSnackbar.show(context,
+            message: "Duty In Progress", type: SnackbarType.info);
         Navigator.pop(context);
-        await getTeacherDuties();
+        // Fetch updated data
+        // await getTeacherSingleDuty(dutyId: duty_id);
       }
     } catch (e) {
       log(e.toString());
     } finally {
-      loadingProvider.setLoading(false); // End loader
       notifyListeners();
     }
   }
 
   Future<void> completeDuty(BuildContext context,
       {required int duty_id}) async {
-    final loadingProvider =
-        Provider.of<LoadingProvider>(context, listen: false); //loading provider
-    loadingProvider.setLoading(true); //start loader
     try {
       final response = await DutyServices().completeDuty(duty_id: duty_id);
       if (response.statusCode == 201) {
         log(">>>>>>${response.statusMessage}");
+        CustomSnackbar.show(context,
+            message: "Duty Completed", type: SnackbarType.success);
         Navigator.pop(context);
-        // await getTeacherDuties();
+        // Fetch updated data
+        // await getTeacherSingleDuty(dutyId: duty_id);
       }
     } catch (e) {
       log(e.toString());
     } finally {
-      loadingProvider.setLoading(false); // End loader
       notifyListeners();
     }
   }
