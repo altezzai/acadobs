@@ -10,20 +10,22 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<LoadingProvider>(
-      builder: (context, value, index) {
-        return ElevatedButton(
-          onPressed: onPressed,
-          child:value.isLoading? Center(child: CircularProgressIndicator(),): Text(
-            text,
-            style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                  color: whiteColor,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16,
-                ),
-          ),
-        );
-      }
-    );
+    return Consumer<LoadingProvider>(builder: (context, value, index) {
+      return ElevatedButton(
+        onPressed: onPressed,
+        child: value.isLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Text(
+                text,
+                style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                      color: whiteColor,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                    ),
+              ),
+      );
+    });
   }
 }

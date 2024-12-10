@@ -65,6 +65,17 @@ class AdminHomeScreen extends StatelessWidget {
             SizedBox(
               height: Responsive.height * 2,
             ),
+            
+            _customContainer(
+                color: Colors.black,
+                text: 'Subjects',
+                icon: Icons.assignment_add,
+                ontap: () {
+                  context.pushNamed(AppRouteConst.SubjectsPageRouteName);
+                }),
+            SizedBox(
+              height: Responsive.height * 2,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

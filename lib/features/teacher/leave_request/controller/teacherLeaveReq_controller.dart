@@ -2,9 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
-import 'package:school_app/core/controller/loading_provider.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/teacher/leave_request/model/teacherLeaveReq_model.dart';
 import 'package:school_app/features/teacher/leave_request/services/teacherLeaveReq_services.dart';
@@ -68,9 +66,7 @@ class TeacherLeaveRequestController extends ChangeNotifier {
     required String endDate,
     required String reasonForLeave,
   }) async {
-    final loadingProvider =
-        Provider.of<LoadingProvider>(context, listen: false); //loading provider
-    loadingProvider.setLoading(true); //start loader
+    _isloading = true;
     try {
       //  _isloading = false;
       final response =
@@ -105,7 +101,7 @@ class TeacherLeaveRequestController extends ChangeNotifier {
     } catch (e) {
       log(e.toString());
     } finally {
-      loadingProvider.setLoading(false); // End loader
+      _isloading = false;
       notifyListeners();
     }
   }

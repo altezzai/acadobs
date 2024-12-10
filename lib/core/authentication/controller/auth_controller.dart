@@ -9,11 +9,14 @@ import 'package:school_app/core/authentication/services/auth_services.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 
 class AuthController extends ChangeNotifier {
+  bool _isloading = false;
+  bool get isloading => _isloading;
   //********************Login *********************
   Future<void> login(
       {required BuildContext context,
       required String email,
       required String password}) async {
+    _isloading = true;
     try {
       log("Start");
       final response =
@@ -41,11 +44,15 @@ class AuthController extends ChangeNotifier {
       }
     } catch (e) {
       log(e.toString());
+    } finally {
+      _isloading = false;
+      notifyListeners();
     }
   }
 
   // *****************Logout ***********************
   Future<void> logout({required BuildContext context}) async {
+    _isloading = true;
     try {
       final response = await ApiServices.logout("/logout");
       if (response.statusCode == 200) {
@@ -55,6 +62,9 @@ class AuthController extends ChangeNotifier {
       }
     } catch (e) {
       log(e.toString());
+    } finally {
+      _isloading = false;
+      notifyListeners();
     }
   }
 }

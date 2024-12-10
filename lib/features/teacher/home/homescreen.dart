@@ -73,7 +73,7 @@ class TeacherScreen extends StatelessWidget {
                   icon: Icons.assignment_add,
                   ontap: () {
                     context.pushNamed(
-                        AppRouteConst.AddTeacherLeaveRequestRouteName);
+                        AppRouteConst.TeacherLeaveRequestScreenRouteName);
                   }),
               SizedBox(
                 height: Responsive.height * 2,

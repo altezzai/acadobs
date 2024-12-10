@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
+import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/constants.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
@@ -136,7 +137,10 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
     context.read<PaymentController>().getPayments();
     return Consumer<PaymentController>(builder: (context, value, child) {
       if (value.isloading) {
-        return Center(child: CircularProgressIndicator());
+        return Center(
+            child: Loading(
+          color: Colors.grey,
+        ));
       }
 
       final groupedPayments = groupItemsByDate(
@@ -190,7 +194,10 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
     context.read<PaymentController>().getDonations();
     return Consumer<PaymentController>(builder: (context, value, child) {
       if (value.isloading) {
-        return Center(child: CircularProgressIndicator());
+        return Center(
+            child: Loading(
+          color: Colors.grey,
+        ));
       }
 
       final groupedDonations = groupItemsByDate(

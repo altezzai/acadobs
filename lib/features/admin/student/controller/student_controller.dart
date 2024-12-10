@@ -1,15 +1,15 @@
 // import 'dart:developer';
 // import 'package:dio/dio.dart';
 import 'dart:developer';
+//import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
-import 'package:school_app/core/controller/loading_provider.dart';
 import 'package:school_app/features/admin/student/model/day_attendance_status.dart';
 import 'package:school_app/features/admin/student/model/student_data.dart';
+import 'package:school_app/features/admin/student/model/student_homework.dart';
 import 'package:school_app/features/admin/student/services/studentservice.dart';
 
 class StudentController extends ChangeNotifier {
@@ -46,6 +46,41 @@ class StudentController extends ChangeNotifier {
     notifyListeners();
   }
 
+  List<HomeworkDetail> _homeworks = [];
+  List<HomeworkDetail> get homeworks => _homeworks;
+
+  // GET student homework
+  Future<void> getStudentHomework({required int studentId}) async {
+    _isloading = true;
+    try {
+      final response =
+          await StudentServices().getStudentHomework(studentId: studentId);
+      log("***********${response.statusCode}");
+      log("***********${response.data.toString()}");
+      if (response.statusCode == 200) {
+        log("Started");
+        _homeworks.clear();
+        log("One");
+
+        // Check if data is a single object
+        if (response.data["homework_details"] is Map<String, dynamic>) {
+          _homeworks.add(HomeworkDetail.fromJson(response.data));
+        } else if (response.data["homework_details"] is List<dynamic>) {
+          _homeworks = (response.data["homework_details"] as List<dynamic>)
+              .map((result) => HomeworkDetail.fromJson(result))
+              .toList();
+        }
+
+        log("Two");
+        log("Achievement list***********${_homeworks.toString()}");
+      }
+    } catch (e) {
+      // print(e);
+    }
+    _isloading = false;
+    notifyListeners();
+  }
+
   // ********Add New Student************
   Future<void> addNewStudent(
     BuildContext context, {
@@ -63,10 +98,9 @@ class StudentController extends ChangeNotifier {
     required String fatherFullName,
     required String motherFullName,
     required String bloodGroup,
+    String? studentPhoto
   }) async {
-    final loadingProvider =
-        Provider.of<LoadingProvider>(context, listen: false); //loading provider
-    loadingProvider.setLoading(true); //start loader
+    _isloading = true;
     try {
       final response = await StudentServices().addNewStudent(
           fullName: fullName,
@@ -82,40 +116,80 @@ class StudentController extends ChangeNotifier {
           email: email,
           fatherFullName: fatherFullName,
           motherFullName: motherFullName,
-          bloodGroup: bloodGroup);
+          bloodGroup: bloodGroup,
+          studentPhotoPath: studentPhoto);
       if (response.statusCode == 201) {
         log(">>>>>>>>>>>>>Student Added}");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Student Added successfully!'),
+            backgroundColor: Colors.green, // Set color for success
+          ),
+        );
+        // Navigate to the desired route
+        
         context.pushNamed(AppRouteConst.AdminstudentRouteName);
+      }
+       else {
+        // Handle failure case here if needed
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to add student. Please try again.'),
+            backgroundColor: Colors.red, // Set color for error
+          ),
+        );
       }
     } catch (e) {
       log(e.toString());
     } finally {
-      loadingProvider.setLoading(false); // End loader
+      _isloading = false;
       notifyListeners();
     }
   }
 
   // Fetch student class and division details (GET request)
-  Future<void> getStudentsClassAndDivision(
-      {required String classname, required String section}) async {
-    _isloading = true;
+  Future<void> getStudentsClassAndDivision({
+    required String classname,
+    required String section,
+  }) async {
+    _isloading = true; // Set loading state to true
+    notifyListeners(); // Notify listeners to update the UI
+
     try {
+      // Call the API to fetch student data
       final response = await StudentServices().getStudentsClassAndDivision(
         classname: classname,
         section: section,
       );
-      print("***********${response.statusCode}");
-      print(response.toString());
-      if (response.statusCode == 200) {
-        _filteredstudents.clear();
+
+      // Log the response for debugging purposes
+      print("Response Status Code: ${response.statusCode}");
+      print("Response Body: ${response.data}");
+
+      if (response.statusCode == 200 && response.data is List) {
+        // Successfully received data, map and update the filtered students list
         _filteredstudents = (response.data as List<dynamic>)
-            .map((result) => Student.fromJson(result))
+            .map((student) => Student.fromJson(student))
             .toList();
+      } else {
+        // Handle unexpected response format or status
+        _filteredstudents.clear(); // Clear the list if response is invalid
+        print("Unexpected response: ${response.statusCode}");
       }
     } catch (e) {
-      print(e);
+      // Log the error and clear the student list on failure
+      print("Error fetching student data: $e");
+      _filteredstudents.clear();
+    } finally {
+      // Reset the loading state and notify listeners
+      _isloading = false;
+      notifyListeners();
     }
-    _isloading = false;
+  }
+
+// Clear the filtered students list
+  void clearStudentList() {
+    _filteredstudents.clear();
     notifyListeners();
   }
 
@@ -198,7 +272,8 @@ class StudentController extends ChangeNotifier {
   // Update Date and Fetch Data
   Future<void> updateDate(DateTime newDate, {required String studentId}) async {
     _selectedDate = newDate;
-    await getDayAttendance(studentId: studentId); // Automatically fetch attendance
+    await getDayAttendance(
+        studentId: studentId); // Automatically fetch attendance
   }
 
   // Fetch Attendance Data
@@ -234,7 +309,7 @@ class StudentController extends ChangeNotifier {
   }
 
   // get today attendance
-   Future<void> getTodayAttendance({required String studentId}) async {
+  Future<void> getTodayAttendance({required String studentId}) async {
     // _selectedDate = DateTime.now();
     try {
       final response = await StudentServices().getDayAttendance(

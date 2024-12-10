@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/teacher/homework/controller/homework_controller.dart';
@@ -90,7 +91,10 @@ class _WorkScreenState extends State<WorkScreen> {
               ),
               Consumer<HomeworkController>(builder: (context, value, child) {
                 if (value.isloading) {
-                  return Center(child: CircularProgressIndicator());
+                  return Center(
+                      child: Loading(
+                    color: Colors.grey,
+                  ));
                 }
 
                 // Group homework by date
@@ -125,6 +129,7 @@ class _WorkScreenState extends State<WorkScreen> {
                           itemBuilder: (context, index) {
                             final homework = entry.value[index];
                             return WorkContainer(
+                              icon: Icons.home_work_outlined,
                               work: homework.assignmentTitle ?? "Untitled",
                               sub: homework.subject ?? "No Subject",
                               onTap: () {

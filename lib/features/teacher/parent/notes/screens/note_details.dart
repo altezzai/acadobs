@@ -125,7 +125,7 @@ class _NoteChatDetailPageState extends State<NoteChatDetailPage> {
             SizedBox(height: 10),
             _buildReply("shibu", "Why are you so mad?? don't you have any life",
                 'assets/angus.png'),
-            _buildReply("April Curtis", "What bro?", widget.student.studentPhoto??""),
+           // _buildReply("April Curtis", "What bro?", widget.student.studentPhoto??""),
 
             // Comment Input Field
             Spacer(),

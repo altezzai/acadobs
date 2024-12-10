@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/controller/student_id_controller.dart';
 import 'package:school_app/base/routes/app_route_config.dart';
+import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/base/utils/responsive.dart';
-import 'package:school_app/core/shared_widgets/custom_button.dart';
+import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/features/teacher/homework/widgets/student_selection_card.dart';
 
 class StudentSelectionScreen extends StatefulWidget {
@@ -69,18 +70,31 @@ class _StudentSelectionState extends State<StudentSelectionScreen> {
           Consumer<StudentIdController>(builder: (context, value, child) {
         return Padding(
           padding: const EdgeInsets.all(16),
-          child: CustomButton(
-              text: "Select",
-              onPressed: () {
-                if (value.selectedStudentIds.isEmpty) {
-                  CustomSnackbar.show(context,
-                      message: "Select Staffs to Continue",
-                      type: SnackbarType.warning,
-                      bottomPadding: Responsive.height * 10);
-                } else {
-                  Navigator.pop(context);
-                }
-              }),
+          child: CommonButton(
+            onPressed: () {
+              if (value.selectedStudentIds.isEmpty) {
+                CustomSnackbar.show(context,
+                    message: "Select Students to Continue",
+                    type: SnackbarType.warning,
+                    bottomPadding: Responsive.height * 10);
+              } else {
+                Navigator.pop(context);
+              }
+            },
+            widget: value.isloading ? ButtonLoading() : Text('Select'),
+          ),
+          // CustomButton(
+          //     text: "Select",
+          //     onPressed: () {
+          //       if (value.selectedStudentIds.isEmpty) {
+          //         CustomSnackbar.show(context,
+          //             message: "Select Students to Continue",
+          //             type: SnackbarType.warning,
+          //             bottomPadding: Responsive.height * 10);
+          //       } else {
+          //         Navigator.pop(context);
+          //       }
+          //     }),
         );
       }),
     );

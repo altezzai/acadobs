@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/button_loading.dart';
+//import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
-import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+import 'package:school_app/core/shared_widgets/common_button.dart';
+//import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
-import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
@@ -53,8 +54,7 @@ class _AddTeacherLeaveRequestState extends State<AddTeacherLeaveRequest> {
                 title: "Add Leave Request",
                 isProfileIcon: false,
                 onTap: () {
-                  context.pushNamed(AppRouteConst.bottomNavRouteName,
-                      extra: UserType.teacher);
+                  context.pop();
                 },
               ),
               Text(
@@ -117,8 +117,9 @@ class _AddTeacherLeaveRequestState extends State<AddTeacherLeaveRequest> {
               SizedBox(
                 height: Responsive.height * 1,
               ),
-              CustomButton(
-                  text: 'Submit',
+              Consumer<TeacherLeaveRequestController>(
+                  builder: (context, value, child) {
+                return CommonButton(
                   onPressed: () {
                     final selectedLeaveType = context
                         .read<DropdownProvider>()
@@ -135,7 +136,29 @@ class _AddTeacherLeaveRequestState extends State<AddTeacherLeaveRequest> {
                           endDate: _endDateController.text,
                           reasonForLeave: _reasonForLeaveController.text,
                         );
-                  }),
+                  },
+                  widget: value.isloading ? ButtonLoading() : Text('Submit'),
+                );
+              }),
+              // CustomButton(
+              //     text: 'Submit',
+              //     onPressed: () {
+              //       final selectedLeaveType = context
+              //           .read<DropdownProvider>()
+              //           .getSelectedItem('leaveType');
+              //       // final int? teacherId = int.tryParse(_teacherIdController.text);
+
+              //       context
+              //           .read<TeacherLeaveRequestController>()
+              //           .addNewTeacherLeaveRequest(
+              //             context,
+              //             teacherId: _teacherIdController.text,
+              //             leaveType: selectedLeaveType,
+              //             startDate: _startDateController.text,
+              //             endDate: _endDateController.text,
+              //             reasonForLeave: _reasonForLeaveController.text,
+              //           );
+              //     }),
             ],
           ),
         ),

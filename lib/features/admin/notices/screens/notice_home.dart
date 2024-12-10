@@ -5,6 +5,7 @@ import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/constants.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
+import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/core/shared_widgets/add_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
@@ -135,7 +136,9 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
     context.read<NoticeController>().getNotices();
     return Consumer<NoticeController>(builder: (context, value, child) {
       if (value.isloading) {
-        return Center(child: CircularProgressIndicator());
+        return Loading(
+          color: Colors.grey,
+        );
       }
 
       final groupedNotices = groupItemsByDateWithUpcoming(
@@ -157,7 +160,9 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
     context.read<NoticeController>().getEvents();
     return Consumer<NoticeController>(builder: (context, value, child) {
       if (value.isloading) {
-        return Center(child: CircularProgressIndicator());
+        return Loading(
+          color: Colors.grey,
+        );
       }
 
       final groupedEvents = groupItemsByDateWithUpcoming(

@@ -1,11 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
-import 'package:school_app/core/shared_widgets/custom_textfield.dart';
-import 'package:school_app/core/shared_widgets/custom_button.dart';
-import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:school_app/core/shared_widgets/common_button.dart';
+import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
+import 'package:school_app/core/shared_widgets/custom_textfield.dart';
+
 import '../../../../core/shared_widgets/custom_calendar.dart';
 
 class AddAchievementPage extends StatefulWidget {
@@ -73,7 +72,7 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            context.pushNamed(AppRouteConst.studentRouteName);
+            Navigator.pop(context);
           },
         ),
         title: Text(
@@ -221,17 +220,32 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
             SizedBox(height: 32),
 
             Center(
-              child: CustomButton(
-                text: 'Submit',
+              child: CommonButton(
                 onPressed: () {
                   if (_formKey.currentState?.validate() ?? false) {
                     // Handle form submission logic here
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Form successfully submitted!')),
+                      SnackBar(
+                        content: Text('Form successfully submitted!'),
+                      ),
                     );
                   }
                 },
+                widget: Text('Submit'),
               ),
+              // CustomButton(
+              //   text: 'Submit',
+              //   onPressed: () {
+              //     if (_formKey.currentState?.validate() ?? false) {
+              //       // Handle form submission logic here
+              //       ScaffoldMessenger.of(context).showSnackBar(
+              //         SnackBar(
+              //           content: Text('Form successfully submitted!'),
+              //         ),
+              //       );
+              //     }
+              //   },
+              // ),
             ),
           ],
         ),

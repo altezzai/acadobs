@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
@@ -24,12 +25,23 @@ class _StudentsPageState extends State<StudentsPage> {
   // String searchQuery = "";
   // String selectedClass = "All";
 
+  late DropdownProvider dropdownprovider;
+
   @override
   void initState() {
-    super.initState();
-    context.read<StudentController>().getStudentDetails();
-  }
+    dropdownprovider = context.read<DropdownProvider>();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      dropdownprovider.clearSelectedItem('class');
+      dropdownprovider.clearSelectedItem('division');
 
+      context.read<StudentController>().clearStudentList();
+      // super.dispose();
+
+      context.read<StudentController>().getStudentDetails();
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,14 +56,15 @@ class _StudentsPageState extends State<StudentsPage> {
             CustomAppbar(
               title: 'Students',
               onTap: () {
-                widget.userType == UserType.admin ?
-                context.pushNamed(
-                  AppRouteConst.bottomNavRouteName,
-                  extra: UserType.admin,
-                ): context.pushNamed(
-                  AppRouteConst.bottomNavRouteName,
-                  extra: UserType.teacher,
-                );
+                widget.userType == UserType.admin
+                    ? context.pushNamed(
+                        AppRouteConst.bottomNavRouteName,
+                        extra: UserType.admin,
+                      )
+                    : context.pushNamed(
+                        AppRouteConst.bottomNavRouteName,
+                        extra: UserType.teacher,
+                      );
               },
             ),
             Padding(
@@ -76,44 +89,6 @@ class _StudentsPageState extends State<StudentsPage> {
                           fontSize: 16, fontWeight: FontWeight.normal),
                     ),
                   ),
-                  // SizedBox(width: 8),
-                  // Flexible(
-                  //   child: Container(
-                  //     padding: EdgeInsets.symmetric(horizontal: 12),
-                  //     decoration: BoxDecoration(
-                  //       color: Colors.grey.shade100,
-                  //       borderRadius: BorderRadius.circular(30),
-                  //       border: Border.all(color: Colors.grey.shade300),
-                  //     ),
-                  //     child: DropdownButton<String>(
-                  //       value: selectedClass,
-                  //       underline: SizedBox(),
-                  //       isExpanded: true,
-                  //       items: <String>[
-                  //         'All',
-                  //         'V',
-                  //         'VI',
-                  //         'VII',
-                  //         'VIII',
-                  //         'IX',
-                  //         'X',
-                  //       ].map((String value) {
-                  //         return DropdownMenuItem<String>(
-                  //           value: value,
-                  //           child: Text(
-                  //             value,
-                  //             overflow: TextOverflow.ellipsis,
-                  //           ),
-                  //         );
-                  //       }).toList(),
-                  //       onChanged: (newValue) {
-                  //         if (newValue != null) {
-                  //           _filterByClass(newValue);
-                  //         }
-                  //       },
-                  //     ),
-                  //   ),
-                  // ),
                 ],
               ),
             ),
@@ -123,7 +98,7 @@ class _StudentsPageState extends State<StudentsPage> {
                   child: CustomDropdown(
                     dropdownKey: 'class',
                     label: 'Class',
-                    items: ['8', '9', '10'],
+                    items: ['5', '6', '7', '8', '9', '10'],
                     icon: Icons.school,
                     onChanged: (selectedClass) {
                       // Automatically fetch students when division is selected
@@ -170,7 +145,9 @@ class _StudentsPageState extends State<StudentsPage> {
                 builder: (context, value, child) {
                   if (value.isloading) {
                     return const Center(
-                      child: CircularProgressIndicator(),
+                      child: Loading(
+                        color: Colors.grey,
+                      ),
                     );
                   } else if (value.filteredstudents.isEmpty) {
                     return Center(
@@ -200,7 +177,7 @@ class _StudentsPageState extends State<StudentsPage> {
                               padding: const EdgeInsets.only(bottom: 4),
                               child: ProfileTile(
                                 imageUrl:
-                                    "${baseUrl}${Urls.studentPhotos}${value.students[index].studentPhoto}",
+                                    "${baseUrl}${Urls.studentPhotos}${value.filteredstudents[index].studentPhoto}",
                                 name: capitalizeFirstLetter(
                                     value.filteredstudents[index].fullName ??
                                         ""),
