@@ -50,7 +50,9 @@ class TeacherDetailsPage extends StatelessWidget {
               height: Responsive.height * 2,
             ),
             Expanded(
-              child: TabSection(),
+              child: TabSection(
+                teacherId: teacher.id ?? 0,
+              ),
             ),
           ],
         ),
