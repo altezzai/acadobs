@@ -14,11 +14,11 @@ class AchievementController extends ChangeNotifier {
   List<Achievement> _achievements = [];
   List<Achievement> get achievements => _achievements;
 
-  Future<void> getAchievements({required int student_id}) async {
+  Future<void> getAchievements({required int studentId}) async {
     _isloading = true;
     try {
       final response =
-          await AchievementService().getAchievements(student_id: student_id);
+          await AchievementService().getAchievements(studentId: studentId);
       log("***********${response.statusCode}");
       log("***********${response.data.toString()}");
       if (response.statusCode == 200) {
@@ -48,7 +48,7 @@ class AchievementController extends ChangeNotifier {
   // add achievement
   Future<void> addAchievement(
     BuildContext context, {
-    required String student_id,
+    required String studentId,
     required String achievement_title,
     required String description,
     required String category,
@@ -58,7 +58,7 @@ class AchievementController extends ChangeNotifier {
     _isloading = true;
     try {
       final response = await AchievementService().addAchievement(
-        student_id: student_id,
+        studentId: studentId,
         achievement_title: achievement_title,
         description: description,
         category: category,

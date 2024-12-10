@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/features/admin/student/controller/achievement_controller.dart';
 import 'package:school_app/features/admin/student/widgets/date_group_function.dart';
 import 'package:school_app/features/teacher/homework/widgets/work_container.dart';
@@ -24,7 +25,10 @@ class AchievementsList extends StatelessWidget {
       body: Consumer<AchievementController>(
         builder: (context, value, child) {
           if (value.isloading) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(
+                child: Loading(
+              color: Colors.grey,
+            ));
           }
 
           final groupedAchievements = groupItemsByDate(

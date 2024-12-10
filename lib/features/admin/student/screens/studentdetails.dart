@@ -35,7 +35,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
       final studentController = context.read<StudentController>();
       studentController.getDayAttendance(
           studentId: widget.student.id.toString());
-      achievementController.getAchievements(student_id: widget.student.id ?? 0);
+      achievementController.getAchievements(studentId: widget.student.id ?? 0);
       studentController.getStudentHomework(studentId: widget.student.id ?? 0);
     });
   }

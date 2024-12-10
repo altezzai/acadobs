@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
@@ -18,6 +19,57 @@ class _DutiesHomeScreenState extends State<DutiesHomeScreen> {
   void initState() {
     context.read<DutyController>().getDuties();
     super.initState();
+  }
+
+  /// Group duties by date (Today, Yesterday, Specific Dates)
+  Map<String, List<T>> groupItemsByDate<T>(
+    List<T> items,
+    DateTime Function(T) getDate,
+  ) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final yesterday = today.subtract(const Duration(days: 1));
+
+    Map<String, List<T>> groupedItems = {};
+
+    for (var item in items) {
+      final itemDate = getDate(item);
+      String formattedDate;
+
+      if (itemDate.isAtSameMomentAs(today)) {
+        formattedDate = "Today";
+      } else if (itemDate.isAtSameMomentAs(yesterday)) {
+        formattedDate = "Yesterday";
+      } else {
+        formattedDate = DateFormat.yMMMMd().format(itemDate);
+      }
+
+      if (!groupedItems.containsKey(formattedDate)) {
+        groupedItems[formattedDate] = [];
+      }
+      groupedItems[formattedDate]!.add(item);
+    }
+
+    // Sort grouped dates in descending order
+    List<MapEntry<String, List<T>>> sortedEntries = [];
+    if (groupedItems.containsKey("Today")) {
+      sortedEntries.add(MapEntry("Today", groupedItems["Today"]!));
+      groupedItems.remove("Today");
+    }
+    if (groupedItems.containsKey("Yesterday")) {
+      sortedEntries.add(MapEntry("Yesterday", groupedItems["Yesterday"]!));
+      groupedItems.remove("Yesterday");
+    }
+    sortedEntries.addAll(
+      groupedItems.entries.toList()
+        ..sort((a, b) {
+          final dateA = DateFormat.yMMMMd().parse(a.key, true);
+          final dateB = DateFormat.yMMMMd().parse(b.key, true);
+          return dateB.compareTo(dateA); // Sort descending by date
+        }),
+    );
+
+    return Map.fromEntries(sortedEntries);
   }
 
   @override
@@ -41,8 +93,9 @@ class _DutiesHomeScreenState extends State<DutiesHomeScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,
                   padding: EdgeInsets.symmetric(
-                      vertical: screenHeight * 0.03,
-                      horizontal: screenWidth * 0.08),
+                    vertical: screenHeight * 0.03,
+                    horizontal: screenWidth * 0.08,
+                  ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -54,69 +107,80 @@ class _DutiesHomeScreenState extends State<DutiesHomeScreen> {
                 label: Text(
                   'Add Duty',
                   style: TextStyle(
-                      color: Colors.white, fontSize: screenWidth * 0.05),
+                    color: Colors.white,
+                    fontSize: screenWidth * 0.05,
+                  ),
                 ),
               ),
             ),
             SizedBox(height: screenHeight * 0.03),
-            Text(
-              'Today',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-                fontSize: screenWidth * 0.05,
-              ),
-            ),
-            SizedBox(height: screenHeight * 0.01),
-            DutyCard(
-              title: "PTA meeting class XII",
-              date: "15-06-24",
-              time: "09:00 am",
-              onTap: () {
-                context.pushNamed(AppRouteConst.AdminViewDutyRouteName);
-              },
-            ),
-            SizedBox(height: screenHeight * 0.03),
-            Text(
-              'Yesterday',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-                fontSize: screenWidth * 0.05,
-              ),
-            ),
-            SizedBox(height: screenHeight * 0.01),
             Expanded(
               child: Consumer<DutyController>(
                 builder: (context, value, child) {
                   if (value.isloading) {
                     return Center(
-                        child: Loading(
-                      color: Colors.grey,
-                    ));
+                      child: Loading(
+                        color: Colors.grey,
+                      ),
+                    );
                   }
-                  return ListView.builder(
-                    itemCount: value.duties.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: EdgeInsets.only(
-                          bottom: 15,
-                        ),
-                        child: DutyCard(
-                          title: value.duties[index].dutyTitle ?? "",
-                          date: DateFormatter.formatDateString(
-                              value.duties[index].createdAt.toString()),
-                          time: TimeFormatter.formatTimeFromString(
-                              value.duties[index].createdAt.toString()),
-                          onTap: () {
-                            context.pushNamed(
-                              AppRouteConst.AdminViewDutyRouteName,
-                              extra: value.duties[index],
-                            );
-                          },
-                        ),
-                      );
-                    },
+
+                  // Group duties by date
+                  final groupedDuties = groupItemsByDate(
+                    value.duties,
+                    (duty) =>
+                        DateTime.tryParse(duty.createdAt.toString()) ??
+                        DateTime.now(),
+                  );
+
+                  return SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: groupedDuties.entries.map((entry) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Date Header (Today, Yesterday, Specific Date)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 13),
+                              child: Text(
+                                entry.key,
+                                style: TextStyle(
+                                  fontSize: screenWidth * 0.045,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            // List of duties under the date
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: entry.value.length,
+                              itemBuilder: (context, index) {
+                                final duty = entry.value[index];
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 15),
+                                  child: DutyCard(
+                                    title: duty.dutyTitle ?? "",
+                                    date: DateFormatter.formatDateString(
+                                        duty.createdAt.toString()),
+                                    time: TimeFormatter.formatTimeFromString(
+                                        duty.createdAt.toString()),
+                                    onTap: () {
+                                      context.pushNamed(
+                                        AppRouteConst.AdminViewDutyRouteName,
+                                        extra: duty,
+                                      );
+                                    },
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        );
+                      }).toList(),
+                    ),
                   );
                 },
               ),
@@ -125,5 +189,11 @@ class _DutiesHomeScreenState extends State<DutiesHomeScreen> {
         ),
       ),
     );
+  }
+}
+
+extension DateOnlyCompare on DateTime {
+  bool isAtSameMomentAs(DateTime other) {
+    return year == other.year && month == other.month && day == other.day;
   }
 }
