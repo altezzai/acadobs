@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+//import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
@@ -83,7 +83,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                           title: "Students",
                           isProfileIcon: false,
                           onTap: () {
-                            context.pop();
+                            Navigator.pop(context);
                           },
                         ),
                         ProfileContainer(
