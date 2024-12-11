@@ -210,7 +210,8 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                       icon: Icons.workspace_premium_outlined,
                       icolor: Colors.green,
                       bcolor: Colors.green.withOpacity(0.2),
-                      prefixText: exam.marks.toString(),
+                      prefixText:
+                          '${exam.marks.toString()} / ${exam.totalMarks}',
                     )),
                 const SizedBox(height: 10),
               ],
