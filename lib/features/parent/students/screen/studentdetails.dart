@@ -42,7 +42,7 @@ class ParentStudentDetailPage extends StatelessWidget {
             leading: IconButton(
               icon: const Icon(Icons.chevron_left, color: Colors.black),
               onPressed: () {
-                context.pushReplacementNamed(AppRouteConst.ParentHomeRouteName);
+                context.pushNamed(AppRouteConst.ParentHomeRouteName);
               },
             ),
             flexibleSpace: FlexibleSpaceBar(

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/services/secure_storage_services.dart';
 import 'package:school_app/features/admin/student/model/day_attendance_status.dart';
 import 'package:school_app/features/admin/student/model/student_data.dart';
 import 'package:school_app/features/admin/student/model/student_homework.dart';
@@ -20,6 +21,8 @@ class StudentController extends ChangeNotifier {
   List<Student> get students => _students;
   List<Student> _filteredstudents = [];
   List<Student> get filteredstudents => _filteredstudents;
+  List<Student> _individualstudents = [];
+  List<Student> get individualstudents => _individualstudents;
 
   List<Student> _parents = [];
   List<Student> get parents => _parents;
@@ -31,7 +34,31 @@ class StudentController extends ChangeNotifier {
     _isloading = true;
     try {
       final response = await StudentServices().getStudent();
-      print("***********${response.statusCode}");
+      // print("***********${response.statusCode}");
+      // print(response.toString());
+      log("***********${response.statusCode}");
+      log(response.data.toString());
+      if (response.statusCode == 200) {
+        _individualstudents.clear();
+        _individualstudents = (response.data as List<dynamic>)
+            .map((result) => Student.fromJson(result))
+            .toList();
+        log(_individualstudents.toString());
+      }
+    } catch (e) {
+      print(e);
+    }
+    _isloading = false;
+    notifyListeners();
+  }
+
+  Future<void> getIndividualStudentDetails() async {
+    _isloading = true;
+    try {
+      final studentId = await SecureStorageService.getUserId();
+      final response = await StudentServices()
+          .getIndividualStudentDetails(studentId: studentId);
+      print("*${response.statusCode}");
       print(response.toString());
       if (response.statusCode == 200) {
         _students.clear();
@@ -82,24 +109,22 @@ class StudentController extends ChangeNotifier {
   }
 
   // ********Add New Student************
-  Future<void> addNewStudent(
-    BuildContext context, {
-    required String fullName,
-    required String dateOfBirth,
-    required String gender,
-    required String studentClass,
-    required String section,
-    required String rollNumber,
-    required String admissionNumber,
-    required String aadhaarNumber,
-    required String residentialAddress,
-    required String contactNumber,
-    required String email,
-    required String fatherFullName,
-    required String motherFullName,
-    required String bloodGroup,
-    String? studentPhoto
-  }) async {
+  Future<void> addNewStudent(BuildContext context,
+      {required String fullName,
+      required String dateOfBirth,
+      required String gender,
+      required String studentClass,
+      required String section,
+      required String rollNumber,
+      required String admissionNumber,
+      required String aadhaarNumber,
+      required String residentialAddress,
+      required String contactNumber,
+      required String email,
+      required String fatherFullName,
+      required String motherFullName,
+      required String bloodGroup,
+      String? studentPhoto}) async {
     _isloading = true;
     try {
       final response = await StudentServices().addNewStudent(
@@ -127,10 +152,9 @@ class StudentController extends ChangeNotifier {
           ),
         );
         // Navigate to the desired route
-        
+
         context.pushNamed(AppRouteConst.AdminstudentRouteName);
-      }
-       else {
+      } else {
         // Handle failure case here if needed
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

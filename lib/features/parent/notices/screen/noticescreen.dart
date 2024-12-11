@@ -27,7 +27,7 @@ class _NoticePageState extends State<NoticePage> {
         leading: IconButton(
           icon: const Icon(Icons.chevron_left, color: Colors.black),
           onPressed: () {
-            context.pushReplacementNamed(
+            context.pushNamed(
               AppRouteConst.ParentHomeRouteName,
             );
           },

@@ -22,7 +22,7 @@ class NoticeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.pushReplacementNamed(
+        context.pushNamed(
           AppRouteConst.NoticeDetailedPageRouteName,
           extra: {
             'title': noticeTitle,

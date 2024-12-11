@@ -23,7 +23,7 @@ class EventDetailPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.chevron_left, color: Colors.black),
           onPressed: () {
-            context.pushReplacementNamed(
+            context.pushNamed(
               AppRouteConst.EventsPageRouteName,
             );
             // Navigator.of(context).pop();

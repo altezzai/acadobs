@@ -14,6 +14,15 @@ class StudentServices {
     }
   }
 
+  Future<Response> getIndividualStudentDetails({required int studentId}) async {
+    try {
+      final Response response = await ApiServices.get('/students/$studentId');
+      return response;
+    } on DioException catch (e) {
+      throw Exception('Failed to load data: $e');
+    }
+  }
+
 // GET homework
   Future<Response> getStudentHomework({required int studentId}) async {
     final Response response =

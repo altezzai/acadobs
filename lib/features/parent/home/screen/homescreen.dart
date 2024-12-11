@@ -5,6 +5,8 @@ import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
+import 'package:school_app/features/admin/student/controller/student_controller.dart';
+// import 'package:school_app/features/admin/student/model/student_data.dart';
 import 'package:school_app/features/parent/chat/screen/parentchatscreen.dart';
 import 'package:school_app/features/parent/payment/screen/PaymentScreen.dart';
 import 'package:school_app/features/parent/events/screen/eventscreen.dart';
@@ -27,6 +29,7 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
   void initState() {
     context.read<NoticeController>().getEvents();
     context.read<NoticeController>().getNotices();
+    context.read<StudentController>().getIndividualStudentDetails();
     super.initState();
   }
 
@@ -181,7 +184,7 @@ class HomePage extends StatelessWidget {
                     Center(
                       child: ElevatedButton(
                         onPressed: () {
-                          context.pushReplacementNamed(
+                          context.pushNamed(
                             AppRouteConst.StudentLeaveRequestViewRouteName,
                           );
                         },
@@ -210,16 +213,33 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    const ChildCard(
-                      childName: "Muhammed Rafsal N",
-                      className: "XIII",
-                      imageProvider: AssetImage('assets/child1.png'),
-                    ),
-                    const ChildCard(
-                      childName: "Livia Kenter",
-                      className: "XIII",
-                      imageProvider: AssetImage('assets/child2.png'),
-                    ),
+
+                    Consumer<StudentController>(
+                        builder: (context, value, child) {
+                      return ListView.builder(
+                        padding: EdgeInsets.zero,
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: value.students.take(2).length,
+                        itemBuilder: (context, index) {
+                          return ChildCard(
+                            childName: value.students[index].fullName ?? "",
+                            className: value.students[index].studentClass ?? "",
+                            imageProvider: AssetImage('assets/child2.png'),
+                          );
+                        },
+                      );
+                    }),
+                    // const ChildCard(
+                    //   childName: "Muhammed Rafsal N",
+                    //   className: "XIII",
+                    //   imageProvider: AssetImage('assets/child1.png'),
+                    // ),
+                    // const ChildCard(
+                    //   childName: "Livia Kenter",
+                    //   className: "XIII",
+                    //   imageProvider: AssetImage('assets/child2.png'),
+                    // ),
                     const SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -233,7 +253,7 @@ class HomePage extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed: () {
-                            context.pushReplacementNamed(
+                            context.pushNamed(
                               AppRouteConst.ParentNoticePageRouteName,
                             );
                           },
@@ -290,7 +310,7 @@ class HomePage extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed: () {
-                            context.pushReplacementNamed(
+                            context.pushNamed(
                               AppRouteConst.EventsPageRouteName,
                             );
                           },

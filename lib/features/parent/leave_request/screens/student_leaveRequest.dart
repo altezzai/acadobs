@@ -5,7 +5,6 @@ import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/features/parent/leave_request/controller/studentLeaveReq_controller.dart';
 
-
 class StudentLeaveRequestScreen extends StatefulWidget {
   StudentLeaveRequestScreen({super.key});
 
@@ -28,7 +27,7 @@ class _StudentLeaveRequestScreenState extends State<StudentLeaveRequestScreen> {
         leading: IconButton(
           icon: const Icon(Icons.chevron_left, color: Colors.black),
           onPressed: () {
-            context.pushReplacementNamed(
+            context.pushNamed(
               AppRouteConst.ParentHomeRouteName,
             );
             // Navigator.of(context).pop();
@@ -52,7 +51,7 @@ class _StudentLeaveRequestScreenState extends State<StudentLeaveRequestScreen> {
             children: [
               ElevatedButton(
                 onPressed: () {
-                  context.pushReplacementNamed(
+                  context.pushNamed(
                     AppRouteConst.AddStudentLeaveRequestRouteName,
                   );
                 },
