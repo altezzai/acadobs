@@ -285,7 +285,7 @@ class NoticeDetailPage extends StatelessWidget {
                       Row(
                         children: [
                           const Icon(
-                            Icons.picture_as_pdf_outlined,
+                            Icons.file_copy_outlined,
                             color: Colors.black,
                           ),
                           const SizedBox(width: 10),
@@ -293,7 +293,7 @@ class NoticeDetailPage extends StatelessWidget {
                             fileUpload,
                             style: const TextStyle(
                               color: Colors.black,
-                              fontSize: 16,
+                              fontSize: 10,
                             ),
                           ),
                         ],
