@@ -115,8 +115,14 @@ class _LeaverequestScreenState extends State<LeaverequestScreen>
       groupedItems.remove('Yesterday');
     }
 
-    sortedEntries.addAll(
-        groupedItems.entries.toList()..sort((a, b) => b.key.compareTo(a.key)));
+     sortedEntries.addAll(
+      groupedItems.entries.toList()
+        ..sort((a, b) {
+          final dateA = DateFormat.yMMMMd().parse(a.key, true);
+          final dateB = DateFormat.yMMMMd().parse(b.key, true);
+          return dateB.compareTo(dateA); // Sort descending by date
+        }),
+    );
 
     return Map.fromEntries(sortedEntries);
   }

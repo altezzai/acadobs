@@ -21,55 +21,72 @@ class EditSubjectPage extends StatefulWidget {
 }
 
 class _EditSubjectPageState extends State<EditSubjectPage> {
+  final TextEditingController _editedSubjectNameController =
+      TextEditingController();
+  final TextEditingController _editedSubjectDescriptionController =
+      TextEditingController();
+
   @override
   void initState() {
-    context.read<SubjectController>().getSubjects();
     super.initState();
+    // Initialize text controllers with existing data
+    _editedSubjectNameController.text = widget.subjects.subject ?? '';
+    _editedSubjectDescriptionController.text = widget.subjects.description ?? '';
+    context.read<SubjectController>().getSubjects();
   }
+
+  @override
+  void dispose() {
+    _editedSubjectNameController.dispose();
+    _editedSubjectDescriptionController.dispose();
+    super.dispose();
+  }
+
+ 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: Responsive.width * 4),
-          child: Column(
-            children: [
-              CustomAppbar(
-                title: 'Edit Subject',
-                isProfileIcon: false,
-                onTap: () {
-                  context.pushNamed(AppRouteConst.SubjectsPageRouteName);
-                },
+        padding: EdgeInsets.symmetric(horizontal: Responsive.width * 4),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CustomAppbar(
+              title: 'Edit Subject',
+              isProfileIcon: false,
+              onTap: () => context.pushNamed(AppRouteConst.SubjectsPageRouteName),
+            ),
+            SizedBox(height: Responsive.height * 2),
+            CustomTextfield(
+              iconData: Icon(Icons.edit),
+              hintText: 'Enter Subject Name',
+              controller: _editedSubjectNameController,
+            ),
+            SizedBox(height: Responsive.height * 2),
+            CustomTextfield(
+              iconData: Icon(Icons.description),
+              hintText: 'Enter Subject Description',
+              controller: _editedSubjectDescriptionController,
+            ),
+            Spacer(),
+            Padding(
+              padding: EdgeInsets.only(bottom: Responsive.height * 4),
+              child: CommonButton(
+                onPressed: () {
+                      context.read<SubjectController>().editSubjects(
+                            context,
+                            subjectid: widget.subjects.id!,
+                            subject: _editedSubjectNameController.text,
+                            description: _editedSubjectDescriptionController.text,
+                          );
+                    },
+                widget: Text('Update'),
               ),
-              SizedBox(
-                height: Responsive.height * 2,
-              ),
-              Expanded(
-                child: CustomTextfield(
-                  iconData: Icon(Icons.title),
-                  hintText: widget.subjects.subject,
-                ),
-              ),
-
-              // child: Align(
-              //   alignment: Alignment.bottomCenter,
-              // child: Padding(
-              //   padding: EdgeInsets.only(bottom: Responsive.height * 3),
-              Padding(
-                  padding: EdgeInsets.only(bottom: Responsive.height * 4),
-                  child: CommonButton(
-                    onPressed: () {},
-                    widget: Text('Update'),
-                  )
-                  //  CustomButton(
-                  //   text: 'Update',
-                  //   onPressed: () {
-                  //     // Add your update functionality here
-                  //   },
-                  // ),
-                  ),
-            ],
-          )),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
