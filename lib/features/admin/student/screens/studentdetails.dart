@@ -10,6 +10,7 @@ import 'package:school_app/core/shared_widgets/calender_widget.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/profile_container.dart';
 import 'package:school_app/features/admin/student/controller/achievement_controller.dart';
+import 'package:school_app/features/admin/student/controller/exam_controller.dart';
 import 'package:school_app/features/admin/student/controller/student_controller.dart';
 import 'package:school_app/features/admin/student/model/student_data.dart';
 import 'package:school_app/features/admin/student/screens/achievements_list.dart';
@@ -29,11 +30,13 @@ class StudentDetailPage extends StatefulWidget {
 
 class _StudentDetailPageState extends State<StudentDetailPage> {
   late AchievementController achievementController;
+  late ExamController examController;
 
   @override
   void initState() {
     super.initState();
     achievementController = context.read<AchievementController>();
+    examController = context.read<ExamController>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final studentController = context.read<StudentController>();
@@ -41,6 +44,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
           studentId: widget.student.id.toString());
       achievementController.getAchievements(studentId: widget.student.id ?? 0);
       studentController.getStudentHomework(studentId: widget.student.id ?? 0);
+      examController.getExamMarks(studentId: widget.student.id ?? 0);
     });
   }
 
@@ -169,7 +173,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
   }
 
   Widget _buildExamContent() {
-    return Consumer<AchievementController>(
+    return Consumer<ExamController>(
       builder: (context, value, child) {
         if (value.isloading) {
           return const Center(
@@ -178,37 +182,37 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
           ));
         }
 
-        final groupedAchievements = groupItemsByDate(
-          value.achievements,
-          (achievement) =>
-              DateTime.parse(achievement.dateOfAchievement.toString()),
+        final groupedExams = groupItemsByDate(
+          value.exam,
+          (exam) => DateTime.parse(exam.date.toString()),
         );
 
         return ListView.builder(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-          itemCount: groupedAchievements.length,
+          itemCount: groupedExams.length,
           itemBuilder: (context, index) {
-            final entry = groupedAchievements.entries.elementAt(index);
+            final entry = groupedExams.entries.elementAt(index);
             final dateGroup = entry.key;
-            final achievements = entry.value;
+            final exams = entry.value;
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: Responsive.height * 4),
+                SizedBox(height: Responsive.height * 2),
                 Text(
                   dateGroup,
                   style: textThemeData.bodyMedium,
                 ),
                 const SizedBox(height: 10),
-                ...achievements.map((achievement) => WorkContainer(
-                      sub: achievement.awardingBody ?? "",
-                      work: achievement.category ?? "",
-                      icon: Icons.military_tech,
+                ...exams.map((exam) => WorkContainer(
+                      sub: exam.subject ?? "",
+                      work: exam.title ?? "",
+                      icon: Icons.workspace_premium_outlined,
                       icolor: Colors.green,
                       bcolor: Colors.green.withOpacity(0.2),
+                      prefixText: exam.marks.toString(),
                     )),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
               ],
             );
           },
