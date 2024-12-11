@@ -4,11 +4,11 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
-import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/constants.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/core/shared_widgets/add_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/admin/payments/controller/payment_controller.dart';
@@ -143,10 +143,16 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
     context.read<PaymentController>().getPayments();
     return Consumer<PaymentController>(builder: (context, value, child) {
       if (value.isloading) {
-        return Center(
-            child: Loading(
-          color: Colors.grey,
-        ));
+        return Column(
+          children: [
+            SizedBox(
+              height: Responsive.height * 30,
+            ),
+            Loading(
+              color: Colors.grey,
+            ),
+          ],
+        );
       }
 
       final groupedPayments = groupItemsByDate(
@@ -200,10 +206,16 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
     context.read<PaymentController>().getDonations();
     return Consumer<PaymentController>(builder: (context, value, child) {
       if (value.isloading) {
-        return Center(
-            child: Loading(
-          color: Colors.grey,
-        ));
+        return Column(
+          children: [
+            SizedBox(
+              height: Responsive.height * 30,
+            ),
+            Loading(
+              color: Colors.grey,
+            ),
+          ],
+        );
       }
 
       final groupedDonations = groupItemsByDate(

@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
+import 'package:school_app/base/utils/show_loading.dart';
+import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+import 'package:school_app/core/shared_widgets/profile_tile.dart';
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
 import 'package:school_app/features/admin/student/controller/student_controller.dart';
 // import 'package:school_app/features/admin/student/model/student_data.dart';
 import 'package:school_app/features/parent/chat/screen/parentchatscreen.dart';
-import 'package:school_app/features/parent/payment/screen/PaymentScreen.dart';
 import 'package:school_app/features/parent/events/screen/eventscreen.dart';
-
-import 'package:school_app/features/parent/notices/screen/noticescreen.dart';
-import 'package:school_app/features/parent/home/widgets/childcard.dart';
-
 import 'package:school_app/features/parent/events/widget/eventcard.dart';
+import 'package:school_app/features/parent/notices/screen/noticescreen.dart';
 import 'package:school_app/features/parent/notices/widget/noticecard.dart';
+import 'package:school_app/features/parent/payment/screen/PaymentScreen.dart';
 
 class ParentHomeScreen extends StatefulWidget {
   const ParentHomeScreen({super.key});
@@ -214,21 +216,43 @@ class HomePage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
 
+                    // Consumer<StudentController>(
+                    //     builder: (context, value, child) {
+                    //   return ListView.builder(
+                    //     padding: EdgeInsets.zero,
+                    //     physics: NeverScrollableScrollPhysics(),
+                    //     shrinkWrap: true,
+                    //     itemCount: value.students.take(2).length,
+                    //     itemBuilder: (context, index) {
+                    //       return ChildCard(
+                    //         childName: value.students[index].fullName ?? "",
+                    //         className: value.students[index].studentClass ?? "",
+                    //         imageProvider: AssetImage('assets/child2.png'),
+                    //       );
+                    //     },
+                    //   );
+                    // }),
                     Consumer<StudentController>(
                         builder: (context, value, child) {
-                      return ListView.builder(
-                        padding: EdgeInsets.zero,
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: value.students.take(2).length,
-                        itemBuilder: (context, index) {
-                          return ChildCard(
-                            childName: value.students[index].fullName ?? "",
-                            className: value.students[index].studentClass ?? "",
-                            imageProvider: AssetImage('assets/child2.png'),
-                          );
-                        },
-                      );
+                      return value.isloading
+                          ? Loading(
+                              color: Colors.grey,
+                            )
+                          : ProfileTile(
+                              name: capitalizeEachWord(
+                                  value.individualStudent!.fullName ?? ""),
+                              description:
+                                  value.individualStudent!.studentClass ?? "",
+                              imageUrl:
+                                  "${baseUrl}${Urls.studentPhotos}${value.individualStudent!.studentPhoto}",
+                              onPressed: () {
+                                context.pushNamed(
+                                    AppRouteConst.AdminstudentdetailsRouteName,
+                                    extra: StudentDetailArguments(
+                                        student: value.individualStudent!,
+                                        userType: UserType.parent));
+                              },
+                            );
                     }),
                     // const ChildCard(
                     //   childName: "Muhammed Rafsal N",

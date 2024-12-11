@@ -2,9 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:school_app/base/services/api_services.dart';
 
 class SubjectServices {
-   
-   // GET request for fetching subjects
-   Future<Response> getsubject() async {
+  // GET request for fetching subjects
+  Future<Response> getsubject() async {
     try {
       final Response response = await ApiServices.get('/subjects');
       return response;
@@ -13,11 +12,10 @@ class SubjectServices {
     }
   }
 
-    // POST request for adding a subject
+  // POST request for adding a subject
   Future<Response> addNewSubject({
     required String subject,
     required String description,
-  
   }) async {
     // Create the data to send as JSON
     final data = {
@@ -39,7 +37,6 @@ class SubjectServices {
     required int subjectid,
     required String subject,
     required String description,
-  
   }) async {
     // Create the data to send as JSON
     final data = {
@@ -50,7 +47,8 @@ class SubjectServices {
 
     try {
       // Call the ApiServices post method with the data as JSON
-      final Response response = await ApiServices.post("/subjects/$subjectid", data);
+      final Response response =
+          await ApiServices.put("/subjects/$subjectid", data);
 
       return response;
     } catch (e) {
