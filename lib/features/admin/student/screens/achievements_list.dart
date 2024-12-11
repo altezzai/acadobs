@@ -5,17 +5,19 @@ import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/admin/student/controller/achievement_controller.dart';
 import 'package:school_app/features/admin/student/widgets/date_group_function.dart';
 import 'package:school_app/features/teacher/homework/widgets/work_container.dart';
 
 class AchievementsList extends StatelessWidget {
-  const AchievementsList({super.key});
+  final UserType userType;
+  const AchievementsList({super.key, required this.userType, });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: userType == UserType.parent? SizedBox.shrink(): FloatingActionButton(
         onPressed: () {
           context.pushNamed(AppRouteConst.AddAchivementsRouteName);
         },

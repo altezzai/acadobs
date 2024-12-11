@@ -6,6 +6,7 @@ import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/base/utils/urls.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/calender_widget.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/profile_container.dart';
@@ -21,8 +22,9 @@ import 'package:school_app/features/teacher/homework/widgets/work_container.dart
 
 class StudentDetailPage extends StatefulWidget {
   final Student student;
+  final UserType userType;
 
-  const StudentDetailPage({required this.student, Key? key}) : super(key: key);
+  const StudentDetailPage({super.key, required this.student, required this.userType});
 
   @override
   State<StudentDetailPage> createState() => _StudentDetailPageState();
@@ -142,7 +144,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
               child: TabBarView(
                 children: [
                   _buildDashboardContent(),
-                  AchievementsList(),
+                  AchievementsList(userType: widget.userType,),
                   _buildExamContent(),
                   HomeworkList()
                 ],

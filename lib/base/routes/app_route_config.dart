@@ -43,8 +43,6 @@ import 'package:school_app/features/admin/teacher_section/model/teacher_model.da
 import 'package:school_app/features/admin/teacher_section/screens/add_teacher.dart';
 import 'package:school_app/features/admin/teacher_section/screens/teacherdetails.dart';
 import 'package:school_app/features/admin/teacher_section/screens/teachers_page.dart';
-
-
 import 'package:school_app/features/parent/events/screen/eventdetailedscreen.dart';
 import 'package:school_app/features/parent/events/screen/eventscreen.dart';
 import 'package:school_app/features/parent/home/screen/homescreen.dart';
@@ -70,10 +68,10 @@ import 'package:school_app/features/teacher/leave_request/screens/teacher_leaver
 import 'package:school_app/features/teacher/mark_work/screens/mark_star.dart';
 import 'package:school_app/features/teacher/marks/models/marks_upload_model.dart';
 import 'package:school_app/features/teacher/marks/screens/student_marklist.dart';
-import 'package:school_app/features/teacher/parent/notes/screens/note_details.dart';
-import 'package:school_app/features/teacher/parent/screens/parents.dart';
-import 'package:school_app/features/teacher/parent/notes/screens/notes.dart';
 import 'package:school_app/features/teacher/parent/notes/screens/add_note.dart';
+import 'package:school_app/features/teacher/parent/notes/screens/note_details.dart';
+import 'package:school_app/features/teacher/parent/notes/screens/notes.dart';
+import 'package:school_app/features/teacher/parent/screens/parents.dart';
 
 class Approuter {
   GoRouter router = GoRouter(
@@ -251,14 +249,12 @@ class Approuter {
         name: AppRouteConst.AdminstudentdetailsRouteName,
         path: '/adminstudentdetails',
         pageBuilder: (context, state) {
-          final student = state.extra as Student;
+          final studentArgs = state.extra as StudentDetailArguments;
           // final studentData = state.extra as Map<String, dynamic>;
           return MaterialPage(
             child: StudentDetailPage(
-              student: student,
-              // name: studentData['name'],
-              // studentClass: studentData['class'],
-              // image: studentData['image'],
+              student: studentArgs.student,
+              userType: studentArgs.userType,
             ),
           );
         },
@@ -523,21 +519,21 @@ class Approuter {
           return MaterialPage(child: PaymentReport());
         },
       ),
-       GoRoute(
+      GoRoute(
         name: AppRouteConst.StudentReportRouteName,
         path: '/studentreport',
         pageBuilder: (context, state) {
           return MaterialPage(child: StudentReport());
         },
       ),
-       GoRoute(
+      GoRoute(
         name: AppRouteConst.TeacherReportRouteName,
         path: '/teacherreport',
         pageBuilder: (context, state) {
           return MaterialPage(child: TeacherReport());
         },
       ),
-       GoRoute(
+      GoRoute(
         name: AppRouteConst.ClassReportRouteName,
         path: '/classreport',
         pageBuilder: (context, state) {
@@ -585,15 +581,15 @@ class Approuter {
           ));
         },
       ),
-       
-        GoRoute(
+
+      GoRoute(
         name: AppRouteConst.SubjectsPageRouteName,
         path: '/subjectspage',
         pageBuilder: (context, state) {
           return MaterialPage(child: SubjectsScreen());
         },
       ),
-       GoRoute(
+      GoRoute(
         name: AppRouteConst.AddSubjectPageRouteName,
         path: '/addsubjectpage',
         pageBuilder: (context, state) {
@@ -601,14 +597,13 @@ class Approuter {
         },
       ),
       GoRoute(
-        name: AppRouteConst.EditSubjectPageRouteName,
-        path: '/editsubjectpage',
-        pageBuilder: (context, state) {
-        final Subject subjects= state.extra as Subject;
-        
-          return MaterialPage(child: EditSubjectPage(subjects:subjects));
-        }
-      ),
+          name: AppRouteConst.EditSubjectPageRouteName,
+          path: '/editsubjectpage',
+          pageBuilder: (context, state) {
+            final Subject subjects = state.extra as Subject;
+
+            return MaterialPage(child: EditSubjectPage(subjects: subjects));
+          }),
     ],
   );
 }
@@ -623,4 +618,10 @@ class DutyDetailArguments {
   DutyItem dutyItem;
   int index;
   DutyDetailArguments({required this.dutyItem, required this.index});
+}
+
+class StudentDetailArguments {
+  Student student;
+  UserType userType;
+  StudentDetailArguments({required this.student, required this.userType});
 }

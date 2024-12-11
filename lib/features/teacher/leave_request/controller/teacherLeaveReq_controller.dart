@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/services/secure_storage_services.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/teacher/leave_request/model/teacherLeaveReq_model.dart';
 import 'package:school_app/features/teacher/leave_request/services/teacherLeaveReq_services.dart';
@@ -60,7 +61,6 @@ class TeacherLeaveRequestController extends ChangeNotifier {
   // ********Add New Teacher************
   Future<void> addNewTeacherLeaveRequest(
     BuildContext context, {
-    required String teacherId,
     required String leaveType,
     required String startDate,
     required String endDate,
@@ -69,9 +69,10 @@ class TeacherLeaveRequestController extends ChangeNotifier {
     _isloading = true;
     try {
       //  _isloading = false;
+      final teacherId = await SecureStorageService.getUserId();
       final response =
           await TeacherLeaveRequestServices().addNewTeacherLeaveRequest(
-        teacherId: teacherId,
+        teacherId: teacherId.toString(),
         leaveType: leaveType,
         startDate: startDate,
         endDate: endDate,

@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
-
 import 'package:school_app/features/admin/subjects/model/subject_model.dart';
 import 'package:school_app/features/admin/subjects/services/subject_services.dart';
 
@@ -77,9 +76,9 @@ class SubjectController extends ChangeNotifier {
     }
   }
 
-   Future<void> editSubjects(
+  Future<void> editSubjects(
     BuildContext context, {
-    required int subjectid,  
+    required int subjectid,
     required String subject,
     required String description,
   }) async {
@@ -89,11 +88,11 @@ class SubjectController extends ChangeNotifier {
     _isloading = true;
     try {
       final response = await SubjectServices().editSubject(
-        subjectid:subjectid,
+        subjectid: subjectid,
         subject: subject,
         description: description,
       );
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         log(">>>>>>>>>>>>>Subject Edited}");
         // Show success message using Snackbar
         ScaffoldMessenger.of(context).showSnackBar(

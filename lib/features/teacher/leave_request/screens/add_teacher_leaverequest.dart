@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/services/secure_storage_services.dart';
 import 'package:school_app/base/utils/button_loading.dart';
 //import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/responsive.dart';
@@ -22,7 +23,7 @@ class AddTeacherLeaveRequest extends StatefulWidget {
 
 class _AddTeacherLeaveRequestState extends State<AddTeacherLeaveRequest> {
   String? selectedLeaveType;
-
+  final teacherId = SecureStorageService.getUserId();
   // textediting controllers
   final TextEditingController _teacherIdController = TextEditingController();
   final TextEditingController _startDateController = TextEditingController();
@@ -66,20 +67,20 @@ class _AddTeacherLeaveRequestState extends State<AddTeacherLeaveRequest> {
               SizedBox(
                 height: Responsive.height * 2,
               ),
-              CustomTextfield(
-                controller: _teacherIdController,
-                hintText: 'Teacher ID',
-                iconData: Icon(Icons.person),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Teacher ID is required';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(
-                height: Responsive.height * 1,
-              ),
+              // CustomTextfield(
+              //   controller: _teacherIdController,
+              //   hintText: 'Teacher ID',
+              //   iconData: Icon(Icons.person),
+              //   validator: (value) {
+              //     if (value == null || value.isEmpty) {
+              //       return 'Teacher ID is required';
+              //     }
+              //     return null;
+              //   },
+              // ),
+              // SizedBox(
+              //   height: Responsive.height * 1,
+              // ),
               CustomDropdown(
                 dropdownKey: 'leaveType',
                 label: 'Leave Type',
@@ -130,7 +131,7 @@ class _AddTeacherLeaveRequestState extends State<AddTeacherLeaveRequest> {
                         .read<TeacherLeaveRequestController>()
                         .addNewTeacherLeaveRequest(
                           context,
-                          teacherId: _teacherIdController.text,
+                          // teacherId: _teacherIdController.text,
                           leaveType: selectedLeaveType,
                           startDate: _startDateController.text,
                           endDate: _endDateController.text,
