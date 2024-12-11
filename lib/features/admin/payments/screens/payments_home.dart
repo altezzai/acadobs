@@ -116,19 +116,25 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
       groupedItems[formattedDate]!.add(item);
     }
 
-    // Sort grouped dates with "Today" and "Yesterday" on top.
+    // Sort grouped dates with "Today" and "Yesterday" on top, followed by descending dates.
     List<MapEntry<String, List<T>>> sortedEntries = [];
-    if (groupedItems.containsKey('Today')) {
-      sortedEntries.add(MapEntry('Today', groupedItems['Today']!));
-      groupedItems.remove('Today');
+    if (groupedItems.containsKey("Today")) {
+      sortedEntries.add(MapEntry("Today", groupedItems["Today"]!));
+      groupedItems.remove("Today");
     }
-    if (groupedItems.containsKey('Yesterday')) {
-      sortedEntries.add(MapEntry('Yesterday', groupedItems['Yesterday']!));
-      groupedItems.remove('Yesterday');
+    if (groupedItems.containsKey("Yesterday")) {
+      sortedEntries.add(MapEntry("Yesterday", groupedItems["Yesterday"]!));
+      groupedItems.remove("Yesterday");
     }
 
     sortedEntries.addAll(
-        groupedItems.entries.toList()..sort((a, b) => b.key.compareTo(a.key)));
+      groupedItems.entries.toList()
+        ..sort((a, b) {
+          final dateA = DateFormat.yMMMMd().parse(a.key, true);
+          final dateB = DateFormat.yMMMMd().parse(b.key, true);
+          return dateB.compareTo(dateA); // Sort descending by date
+        }),
+    );
 
     return Map.fromEntries(sortedEntries);
   }

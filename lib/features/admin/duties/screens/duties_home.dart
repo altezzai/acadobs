@@ -17,8 +17,6 @@ class DutiesHomeScreen extends StatefulWidget {
 }
 
 class _DutiesHomeScreenState extends State<DutiesHomeScreen> {
-
-  
   @override
   void initState() {
     context.read<DutyController>().getDuties();
@@ -64,8 +62,6 @@ class _DutiesHomeScreenState extends State<DutiesHomeScreen> {
               ),
             ),
             SizedBox(height: screenHeight * 0.03),
-            
-            
             Expanded(
               child: Consumer<DutyController>(
                 builder: (context, value, child) {
@@ -76,25 +72,25 @@ class _DutiesHomeScreenState extends State<DutiesHomeScreen> {
                     ));
                   }
                   final groupedDuities = groupItemsByDate(
-        value.duties,
-        (duty) =>
-            DateTime.tryParse(duty.createdAt.toString()) ?? DateTime.now(),
-      );
+                    value.duties,
+                    (duty) =>
+                        DateTime.tryParse(duty.createdAt.toString()) ??
+                        DateTime.now(),
+                  );
                   return SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-          children: groupedDuities.entries.map((entry) {
-                      
+                      children: groupedDuities.entries.map((entry) {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(height: Responsive.height * 1),
-                _buildDateHeader(entry.key),
-                SizedBox(height: Responsive.height * 1),
+                            _buildDateHeader(entry.key),
+                            SizedBox(height: Responsive.height * 1),
                             ListView.builder(
-                               shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              padding: EdgeInsets.zero,
                               itemCount: value.duties.length,
                               itemBuilder: (context, index) {
                                 return Padding(
@@ -103,10 +99,12 @@ class _DutiesHomeScreenState extends State<DutiesHomeScreen> {
                                   ),
                                   child: DutyCard(
                                     title: value.duties[index].dutyTitle ?? "",
-                                    date: DateFormatter.formatDateString(
-                                        value.duties[index].createdAt.toString()),
+                                    date: DateFormatter.formatDateString(value
+                                        .duties[index].createdAt
+                                        .toString()),
                                     time: TimeFormatter.formatTimeFromString(
-                                        value.duties[index].createdAt.toString()),
+                                        value.duties[index].createdAt
+                                            .toString()),
                                     onTap: () {
                                       context.pushNamed(
                                         AppRouteConst.AdminViewDutyRouteName,
@@ -118,8 +116,8 @@ class _DutiesHomeScreenState extends State<DutiesHomeScreen> {
                               },
                             ),
                           ],
-                        );}).toList(),
-                      
+                        );
+                      }).toList(),
                     ),
                   );
                 },
@@ -130,7 +128,8 @@ class _DutiesHomeScreenState extends State<DutiesHomeScreen> {
       ),
     );
   }
-     Map<String, List<T>> groupItemsByDate<T>(
+
+  Map<String, List<T>> groupItemsByDate<T>(
     List<T> items,
     DateTime Function(T) getDate, // Function to extract the date from the item
   ) {
@@ -157,25 +156,30 @@ class _DutiesHomeScreenState extends State<DutiesHomeScreen> {
       groupedItems[formattedDate]!.add(item);
     }
 
-    // Sort grouped dates with "Today" and "Yesterday" on top.
+    // Sort grouped dates with "Today" and "Yesterday" on top and other dates in descending order.
     List<MapEntry<String, List<T>>> sortedEntries = [];
-    if (groupedItems.containsKey('Today')) {
-      sortedEntries.add(MapEntry('Today', groupedItems['Today']!));
-      groupedItems.remove('Today');
+    if (groupedItems.containsKey("Today")) {
+      sortedEntries.add(MapEntry("Today", groupedItems["Today"]!));
+      groupedItems.remove("Today");
     }
-    if (groupedItems.containsKey('Yesterday')) {
-      sortedEntries.add(MapEntry('Yesterday', groupedItems['Yesterday']!));
-      groupedItems.remove('Yesterday');
+    if (groupedItems.containsKey("Yesterday")) {
+      sortedEntries.add(MapEntry("Yesterday", groupedItems["Yesterday"]!));
+      groupedItems.remove("Yesterday");
     }
 
     sortedEntries.addAll(
-        groupedItems.entries.toList()..sort((a, b) => b.key.compareTo(a.key)));
+      groupedItems.entries.toList()
+        ..sort((a, b) {
+          final dateA = DateFormat.yMMMMd().parse(a.key, true);
+          final dateB = DateFormat.yMMMMd().parse(b.key, true);
+          return dateB.compareTo(dateA); // Sort descending by date
+        }),
+    );
 
     return Map.fromEntries(sortedEntries);
   }
-  
 
-    Widget _buildDateHeader(String date) {
+  Widget _buildDateHeader(String date) {
     return Padding(
       padding: const EdgeInsets.only(
         top: 10,

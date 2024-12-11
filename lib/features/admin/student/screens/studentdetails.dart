@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 //import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/shared_widgets/calender_widget.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
@@ -13,6 +15,8 @@ import 'package:school_app/features/admin/student/model/student_data.dart';
 import 'package:school_app/features/admin/student/screens/achievements_list.dart';
 import 'package:school_app/features/admin/student/screens/homework_list.dart';
 import 'package:school_app/features/admin/student/widgets/daily_attendance_container.dart';
+import 'package:school_app/features/admin/student/widgets/date_group_function.dart';
+import 'package:school_app/features/teacher/homework/widgets/work_container.dart';
 
 class StudentDetailPage extends StatefulWidget {
   final Student student;
@@ -35,7 +39,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
       final studentController = context.read<StudentController>();
       studentController.getDayAttendance(
           studentId: widget.student.id.toString());
-      achievementController.getAchievements(student_id: widget.student.id ?? 0);
+      achievementController.getAchievements(studentId: widget.student.id ?? 0);
       studentController.getStudentHomework(studentId: widget.student.id ?? 0);
     });
   }
@@ -135,7 +139,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                 children: [
                   _buildDashboardContent(),
                   AchievementsList(),
-                  Center(child: Text("Exam Content")),
+                  _buildExamContent(),
                   HomeworkList()
                 ],
               ),
@@ -161,6 +165,55 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
         CalenderWidget(),
         SizedBox(height: Responsive.height * 8),
       ],
+    );
+  }
+
+  Widget _buildExamContent() {
+    return Consumer<AchievementController>(
+      builder: (context, value, child) {
+        if (value.isloading) {
+          return const Center(
+              child: Loading(
+            color: Colors.grey,
+          ));
+        }
+
+        final groupedAchievements = groupItemsByDate(
+          value.achievements,
+          (achievement) =>
+              DateTime.parse(achievement.dateOfAchievement.toString()),
+        );
+
+        return ListView.builder(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+          itemCount: groupedAchievements.length,
+          itemBuilder: (context, index) {
+            final entry = groupedAchievements.entries.elementAt(index);
+            final dateGroup = entry.key;
+            final achievements = entry.value;
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: Responsive.height * 4),
+                Text(
+                  dateGroup,
+                  style: textThemeData.bodyMedium,
+                ),
+                const SizedBox(height: 10),
+                ...achievements.map((achievement) => WorkContainer(
+                      sub: achievement.awardingBody ?? "",
+                      work: achievement.category ?? "",
+                      icon: Icons.military_tech,
+                      icolor: Colors.green,
+                      bcolor: Colors.green.withOpacity(0.2),
+                    )),
+                const SizedBox(height: 20),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 }

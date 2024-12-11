@@ -1,98 +1,153 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:school_app/base/routes/app_route_config.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/date_formatter.dart';
+import 'package:school_app/base/utils/show_loading.dart';
+import 'package:school_app/features/admin/duties/controller/duty_controller.dart';
+import 'package:school_app/features/teacher/homework/widgets/work_container.dart';
 
-class DutiesTab extends StatelessWidget {
+class DutiesTab extends StatefulWidget {
+  final int teacherId;
+
+  const DutiesTab({Key? key, required this.teacherId}) : super(key: key);
+
   @override
-  Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 20),
-            Text(
-              'Today',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-                fontSize: screenWidth * 0.05,
-              ),
-            ),
-            DutyCard(
-                title: "Classroom Supervision",
-                date: "15-06-24",
-                isOngoing: true),
-            SizedBox(height: 20),
-            Text(
-              'Yesterday',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-                fontSize: screenWidth * 0.05,
-              ),
-            ),
-            DutyCard(title: "Lunch Duty", date: "14-06-24", isOngoing: false),
-          ],
-        ),
-      ),
-    );
-  }
+  State<DutiesTab> createState() => _DutiesTabState();
 }
 
-class DutyCard extends StatelessWidget {
-  final String title;
-  final String date;
-  final bool isOngoing;
+class _DutiesTabState extends State<DutiesTab> {
+  @override
+  void initState() {
+    super.initState();
+    context
+        .read<DutyController>()
+        .getAdminTeacherDuties(teacherId: widget.teacherId);
+  }
 
-  const DutyCard({
-    required this.title,
-    required this.date,
-    required this.isOngoing,
-  });
+  /// Group items by date (Today, Yesterday, Specific Dates)
+  Map<String, List<T>> groupItemsByDate<T>(
+    List<T> items,
+    DateTime Function(T) getDate,
+  ) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final yesterday = today.subtract(const Duration(days: 1));
+    Map<String, List<T>> groupedItems = {};
+    Map<String, DateTime> dateKeys = {};
+
+    for (var item in items) {
+      final itemDate =
+          DateTime(getDate(item).year, getDate(item).month, getDate(item).day);
+      String formattedDate;
+
+      if (itemDate == today) {
+        formattedDate = "Today";
+      } else if (itemDate == yesterday) {
+        formattedDate = "Yesterday";
+      } else {
+        formattedDate = DateFormat.yMMMMd().format(itemDate);
+      }
+
+      if (!groupedItems.containsKey(formattedDate)) {
+        groupedItems[formattedDate] = [];
+        dateKeys[formattedDate] = itemDate;
+      }
+      groupedItems[formattedDate]!.add(item);
+    }
+
+    // Sort grouped dates, prioritizing "Today" and "Yesterday"
+    List<MapEntry<String, List<T>>> sortedEntries = [];
+    if (groupedItems.containsKey("Today")) {
+      sortedEntries.add(MapEntry("Today", groupedItems.remove("Today")!));
+    }
+    if (groupedItems.containsKey("Yesterday")) {
+      sortedEntries
+          .add(MapEntry("Yesterday", groupedItems.remove("Yesterday")!));
+    }
+
+    sortedEntries.addAll(
+      groupedItems.entries.toList()
+        ..sort((a, b) {
+          final dateA = dateKeys[a.key]!;
+          final dateB = dateKeys[b.key]!;
+          return dateB.compareTo(dateA); // Sort by date descending
+        }),
+    );
+
+    return Map.fromEntries(sortedEntries);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(12),
-      margin: EdgeInsets.only(bottom: 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.shade300,
-            blurRadius: 10,
-            spreadRadius: 3,
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.work_history, color: Colors.blue, size: 40),
-              SizedBox(width: 10),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
-                  SizedBox(height: 4),
-                  Text(date,
-                      style: TextStyle(color: Colors.grey, fontSize: 13)),
-                ],
-              ),
-            ],
-          ),
-          Text(
-            isOngoing ? "Ongoing" : "Completed",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: isOngoing ? Colors.green : Colors.blue,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Consumer<DutyController>(
+        builder: (context, value, child) {
+          if (value.isloading) {
+            return Center(
+              child: Loading(color: Colors.grey),
+            );
+          }
+
+          // Group duties by date
+          final groupedDuties = groupItemsByDate(
+            value.teacherDuties,
+            (duty) =>
+                DateTime.tryParse(duty.createdAt.toString()) ?? DateTime.now(),
+          );
+
+          return SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: groupedDuties.entries.map((entry) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Date Header
+                    Padding(
+                      padding: const EdgeInsets.only(top: 13),
+                      child: Text(
+                        entry.key,
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    // List of duties
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: entry.value.length,
+                      itemBuilder: (context, index) {
+                        final duty = entry.value[index];
+                        return WorkContainer(
+                          bcolor: const Color(0xffCEFFD3),
+                          icolor: Colors.white,
+                          icon: Icons.done,
+                          work: duty.dutyTitle ?? "",
+                          sub: DateFormatter.formatDateString(
+                              duty.createdAt.toString()),
+                          prefixText: duty.status ?? "",
+                          prefixColor: Colors.red,
+                          onTap: () {
+                            context.pushNamed(
+                              AppRouteConst.dutiesRouteName,
+                              extra: DutyDetailArguments(
+                                  dutyItem: duty, index: index),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+                );
+              }).toList(),
             ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }

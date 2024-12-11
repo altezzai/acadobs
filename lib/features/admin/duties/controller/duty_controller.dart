@@ -189,4 +189,27 @@ class DutyController extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+// Get teacher duties in admin
+  Future<void> getAdminTeacherDuties({required int teacherId}) async {
+    _isloading = true;
+    // final teacherId = await SecureStorageService.getUserId();
+    log("Userid===== ${teacherId.toString()}");
+    try {
+      final response = await DutyServices()
+          .getTeacherDuties(teacherid: int.parse(teacherId.toString()));
+      print("***********${response.statusCode}");
+      _teacherduties.clear();
+      // print(response.toString());
+      if (response.statusCode == 200) {
+        _teacherduties = (response.data['duties'] as List<dynamic>)
+            .map((result) => DutyItem.fromJson(result))
+            .toList();
+      }
+    } catch (e) {
+      // print(e);
+    }
+    _isloading = false;
+    notifyListeners();
+  }
 }

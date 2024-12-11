@@ -4,6 +4,11 @@ import 'package:school_app/features/admin/teacher_section/widgets/dashboard_tab.
 import 'package:school_app/features/admin/teacher_section/widgets/duties_tab.dart';
 
 class TabSection extends StatelessWidget {
+  final int teacherId;
+  const TabSection({
+    super.key,
+    required this.teacherId,
+  });
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -26,7 +31,9 @@ class TabSection extends StatelessWidget {
               children: [
                 DashboardTab(),
                 ActivityTab(),
-                DutiesTab(),
+                DutiesTab(
+                  teacherId: teacherId,
+                ),
               ],
             ),
           ),
