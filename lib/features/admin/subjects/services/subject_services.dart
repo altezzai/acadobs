@@ -34,4 +34,27 @@ class SubjectServices {
       throw Exception('Failed to add subject: $e');
     }
   }
+
+  Future<Response> editSubject({
+    required int subjectid,
+    required String subject,
+    required String description,
+  
+  }) async {
+    // Create the data to send as JSON
+    final data = {
+      //'subjectid':subjectid,
+      'subject': subject,
+      'description': description,
+    };
+
+    try {
+      // Call the ApiServices post method with the data as JSON
+      final Response response = await ApiServices.post("/subjects/$subjectid", data);
+
+      return response;
+    } catch (e) {
+      throw Exception('Failed to add subject: $e');
+    }
+  }
 }
