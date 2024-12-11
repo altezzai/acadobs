@@ -37,12 +37,12 @@ class HomeworkList extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: Responsive.height * 4),
+              SizedBox(height: Responsive.height * 2),
               Text(
                 dateGroup,
                 style: textThemeData.bodyMedium,
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 5),
               ...homeworks.map((homework) => WorkContainer(
                     sub: homework.subject ?? "",
                     work: homework.assignmentTitle ?? "",
