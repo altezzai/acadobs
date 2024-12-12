@@ -46,6 +46,7 @@ class StudentServices {
     required String fatherFullName,
     required String motherFullName,
     required String bloodGroup,
+    required String parentEmail,
     String? studentPhotoPath,
   }) async {
     // Create the form data to pass to the API
@@ -64,6 +65,7 @@ class StudentServices {
       "father_full_name": fatherFullName,
       "mother_full_name": motherFullName,
       "blood_group": bloodGroup,
+      "parent_email":parentEmail,
       if (studentPhotoPath != null) // Only include if the photo is provided
         "student_photo": await MultipartFile.fromFile(studentPhotoPath, filename: studentPhotoPath.split('/').last),
     

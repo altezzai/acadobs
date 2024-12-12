@@ -140,6 +140,7 @@ class StudentController extends ChangeNotifier {
       required String fatherFullName,
       required String motherFullName,
       required String bloodGroup,
+      required String parentEmail,
       String? studentPhoto}) async {
     _isloading = true;
     try {
@@ -157,6 +158,7 @@ class StudentController extends ChangeNotifier {
           email: email,
           fatherFullName: fatherFullName,
           motherFullName: motherFullName,
+          parentEmail: parentEmail,
           bloodGroup: bloodGroup,
           studentPhotoPath: studentPhoto);
       if (response.statusCode == 201) {
