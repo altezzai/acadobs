@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 //import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
@@ -24,7 +26,8 @@ class StudentDetailPage extends StatefulWidget {
   final Student student;
   final UserType userType;
 
-  const StudentDetailPage({super.key, required this.student, required this.userType});
+  const StudentDetailPage(
+      {super.key, required this.student, required this.userType});
 
   @override
   State<StudentDetailPage> createState() => _StudentDetailPageState();
@@ -144,7 +147,13 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
               child: TabBarView(
                 children: [
                   _buildDashboardContent(),
-                  AchievementsList(userType: widget.userType,),
+                  AchievementsList(
+                    userType: widget.userType,
+                    onPressed: () {
+                      context.pushNamed(AppRouteConst.AddAchivementsRouteName,
+                          extra: widget.student.id);
+                    },
+                  ),
                   _buildExamContent(),
                   HomeworkList()
                 ],

@@ -122,4 +122,12 @@ class SubjectController extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  // **********subject selection************
+   int? _selectedSubjectId;
+  int? get selectedSubjectId => _selectedSubjectId;
+   void selectSubject(int subjectId) {
+    _selectedSubjectId = subjectId;
+    notifyListeners();
+  }
 }
