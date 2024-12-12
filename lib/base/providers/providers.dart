@@ -9,6 +9,8 @@ import 'package:school_app/core/navbar/controller/bottom_nav_controller.dart';
 import 'package:school_app/features/admin/duties/controller/duty_controller.dart';
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
 import 'package:school_app/features/admin/payments/controller/payment_controller.dart';
+import 'package:school_app/features/admin/reports/controller/student_report_controller.dart';
+import 'package:school_app/features/admin/reports/controller/teacher_report_controller.dart';
 import 'package:school_app/features/admin/student/controller/achievement_controller.dart';
 import 'package:school_app/features/admin/student/controller/exam_controller.dart';
 import 'package:school_app/features/admin/student/controller/student_controller.dart';
@@ -45,5 +47,7 @@ getProviders() {
     ChangeNotifierProvider(create: (_) => AuthController()),
     ChangeNotifierProvider(create: (_) => SubjectController()),
     ChangeNotifierProvider(create: (_) => ExamController()),
+    ChangeNotifierProvider(create: (_) => StudentReportController()),
+     ChangeNotifierProvider(create: (_) => TeacherReportController()),
   ];
 }
