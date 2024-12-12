@@ -59,6 +59,7 @@ import 'package:school_app/features/teacher/attendance/screens/take_attendance.d
 import 'package:school_app/features/teacher/duties/duty_detail.dart';
 import 'package:school_app/features/teacher/homework/model/homework_model.dart';
 import 'package:school_app/features/teacher/homework/screens/student_selection_screen.dart';
+import 'package:school_app/features/teacher/homework/screens/subject_selection.dart';
 import 'package:school_app/features/teacher/homework/screens/work.dart';
 import 'package:school_app/features/teacher/homework/screens/work_screen.dart';
 import 'package:school_app/features/teacher/homework/screens/work_view.dart';
@@ -263,7 +264,11 @@ class Approuter {
         name: AppRouteConst.AddAchivementsRouteName,
         path: '/addachivement',
         pageBuilder: (context, state) {
-          return MaterialPage(child: AddAchievementPage());
+          final studentId = state.extra as int;
+          return MaterialPage(
+              child: AddAchievementPage(
+            studentId: studentId,
+          ));
         },
       ),
       GoRoute(
@@ -604,6 +609,17 @@ class Approuter {
 
             return MaterialPage(child: EditSubjectPage(subjects: subjects));
           }),
+      GoRoute(
+        name: AppRouteConst.subjectSelectionRouteName,
+        path: '/subjectSelection',
+        pageBuilder: (context, state) {
+          final subjectController = state.extra as TextEditingController;
+          return MaterialPage(
+              child: SubjectSelectionPage(
+            subjectTextEditingController: subjectController,
+          ));
+        },
+      ),
     ],
   );
 }

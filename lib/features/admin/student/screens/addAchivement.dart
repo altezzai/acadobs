@@ -1,9 +1,6 @@
-import 'dart:developer';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:school_app/base/controller/student_id_controller.dart';
 import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
@@ -13,6 +10,9 @@ import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/admin/student/controller/achievement_controller.dart';
 
 class AddAchievementPage extends StatefulWidget {
+  final int studentId;
+
+  const AddAchievementPage({super.key, required this.studentId});
   @override
   _AddAchievementPageState createState() => _AddAchievementPageState();
 }
@@ -243,14 +243,14 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
                     final level = context
                         .read<DropdownProvider>()
                         .getSelectedItem('level');
-                    final studentId = context
-                        .read<StudentIdController>()
-                        .getSelectedStudentId();
+                    // final studentId = context
+                    //     .read<StudentIdController>()
+                    //     .getSelectedStudentId();
 
-                    log(">>>>>>>>>>>>${studentId}");
+                    // log(">>>>>>>>>>>>${studentId}");
                     context.read<AchievementController>().addAchievement(
                         context,
-                        studentId: studentId ?? 0,
+                        studentId: widget.studentId,
                         achievement_title: _titleController.text,
                         description: _descriptionController.text,
                         category: category,

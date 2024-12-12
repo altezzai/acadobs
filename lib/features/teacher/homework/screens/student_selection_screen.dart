@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/controller/student_id_controller.dart';
 import 'package:school_app/base/routes/app_route_config.dart';
-import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/features/teacher/homework/widgets/student_selection_card.dart';
 
@@ -38,7 +38,16 @@ class _StudentSelectionState extends State<StudentSelectionScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child:
               Consumer<StudentIdController>(builder: (context, value, child) {
-            return Column(
+            return value.isloading? Column(
+                    children: [
+                      SizedBox(
+                        height: Responsive.height * 38,
+                      ),
+                      Loading(
+                        color: Colors.grey,
+                      ),
+                    ],
+                  ): Column(
               children: [
                 SizedBox(
                   height: Responsive.height * 2,
@@ -81,7 +90,7 @@ class _StudentSelectionState extends State<StudentSelectionScreen> {
                 Navigator.pop(context);
               }
             },
-            widget: value.isloading ? ButtonLoading() : Text('Select'),
+            widget: Text('Select'),
           ),
           // CustomButton(
           //     text: "Select",

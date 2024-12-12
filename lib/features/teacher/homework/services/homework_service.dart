@@ -14,7 +14,7 @@ class HomeworkServices {
     required int teacherId,
     required String class_grade,
     required String section,
-    required String subject,
+    required int subjectId,
     required String assignment_title,
     required String description,
     required String assigned_date,
@@ -29,7 +29,7 @@ class HomeworkServices {
       'teacher_id': teacherId,
       'class_grade': class_grade,
       'section': section,
-      'subject': subject,
+      'subject': subjectId,
       'assignment_title': assignment_title,
       'description': description,
       'assigned_date': assigned_date,
@@ -46,4 +46,10 @@ class HomeworkServices {
 
     return response;
   }
+  // ********** get homework by teacherid*****************
+   Future<Response> getHomeworkByTeacherId({required String teacherId}) async {
+    final Response response = await ApiServices.get("/getHomeworkByTeacher/$teacherId");
+    return response;
+  }
+
 }

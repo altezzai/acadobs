@@ -64,8 +64,9 @@ class AchievementController extends ChangeNotifier {
         awarding_body: awarding_body,
         date_of_achievement: date_of_achievement,
       );
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         log(">>>>>>${response.statusMessage}");
+        await getAchievements(studentId: studentId);
         Navigator.pop(context);
       }
     } catch (e) {

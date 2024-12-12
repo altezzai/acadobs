@@ -89,24 +89,24 @@ class StudentController extends ChangeNotifier {
   }
 
   // *************Get students by parents******************
-    List<Student> _studentsByParents = [];
-  List<Student> get studentsByParents => _studentsByParents;
-    Future<void> getStudentsByParents() async {
-    _isloading = true;
-    final parentEmail = await SecureStorageService.getUserEmail();
-    try {
-      final response = await StudentServices().getStudent();
-      log("***********${response.statusCode}");
-      log(response.data.toString());
-      if (response.statusCode == 200) {
+  //   List<Student> _studentsByParents = [];
+  // List<Student> get studentsByParents => _studentsByParents;
+  //   Future<void> getStudentsByParents() async {
+  //   _isloading = true;
+  //   // final parentEmail = await SecureStorageService.getUserEmail();
+  //   try {
+  //     final response = await StudentServices().getStudent();
+  //     log("***********${response.statusCode}");
+  //     log(response.data.toString());
+  //     if (response.statusCode == 200) {
         
-      }
-    } catch (e) {
-      print(e);
-    }
-    _isloading = false;
-    notifyListeners();
-  }
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  //   _isloading = false;
+  //   notifyListeners();
+  // }
 
 
   // ***************GET student homework

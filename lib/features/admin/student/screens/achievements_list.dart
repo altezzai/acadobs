@@ -12,10 +12,9 @@ import 'package:school_app/features/teacher/homework/widgets/work_container.dart
 
 class AchievementsList extends StatelessWidget {
   final UserType userType;
-  const AchievementsList({
-    super.key,
-    required this.userType,
-  });
+  final VoidCallback onPressed;
+  const AchievementsList(
+      {super.key, required this.userType, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +22,7 @@ class AchievementsList extends StatelessWidget {
       floatingActionButton: userType == UserType.parent
           ? SizedBox.shrink()
           : FloatingActionButton(
-              onPressed: () {
-                context.pushNamed(AppRouteConst.AddAchivementsRouteName);
-              },
+              onPressed: onPressed,
               backgroundColor: Colors.black,
               child: const Icon(Icons.add, color: Colors.white),
             ),
@@ -62,8 +59,8 @@ class AchievementsList extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   ...achievements.map((achievement) => WorkContainer(
-                        sub: achievement.awardingBody ?? "",
-                        work: achievement.category ?? "",
+                        sub: achievement.category ?? "",
+                        work: achievement.achievementTitle ?? "",
                         icon: Icons.military_tech,
                         icolor: Colors.green,
                         bcolor: Colors.green.withOpacity(0.2),
