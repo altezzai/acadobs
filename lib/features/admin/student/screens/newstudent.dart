@@ -43,6 +43,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
   final TextEditingController _motherFullNameController =
       TextEditingController();
   final TextEditingController _bloodgroupController = TextEditingController();
+  final TextEditingController parentEmailController = TextEditingController();
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -303,6 +304,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 ),
                 SizedBox(height: 20),
                 CustomTextfield(
+                  controller: parentEmailController,
                   hintText: 'Parent Email',
                   iconData: Icon(Icons.email),
                 ),
@@ -392,112 +394,6 @@ class _AddStudentPageState extends State<AddStudentPage> {
 
                 SizedBox(height: 20),
 
-                GestureDetector(
-                  onTap: () async {
-                    await pickFile((fileName) {
-                      setState(() {
-                        selectedParentPhoto = fileName;
-                      });
-                    });
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(25.0),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 12.0),
-                    child: Row(
-                      children: [
-                        Icon(Icons.attachment_rounded, color: Colors.black),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            selectedParentPhoto ?? 'father Or Mother Photo',
-                            style: TextStyle(
-                                color: selectedParentPhoto != null
-                                    ? Colors.black
-                                    : Colors.grey,
-                                fontSize: 14),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                SizedBox(height: 20),
-
-                GestureDetector(
-                  onTap: () async {
-                    await pickFile((fileName) {
-                      setState(() {
-                        selectedAadharPhoto = fileName;
-                      });
-                    });
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(25.0),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 12.0),
-                    child: Row(
-                      children: [
-                        Icon(Icons.attachment_rounded, color: Colors.black),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            selectedAadharPhoto ?? 'Aadhar Photo',
-                            style: TextStyle(
-                                color: selectedAadharPhoto != null
-                                    ? Colors.black
-                                    : Colors.grey,
-                                fontSize: 14),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                SizedBox(height: 20),
-
-                GestureDetector(
-                  onTap: () async {
-                    await pickFile((fileName) {
-                      setState(() {
-                        selectedTransferCertificate = fileName;
-                      });
-                    });
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(25.0),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 12.0),
-                    child: Row(
-                      children: [
-                        Icon(Icons.attachment_rounded, color: Colors.black),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            selectedTransferCertificate ??
-                                'Previous School Transfer Certificate',
-                            style: TextStyle(
-                                color: selectedTransferCertificate != null
-                                    ? Colors.black
-                                    : Colors.grey,
-                                fontSize: 14),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
 
                 SizedBox(height: 40),
 
@@ -571,6 +467,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
           fatherFullName: _fatherFullNameController.text,
           motherFullName: _motherFullNameController.text,
           bloodGroup: _bloodgroupController.text,
+          parentEmail: parentEmailController.text,
           studentPhoto: selectedStudentPhoto);
 
       _clearFormFields();

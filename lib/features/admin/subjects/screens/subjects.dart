@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/capitalize_first_letter.dart';
+import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
-import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/features/admin/subjects/controller/subject_controller.dart';
 
 class SubjectsScreen extends StatefulWidget {
@@ -64,6 +65,7 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
           );
         }
         return ListView.builder(
+          padding: EdgeInsets.zero,
           itemCount: value.subjects.length,
           itemBuilder: (context, index) {
             final subject = value.subjects[index];
@@ -76,7 +78,7 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
                   backgroundColor: Colors.blue,
                   child: Icon(Icons.book_sharp, color: Colors.white),
                 ),
-                title: Text(subject.subject ?? "",
+                title: Text(capitalizeEachWord(subject.subject ?? ""),
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                 subtitle: Text(subject.description ?? ""),

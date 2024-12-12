@@ -101,35 +101,57 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
     final upcomingThreshold = today.add(Duration(days: 7));
 
     Map<String, List<T>> groupedItems = {};
+    Map<String, DateTime> dateKeys =
+        {}; // To track the parsed date for each key
 
     for (var item in items) {
       final itemDate = getDate(item);
       String formattedDate;
 
-      if (itemDate.isAfter(today) && itemDate.isBefore(tomorrow)) {
+      if (itemDate.isAtSameMomentAs(today)) {
+        formattedDate = "Today";
+      } else if (itemDate.isAtSameMomentAs(tomorrow)) {
         formattedDate = "Tomorrow";
       } else if (itemDate.isAfter(tomorrow) &&
           itemDate.isBefore(upcomingThreshold)) {
         formattedDate = "Upcoming";
-      } else if (itemDate.isAtSameMomentAs(today)) {
-        formattedDate = "Today";
       } else {
         formattedDate = DateFormatter.formatDateString(itemDate.toString());
       }
 
       if (!groupedItems.containsKey(formattedDate)) {
         groupedItems[formattedDate] = [];
+        dateKeys[formattedDate] = itemDate; // Store the actual date
       }
       groupedItems[formattedDate]!.add(item);
     }
 
-    return Map.fromEntries(groupedItems.entries.toList()
-      ..sort((a, b) {
-        if (a.key == "Today") return -1;
-        if (a.key == "Tomorrow") return -1;
-        if (a.key == "Upcoming") return -1;
-        return b.key.compareTo(a.key);
-      }));
+    // Sort grouped dates with "Today," "Tomorrow," and "Upcoming" on top, and others in descending order.
+    List<MapEntry<String, List<T>>> sortedEntries = [];
+    if (groupedItems.containsKey("Today")) {
+      sortedEntries.add(MapEntry("Today", groupedItems["Today"]!));
+      groupedItems.remove("Today");
+    }
+    if (groupedItems.containsKey("Tomorrow")) {
+      sortedEntries.add(MapEntry("Tomorrow", groupedItems["Tomorrow"]!));
+      groupedItems.remove("Tomorrow");
+    }
+    if (groupedItems.containsKey("Upcoming")) {
+      sortedEntries.add(MapEntry("Upcoming", groupedItems["Upcoming"]!));
+      groupedItems.remove("Upcoming");
+    }
+
+    // Sort the remaining entries by the actual date stored in `dateKeys`
+    sortedEntries.addAll(
+      groupedItems.entries.toList()
+        ..sort((a, b) {
+          final dateA = dateKeys[a.key]!;
+          final dateB = dateKeys[b.key]!;
+          return dateB.compareTo(dateA); // Descending order
+        }),
+    );
+
+    return Map.fromEntries(sortedEntries);
   }
 
   Widget _buildNotices() {

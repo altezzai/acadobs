@@ -1,6 +1,7 @@
 // import 'dart:developer';
 // import 'package:dio/dio.dart';
 import 'dart:developer';
+
 //import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -21,8 +22,8 @@ class StudentController extends ChangeNotifier {
   List<Student> get students => _students;
   List<Student> _filteredstudents = [];
   List<Student> get filteredstudents => _filteredstudents;
-  List<Student> _individualstudents = [];
-  List<Student> get individualstudents => _individualstudents;
+  // List<Student> _individualstudents = [];
+  // List<Student> get individualstudents => _individualstudents;
 
   List<Student> _parents = [];
   List<Student> get parents => _parents;
@@ -39,11 +40,11 @@ class StudentController extends ChangeNotifier {
       log("***********${response.statusCode}");
       log(response.data.toString());
       if (response.statusCode == 200) {
-        _individualstudents.clear();
-        _individualstudents = (response.data as List<dynamic>)
+        _students.clear();
+        _students = (response.data as List<dynamic>)
             .map((result) => Student.fromJson(result))
             .toList();
-        log(_individualstudents.toString());
+        log(_students.toString());
       }
     } catch (e) {
       print(e);
@@ -52,25 +53,40 @@ class StudentController extends ChangeNotifier {
     notifyListeners();
   }
 
+
+// **************single child details***************
+  Student? _individualStudent;
+  Student? get individualStudent => _individualStudent;
   Future<void> getIndividualStudentDetails() async {
     _isloading = true;
+    notifyListeners(); // Notify before starting the operation
+
     try {
+      log("Fetching individual student details...");
+
       final studentId = await SecureStorageService.getUserId();
+      log("Retrieved Student ID: $studentId");
+
       final response = await StudentServices()
           .getIndividualStudentDetails(studentId: studentId);
-      print("*${response.statusCode}");
-      print(response.toString());
+
+      log("API Response Status Code: ${response.statusCode}");
+      log("API Response Data: ${response.data}");
+
       if (response.statusCode == 200) {
-        _students.clear();
-        _students = (response.data as List<dynamic>)
-            .map((result) => Student.fromJson(result))
-            .toList();
+        // Assuming response.data contains the single student JSON object
+        _individualStudent = Student.fromJson(response.data);
+        log("Student details successfully stored in _individualStudent: ${_individualStudent.toString()}");
+      } else {
+        log("Failed to fetch student details. Status Code: ${response.statusCode}");
       }
-    } catch (e) {
-      print(e);
+    } catch (e, stackTrace) {
+      log("Error fetching student details: $e",
+          error: e, stackTrace: stackTrace);
+    } finally {
+      _isloading = false;
+      notifyListeners(); // Notify after completing the operation
     }
-    _isloading = false;
-    notifyListeners();
   }
 
   List<HomeworkDetail> _homeworks = [];
@@ -124,6 +140,7 @@ class StudentController extends ChangeNotifier {
       required String fatherFullName,
       required String motherFullName,
       required String bloodGroup,
+      required String parentEmail,
       String? studentPhoto}) async {
     _isloading = true;
     try {
@@ -141,6 +158,7 @@ class StudentController extends ChangeNotifier {
           email: email,
           fatherFullName: fatherFullName,
           motherFullName: motherFullName,
+          parentEmail: parentEmail,
           bloodGroup: bloodGroup,
           studentPhotoPath: studentPhoto);
       if (response.statusCode == 201) {

@@ -4,11 +4,11 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
-import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/constants.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/core/shared_widgets/add_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/admin/payments/controller/payment_controller.dart';
@@ -116,19 +116,25 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
       groupedItems[formattedDate]!.add(item);
     }
 
-    // Sort grouped dates with "Today" and "Yesterday" on top.
+    // Sort grouped dates with "Today" and "Yesterday" on top, followed by descending dates.
     List<MapEntry<String, List<T>>> sortedEntries = [];
-    if (groupedItems.containsKey('Today')) {
-      sortedEntries.add(MapEntry('Today', groupedItems['Today']!));
-      groupedItems.remove('Today');
+    if (groupedItems.containsKey("Today")) {
+      sortedEntries.add(MapEntry("Today", groupedItems["Today"]!));
+      groupedItems.remove("Today");
     }
-    if (groupedItems.containsKey('Yesterday')) {
-      sortedEntries.add(MapEntry('Yesterday', groupedItems['Yesterday']!));
-      groupedItems.remove('Yesterday');
+    if (groupedItems.containsKey("Yesterday")) {
+      sortedEntries.add(MapEntry("Yesterday", groupedItems["Yesterday"]!));
+      groupedItems.remove("Yesterday");
     }
 
     sortedEntries.addAll(
-        groupedItems.entries.toList()..sort((a, b) => b.key.compareTo(a.key)));
+      groupedItems.entries.toList()
+        ..sort((a, b) {
+          final dateA = DateFormat.yMMMMd().parse(a.key, true);
+          final dateB = DateFormat.yMMMMd().parse(b.key, true);
+          return dateB.compareTo(dateA); // Sort descending by date
+        }),
+    );
 
     return Map.fromEntries(sortedEntries);
   }
@@ -137,10 +143,16 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
     context.read<PaymentController>().getPayments();
     return Consumer<PaymentController>(builder: (context, value, child) {
       if (value.isloading) {
-        return Center(
-            child: Loading(
-          color: Colors.grey,
-        ));
+        return Column(
+          children: [
+            SizedBox(
+              height: Responsive.height * 30,
+            ),
+            Loading(
+              color: Colors.grey,
+            ),
+          ],
+        );
       }
 
       final groupedPayments = groupItemsByDate(
@@ -194,10 +206,16 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
     context.read<PaymentController>().getDonations();
     return Consumer<PaymentController>(builder: (context, value, child) {
       if (value.isloading) {
-        return Center(
-            child: Loading(
-          color: Colors.grey,
-        ));
+        return Column(
+          children: [
+            SizedBox(
+              height: Responsive.height * 30,
+            ),
+            Loading(
+              color: Colors.grey,
+            ),
+          ],
+        );
       }
 
       final groupedDonations = groupItemsByDate(

@@ -1,23 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+//import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/base/utils/urls.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/calender_widget.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/profile_container.dart';
 import 'package:school_app/features/admin/student/controller/achievement_controller.dart';
+import 'package:school_app/features/admin/student/controller/exam_controller.dart';
 import 'package:school_app/features/admin/student/controller/student_controller.dart';
 import 'package:school_app/features/admin/student/model/student_data.dart';
 import 'package:school_app/features/admin/student/screens/achievements_list.dart';
 import 'package:school_app/features/admin/student/screens/homework_list.dart';
 import 'package:school_app/features/admin/student/widgets/daily_attendance_container.dart';
+import 'package:school_app/features/admin/student/widgets/date_group_function.dart';
+import 'package:school_app/features/teacher/homework/widgets/work_container.dart';
 
 class StudentDetailPage extends StatefulWidget {
   final Student student;
+  final UserType userType;
 
-  const StudentDetailPage({required this.student, Key? key}) : super(key: key);
+  const StudentDetailPage({super.key, required this.student, required this.userType});
 
   @override
   State<StudentDetailPage> createState() => _StudentDetailPageState();
@@ -25,18 +32,21 @@ class StudentDetailPage extends StatefulWidget {
 
 class _StudentDetailPageState extends State<StudentDetailPage> {
   late AchievementController achievementController;
+  late ExamController examController;
 
   @override
   void initState() {
     super.initState();
     achievementController = context.read<AchievementController>();
+    examController = context.read<ExamController>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final studentController = context.read<StudentController>();
       studentController.getDayAttendance(
           studentId: widget.student.id.toString());
-      achievementController.getAchievements(student_id: widget.student.id ?? 0);
+      achievementController.getAchievements(studentId: widget.student.id ?? 0);
       studentController.getStudentHomework(studentId: widget.student.id ?? 0);
+      examController.getExamMarks(studentId: widget.student.id ?? 0);
     });
   }
 
@@ -83,7 +93,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                           title: "Students",
                           isProfileIcon: false,
                           onTap: () {
-                            context.pop();
+                            Navigator.pop(context);
                           },
                         ),
                         ProfileContainer(
@@ -134,8 +144,8 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
               child: TabBarView(
                 children: [
                   _buildDashboardContent(),
-                  AchievementsList(),
-                  Center(child: Text("Exam Content")),
+                  AchievementsList(userType: widget.userType,),
+                  _buildExamContent(),
                   HomeworkList()
                 ],
               ),
@@ -161,6 +171,56 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
         CalenderWidget(),
         SizedBox(height: Responsive.height * 8),
       ],
+    );
+  }
+
+  Widget _buildExamContent() {
+    return Consumer<ExamController>(
+      builder: (context, value, child) {
+        if (value.isloading) {
+          return const Center(
+              child: Loading(
+            color: Colors.grey,
+          ));
+        }
+
+        final groupedExams = groupItemsByDate(
+          value.exam,
+          (exam) => DateTime.parse(exam.date.toString()),
+        );
+
+        return ListView.builder(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+          itemCount: groupedExams.length,
+          itemBuilder: (context, index) {
+            final entry = groupedExams.entries.elementAt(index);
+            final dateGroup = entry.key;
+            final exams = entry.value;
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: Responsive.height * 2),
+                Text(
+                  dateGroup,
+                  style: textThemeData.bodyMedium,
+                ),
+                const SizedBox(height: 10),
+                ...exams.map((exam) => WorkContainer(
+                      sub: exam.subject ?? "",
+                      work: exam.title ?? "",
+                      icon: Icons.workspace_premium_outlined,
+                      icolor: Colors.green,
+                      bcolor: Colors.green.withOpacity(0.2),
+                      prefixText:
+                          '${exam.marks.toString()} / ${exam.totalMarks}',
+                    )),
+                const SizedBox(height: 10),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 }

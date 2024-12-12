@@ -3,15 +3,15 @@ import 'package:school_app/base/services/api_services.dart';
 
 class AchievementService {
   // Get Achievements
-  Future<Response> getAchievements({required int student_id}) async {
+  Future<Response> getAchievements({required int studentId}) async {
     final Response response =
-        await ApiServices.get("/achievements/$student_id");
+        await ApiServices.get("/showAchievementsByStudentId/$studentId");
     return response;
   }
 
   // Add achievements
   Future<Response> addAchievement({
-    required String student_id,
+    required String studentId,
     required String achievement_title,
     required String description,
     required String category,
@@ -20,7 +20,7 @@ class AchievementService {
   }) async {
     // Create the form data to pass to the API
     final formData = {
-      'student_id': student_id,
+      'student_id': studentId,
       'achievement_title': achievement_title,
       'description': description,
       'category': category,

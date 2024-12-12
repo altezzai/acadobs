@@ -1,12 +1,15 @@
 import 'package:intl/intl.dart';
 
 Map<String, List<T>> groupItemsByDate<T>(
-    List<T> items, DateTime Function(T) getDate) {
+  List<T> items,
+  DateTime Function(T) getDate,
+) {
   final now = DateTime.now();
   final today = DateTime(now.year, now.month, now.day);
   final yesterday = today.subtract(const Duration(days: 1));
 
   Map<String, List<T>> groupedItems = {};
+  Map<String, DateTime> dateKeys = {}; // To store actual dates for sorting
 
   for (var item in items) {
     final itemDate =
@@ -23,6 +26,7 @@ Map<String, List<T>> groupItemsByDate<T>(
 
     if (!groupedItems.containsKey(formattedDate)) {
       groupedItems[formattedDate] = [];
+      dateKeys[formattedDate] = itemDate; // Save the actual date for sorting
     }
     groupedItems[formattedDate]!.add(item);
   }
@@ -38,8 +42,15 @@ Map<String, List<T>> groupItemsByDate<T>(
     groupedItems.remove("Yesterday");
   }
 
+  // Sort remaining entries by their actual dates (descending order)
   sortedEntries.addAll(
-      groupedItems.entries.toList()..sort((a, b) => b.key.compareTo(a.key)));
+    groupedItems.entries.toList()
+      ..sort((a, b) {
+        final dateA = dateKeys[a.key]!;
+        final dateB = dateKeys[b.key]!;
+        return dateB.compareTo(dateA); // Sort by date descending
+      }),
+  );
 
   return Map.fromEntries(sortedEntries);
 }
