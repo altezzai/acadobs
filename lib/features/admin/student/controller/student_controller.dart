@@ -22,8 +22,7 @@ class StudentController extends ChangeNotifier {
   List<Student> get students => _students;
   List<Student> _filteredstudents = [];
   List<Student> get filteredstudents => _filteredstudents;
-  // List<Student> _individualstudents = [];
-  // List<Student> get individualstudents => _individualstudents;
+
 
   List<Student> _parents = [];
   List<Student> get parents => _parents;
@@ -89,10 +88,31 @@ class StudentController extends ChangeNotifier {
     }
   }
 
+  // *************Get students by parents******************
+    List<Student> _studentsByParents = [];
+  List<Student> get studentsByParents => _studentsByParents;
+    Future<void> getStudentsByParents() async {
+    _isloading = true;
+    final parentEmail = await SecureStorageService.getUserEmail();
+    try {
+      final response = await StudentServices().getStudent();
+      log("***********${response.statusCode}");
+      log(response.data.toString());
+      if (response.statusCode == 200) {
+        
+      }
+    } catch (e) {
+      print(e);
+    }
+    _isloading = false;
+    notifyListeners();
+  }
+
+
+  // ***************GET student homework
+  
   List<HomeworkDetail> _homeworks = [];
   List<HomeworkDetail> get homeworks => _homeworks;
-
-  // GET student homework
   Future<void> getStudentHomework({required int studentId}) async {
     _isloading = true;
     try {
