@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_button.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
+import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/parent/leave_request/controller/studentLeaveReq_controller.dart';
-import 'package:school_app/core/controller/dropdown_provider.dart';
-import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 
 class AddStudentLeaveRequest extends StatefulWidget {
-  const AddStudentLeaveRequest({super.key});
+  final int studentId;
+  const AddStudentLeaveRequest({super.key, required this.studentId, });
 
   @override
   State<AddStudentLeaveRequest> createState() => _AddStudentLeaveRequestState();
@@ -52,8 +51,7 @@ class _AddStudentLeaveRequestState extends State<AddStudentLeaveRequest> {
                 title: "Add Leave Requset",
                 isProfileIcon: false,
                 onTap: () {
-                  context
-                      .goNamed(AppRouteConst.StudentLeaveRequestViewRouteName);
+                  Navigator.pop(context);
                 },
               ),
               Text(
@@ -65,20 +63,20 @@ class _AddStudentLeaveRequestState extends State<AddStudentLeaveRequest> {
               SizedBox(
                 height: Responsive.height * 2,
               ),
-              CustomTextfield(
-                controller: _studentIdController,
-                hintText: 'student ID',
-                iconData: Icon(Icons.person),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'student ID is required';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(
-                height: Responsive.height * 2,
-              ),
+              // CustomTextfield(
+              //   controller: _studentIdController,
+              //   hintText: 'student ID',
+              //   iconData: Icon(Icons.person),
+              //   validator: (value) {
+              //     if (value == null || value.isEmpty) {
+              //       return 'student ID is required';
+              //     }
+              //     return null;
+              //   },
+              // ),
+              // SizedBox(
+              //   height: Responsive.height * 2,
+              // ),
               CustomDropdown(
                 dropdownKey: 'leaveType',
                 label: 'Leave Type',
@@ -127,7 +125,7 @@ class _AddStudentLeaveRequestState extends State<AddStudentLeaveRequest> {
                         .read<StudentLeaveRequestController>()
                         .addNewStudentLeaveRequest(
                           context,
-                          studentId: _studentIdController.text,
+                          studentId: widget.studentId.toString(),
                           leaveType: selectedLeaveType,
                           startDate: _startDateController.text,
                           endDate: _endDateController.text,

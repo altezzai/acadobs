@@ -89,6 +89,8 @@ class StudentController extends ChangeNotifier {
   // *************Get students by parents******************
   List<Student> _studentsByParents = [];
   List<Student> get studentsByParents => _studentsByParents;
+  List<int> _syudentIds = [];
+  List<int> get studentIds => _syudentIds;
   Future<void> getStudentsByParentEmail() async {
     _isloading = true;
     final parentEmail = await SecureStorageService.getUserEmail();
@@ -99,10 +101,17 @@ class StudentController extends ChangeNotifier {
       log(response.data.toString());
       if (response.statusCode == 200) {
         _studentsByParents.clear();
+        _syudentIds.clear(); // Clear the studentIds list before adding new ones
+
         _studentsByParents = (response.data as List<dynamic>)
             .map((result) => Student.fromJson(result))
             .toList();
-        log(_students.toString());
+
+        // Extract student IDs and store them in _syudentIds
+        _syudentIds.addAll(
+            _studentsByParents.map((student) => student.id ?? 0).toList());
+
+        log("Student IDs: $_syudentIds");
       }
     } catch (e) {
       print(e);
