@@ -139,7 +139,7 @@ class DutyController extends ChangeNotifier {
         remark: remark,
         teachers: teachers,
       );
-      if (response.statusCode == 201) {
+      if (response.statusCode == 201 || response.statusCode == 200) {
         log(">>>>>>${response.statusMessage}");
         context.pushNamed(AppRouteConst.bottomNavRouteName,
             extra: UserType.admin);
@@ -156,7 +156,7 @@ class DutyController extends ChangeNotifier {
       {required int duty_id}) async {
     try {
       final response = await DutyServices().progressDuty(duty_id: duty_id);
-      if (response.statusCode == 201) {
+      if (response.statusCode == 201 || response.statusCode == 200) {
         log(">>>>>>${response.statusMessage}");
         CustomSnackbar.show(context,
             message: "Duty In Progress", type: SnackbarType.info);
@@ -175,7 +175,7 @@ class DutyController extends ChangeNotifier {
       {required int duty_id}) async {
     try {
       final response = await DutyServices().completeDuty(duty_id: duty_id);
-      if (response.statusCode == 201) {
+      if (response.statusCode == 201 || response.statusCode == 200) {
         log(">>>>>>${response.statusMessage}");
         CustomSnackbar.show(context,
             message: "Duty Completed", type: SnackbarType.success);

@@ -380,14 +380,20 @@ class Approuter {
         name: AppRouteConst.StudentLeaveRequestViewRouteName,
         path: '/studentleaverequestview',
         pageBuilder: (context, state) {
-          return MaterialPage(child: StudentLeaveRequestScreen());
+          final studentId = state.extra as int;
+          return MaterialPage(child: StudentLeaveRequestScreen(
+            studentId: studentId,
+          ));
         },
       ),
       GoRoute(
         name: AppRouteConst.AddStudentLeaveRequestRouteName,
         path: '/addstudentleaverequest',
         pageBuilder: (context, state) {
-          return MaterialPage(child: AddStudentLeaveRequest());
+          final int studentId = state.extra as int;
+          return MaterialPage(child: AddStudentLeaveRequest(
+            studentId: studentId,
+          ));
         },
       ),
       GoRoute(

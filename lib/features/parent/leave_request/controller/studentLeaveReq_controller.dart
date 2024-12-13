@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
-
 import 'package:school_app/features/parent/leave_request/model/studentLeaveReq_model.dart';
 import 'package:school_app/features/parent/leave_request/services/studentLeaveReq_services.dart';
 
@@ -13,8 +12,9 @@ class StudentLeaveRequestController extends ChangeNotifier {
   List<StudentLeaveRequest> _studentsLeaveRequest = [];
   List<StudentLeaveRequest> get studentsLeaveRequest => _studentsLeaveRequest;
 
-    List<StudentLeaveRequest> _studentsIndividualLeaveRequest = [];
-  List<StudentLeaveRequest> get studentsIndividualLeaveRequest => _studentsIndividualLeaveRequest;
+  List<StudentLeaveRequest> _studentsIndividualLeaveRequest = [];
+  List<StudentLeaveRequest> get studentsIndividualLeaveRequest =>
+      _studentsIndividualLeaveRequest;
 
 // **********Get all students Leave request*****************
   Future<void> getStudentLeaveRequests() async {
@@ -37,15 +37,16 @@ class StudentLeaveRequestController extends ChangeNotifier {
   }
 
   //************Get individual student leaverequest*****************
-  Future<void> getIndividualStudentLeaveRequests({required int studentId}) async {
+  Future<void> getIndividualStudentLeaveRequests(
+      {required int studentId}) async {
     _isloading = true;
     try {
-      final response =
-          await StudentLeaveRequestServices().getStudentLeaveRequestById(studentId: studentId);
+      final response = await StudentLeaveRequestServices()
+          .getStudentLeaveRequestById(studentId: studentId);
       print("***********${response.statusCode}");
       print(response.toString());
       if (response.statusCode == 200) {
-        _studentsIndividualLeaveRequest.clear();
+        // _studentsIndividualLeaveRequest.clear();
         _studentsIndividualLeaveRequest = (response.data as List<dynamic>)
             .map((result) => StudentLeaveRequest.fromJson(result))
             .toList();
