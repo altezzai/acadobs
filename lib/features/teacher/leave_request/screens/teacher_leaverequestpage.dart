@@ -29,16 +29,16 @@ class _TeacherLeaverequestScreenState extends State<TeacherLeaverequestScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(
+              height: Responsive.height * 2,
+            ),
             // Custom AppBar
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
-              child: CustomAppbar(
-                title: "My Leave Requests",
-                isProfileIcon: false,
-                onTap: () => context.goNamed(
-                  AppRouteConst.bottomNavRouteName,
-                  extra: UserType.teacher,
-                ),
+            CustomAppbar(
+              title: "My Leave Requests",
+              isProfileIcon: false,
+              onTap: () => context.goNamed(
+                AppRouteConst.bottomNavRouteName,
+                extra: UserType.teacher,
               ),
             ),
             SizedBox(height: screenHeight * 0.03),
@@ -115,10 +115,15 @@ class _TeacherLeaverequestScreenState extends State<TeacherLeaverequestScreen> {
     return Consumer<TeacherLeaveRequestController>(
         builder: (context, value, child) {
       if (value.isloading) {
-        return Center(
-          child: Loading(
-            color: Colors.grey,
-          ),
+        return Column(
+          children: [
+            SizedBox(
+              height: Responsive.height * 25,
+            ),
+            Loading(
+              color: Colors.grey,
+            ),
+          ],
         );
       }
       final groupedTeacherLeaveRequests = groupItemsByDate(
@@ -142,10 +147,9 @@ class _TeacherLeaverequestScreenState extends State<TeacherLeaverequestScreen> {
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       padding: EdgeInsets.zero,
-                      itemCount: value.teacherIndividualLeaveRequest.length,
+                      itemCount: entry.value.length, // Use grouped items here
                       itemBuilder: (context, index) {
-                        final teacherLeaveRequest =
-                            value.teacherIndividualLeaveRequest[index];
+                        final teacherLeaveRequest = entry.value[index];
                         return Padding(
                             padding: EdgeInsets.only(
                               bottom: 15,
