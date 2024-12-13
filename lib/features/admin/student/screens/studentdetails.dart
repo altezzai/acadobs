@@ -20,6 +20,7 @@ import 'package:school_app/features/admin/student/screens/achievements_list.dart
 import 'package:school_app/features/admin/student/screens/homework_list.dart';
 import 'package:school_app/features/admin/student/widgets/daily_attendance_container.dart';
 import 'package:school_app/features/admin/student/widgets/date_group_function.dart';
+import 'package:school_app/features/parent/leave_request/screens/student_leaveRequest.dart';
 import 'package:school_app/features/teacher/homework/widgets/work_container.dart';
 
 class StudentDetailPage extends StatefulWidget {
@@ -79,7 +80,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 4, // Number of tabs
+      length: 5, // Number of tabs
       child: Scaffold(
         body: Consumer<StudentController>(builder: (context, value, child) {
           return NestedScrollView(
@@ -135,6 +136,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                           Tab(text: "Achievements"),
                           Tab(text: "Exam"),
                           Tab(text: "Homework"),
+                          Tab(text: "Leave Request"),
                         ],
                       ),
                     ),
@@ -155,7 +157,16 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                     },
                   ),
                   _buildExamContent(),
-                  HomeworkList()
+                  HomeworkList(),
+                  StudentLeaveRequestScreen(
+                    studentId: widget.student.id ?? 0,
+                    userType: widget.userType,
+                    onPressed: () {
+                      context.pushNamed(
+                          AppRouteConst.AddStudentLeaveRequestRouteName,
+                          extra: widget.student.id);
+                    },
+                  )
                 ],
               ),
             ),

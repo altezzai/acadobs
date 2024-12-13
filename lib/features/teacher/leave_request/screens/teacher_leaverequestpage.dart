@@ -50,7 +50,6 @@ class _TeacherLeaverequestScreenState extends State<TeacherLeaverequestScreen> {
               ontap: () => context
                   .pushNamed(AppRouteConst.AddTeacherLeaveRequestRouteName),
             ),
-            SizedBox(height: screenHeight * 0.03),
             // Today's Leave Requests
 
             SizedBox(height: screenHeight * 0.03),
@@ -69,17 +68,21 @@ class _TeacherLeaverequestScreenState extends State<TeacherLeaverequestScreen> {
     DateTime Function(T) getDate, // Function to extract the date from the item
   ) {
     final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
+    final today =
+        DateTime(now.year, now.month, now.day); // Strip time component
     final yesterday = today.subtract(Duration(days: 1));
 
     Map<String, List<T>> groupedItems = {};
 
     for (var item in items) {
       final itemDate = getDate(item);
+      final itemDateOnly = DateTime(
+          itemDate.year, itemDate.month, itemDate.day); // Strip time component
       String formattedDate;
-      if (itemDate.isAtSameMomentAs(today)) {
+
+      if (itemDateOnly == today) {
         formattedDate = "Today";
-      } else if (itemDate.isAtSameMomentAs(yesterday)) {
+      } else if (itemDateOnly == yesterday) {
         formattedDate = "Yesterday";
       } else {
         formattedDate = DateFormat.yMMMMd().format(itemDate);
@@ -140,7 +143,7 @@ class _TeacherLeaverequestScreenState extends State<TeacherLeaverequestScreen> {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: Responsive.height * 1),
+                  // SizedBox(height: Responsive.height * 1),
                   _buildDateHeader(entry.key),
                   SizedBox(height: Responsive.height * 1),
                   ListView.builder(
@@ -155,11 +158,11 @@ class _TeacherLeaverequestScreenState extends State<TeacherLeaverequestScreen> {
                               bottom: 15,
                             ),
                             child: LeaveRequestCard(
-                              title:
-                                  'Leave request for ${DateFormatter.formatDateString(teacherLeaveRequest.startDate.toString())}',
+                              title: teacherLeaveRequest.leaveType ?? "",
                               status: teacherLeaveRequest.approvalStatus ?? "",
-                              time: TimeFormatter.formatTimeFromString(
-                                  teacherLeaveRequest.createdAt.toString()),
+                              time: DateFormatter.formatDateString(
+                                teacherLeaveRequest.startDate.toString(),
+                              ),
                               onTap: () {
                                 context.pushNamed(
                                   AppRouteConst
