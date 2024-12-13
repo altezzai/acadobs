@@ -31,7 +31,8 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
   void initState() {
     context.read<NoticeController>().getEvents();
     context.read<NoticeController>().getNotices();
-    context.read<StudentController>().getIndividualStudentDetails();
+    // context.read<StudentController>().getIndividualStudentDetails();
+    context.read<StudentController>().getStudentsByParentEmail();
     super.initState();
   }
 
@@ -216,44 +217,59 @@ class HomePage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
 
-                    // Consumer<StudentController>(
-                    //     builder: (context, value, child) {
-                    //   return ListView.builder(
-                    //     padding: EdgeInsets.zero,
-                    //     physics: NeverScrollableScrollPhysics(),
-                    //     shrinkWrap: true,
-                    //     itemCount: value.students.take(2).length,
-                    //     itemBuilder: (context, index) {
-                    //       return ChildCard(
-                    //         childName: value.students[index].fullName ?? "",
-                    //         className: value.students[index].studentClass ?? "",
-                    //         imageProvider: AssetImage('assets/child2.png'),
-                    //       );
-                    //     },
-                    //   );
-                    // }),
                     Consumer<StudentController>(
                         builder: (context, value, child) {
-                      return value.isloading
-                          ? Loading(
-                              color: Colors.grey,
-                            )
-                          : ProfileTile(
-                              name: capitalizeEachWord(
-                                  value.individualStudent!.fullName ?? ""),
-                              description:
-                                  value.individualStudent!.studentClass ?? "",
-                              imageUrl:
-                                  "${baseUrl}${Urls.studentPhotos}${value.individualStudent!.studentPhoto}",
-                              onPressed: () {
-                                context.pushNamed(
-                                    AppRouteConst.AdminstudentdetailsRouteName,
-                                    extra: StudentDetailArguments(
-                                        student: value.individualStudent!,
-                                        userType: UserType.parent));
-                              },
-                            );
+                      return ListView.builder(
+                        padding: EdgeInsets.zero,
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: value.studentsByParents.length,
+                        itemBuilder: (context, index) {
+                          final student = value.studentsByParents[index];
+                          return value.isloading
+                              ? Loading(
+                                  color: Colors.grey,
+                                )
+                              : ProfileTile(
+                                  name: capitalizeEachWord(
+                                      student.fullName ?? ""),
+                                  description: student.studentClass ?? "",
+                                  imageUrl:
+                                      "${baseUrl}${Urls.studentPhotos}${student.studentPhoto}",
+                                  onPressed: () {
+                                    context.pushNamed(
+                                        AppRouteConst
+                                            .AdminstudentdetailsRouteName,
+                                        extra: StudentDetailArguments(
+                                            student: student,
+                                            userType: UserType.parent));
+                                  },
+                                );
+                        },
+                      );
                     }),
+                    // Consumer<StudentController>(
+                    //     builder: (context, value, child) {
+                    //   return value.isloading
+                    //       ? Loading(
+                    //           color: Colors.grey,
+                    //         )
+                    //       : ProfileTile(
+                    //           name: capitalizeEachWord(
+                    //               value.individualStudent!.fullName ?? ""),
+                    //           description:
+                    //               value.individualStudent!.studentClass ?? "",
+                    //           imageUrl:
+                    //               "${baseUrl}${Urls.studentPhotos}${value.individualStudent!.studentPhoto}",
+                    //           onPressed: () {
+                    //             context.pushNamed(
+                    //                 AppRouteConst.AdminstudentdetailsRouteName,
+                    //                 extra: StudentDetailArguments(
+                    //                     student: value.individualStudent!,
+                    //                     userType: UserType.parent));
+                    //           },
+                    //         );
+                    // }),
                     // const ChildCard(
                     //   childName: "Muhammed Rafsal N",
                     //   className: "XIII",

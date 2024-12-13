@@ -23,7 +23,6 @@ class StudentController extends ChangeNotifier {
   List<Student> _filteredstudents = [];
   List<Student> get filteredstudents => _filteredstudents;
 
-
   List<Student> _parents = [];
   List<Student> get parents => _parents;
   List<Student> _filteredparents = [];
@@ -51,7 +50,6 @@ class StudentController extends ChangeNotifier {
     _isloading = false;
     notifyListeners();
   }
-
 
 // **************single child details***************
   Student? _individualStudent;
@@ -89,28 +87,32 @@ class StudentController extends ChangeNotifier {
   }
 
   // *************Get students by parents******************
-  //   List<Student> _studentsByParents = [];
-  // List<Student> get studentsByParents => _studentsByParents;
-  //   Future<void> getStudentsByParents() async {
-  //   _isloading = true;
-  //   // final parentEmail = await SecureStorageService.getUserEmail();
-  //   try {
-  //     final response = await StudentServices().getStudent();
-  //     log("***********${response.statusCode}");
-  //     log(response.data.toString());
-  //     if (response.statusCode == 200) {
-        
-  //     }
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  //   _isloading = false;
-  //   notifyListeners();
-  // }
-
+  List<Student> _studentsByParents = [];
+  List<Student> get studentsByParents => _studentsByParents;
+  Future<void> getStudentsByParentEmail() async {
+    _isloading = true;
+    final parentEmail = await SecureStorageService.getUserEmail();
+    try {
+      final response = await StudentServices()
+          .getStudentsByParentEmail(parentEmail: parentEmail ?? "");
+      log("***********${response.statusCode}");
+      log(response.data.toString());
+      if (response.statusCode == 200) {
+        _studentsByParents.clear();
+        _studentsByParents = (response.data as List<dynamic>)
+            .map((result) => Student.fromJson(result))
+            .toList();
+        log(_students.toString());
+      }
+    } catch (e) {
+      print(e);
+    }
+    _isloading = false;
+    notifyListeners();
+  }
 
   // ***************GET student homework
-  
+
   List<HomeworkDetail> _homeworks = [];
   List<HomeworkDetail> get homeworks => _homeworks;
   Future<void> getStudentHomework({required int studentId}) async {
