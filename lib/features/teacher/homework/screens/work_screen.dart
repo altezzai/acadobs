@@ -91,10 +91,16 @@ class _WorkScreenState extends State<WorkScreen> {
               ),
               Consumer<HomeworkController>(builder: (context, value, child) {
                 if (value.isloading) {
-                  return Center(
-                      child: Loading(
-                    color: Colors.grey,
-                  ));
+                  return Column(
+                    children: [
+                      SizedBox(
+                        height: Responsive.height * 38,
+                      ),
+                      Loading(
+                        color: Colors.grey,
+                      ),
+                    ],
+                  );
                 }
 
                 // Group homework by date

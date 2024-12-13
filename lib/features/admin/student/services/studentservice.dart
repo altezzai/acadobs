@@ -14,6 +14,7 @@ class StudentServices {
     }
   }
 
+// GET individual student details
   Future<Response> getIndividualStudentDetails({required int studentId}) async {
     try {
       final Response response = await ApiServices.get('/students/$studentId');
@@ -21,6 +22,14 @@ class StudentServices {
     } on DioException catch (e) {
       throw Exception('Failed to load data: $e');
     }
+  }
+
+  // Get students by parent email
+  Future<Response> getStudentsByParentEmail(
+      {required String parentEmail}) async {
+    final Response response =
+        await ApiServices.get("/showByParenteEmail/$parentEmail");
+    return response;
   }
 
 // GET homework
@@ -65,11 +74,10 @@ class StudentServices {
       "father_full_name": fatherFullName,
       "mother_full_name": motherFullName,
       "blood_group": bloodGroup,
-      "parent_email":parentEmail,
+      "parent_email": parentEmail,
       if (studentPhotoPath != null) // Only include if the photo is provided
-        "student_photo": await MultipartFile.fromFile(studentPhotoPath, filename: studentPhotoPath.split('/').last),
-    
-
+        "student_photo": await MultipartFile.fromFile(studentPhotoPath,
+            filename: studentPhotoPath.split('/').last),
     };
 
     // Call the ApiServices post method with formData and isFormData: true

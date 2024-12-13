@@ -12,6 +12,12 @@ class StudentLeaveRequestServices {
     }
   }
 
+  // GET Individual student leave request
+  Future<Response> getStudentLeaveRequestById({required int studentId}) async {
+    final Response response = await ApiServices.get("/allLeaveRequestForAStudent/$studentId");
+    return response;
+  }
+
   // POST request for adding a TeacherLeaveRequest
   Future<Response> addNewStudentLeaveRequest({
     required String studentId,
