@@ -13,6 +13,10 @@ class HomeworkController extends ChangeNotifier {
   List<Homework> _homework = [];
   List<Homework> get homework => _homework;
 
+  List<Homework> _teacherHomework = [];
+  List<Homework> get teacherHomework => _teacherHomework;
+
+// ************** get all homework*************
   Future<void> getHomework() async {
     _isloading = true;
     try {
@@ -31,12 +35,34 @@ class HomeworkController extends ChangeNotifier {
     notifyListeners();
   }
 
+// ************** get all homework*************
+  Future<void> getHomeworkByTeacherId() async {
+    _isloading = true;
+    try {
+      final teacherId = await SecureStorageService.getUserId();
+      final response = await HomeworkServices()
+          .getHomeworkByTeacherId(teacherId: teacherId.toString());
+      print("***********${response.statusCode}");
+      // print(response.toString());
+      if (response.statusCode == 200) {
+        _teacherHomework.clear();
+        _teacherHomework = (response.data['homework'] as List<dynamic>)
+            .map((result) => Homework.fromJson(result))
+            .toList();
+      }
+    } catch (e) {
+      // print(e);
+    }
+    _isloading = false;
+    notifyListeners();
+  }
+
   // add homework
   Future<void> addHomework(
     BuildContext context, {
     required String class_grade,
     required String section,
-    required String subject,
+    required int subjectId,
     required String assignment_title,
     required String description,
     required String assigned_date,
@@ -54,7 +80,7 @@ class HomeworkController extends ChangeNotifier {
           teacherId: teacherId,
           class_grade: class_grade,
           section: section,
-          subject: subject,
+          subjectId: subjectId,
           assignment_title: assignment_title,
           description: description,
           assigned_date: assigned_date,

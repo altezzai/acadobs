@@ -48,17 +48,19 @@ import 'package:school_app/features/parent/events/screen/eventscreen.dart';
 import 'package:school_app/features/parent/home/screen/homescreen.dart';
 import 'package:school_app/features/parent/leave_request/model/studentLeaveReq_model.dart';
 import 'package:school_app/features/parent/leave_request/screens/add_student_leaveReq.dart';
-import 'package:school_app/features/parent/leave_request/screens/student_leaveRequest.dart';
+// import 'package:school_app/features/parent/leave_request/screens/student_leaveRequest.dart';
 import 'package:school_app/features/parent/notices/screen/noticedetailedscreen.dart';
 import 'package:school_app/features/parent/notices/screen/noticescreen.dart';
 import 'package:school_app/features/parent/payment/screen/PaymentScreen.dart';
 import 'package:school_app/features/parent/payment/screen/paymentdetailedscreen.dart';
+import 'package:school_app/features/parent/payment/screen/student_payment_screen.dart';
 import 'package:school_app/features/parent/students/screen/studentdetails.dart';
 import 'package:school_app/features/teacher/attendance/model/attendance_data.dart';
 import 'package:school_app/features/teacher/attendance/screens/take_attendance.dart';
 import 'package:school_app/features/teacher/duties/duty_detail.dart';
 import 'package:school_app/features/teacher/homework/model/homework_model.dart';
 import 'package:school_app/features/teacher/homework/screens/student_selection_screen.dart';
+import 'package:school_app/features/teacher/homework/screens/subject_selection.dart';
 import 'package:school_app/features/teacher/homework/screens/work.dart';
 import 'package:school_app/features/teacher/homework/screens/work_screen.dart';
 import 'package:school_app/features/teacher/homework/screens/work_view.dart';
@@ -263,7 +265,11 @@ class Approuter {
         name: AppRouteConst.AddAchivementsRouteName,
         path: '/addachivement',
         pageBuilder: (context, state) {
-          return MaterialPage(child: AddAchievementPage());
+          final studentId = state.extra as int;
+          return MaterialPage(
+              child: AddAchievementPage(
+            studentId: studentId,
+          ));
         },
       ),
       GoRoute(
@@ -371,18 +377,28 @@ class Approuter {
           return MaterialPage(child: ParentHomeScreen());
         },
       ),
-      GoRoute(
-        name: AppRouteConst.StudentLeaveRequestViewRouteName,
-        path: '/studentleaverequestview',
-        pageBuilder: (context, state) {
-          return MaterialPage(child: StudentLeaveRequestScreen());
-        },
-      ),
+      // GoRoute(
+      //   name: AppRouteConst.StudentLeaveRequestViewRouteName,
+      //   path: '/studentleaverequestview',
+      //   pageBuilder: (context, state) {
+      //     final LeaveRequestArgs = state.extra as StudentLeaverequestArguments;
+      //     return MaterialPage(
+      //         child: StudentLeaveRequestScreen(
+      //       studentId: LeaveRequestArgs.student.id ?? 0,
+      //       userType: LeaveRequestArgs.userType,
+
+      //     ));
+      //   },
+      // ),
       GoRoute(
         name: AppRouteConst.AddStudentLeaveRequestRouteName,
         path: '/addstudentleaverequest',
         pageBuilder: (context, state) {
-          return MaterialPage(child: AddStudentLeaveRequest());
+          final int studentId = state.extra as int;
+          return MaterialPage(
+              child: AddStudentLeaveRequest(
+            studentId: studentId,
+          ));
         },
       ),
       GoRoute(
@@ -505,6 +521,20 @@ class Approuter {
           pageBuilder: (context, state) {
             return MaterialPage(child: PaymentPage());
           }),
+
+      GoRoute(
+        name: AppRouteConst.ParentPaymentScreenRouteName,
+        path: '/parentpaymentscreen',
+        pageBuilder: (context, state) {
+          final int studentId = state.extra as int;
+          return MaterialPage(
+            child: StudentPaymentScreen(
+              studentId: studentId,
+            ),
+          );
+        },
+      ),
+
       GoRoute(
         name: AppRouteConst.AddTeacherRouteName,
         path: '/addteacher',
@@ -604,6 +634,17 @@ class Approuter {
 
             return MaterialPage(child: EditSubjectPage(subjects: subjects));
           }),
+      GoRoute(
+        name: AppRouteConst.subjectSelectionRouteName,
+        path: '/subjectSelection',
+        pageBuilder: (context, state) {
+          final subjectController = state.extra as TextEditingController;
+          return MaterialPage(
+              child: SubjectSelectionPage(
+            subjectTextEditingController: subjectController,
+          ));
+        },
+      ),
     ],
   );
 }
@@ -624,4 +665,10 @@ class StudentDetailArguments {
   Student student;
   UserType userType;
   StudentDetailArguments({required this.student, required this.userType});
+}
+
+class StudentLeaverequestArguments {
+  Student student;
+  UserType userType;
+  StudentLeaverequestArguments({required this.student, required this.userType});
 }

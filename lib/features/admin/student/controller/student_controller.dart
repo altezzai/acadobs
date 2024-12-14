@@ -22,8 +22,6 @@ class StudentController extends ChangeNotifier {
   List<Student> get students => _students;
   List<Student> _filteredstudents = [];
   List<Student> get filteredstudents => _filteredstudents;
-  // List<Student> _individualstudents = [];
-  // List<Student> get individualstudents => _individualstudents;
 
   List<Student> _parents = [];
   List<Student> get parents => _parents;
@@ -52,7 +50,6 @@ class StudentController extends ChangeNotifier {
     _isloading = false;
     notifyListeners();
   }
-
 
 // **************single child details***************
   Student? _individualStudent;
@@ -89,10 +86,44 @@ class StudentController extends ChangeNotifier {
     }
   }
 
+  // *************Get students by parents******************
+  List<Student> _studentsByParents = [];
+  List<Student> get studentsByParents => _studentsByParents;
+  List<int> _syudentIds = [];
+  List<int> get studentIds => _syudentIds;
+  Future<void> getStudentsByParentEmail() async {
+    _isloading = true;
+    final parentEmail = await SecureStorageService.getUserEmail();
+    try {
+      final response = await StudentServices()
+          .getStudentsByParentEmail(parentEmail: parentEmail ?? "");
+      log("***********${response.statusCode}");
+      log(response.data.toString());
+      if (response.statusCode == 200) {
+        _studentsByParents.clear();
+        _syudentIds.clear(); // Clear the studentIds list before adding new ones
+
+        _studentsByParents = (response.data as List<dynamic>)
+            .map((result) => Student.fromJson(result))
+            .toList();
+
+        // Extract student IDs and store them in _syudentIds
+        _syudentIds.addAll(
+            _studentsByParents.map((student) => student.id ?? 0).toList());
+
+        log("Student IDs: $_syudentIds");
+      }
+    } catch (e) {
+      print(e);
+    }
+    _isloading = false;
+    notifyListeners();
+  }
+
+  // ***************GET student homework
+
   List<HomeworkDetail> _homeworks = [];
   List<HomeworkDetail> get homeworks => _homeworks;
-
-  // GET student homework
   Future<void> getStudentHomework({required int studentId}) async {
     _isloading = true;
     try {

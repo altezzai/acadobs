@@ -12,18 +12,20 @@ import 'package:school_app/features/teacher/homework/widgets/work_container.dart
 
 class AchievementsList extends StatelessWidget {
   final UserType userType;
-  const AchievementsList({super.key, required this.userType, });
+  final VoidCallback onPressed;
+  const AchievementsList(
+      {super.key, required this.userType, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: userType == UserType.parent? SizedBox.shrink(): FloatingActionButton(
-        onPressed: () {
-          context.pushNamed(AppRouteConst.AddAchivementsRouteName);
-        },
-        backgroundColor: Colors.black,
-        child: const Icon(Icons.add, color: Colors.white),
-      ),
+      floatingActionButton: userType == UserType.parent
+          ? SizedBox.shrink()
+          : FloatingActionButton(
+              onPressed: onPressed,
+              backgroundColor: Colors.black,
+              child: const Icon(Icons.add, color: Colors.white),
+            ),
       body: Consumer<AchievementController>(
         builder: (context, value, child) {
           if (value.isloading) {
@@ -50,15 +52,15 @@ class AchievementsList extends StatelessWidget {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: Responsive.height * 4),
+                  SizedBox(height: Responsive.height * 3),
                   Text(
                     dateGroup,
                     style: textThemeData.bodyMedium,
                   ),
                   const SizedBox(height: 10),
                   ...achievements.map((achievement) => WorkContainer(
-                        sub: achievement.awardingBody ?? "",
-                        work: achievement.category ?? "",
+                        sub: achievement.category ?? "",
+                        work: achievement.achievementTitle ?? "",
                         icon: Icons.military_tech,
                         icolor: Colors.green,
                         bcolor: Colors.green.withOpacity(0.2),

@@ -14,6 +14,10 @@ class TeacherLeaveRequestController extends ChangeNotifier {
   List<TeacherLeaveRequest> _teachersLeaveRequest = [];
   List<TeacherLeaveRequest> get teachersLeaveRequest => _teachersLeaveRequest;
 
+  List<TeacherLeaveRequest> _teacherIndividualLeaveRequest = [];
+  List<TeacherLeaveRequest> get teacherIndividualLeaveRequest =>
+      _teacherIndividualLeaveRequest;
+
 // **********Get all teachers*****************
   Future<void> getTeacherLeaverequests() async {
     _isloading = true;
@@ -23,9 +27,33 @@ class TeacherLeaveRequestController extends ChangeNotifier {
       print("***********${response.statusCode}");
       print(response.toString());
       if (response.statusCode == 200) {
+        _teachersLeaveRequest.clear();
         _teachersLeaveRequest = (response.data as List<dynamic>)
             .map((result) => TeacherLeaveRequest.fromJson(result))
             .toList();
+      }
+    } catch (e) {
+      print(e);
+    }
+    _isloading = false;
+    notifyListeners();
+  }
+
+  // Get individual teacher leave requests
+  Future<void> getIndividualTeacherLeaverequests() async {
+    _isloading = true;
+    try {
+      final teacherId = await SecureStorageService.getUserId();
+      final response = await TeacherLeaveRequestServices()
+          .getTeacherLeaveRequestById(teacherId: teacherId);
+      print("***********${response.statusCode}");
+      log(response.data.toString());
+      if (response.statusCode == 200) {
+        _teacherIndividualLeaveRequest.clear();
+        _teacherIndividualLeaveRequest = (response.data as List<dynamic>)
+            .map((result) => TeacherLeaveRequest.fromJson(result))
+            .toList();
+        log("Teachers leaves ===== ${_teacherIndividualLeaveRequest.toString()}");
       }
     } catch (e) {
       print(e);
@@ -78,7 +106,7 @@ class TeacherLeaveRequestController extends ChangeNotifier {
         endDate: endDate,
         reasonForLeave: reasonForLeave,
       );
-      if (response.statusCode == 201) {
+      if (response.statusCode == 201 || response.statusCode == 200) {
         log(">>>>>>>>>>>>>Teacher Leave Request Added}");
         // Show success message using Snackbar
         ScaffoldMessenger.of(context).showSnackBar(
@@ -87,6 +115,7 @@ class TeacherLeaveRequestController extends ChangeNotifier {
             backgroundColor: Colors.green, // Set color for success
           ),
         );
+        await getIndividualTeacherLeaverequests();
         // Navigate to the desired route
         context.pushNamed(AppRouteConst.bottomNavRouteName,
             extra: UserType.teacher);

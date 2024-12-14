@@ -12,6 +12,11 @@ class TeacherLeaveRequestServices {
     }
   }
 
+// GET inidvidual teacher leave requests
+Future<Response> getTeacherLeaveRequestById({required int teacherId}) async {
+  final Response response = await ApiServices.get("/AllLeaveRequestsForATeacher/$teacherId");
+  return response;
+}
   // POST request for adding a TeacherLeaveRequest
   Future<Response> addNewTeacherLeaveRequest({
     required String teacherId,

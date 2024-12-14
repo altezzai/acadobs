@@ -15,6 +15,7 @@ import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
+import 'package:school_app/features/admin/subjects/controller/subject_controller.dart';
 import 'package:school_app/features/teacher/homework/controller/homework_controller.dart';
 
 // ignore: must_be_immutable
@@ -176,10 +177,30 @@ class _HomeWorkState extends State<HomeWork> {
                 ],
               ),
               SizedBox(height: Responsive.height * 2),
-              CustomTextfield(
-                hintText: "Subject",
-                controller: _subjectController,
-                iconData: const Icon(Icons.subject),
+              Consumer<SubjectController>(
+                builder: (context, subjectProvider, child) {
+                  return InkWell(
+                    onTap: () {
+                      context.pushNamed(
+                        AppRouteConst.subjectSelectionRouteName,
+                        extra: _subjectController,
+                      );
+                    },
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        hintText: subjectProvider.selectedSubjectId != null
+                            ? subjectProvider.subjects
+                                .firstWhere((subject) =>
+                                    subject.id ==
+                                    subjectProvider.selectedSubjectId)
+                                .subject // Fetch the selected subject name
+                            : "Select Subject", // Default hint text when no subject is selected
+                      ),
+                      enabled:
+                          false, // Prevent editing as it's controlled by selection
+                    ),
+                  );
+                },
               ),
               SizedBox(height: Responsive.height * 2),
               CustomTextfield(
@@ -221,7 +242,7 @@ class _HomeWorkState extends State<HomeWork> {
               CustomDropdown(
                 dropdownKey: 'submissionType',
                 label: 'Submission Type',
-                items: ['Online', 'Offline'],
+                items: ['Online', 'In-Class', 'Physical Copy'],
                 icon: Icons.offline_pin_outlined,
               ),
               SizedBox(
@@ -252,12 +273,15 @@ class _HomeWorkState extends State<HomeWork> {
                         .read<DropdownProvider>()
                         .getSelectedItem('status');
                     final studentIds = value.selectedStudentIds;
+                    final selectedSubjectId =
+                        Provider.of<SubjectController>(context, listen: false)
+                            .selectedSubjectId;
 
                     log(">>>>>>>>>>>>${studentIds.toString()}");
                     context.read<HomeworkController>().addHomework(context,
                         class_grade: classGrade,
                         section: division,
-                        subject: _subjectController.text,
+                        subjectId: selectedSubjectId ?? 0,
                         assignment_title: _titleController.text,
                         description: _descriptionController.text,
                         assigned_date: _startDateController.text,

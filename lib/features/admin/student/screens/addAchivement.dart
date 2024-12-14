@@ -1,35 +1,41 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:school_app/base/utils/button_loading.dart';
+import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
-
-import '../../../../core/shared_widgets/custom_calendar.dart';
+import 'package:school_app/features/admin/student/controller/achievement_controller.dart';
 
 class AddAchievementPage extends StatefulWidget {
+  final int studentId;
+
+  const AddAchievementPage({super.key, required this.studentId});
   @override
   _AddAchievementPageState createState() => _AddAchievementPageState();
 }
 
 class _AddAchievementPageState extends State<AddAchievementPage> {
-  final _formKey = GlobalKey<FormState>();
-  DateTime? selectedDate;
-  String? selectedClass;
-  String? selectedDivision;
+  // final _formKey = GlobalKey<FormState>();
+  // DateTime? selectedDate;
+  // String? selectedClass;
+  // String? selectedDivision;
   String? studentName;
-  String? selectedLevel;
+  // String? selectedLevel;
   String? selectedFile;
 
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _awardController = TextEditingController();
 
-  void _handleDateSelection(DateTime date) {
-    setState(() {
-      selectedDate = date; // Update the selected date
-    });
-  }
+  // void _handleDateSelection(DateTime date) {
+  //   setState(() {
+  //     selectedDate = date; // Update the selected date
+  //   });
+  // }
 
   Future<void> pickFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -45,23 +51,23 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
     }
   }
 
-  void _showCalendar() {
-    // Show the calendar dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: CustomCalendar(
-            onSelectDate: (date) {
-              _handleDateSelection(date);
-              Navigator.of(context)
-                  .pop(); // Close the dialog after selecting a date
-            },
-          ),
-        );
-      },
-    );
-  }
+  // void _showCalendar() {
+  //   // Show the calendar dialog
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         content: CustomCalendar(
+  //           onSelectDate: (date) {
+  //             _handleDateSelection(date);
+  //             Navigator.of(context)
+  //                 .pop(); // Close the dialog after selecting a date
+  //           },
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -100,18 +106,18 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
             //   icon: Icons.category,
             // ),
 
-            SizedBox(height: 16),
+            // SizedBox(height: 13),
 
-            CustomTextfield(
-              hintText: 'Student Name',
-              iconData: Icon(Icons.person),
-              onChanged: (value) {
-                setState(() {
-                  studentName = value;
-                });
-              },
-            ),
-            SizedBox(height: 24),
+            // CustomTextfield(
+            //   hintText: 'Student Name',
+            //   iconData: Icon(Icons.person),
+            //   onChanged: (value) {
+            //     setState(() {
+            //       studentName = value;
+            //     });
+            //   },
+            // ),
+            // SizedBox(height: 24),
 
             Text(
               'Achievement details',
@@ -177,6 +183,13 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
               ],
               icon: Icons.star,
             ),
+            SizedBox(height: 16),
+
+            CustomTextfield(
+              hintText: 'Awarding Body',
+              controller: _awardController,
+              iconData: Icon(Icons.add_moderator_outlined),
+            ),
 
             SizedBox(height: 16),
 
@@ -220,32 +233,34 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
             SizedBox(height: 32),
 
             Center(
-              child: CommonButton(
-                onPressed: () {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    // Handle form submission logic here
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Form successfully submitted!'),
-                      ),
-                    );
-                  }
-                },
-                widget: Text('Submit'),
-              ),
-              // CustomButton(
-              //   text: 'Submit',
-              //   onPressed: () {
-              //     if (_formKey.currentState?.validate() ?? false) {
-              //       // Handle form submission logic here
-              //       ScaffoldMessenger.of(context).showSnackBar(
-              //         SnackBar(
-              //           content: Text('Form successfully submitted!'),
-              //         ),
-              //       );
-              //     }
-              //   },
-              // ),
+              child: Consumer<AchievementController>(
+                  builder: (context, value, child) {
+                return CommonButton(
+                  onPressed: () {
+                    final category = context
+                        .read<DropdownProvider>()
+                        .getSelectedItem('category');
+                    final level = context
+                        .read<DropdownProvider>()
+                        .getSelectedItem('level');
+                    // final studentId = context
+                    //     .read<StudentIdController>()
+                    //     .getSelectedStudentId();
+
+                    // log(">>>>>>>>>>>>${studentId}");
+                    context.read<AchievementController>().addAchievement(
+                        context,
+                        studentId: widget.studentId,
+                        achievement_title: _titleController.text,
+                        description: _descriptionController.text,
+                        category: category,
+                        level: level,
+                        awarding_body: _awardController.text,
+                        date_of_achievement: _dateController.text);
+                  },
+                  widget: value.isloading ? ButtonLoading() : Text('Submit'),
+                );
+              }),
             ),
           ],
         ),

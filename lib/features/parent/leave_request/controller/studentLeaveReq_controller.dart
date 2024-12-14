@@ -1,9 +1,6 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
-
 import 'package:school_app/features/parent/leave_request/model/studentLeaveReq_model.dart';
 import 'package:school_app/features/parent/leave_request/services/studentLeaveReq_services.dart';
 
@@ -13,7 +10,11 @@ class StudentLeaveRequestController extends ChangeNotifier {
   List<StudentLeaveRequest> _studentsLeaveRequest = [];
   List<StudentLeaveRequest> get studentsLeaveRequest => _studentsLeaveRequest;
 
-// **********Get all students*****************
+  List<StudentLeaveRequest> _studentsIndividualLeaveRequest = [];
+  List<StudentLeaveRequest> get studentsIndividualLeaveRequest =>
+      _studentsIndividualLeaveRequest;
+
+// **********Get all students Leave request*****************
   Future<void> getStudentLeaveRequests() async {
     _isloading = true;
     try {
@@ -23,6 +24,28 @@ class StudentLeaveRequestController extends ChangeNotifier {
       print(response.toString());
       if (response.statusCode == 200) {
         _studentsLeaveRequest = (response.data as List<dynamic>)
+            .map((result) => StudentLeaveRequest.fromJson(result))
+            .toList();
+      }
+    } catch (e) {
+      print(e);
+    }
+    _isloading = false;
+    notifyListeners();
+  }
+
+  //************Get individual student leaverequest*****************
+  Future<void> getIndividualStudentLeaveRequests(
+      {required int studentId}) async {
+    _isloading = true;
+    try {
+      final response = await StudentLeaveRequestServices()
+          .getStudentLeaveRequestById(studentId: studentId);
+      print("***********${response.statusCode}");
+      print(response.toString());
+      if (response.statusCode == 200) {
+        // _studentsIndividualLeaveRequest.clear();
+        _studentsIndividualLeaveRequest = (response.data as List<dynamic>)
             .map((result) => StudentLeaveRequest.fromJson(result))
             .toList();
       }
@@ -86,8 +109,9 @@ class StudentLeaveRequestController extends ChangeNotifier {
             backgroundColor: Colors.green, // Set color for success
           ),
         );
-        // Navigate to the desired route
-        context.goNamed(AppRouteConst.ParentHomeRouteName);
+        await getIndividualStudentLeaveRequests(
+            studentId: int.parse(studentId));
+        Navigator.pop(context);
       } else {
         // Handle failure case here if needed
         ScaffoldMessenger.of(context).showSnackBar(

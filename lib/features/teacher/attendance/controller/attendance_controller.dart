@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/services/secure_storage_services.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/teacher/attendance/model/attendance_data.dart';
@@ -181,17 +182,17 @@ class AttendanceController extends ChangeNotifier {
       required String classGrade,
       required String section,
       required String periodNumber,
-      required int recordedBy,
+      // required int recordedBy,
       required List<Map<String, dynamic>> students}) async {
     _isloading = true;
     notifyListeners(); // Notify listeners when loading starts
-
+    final teacherId = await SecureStorageService.getUserId();
     final attendanceData = {
       'date': date,
       'class_grade': classGrade,
       'section': section,
       'period_number': periodNumber,
-      'recorded_by': recordedBy,
+      'recorded_by': teacherId,
       'students': students,
     };
 

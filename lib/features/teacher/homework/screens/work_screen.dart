@@ -21,7 +21,7 @@ class WorkScreen extends StatefulWidget {
 class _WorkScreenState extends State<WorkScreen> {
   @override
   void initState() {
-    context.read<HomeworkController>().getHomework();
+    context.read<HomeworkController>().getHomeworkByTeacherId();
     super.initState();
   }
 
@@ -91,15 +91,21 @@ class _WorkScreenState extends State<WorkScreen> {
               ),
               Consumer<HomeworkController>(builder: (context, value, child) {
                 if (value.isloading) {
-                  return Center(
-                      child: Loading(
-                    color: Colors.grey,
-                  ));
+                  return Column(
+                    children: [
+                      SizedBox(
+                        height: Responsive.height * 38,
+                      ),
+                      Loading(
+                        color: Colors.grey,
+                      ),
+                    ],
+                  );
                 }
 
                 // Group homework by date
                 final groupedHomework = groupItemsByDate(
-                  value.homework,
+                  value.teacherHomework,
                   (homework) =>
                       DateTime.tryParse(homework.assignedDate.toString()) ??
                       DateTime.now(),

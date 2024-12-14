@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
-
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
-
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/admin/leave_request/widgets/leaveRequest_card.dart';
-
 import 'package:school_app/features/teacher/leave_request/controller/teacherLeaveReq_controller.dart';
 
 class TeacherLeaverequestScreen extends StatefulWidget {
@@ -33,16 +29,16 @@ class _TeacherLeaverequestScreenState extends State<TeacherLeaverequestScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(
+              height: Responsive.height * 2,
+            ),
             // Custom AppBar
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
-              child: CustomAppbar(
-                title: "My Leave Requests",
-                isProfileIcon: false,
-                onTap: () => context.goNamed(
-                  AppRouteConst.bottomNavRouteName,
-                  extra: UserType.teacher,
-                ),
+            CustomAppbar(
+              title: "My Leave Requests",
+              isProfileIcon: false,
+              onTap: () => context.goNamed(
+                AppRouteConst.bottomNavRouteName,
+                extra: UserType.teacher,
               ),
             ),
             SizedBox(height: screenHeight * 0.03),
@@ -54,9 +50,8 @@ class _TeacherLeaverequestScreenState extends State<TeacherLeaverequestScreen> {
               ontap: () => context
                   .pushNamed(AppRouteConst.AddTeacherLeaveRequestRouteName),
             ),
-            SizedBox(height: screenHeight * 0.03),
             // Today's Leave Requests
-            
+
             SizedBox(height: screenHeight * 0.03),
             // Leave Requests List
             Expanded(
@@ -68,22 +63,26 @@ class _TeacherLeaverequestScreenState extends State<TeacherLeaverequestScreen> {
     );
   }
 
-     Map<String, List<T>> groupItemsByDate<T>(
+  Map<String, List<T>> groupItemsByDate<T>(
     List<T> items,
     DateTime Function(T) getDate, // Function to extract the date from the item
   ) {
     final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
+    final today =
+        DateTime(now.year, now.month, now.day); // Strip time component
     final yesterday = today.subtract(Duration(days: 1));
 
     Map<String, List<T>> groupedItems = {};
 
     for (var item in items) {
       final itemDate = getDate(item);
+      final itemDateOnly = DateTime(
+          itemDate.year, itemDate.month, itemDate.day); // Strip time component
       String formattedDate;
-      if (itemDate.isAtSameMomentAs(today)) {
+
+      if (itemDateOnly == today) {
         formattedDate = "Today";
-      } else if (itemDate.isAtSameMomentAs(yesterday)) {
+      } else if (itemDateOnly == yesterday) {
         formattedDate = "Yesterday";
       } else {
         formattedDate = DateFormat.yMMMMd().format(itemDate);
@@ -113,62 +112,69 @@ class _TeacherLeaverequestScreenState extends State<TeacherLeaverequestScreen> {
   }
 
   Widget _buildTeacherLeaveRequests() {
-    context.read<TeacherLeaveRequestController>().getTeacherLeaverequests();
+    context
+        .read<TeacherLeaveRequestController>()
+        .getIndividualTeacherLeaverequests();
     return Consumer<TeacherLeaveRequestController>(
         builder: (context, value, child) {
       if (value.isloading) {
-        return Center(
-          child: Loading(
-            color: Colors.grey,
-          ),
+        return Column(
+          children: [
+            SizedBox(
+              height: Responsive.height * 25,
+            ),
+            Loading(
+              color: Colors.grey,
+            ),
+          ],
         );
       }
       final groupedTeacherLeaveRequests = groupItemsByDate(
-        value.teachersLeaveRequest,
+        value.teacherIndividualLeaveRequest,
         (teacherLeaveRequest) =>
-            DateTime.tryParse(teacherLeaveRequest.createdAt.toString()) ?? DateTime.now(),
+            DateTime.tryParse(teacherLeaveRequest.createdAt.toString()) ??
+            DateTime.now(),
       );
-
 
       return SingleChildScrollView(
         child: Column(
-           crossAxisAlignment: CrossAxisAlignment.start,
-          children: groupedTeacherLeaveRequests.entries.map((entry) {
-          return            Column(
-               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: Responsive.height * 1),
-                _buildDateHeader(entry.key),
-                SizedBox(height: Responsive.height * 1),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.zero,
-                    itemCount: value.teachersLeaveRequest.length,
-                    itemBuilder: (context, index) {
-                      final teacherLeaveRequest = value.teachersLeaveRequest[index];
-                      return Padding(
-                          padding: EdgeInsets.only(
-                            bottom: 15,
-                          ),
-                          child: LeaveRequestCard(
-                            title:
-                                'Leave request for ${DateFormatter.formatDateString(teacherLeaveRequest.startDate.toString())}',
-                            status: teacherLeaveRequest.approvalStatus ?? "",
-                            time: TimeFormatter.formatTimeFromString(
-                                teacherLeaveRequest.createdAt.toString()),
-                            onTap: () {
-                              context.pushNamed(
-                                AppRouteConst.teacherLeaveRequestDetailsRouteName,
-                                extra: teacherLeaveRequest,
-                              );
-                            },
-                          ));
-                    }),
-              ],
-            );}).toList()
-          
-        ),
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: groupedTeacherLeaveRequests.entries.map((entry) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // SizedBox(height: Responsive.height * 1),
+                  _buildDateHeader(entry.key),
+                  SizedBox(height: Responsive.height * 1),
+                  ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      padding: EdgeInsets.zero,
+                      itemCount: entry.value.length, // Use grouped items here
+                      itemBuilder: (context, index) {
+                        final teacherLeaveRequest = entry.value[index];
+                        return Padding(
+                            padding: EdgeInsets.only(
+                              bottom: 15,
+                            ),
+                            child: LeaveRequestCard(
+                              title: teacherLeaveRequest.leaveType ?? "",
+                              status: teacherLeaveRequest.approvalStatus ?? "",
+                              time: DateFormatter.formatDateString(
+                                teacherLeaveRequest.startDate.toString(),
+                              ),
+                              onTap: () {
+                                context.pushNamed(
+                                  AppRouteConst
+                                      .teacherLeaveRequestDetailsRouteName,
+                                  extra: teacherLeaveRequest,
+                                );
+                              },
+                            ));
+                      }),
+                ],
+              );
+            }).toList()),
       );
     });
   }
@@ -205,7 +211,8 @@ class _TeacherLeaverequestScreenState extends State<TeacherLeaverequestScreen> {
       ),
     );
   }
-    Widget _buildDateHeader(String date) {
+
+  Widget _buildDateHeader(String date) {
     return Padding(
       padding: const EdgeInsets.only(
         top: 10,
