@@ -17,7 +17,7 @@ import 'package:school_app/features/parent/events/screen/eventscreen.dart';
 import 'package:school_app/features/parent/events/widget/eventcard.dart';
 import 'package:school_app/features/parent/notices/screen/noticescreen.dart';
 import 'package:school_app/features/parent/notices/widget/noticecard.dart';
-import 'package:school_app/features/parent/payment/screen/PaymentScreen.dart';
+import 'package:school_app/features/parent/payment/screen/payment_selection.dart';
 
 class ParentHomeScreen extends StatefulWidget {
   const ParentHomeScreen({super.key});
@@ -43,7 +43,8 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
     // const Text("Reports Page"),
     const EventsPage(),
     const NoticePage(),
-    const PaymentPage(),
+    // const PaymentPage(),
+    const PaymentSelection(),
     ParentChatPage()
   ];
 
@@ -186,31 +187,29 @@ class HomePage extends StatelessWidget {
                     const SizedBox(height: 20),
                     Center(
                       child: Consumer<StudentController>(
-                        builder: (context, value, child) {
-                          return ElevatedButton(
-                            onPressed: () {
-                              context.pushNamed(
+                          builder: (context, value, child) {
+                        return ElevatedButton(
+                          onPressed: () {
+                            context.pushNamed(
                                 AppRouteConst.StudentLeaveRequestViewRouteName,
-                                extra: value.studentIds
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.black,
-                                padding: EdgeInsets.symmetric(
-                                  horizontal:
-                                      MediaQuery.of(context).size.width * 0.25, //
-                                  vertical:
-                                      MediaQuery.of(context).size.height * 0.025,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12))),
-                            child: const Text(
-                              'Leave Request',
-                              style: TextStyle(fontSize: 18, color: Colors.white),
-                            ),
-                          );
-                        }
-                      ),
+                                extra: value.studentIds);
+                          },
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black,
+                              padding: EdgeInsets.symmetric(
+                                horizontal:
+                                    MediaQuery.of(context).size.width * 0.25, //
+                                vertical:
+                                    MediaQuery.of(context).size.height * 0.025,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12))),
+                          child: const Text(
+                            'Leave Request',
+                            style: TextStyle(fontSize: 18, color: Colors.white),
+                          ),
+                        );
+                      }),
                     ),
                     const SizedBox(height: 20),
                     const Text(
