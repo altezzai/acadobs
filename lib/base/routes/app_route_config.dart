@@ -48,7 +48,7 @@ import 'package:school_app/features/parent/events/screen/eventscreen.dart';
 import 'package:school_app/features/parent/home/screen/homescreen.dart';
 import 'package:school_app/features/parent/leave_request/model/studentLeaveReq_model.dart';
 import 'package:school_app/features/parent/leave_request/screens/add_student_leaveReq.dart';
-import 'package:school_app/features/parent/leave_request/screens/student_leaveRequest.dart';
+// import 'package:school_app/features/parent/leave_request/screens/student_leaveRequest.dart';
 import 'package:school_app/features/parent/notices/screen/noticedetailedscreen.dart';
 import 'package:school_app/features/parent/notices/screen/noticescreen.dart';
 import 'package:school_app/features/parent/payment/screen/PaymentScreen.dart';
@@ -376,22 +376,26 @@ class Approuter {
           return MaterialPage(child: ParentHomeScreen());
         },
       ),
-      GoRoute(
-        name: AppRouteConst.StudentLeaveRequestViewRouteName,
-        path: '/studentleaverequestview',
-        pageBuilder: (context, state) {
-          final studentId = state.extra as int;
-          return MaterialPage(child: StudentLeaveRequestScreen(
-            studentId: studentId,
-          ));
-        },
-      ),
+      // GoRoute(
+      //   name: AppRouteConst.StudentLeaveRequestViewRouteName,
+      //   path: '/studentleaverequestview',
+      //   pageBuilder: (context, state) {
+      //     final LeaveRequestArgs = state.extra as StudentLeaverequestArguments;
+      //     return MaterialPage(
+      //         child: StudentLeaveRequestScreen(
+      //       studentId: LeaveRequestArgs.student.id ?? 0,
+      //       userType: LeaveRequestArgs.userType,
+
+      //     ));
+      //   },
+      // ),
       GoRoute(
         name: AppRouteConst.AddStudentLeaveRequestRouteName,
         path: '/addstudentleaverequest',
         pageBuilder: (context, state) {
           final int studentId = state.extra as int;
-          return MaterialPage(child: AddStudentLeaveRequest(
+          return MaterialPage(
+              child: AddStudentLeaveRequest(
             studentId: studentId,
           ));
         },
@@ -646,4 +650,10 @@ class StudentDetailArguments {
   Student student;
   UserType userType;
   StudentDetailArguments({required this.student, required this.userType});
+}
+
+class StudentLeaverequestArguments {
+  Student student;
+  UserType userType;
+  StudentLeaverequestArguments({required this.student, required this.userType});
 }
