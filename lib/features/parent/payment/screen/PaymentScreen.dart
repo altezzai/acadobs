@@ -94,7 +94,7 @@ class _PaymentPageState extends State<PaymentPage> {
                           amountTitle: payment.amountPaid ?? "",
                           name: payment.userId.toString(),
                           paymentMethod: payment.paymentMethod ?? "",
-                          transactionId: payment.transactionId ??"",
+                          transactionId: payment.transactionId ?? "",
                           time: TimeFormatter.formatTimeFromString(
                             payment.createdAt.toString(),
                           ),
@@ -120,7 +120,7 @@ class PaymentCard extends StatelessWidget {
   final String name;
   final String time;
   final String transactionId;
-  final String fileUpload;
+  final String? fileUpload;
   final String paymentMethod;
 
   const PaymentCard(
@@ -130,7 +130,7 @@ class PaymentCard extends StatelessWidget {
       required this.time,
       required this.description,
       required this.transactionId,
-      required this.fileUpload,
+      this.fileUpload,
       required this.paymentMethod});
 
   @override
@@ -143,7 +143,7 @@ class PaymentCard extends StatelessWidget {
             'amount': amountTitle,
             'description': description,
             'file': fileUpload,
-            'transactionId' :transactionId,
+            'transactionId': transactionId,
           },
         );
       },

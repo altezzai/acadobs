@@ -144,21 +144,21 @@ class TakeAttendance extends StatelessWidget {
                                                     ""),
                                           ),
                                   );
-                                case AttendanceAction.markAllPresent:
-                                  // Show AttendanceTile with initial "Present" status
-                                  return Padding(
-                                    padding: EdgeInsets.only(
-                                        bottom: Responsive.height * 1),
-                                    child: AttendanceTile(
-                                      studentId: studentId ?? 0,
-                                      rollNo: (index + 1).toString(),
-                                      studentName: capitalizeFirstLetter(
-                                          studentsList[index].fullName ?? ""),
-                                      isAllPresent: true,
-                                      // Add an initial present status
-                                      // initialStatus: AttendanceStatus.present,
-                                    ),
-                                  );
+                                // case AttendanceAction.markAllPresent:
+                                //   // Show AttendanceTile with initial "Present" status
+                                //   return Padding(
+                                //     padding: EdgeInsets.only(
+                                //         bottom: Responsive.height * 1),
+                                //     child: AttendanceTile(
+                                //       studentId: studentId ?? 0,
+                                //       rollNo: (index + 1).toString(),
+                                //       studentName: capitalizeFirstLetter(
+                                //           studentsList[index].fullName ?? ""),
+                                //       isAllPresent: true,
+                                //       // Add an initial present status
+                                //       // initialStatus: AttendanceStatus.present,
+                                //     ),
+                                //   );
                                 default:
                                   return Container();
                               }
@@ -192,7 +192,7 @@ class TakeAttendance extends StatelessWidget {
                                               attendanceData.selectedDivision,
                                           periodNumber:
                                               attendanceData.selectedPeriod,
-                                          recordedBy: 1,
+                                          // recordedBy: 1,
                                           students: attendanceStatusList);
                                 },
                                 widget: value.isloading

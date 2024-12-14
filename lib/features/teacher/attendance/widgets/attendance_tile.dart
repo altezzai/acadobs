@@ -7,14 +7,14 @@ class AttendanceTile extends StatelessWidget {
   final int studentId; // Unique ID of the student
   final String studentName; // Name of the student
   final String rollNo;
-  final bool isAllPresent;
+  // final bool isAllPresent;
 
   const AttendanceTile({
     super.key,
     required this.studentId,
     required this.studentName,
     required this.rollNo,
-    this.isAllPresent = false,
+    // this.isAllPresent = false,
   });
 
   @override

@@ -155,7 +155,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                     },
                   ),
                   _buildExamContent(),
-                  HomeworkList()
+                  HomeworkList(),
                 ],
               ),
             ),

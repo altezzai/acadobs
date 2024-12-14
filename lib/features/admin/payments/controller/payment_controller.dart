@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/services/secure_storage_services.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/admin/payments/model/donation_model.dart';
 import 'package:school_app/features/admin/payments/model/payment_model.dart';
@@ -16,7 +17,10 @@ class PaymentController extends ChangeNotifier {
   List<Payment> get payments => _payments;
   List<Payment> _filteredpayments = [];
   List<Payment> get filteredpayments => _filteredpayments;
+  List<Payment> _studentPayments = [];
+  List<Payment> get studentPayments => _studentPayments;
 
+// Get all Payments
   Future<void> getPayments() async {
     _isloading = true;
     try {
@@ -26,6 +30,27 @@ class PaymentController extends ChangeNotifier {
       if (response.statusCode == 200) {
         _payments.clear();
         _payments = (response.data as List<dynamic>)
+            .map((result) => Payment.fromJson(result))
+            .toList();
+      }
+    } catch (e) {
+      // print(e);
+    }
+    _isloading = false;
+    notifyListeners();
+  }
+
+  // Get individual student payments
+  Future<void> getPaymentsByStudentId({required int studentId}) async {
+    _isloading = true;
+    try {
+      final response =
+          await PaymentServices().getPaymentsByStudentId(studentId: studentId);
+      print("***********${response.statusCode}");
+      // print(response.toString());
+      if (response.statusCode == 200) {
+        _studentPayments.clear();
+        _studentPayments = (response.data as List<dynamic>)
             .map((result) => Payment.fromJson(result))
             .toList();
       }
@@ -100,9 +125,11 @@ class PaymentController extends ChangeNotifier {
   }) async {
     _isloading = true;
     try {
+      final teacherId = await SecureStorageService.getUserId();
       final response = await PaymentServices().addPayment(
         context,
-        userId: userId,
+        userId: userId.toString(),
+        staffId: teacherId,
         amount_paid: amount_paid,
         payment_date: payment_date,
         month: month,
@@ -137,8 +164,10 @@ class PaymentController extends ChangeNotifier {
   }) async {
     _isloading = true;
     try {
+      final teacherId = await SecureStorageService.getUserId();
       final response = await PaymentServices().addDonation(context,
           userId: userId,
+          staffId: teacherId,
           amount_donated: amount_donated,
           donation_date: donation_date,
           purpose: purpose,
