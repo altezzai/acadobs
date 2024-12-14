@@ -53,6 +53,7 @@ import 'package:school_app/features/parent/notices/screen/noticedetailedscreen.d
 import 'package:school_app/features/parent/notices/screen/noticescreen.dart';
 import 'package:school_app/features/parent/payment/screen/PaymentScreen.dart';
 import 'package:school_app/features/parent/payment/screen/paymentdetailedscreen.dart';
+import 'package:school_app/features/parent/payment/screen/student_payment_screen.dart';
 import 'package:school_app/features/parent/students/screen/studentdetails.dart';
 import 'package:school_app/features/teacher/attendance/model/attendance_data.dart';
 import 'package:school_app/features/teacher/attendance/screens/take_attendance.dart';
@@ -520,6 +521,20 @@ class Approuter {
           pageBuilder: (context, state) {
             return MaterialPage(child: PaymentPage());
           }),
+
+      GoRoute(
+        name: AppRouteConst.ParentPaymentScreenRouteName,
+        path: '/parentpaymentscreen',
+        pageBuilder: (context, state) {
+          final int studentId = state.extra as int;
+          return MaterialPage(
+            child: StudentPaymentScreen(
+              studentId: studentId,
+            ),
+          );
+        },
+      ),
+
       GoRoute(
         name: AppRouteConst.AddTeacherRouteName,
         path: '/addteacher',

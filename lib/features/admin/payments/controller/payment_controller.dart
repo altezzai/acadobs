@@ -92,6 +92,9 @@ class PaymentController extends ChangeNotifier {
   List<Donation> _donations = [];
   List<Donation> get donations => _donations;
 
+  List<Donation> _studentdonations = [];
+  List<Donation> get studentdonations => _studentdonations;
+
   Future<void> getDonations() async {
     _isloading = true;
     try {
