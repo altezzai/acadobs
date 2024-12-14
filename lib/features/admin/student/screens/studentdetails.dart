@@ -140,7 +140,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                         ],
                       ),
                     ),
-                  ),
+                  )
                 ),
               ];
             },
@@ -167,6 +167,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                           extra: widget.student.id);
                     },
                   )
+
                 ],
               ),
             ),

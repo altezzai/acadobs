@@ -17,8 +17,21 @@ class PaymentServices {
     return response;
   }
 
+  // Get payments by studentId
+  Future<Response> getPaymentsByStudentId({required int studentId}) async {
+    final Response response = await ApiServices.get("/getPaymentByStudentId/$studentId");
+    return response;
+  }
+
+//  Get donations
   Future<Response> getDonations() async {
     final Response response = await ApiServices.get("/donations");
+    return response;
+  }
+
+   // Get donations by studentId
+  Future<Response> getDonationsByStudentId({required int studentId}) async {
+    final Response response = await ApiServices.get("/getDonationByStudentId/$studentId");
     return response;
   }
 
@@ -26,7 +39,8 @@ class PaymentServices {
 // add payment
   Future<Response> addPayment(
     BuildContext context, {
-    required int userId,
+    required String userId,
+     required int staffId,
     required String amount_paid,
     required String payment_date,
     required String month,
@@ -40,7 +54,8 @@ class PaymentServices {
     final fileProvider =
         Provider.of<FilePickerProvider>(context, listen: false);
     final formData = FormData.fromMap({
-      'user_id': userId,
+      'student_id': userId,
+      'recorded_by': staffId,
       'amount_paid': amount_paid,
       'payment_date': payment_date,
       'month': month,
@@ -63,6 +78,7 @@ class PaymentServices {
   Future<Response> addDonation(
     BuildContext context, {
       required int userId,
+      required int staffId,
     required String amount_donated,
     required String donation_date,
     required String purpose,
@@ -76,6 +92,7 @@ class PaymentServices {
     // Create FormData to pass to the API
     final formData = FormData.fromMap({
       'donor_id': userId,
+      'recorded_by': staffId,
       'amount_donated': amount_donated,
       'donation_date': donation_date,
       'purpose': purpose,

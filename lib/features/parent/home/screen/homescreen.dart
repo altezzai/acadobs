@@ -5,6 +5,7 @@ import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
+import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
@@ -184,34 +185,35 @@ class HomePage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 20),
-                    Center(
-                      child: Consumer<StudentController>(
-                          builder: (context, value, child) {
-                        return ElevatedButton(
-                          onPressed: () {
-                            context.pushNamed(
-                                AppRouteConst.StudentLeaveRequestViewRouteName,
-                                extra: value.studentIds);
-                          },
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black,
-                              padding: EdgeInsets.symmetric(
-                                horizontal:
-                                    MediaQuery.of(context).size.width * 0.25, //
-                                vertical:
-                                    MediaQuery.of(context).size.height * 0.025,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12))),
-                          child: const Text(
-                            'Leave Request',
-                            style: TextStyle(fontSize: 18, color: Colors.white),
-                          ),
-                        );
-                      }),
-                    ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: Responsive.height * 1),
+                    // Center(
+                    //   child: Consumer<StudentController>(
+                    //       builder: (context, value, child) {
+                    //     return ElevatedButton(
+                    //       onPressed: () {
+                    //         context.pushNamed(
+                    //             AppRouteConst.StudentLeaveRequestViewRouteName,
+                    //             extra: value.studentIds);
+                    //       },
+                    //       style: ElevatedButton.styleFrom(
+                    //           backgroundColor: Colors.black,
+                    //           padding: EdgeInsets.symmetric(
+                    //             horizontal:
+                    //                 MediaQuery.of(context).size.width * 0.25, //
+                    //             vertical:
+                    //                 MediaQuery.of(context).size.height * 0.025,
+                    //           ),
+                    //           shape: RoundedRectangleBorder(
+                    //               borderRadius: BorderRadius.circular(12))),
+                    //       child: const Text(
+                    //         'Leave Request',
+                    //         style: TextStyle(fontSize: 18, color: Colors.white),
+                    //       ),
+                    //     );
+                    //   }),
+                    // ),
+                    // const SizedBox(height: 20),
+
                     const Text(
                       "My Children",
                       style: TextStyle(
@@ -234,20 +236,23 @@ class HomePage extends StatelessWidget {
                               ? Loading(
                                   color: Colors.grey,
                                 )
-                              : ProfileTile(
-                                  name: capitalizeEachWord(
-                                      student.fullName ?? ""),
-                                  description: student.studentClass ?? "",
-                                  imageUrl:
-                                      "${baseUrl}${Urls.studentPhotos}${student.studentPhoto}",
-                                  onPressed: () {
-                                    context.pushNamed(
-                                        AppRouteConst
-                                            .AdminstudentdetailsRouteName,
-                                        extra: StudentDetailArguments(
-                                            student: student,
-                                            userType: UserType.parent));
-                                  },
+                              : Padding(
+                                  padding: const EdgeInsets.only(bottom: 8.0),
+                                  child: ProfileTile(
+                                    name: capitalizeEachWord(
+                                        student.fullName ?? ""),
+                                    description: student.studentClass ?? "",
+                                    imageUrl:
+                                        "${baseUrl}${Urls.studentPhotos}${student.studentPhoto}",
+                                    onPressed: () {
+                                      context.pushNamed(
+                                          AppRouteConst
+                                              .AdminstudentdetailsRouteName,
+                                          extra: StudentDetailArguments(
+                                              student: student,
+                                              userType: UserType.parent));
+                                    },
+                                  ),
                                 );
                         },
                       );
