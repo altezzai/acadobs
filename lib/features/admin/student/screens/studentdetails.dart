@@ -140,7 +140,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                         ],
                       ),
                     ),
-                  ),
+                  )
                 ),
               ];
             },
