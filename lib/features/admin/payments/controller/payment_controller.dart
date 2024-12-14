@@ -113,6 +113,27 @@ class PaymentController extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Get individual student donations
+  Future<void> getDonationByStudentId({required int studentId}) async {
+    _isloading = true;
+    try {
+      final response =
+          await PaymentServices().getDonationsByStudentId(studentId: studentId);
+      print("***********${response.statusCode}");
+      // print(response.toString());
+      if (response.statusCode == 200) {
+        _studentdonations.clear();
+        _studentdonations = (response.data as List<dynamic>)
+            .map((result) => Donation.fromJson(result))
+            .toList();
+      }
+    } catch (e) {
+      // print(e);
+    }
+    _isloading = false;
+    notifyListeners();
+  }
+
 // add payment
   Future<void> addPayment(
     BuildContext context, {

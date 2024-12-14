@@ -6,6 +6,11 @@ import 'package:school_app/features/admin/notices/screens/notice_home.dart';
 import 'package:school_app/features/admin/payments/screens/payments_home.dart';
 import 'package:school_app/features/admin/reports/screens/reports_home.dart';
 import 'package:school_app/core/navbar/controller/bottom_nav_controller.dart';
+import 'package:school_app/features/parent/chat/screen/parentchatscreen.dart';
+import 'package:school_app/features/parent/events/screen/eventscreen.dart';
+import 'package:school_app/features/parent/home/screen/homescreen.dart';
+import 'package:school_app/features/parent/notices/screen/noticescreen.dart';
+import 'package:school_app/features/parent/payment/screen/payment_selection.dart';
 import 'package:school_app/features/teacher/attendance/screens/attendance.dart';
 import 'package:school_app/features/teacher/duties/duties.dart';
 import 'package:school_app/features/teacher/home/homescreen.dart';
@@ -34,6 +39,14 @@ class BottomNavScreen extends StatelessWidget {
         const DutiesScreen(),
         PaymentsHomeScreen(),
       ];
+    } else if (userType == UserType.parent) {
+      return [
+        HomePage(),
+        EventsPage(),
+        NoticePage(),
+        PaymentSelection(),
+        ParentChatPage()
+      ];
     } else {
       return [];
     }
@@ -56,6 +69,14 @@ class BottomNavScreen extends StatelessWidget {
         _bottomNavItem(icon: Icons.report_outlined, label: 'Marks'),
         _bottomNavItem(icon: Icons.work_outline, label: 'Duties'),
         _bottomNavItem(icon: Icons.payment_outlined, label: 'Payments'),
+      ];
+    } else if (userType == UserType.parent) {
+      return [
+        _bottomNavItem(icon: Icons.home, label: 'Home'),
+        _bottomNavItem(icon: Icons.event, label: 'Events'),
+        _bottomNavItem(icon: Icons.notifications, label: 'Notice'),
+        _bottomNavItem(icon: Icons.payment, label: 'Payment'),
+        _bottomNavItem(icon: Icons.chat, label: 'Chat'),
       ];
     } else {
       return [];

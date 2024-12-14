@@ -41,9 +41,8 @@ class _SplashScreenState extends State<SplashScreen>
         context.pushReplacementNamed(AppRouteConst.loginRouteName);
       } else {
         if (userType == "student") {
-          context.pushReplacementNamed(
-            AppRouteConst.ParentHomeRouteName,
-          );
+          context.goNamed(AppRouteConst.bottomNavRouteName,
+              extra: UserType.parent);
         } else if (userType == "teacher") {
           context.goNamed(AppRouteConst.bottomNavRouteName,
               extra: UserType.teacher);

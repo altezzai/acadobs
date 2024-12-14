@@ -27,48 +27,51 @@ class _PaymentSelectionState extends State<PaymentSelection> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          SizedBox(
-            height: Responsive.height * 1,
-          ),
-          CustomAppbar(
-            title: 'Payments',
-            isBackButton: false,
-          ),
-          SizedBox(
-            height: Responsive.height * 1,
-          ),
-          Consumer<StudentController>(builder: (context, value, child) {
-            return ListView.builder(
-              padding: EdgeInsets.zero,
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: value.studentsByParents.length,
-              itemBuilder: (context, index) {
-                final student = value.studentsByParents[index];
-                return value.isloading
-                    ? Loading(
-                        color: Colors.grey,
-                      )
-                    : Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: ProfileTile(
-                          name: capitalizeEachWord(student.fullName ?? ""),
-                          description: student.studentClass ?? "",
-                          imageUrl:
-                              "${baseUrl}${Urls.studentPhotos}${student.studentPhoto}",
-                          onPressed: () {
-                            context.pushNamed(
-                                AppRouteConst.ParentPaymentScreenRouteName,
-                                extra: student.id);
-                          },
-                        ),
-                      );
-              },
-            );
-          }),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          children: [
+            // SizedBox(
+            //   height: Responsive.height * 1,
+            // ),
+            CustomAppbar(
+              title: 'Payments',
+              isBackButton: false,
+            ),
+            SizedBox(
+              height: Responsive.height * 1,
+            ),
+            Consumer<StudentController>(builder: (context, value, child) {
+              return ListView.builder(
+                padding: EdgeInsets.zero,
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: value.studentsByParents.length,
+                itemBuilder: (context, index) {
+                  final student = value.studentsByParents[index];
+                  return value.isloading
+                      ? Loading(
+                          color: Colors.grey,
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: ProfileTile(
+                            name: capitalizeEachWord(student.fullName ?? ""),
+                            description: student.studentClass ?? "",
+                            imageUrl:
+                                "${baseUrl}${Urls.studentPhotos}${student.studentPhoto}",
+                            onPressed: () {
+                              context.pushNamed(
+                                  AppRouteConst.ParentPaymentScreenRouteName,
+                                  extra: student.id);
+                            },
+                          ),
+                        );
+                },
+              );
+            }),
+          ],
+        ),
       ),
     );
   }
