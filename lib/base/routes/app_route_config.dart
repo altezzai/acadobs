@@ -45,7 +45,6 @@ import 'package:school_app/features/admin/teacher_section/screens/teacherdetails
 import 'package:school_app/features/admin/teacher_section/screens/teachers_page.dart';
 import 'package:school_app/features/parent/events/screen/eventdetailedscreen.dart';
 import 'package:school_app/features/parent/events/screen/eventscreen.dart';
-import 'package:school_app/features/parent/home/screen/homescreen.dart';
 import 'package:school_app/features/parent/leave_request/model/studentLeaveReq_model.dart';
 import 'package:school_app/features/parent/leave_request/screens/add_student_leaveReq.dart';
 // import 'package:school_app/features/parent/leave_request/screens/student_leaveRequest.dart';
@@ -370,13 +369,13 @@ class Approuter {
           return MaterialPage(child: AddHomeworkPage());
         },
       ),
-      GoRoute(
-        name: AppRouteConst.ParentHomeRouteName,
-        path: '/parenthome',
-        pageBuilder: (context, state) {
-          return MaterialPage(child: ParentHomeScreen());
-        },
-      ),
+      // GoRoute(
+      //   name: AppRouteConst.ParentHomeRouteName,
+      //   path: '/parenthome',
+      //   pageBuilder: (context, state) {
+      //     return MaterialPage(child: ParentHomeScreen());
+      //   },
+      // ),
       // GoRoute(
       //   name: AppRouteConst.StudentLeaveRequestViewRouteName,
       //   path: '/studentleaverequestview',

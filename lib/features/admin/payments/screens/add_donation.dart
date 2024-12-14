@@ -188,7 +188,7 @@ class _AddDonationPageState extends State<AddDonationPage> {
                     dropdownKey: 'donationType',
                     label: 'Donation Type',
                     items: ['One-time', 'Recurring', 'Event-based'],
-                    icon: Icons.currency_rupee,
+                    icon: Icons.category,
                   ),
                   const SizedBox(height: 16),
                   CustomDropdown(
@@ -208,7 +208,6 @@ class _AddDonationPageState extends State<AddDonationPage> {
                     hintText: 'Transaction Id',
                     controller: _transactionController,
                     iconData: const Icon(Icons.currency_rupee),
-                    keyBoardtype: TextInputType.number,
                   ),
                 ],
               ),

@@ -42,18 +42,25 @@ class _PaymentSelectionState extends State<PaymentSelection> {
               height: Responsive.height * 1,
             ),
             Consumer<StudentController>(builder: (context, value, child) {
-              return ListView.builder(
-                padding: EdgeInsets.zero,
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: value.studentsByParents.length,
-                itemBuilder: (context, index) {
-                  final student = value.studentsByParents[index];
-                  return value.isloading
-                      ? Loading(
+              return value.isloading
+                  ? Column(
+                      children: [
+                        SizedBox(
+                          height: Responsive.height * 36,
+                        ),
+                        Loading(
                           color: Colors.grey,
-                        )
-                      : Padding(
+                        ),
+                      ],
+                    )
+                  : ListView.builder(
+                      padding: EdgeInsets.zero,
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: value.studentsByParents.length,
+                      itemBuilder: (context, index) {
+                        final student = value.studentsByParents[index];
+                        return Padding(
                           padding: const EdgeInsets.only(bottom: 8.0),
                           child: ProfileTile(
                             name: capitalizeEachWord(student.fullName ?? ""),
@@ -67,8 +74,8 @@ class _PaymentSelectionState extends State<PaymentSelection> {
                             },
                           ),
                         );
-                },
-              );
+                      },
+                    );
             }),
           ],
         ),
