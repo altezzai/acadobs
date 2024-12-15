@@ -223,11 +223,11 @@ class Approuter {
         name: AppRouteConst.NoteDetailsRouteName,
         path: '/notedetails',
         pageBuilder: (context, state) {
-          final Student student = state.extra as Student;
+          final Student parent = state.extra as Student;
 
           return MaterialPage(
               child: NoteChatDetailPage(
-            student: student,
+            parent: parent,
           ));
         },
       ),

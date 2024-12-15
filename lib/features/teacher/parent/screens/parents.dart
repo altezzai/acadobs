@@ -22,9 +22,20 @@ class _ParentsScreenState extends State<ParentsScreen> {
   // String searchQuery = "";
   // String selectedClass = "All";
 
-  @override
+ late DropdownProvider dropdownprovider;
+
+   @override
   void initState() {
+    dropdownprovider = context.read<DropdownProvider>();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      dropdownprovider.clearSelectedItem('class');
+      dropdownprovider.clearSelectedItem('division');
+
+      //context.read<StudentReportController>().clearStudentReportList();
+      // super.dispose();
+    });
     super.initState();
+    
     context.read<StudentController>().getParentDetails();
   }
 
@@ -220,21 +231,21 @@ class _ParentsScreenState extends State<ParentsScreen> {
                               .zero, // Removes any extra padding at the top
                           itemCount: value.filteredparents.length,
                           itemBuilder: (context, index) {
+                           final parent=value.filteredparents[index];
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 4),
                               child: ProfileTile(
                                 imageUrl:
-                                    "${baseUrl}${Urls.parentPhotos}${value.parents[index].fatherMotherPhoto}",
-                                name: capitalizeFirstLetter(value
-                                        .filteredparents[index]
+                                    "${baseUrl}${Urls.parentPhotos}${value.parents[index]}",
+                                name: capitalizeFirstLetter(parent
                                         .guardianFullName ??
                                     ""),
                                 description:
-                                    "${value.filteredparents[index].fullName} ${value.filteredparents[index].studentClass} ${value.filteredparents[index].section}",
+                                    "${parent.fullName} ${parent.studentClass} ${parent.section}",
                                 onPressed: () {
                                   context.pushNamed(
                                       AppRouteConst.NoteDetailsRouteName,
-                                      extra: value.parents[index]);
+                                      extra:parent );
                                 },
                               ),
                             );
