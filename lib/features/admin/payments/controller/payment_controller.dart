@@ -19,6 +19,8 @@ class PaymentController extends ChangeNotifier {
   List<Payment> get filteredpayments => _filteredpayments;
   List<Payment> _studentPayments = [];
   List<Payment> get studentPayments => _studentPayments;
+  List<Payment> _teacherPayments = [];
+  List<Payment> get teacherPayments => _teacherPayments;
 
 // Get all Payments
   Future<void> getPayments() async {
@@ -84,6 +86,28 @@ class PaymentController extends ChangeNotifier {
     }
   }
 
+  // Get payments by recorded id
+  Future<void> getPaymentsByRecordId() async {
+    _isloading = true;
+    try {
+      final recordId = await SecureStorageService.getUserId();
+      final response =
+          await PaymentServices().getPaymentsByRecordedId(recordId: recordId);
+      print("***********${response.statusCode}");
+      // print(response.toString());
+      if (response.statusCode == 200) {
+        _teacherPayments.clear();
+        _teacherPayments = (response.data as List<dynamic>)
+            .map((result) => Payment.fromJson(result))
+            .toList();
+      }
+    } catch (e) {
+      // print(e);
+    }
+    _isloading = false;
+    notifyListeners();
+  }
+
   void clearPaymentList() {
     _filteredpayments.clear();
     notifyListeners();
@@ -94,6 +118,9 @@ class PaymentController extends ChangeNotifier {
 
   List<Donation> _studentdonations = [];
   List<Donation> get studentdonations => _studentdonations;
+
+  List<Donation> _teacherdonations = [];
+  List<Donation> get teacherdonations => _teacherdonations;
 
   Future<void> getDonations() async {
     _isloading = true;
@@ -124,6 +151,28 @@ class PaymentController extends ChangeNotifier {
       if (response.statusCode == 200) {
         _studentdonations.clear();
         _studentdonations = (response.data as List<dynamic>)
+            .map((result) => Donation.fromJson(result))
+            .toList();
+      }
+    } catch (e) {
+      // print(e);
+    }
+    _isloading = false;
+    notifyListeners();
+  }
+
+  // Get teacher donations
+  Future<void> getDonationByRecordId() async {
+    _isloading = true;
+    try {
+      final recordId = await SecureStorageService.getUserId();
+      final response =
+          await PaymentServices().getDonationsByRecordedId(recordId: recordId);
+      print("***********${response.statusCode}");
+      // print(response.toString());
+      if (response.statusCode == 200) {
+        _teacherdonations.clear();
+        _teacherdonations = (response.data as List<dynamic>)
             .map((result) => Donation.fromJson(result))
             .toList();
       }

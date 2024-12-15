@@ -16,6 +16,7 @@ import 'package:school_app/features/teacher/attendance/screens/attendance.dart';
 import 'package:school_app/features/teacher/duties/duties.dart';
 import 'package:school_app/features/teacher/home/homescreen.dart';
 import 'package:school_app/features/teacher/marks/screens/marks.dart';
+import 'package:school_app/features/teacher/payment/teacher_payment.dart';
 
 class BottomNavScreen extends StatelessWidget {
   final UserType userType;
@@ -37,7 +38,7 @@ class BottomNavScreen extends StatelessWidget {
         AttendanceScreen(),
         ProgressReport(),
         const DutiesScreen(),
-        PaymentsHomeScreen(),
+        TeacherPaymentScreen(),
       ];
     } else if (userType == UserType.parent) {
       return [
