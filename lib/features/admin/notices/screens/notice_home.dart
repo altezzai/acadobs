@@ -6,6 +6,7 @@ import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/constants.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/show_loading.dart';
+import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/shared_widgets/add_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
@@ -195,11 +196,12 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
 
       return _buildGroupedList(groupedEvents, (event) {
         return EventItem(
-          title: event.title ?? "",
-          description: event.description ?? "",
-          date: TimeFormatter.formatTimeFromString(event.createdAt.toString()),
-          imagePath: 'assets/sports_day.png',
-        );
+            title: event.title ?? "",
+            description: event.description ?? "",
+            date:
+                TimeFormatter.formatTimeFromString(event.createdAt.toString()),
+            imagePath:
+                "${baseUrl}${Urls.eventPhotos}${event.images![0].imagePath}");
       });
     });
   }

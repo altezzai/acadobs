@@ -260,7 +260,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                             payment_status: paymentStatus,
                           );
                     },
-                    widget: value.isloading ? ButtonLoading() : Text('Submit'));
+                    widget: value.isloadingTwo ? ButtonLoading() : Text('Submit'));
               })
                   // CustomButton(
                   //   text: 'Submit',

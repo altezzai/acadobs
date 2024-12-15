@@ -2,11 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/services/secure_storage_services.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
-import 'package:school_app/core/controller/loading_provider.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/admin/duties/model/duty_model.dart';
 import 'package:school_app/features/admin/duties/model/teacherDuty_model.dart';
@@ -16,6 +14,8 @@ import 'package:school_app/features/admin/duties/services/duty_services.dart';
 class DutyController extends ChangeNotifier {
   bool _isloading = false;
   bool get isloading => _isloading;
+  bool _isloadingTwo = false;
+  bool get isloadingTwo => _isloadingTwo;
   List<DutyClass> _duties = [];
   List<DutyClass> get duties => _duties;
   List<AssignedTeacher> _assignedteachers = [];
@@ -128,9 +128,11 @@ class DutyController extends ChangeNotifier {
     required String remark,
     required List<int> teachers,
   }) async {
-    final loadingProvider =
-        Provider.of<LoadingProvider>(context, listen: false); //loading provider
-    loadingProvider.setLoading(true); //start loader
+    // final loadingProvider =
+    //     Provider.of<LoadingProvider>(context, listen: false); //loading provider
+    // loadingProvider.setLoading(true); //start loader
+    _isloadingTwo = true;
+    notifyListeners();
     try {
       final response = await DutyServices().addDuty(
         duty_title: duty_title,
@@ -147,7 +149,7 @@ class DutyController extends ChangeNotifier {
     } catch (e) {
       log(e.toString());
     } finally {
-      loadingProvider.setLoading(false); // End loader
+      _isloadingTwo = false; // End loader
       notifyListeners();
     }
   }

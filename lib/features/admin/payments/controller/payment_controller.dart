@@ -13,6 +13,8 @@ import 'package:school_app/features/admin/payments/services/payment_services.dar
 class PaymentController extends ChangeNotifier {
   bool _isloading = false;
   bool get isloading => _isloading;
+    bool _isloadingTwo = false;
+  bool get isloadingTwo => _isloadingTwo;
   List<Payment> _payments = [];
   List<Payment> get payments => _payments;
   List<Payment> _filteredpayments = [];
@@ -147,7 +149,8 @@ class PaymentController extends ChangeNotifier {
     required String payment_status,
     File? file,
   }) async {
-    _isloading = true;
+    _isloadingTwo = true;
+    notifyListeners();
     try {
       final teacherId = await SecureStorageService.getUserId();
       final response = await PaymentServices().addPayment(
@@ -170,7 +173,7 @@ class PaymentController extends ChangeNotifier {
     } catch (e) {
       log(e.toString());
     } finally {
-      _isloading = false;
+      _isloadingTwo = false;
       notifyListeners();
     }
   }
@@ -186,7 +189,8 @@ class PaymentController extends ChangeNotifier {
     required String transaction_id,
     File? file,
   }) async {
-    _isloading = true;
+    _isloadingTwo = true;
+    notifyListeners();
     try {
       final teacherId = await SecureStorageService.getUserId();
       final response = await PaymentServices().addDonation(context,
@@ -206,7 +210,7 @@ class PaymentController extends ChangeNotifier {
     } catch (e) {
       log(e.toString());
     } finally {
-      _isloading = false;
+      _isloadingTwo = false;
       notifyListeners();
     }
   }

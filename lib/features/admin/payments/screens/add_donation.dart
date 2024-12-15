@@ -242,7 +242,7 @@ class _AddDonationPageState extends State<AddDonationPage> {
                             );
                       },
                       widget:
-                          value.isloading ? ButtonLoading() : Text('Submit'),
+                          value.isloadingTwo ? ButtonLoading() : Text('Submit'),
                     );
                   })
                   // CustomButton(

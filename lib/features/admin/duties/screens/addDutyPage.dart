@@ -188,11 +188,11 @@ class _AddDutyPageState extends State<AddDutyPage> {
 
               // Submit Button
               Center(
-                child: Consumer<TeacherController>(
-                    builder: (context, value, child) {
+                child: Consumer2<TeacherController, DutyController>(
+                    builder: (context, value1, value2, child) {
                   return CommonButton(
                     onPressed: () async {
-                      log("List of teacher ids selected: ==== ${value.selectedTeacherIds.toString()}");
+                      log("List of teacher ids selected: ==== ${value1.selectedTeacherIds.toString()}");
                       final status = context
                           .read<DropdownProvider>()
                           .getSelectedItem('status');
@@ -201,9 +201,10 @@ class _AddDutyPageState extends State<AddDutyPage> {
                           description: _descriptionController.text,
                           status: status,
                           remark: _remarkController.text,
-                          teachers: value.selectedTeacherIds);
+                          teachers: value1.selectedTeacherIds);
                     },
-                    widget: value.isloading ? ButtonLoading() : Text('Submit'),
+                    widget:
+                        value2.isloadingTwo ? ButtonLoading() : Text('Submit'),
                   );
                   // CustomButton(
                   //   text: 'Submit',
