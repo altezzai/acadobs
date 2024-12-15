@@ -22,6 +22,7 @@ import 'package:school_app/features/teacher/attendance/controller/tile_selection
 import 'package:school_app/features/teacher/homework/controller/homework_controller.dart';
 import 'package:school_app/features/teacher/leave_request/controller/teacherLeaveReq_controller.dart';
 import 'package:school_app/features/teacher/marks/controller/marks_controller.dart';
+import 'package:school_app/features/teacher/parent/controller/notes_controller.dart';
 
 getProviders() {
   return [
@@ -49,5 +50,6 @@ getProviders() {
     ChangeNotifierProvider(create: (_) => ExamController()),
     ChangeNotifierProvider(create: (_) => StudentReportController()),
      ChangeNotifierProvider(create: (_) => TeacherReportController()),
+      ChangeNotifierProvider(create: (_) => NotesController()),
   ];
 }

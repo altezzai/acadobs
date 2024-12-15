@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
@@ -7,7 +8,7 @@ class EventCard extends StatelessWidget {
   final String eventDescription;
   final String date;
   final String time;
-  final ImageProvider imageProvider;
+  final String imageProvider;
 
   const EventCard({
     super.key,
@@ -102,11 +103,23 @@ class EventCard extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(12.0),
-                child: Image(
-                  image: imageProvider,
+                child: CachedNetworkImage(
+                  imageUrl: imageProvider,
                   height: 100,
                   width: 100,
                   fit: BoxFit.cover,
+                  placeholder: (context, url) => Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.grey,
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => Center(
+                    child: Icon(
+                      Icons.error,
+                      size: 40,
+                      color: Colors.red,
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(width: 10),

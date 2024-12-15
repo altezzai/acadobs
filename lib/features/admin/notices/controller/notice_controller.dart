@@ -43,6 +43,7 @@ class NoticeController extends ChangeNotifier {
 
   Future<void> getEvents() async {
     _isloading = true;
+    // notifyListeners();
     try {
       final response = await NoticeServices().getEvents();
       print("***********${response.statusCode}");

@@ -17,6 +17,7 @@ class AuthController extends ChangeNotifier {
       required String email,
       required String password}) async {
     _isloading = true;
+    notifyListeners();
     try {
       log("Start");
       final response =
