@@ -45,6 +45,7 @@ class AppRouteConst {
   static const String NotesRouteName = 'notes';
   static const String AddNoteRouteName = 'addnotes';
   static const String NoteDetailsRouteName = 'notedetails';
+   static const String StudentNoteSelectionRouteName = 'studentnoteselection';
 
   static const String StudentLeaveRequestViewRouteName =
       'studentleaverequestview';
