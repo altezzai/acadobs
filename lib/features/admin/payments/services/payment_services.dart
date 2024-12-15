@@ -12,14 +12,24 @@ class PaymentServices {
   }
 
   // Get payments from class and division
-  Future<Response> getPaymentsByClassAndDivision({required String className, required String section}) async {
-    final Response response = await ApiServices.get("/getPaymentsByClassAndSection?class=$className&section=$section");
+  Future<Response> getPaymentsByClassAndDivision(
+      {required String className, required String section}) async {
+    final Response response = await ApiServices.get(
+        "/getPaymentsByClassAndSection?class=$className&section=$section");
     return response;
   }
 
   // Get payments by studentId
   Future<Response> getPaymentsByStudentId({required int studentId}) async {
-    final Response response = await ApiServices.get("/getPaymentByStudentId/$studentId");
+    final Response response =
+        await ApiServices.get("/getPaymentByStudentId/$studentId");
+    return response;
+  }
+
+  // Get payments by teacher
+  Future<Response> getPaymentsByRecordedId({required int recordId}) async {
+    final Response response =
+        await ApiServices.get("/getPaymentByRecordedId/$recordId");
     return response;
   }
 
@@ -29,18 +39,25 @@ class PaymentServices {
     return response;
   }
 
-   // Get donations by studentId
+  // Get donations by studentId
   Future<Response> getDonationsByStudentId({required int studentId}) async {
-    final Response response = await ApiServices.get("/getDonationByStudentId/$studentId");
+    final Response response =
+        await ApiServices.get("/getDonationByStudentId/$studentId");
     return response;
   }
 
+  // Get donations by teacher
+  Future<Response> getDonationsByRecordedId({required int recordId}) async {
+    final Response response =
+        await ApiServices.get("/getDonationByRecordedId/$recordId");
+    return response;
+  }
 
 // add payment
   Future<Response> addPayment(
     BuildContext context, {
     required String userId,
-     required int staffId,
+    required int staffId,
     required String amount_paid,
     required String payment_date,
     required String month,
@@ -77,8 +94,8 @@ class PaymentServices {
 // add donation
   Future<Response> addDonation(
     BuildContext context, {
-      required int userId,
-      required int staffId,
+    required int userId,
+    required int staffId,
     required String amount_donated,
     required String donation_date,
     required String purpose,

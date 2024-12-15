@@ -543,6 +543,19 @@ class Approuter {
         },
       ),
 
+      // GoRoute(
+      //   name: AppRouteConst.TeacherPaymentScreenRouteName,
+      //   path: '/teacherpaymentscreen',
+      //   pageBuilder: (context, state) {
+      //     final int recordId = state.extra as int;
+      //     return MaterialPage(
+      //       child: TeacherPaymentScreen(
+      //         recordId: recordId,
+      //       ),
+      //     );
+      //   },
+      // ),
+
       GoRoute(
         name: AppRouteConst.AddTeacherRouteName,
         path: '/addteacher',
