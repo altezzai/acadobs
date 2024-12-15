@@ -9,7 +9,7 @@ class ButtonLoading extends StatelessWidget {
   const ButtonLoading({
     super.key,
     this.color = Colors.white,
-    this.sizeMultiplier = 6,
+    this.sizeMultiplier = 5,
   });
 
   @override
@@ -17,7 +17,7 @@ class ButtonLoading extends StatelessWidget {
     return Center(
       child: SizedBox(
         width: Responsive.height * sizeMultiplier,
-        height: Responsive.height * 3,
+        height: Responsive.height * 2,
         child: LoadingIndicator(
           indicatorType: Indicator.ballPulse,
           colors: [color!],

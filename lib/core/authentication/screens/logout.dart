@@ -89,16 +89,16 @@ class _LogoutScreenState extends State<LogoutScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            if (widget.userType == UserType.parent) {
-              context.pushReplacementNamed(
-                AppRouteConst.ParentHomeRouteName,
-              );
-            } else {
-              context.goNamed(
-                AppRouteConst.bottomNavRouteName,
-                extra: widget.userType,
-              );
-            }
+            // if (widget.userType == UserType.parent) {
+            //   context.pushReplacementNamed(
+            //     AppRouteConst.ParentHomeRouteName,
+            //   );
+            // } else {
+            context.goNamed(
+              AppRouteConst.bottomNavRouteName,
+              extra: widget.userType,
+            );
+            // }
           },
         ),
         elevation: 0,

@@ -142,7 +142,7 @@ class _HomePageState extends State<HomePage> {
                 GestureDetector(
                   onTap: () {
                     // Navigate to the desired page
-                    context.goNamed(AppRouteConst.logoutRouteName,
+                    context.pushNamed(AppRouteConst.logoutRouteName,
                         extra: UserType.parent);
                   },
                   child: Padding(
@@ -419,7 +419,7 @@ class _HomePageState extends State<HomePage> {
                                         value.events[index].createdAt
                                             .toString()),
                                     imageProvider:
-                                        AssetImage("assets/event2.png"),
+                                        "${baseUrl}${Urls.eventPhotos}${value.events[index].images![0].imagePath}",
                                   );
                                 },
                               );

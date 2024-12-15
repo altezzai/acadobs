@@ -15,11 +15,9 @@ import 'package:school_app/core/shared_widgets/profile_tile.dart';
 import 'package:school_app/features/admin/student/controller/student_controller.dart';
 
 class StudentNoteSelectionPage extends StatefulWidget {
-  
-
- 
   @override
-  _StudentNoteSelectionPageState createState() => _StudentNoteSelectionPageState();
+  _StudentNoteSelectionPageState createState() =>
+      _StudentNoteSelectionPageState();
 }
 
 class _StudentNoteSelectionPageState extends State<StudentNoteSelectionPage> {
@@ -55,18 +53,11 @@ class _StudentNoteSelectionPageState extends State<StudentNoteSelectionPage> {
               height: Responsive.height * 2,
             ),
             CustomAppbar(
-              title: 'Students',
+              title: 'Select Student',
               onTap: () {
-                // widget.userType == UserType.admin
-                //     ? context.pushNamed(
-                //         AppRouteConst.bottomNavRouteName,
-                //         extra: UserType.admin,
-                //       )
-                //     : context.pushNamed(
-                //         AppRouteConst.bottomNavRouteName,
-                //         extra: UserType.teacher,
-                //       );
+                context.pushNamed(AppRouteConst.NotesRouteName);
               },
+              isProfileIcon: false,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 7),
@@ -174,23 +165,22 @@ class _StudentNoteSelectionPageState extends State<StudentNoteSelectionPage> {
                               .zero, // Removes any extra padding at the top
                           itemCount: value.filteredstudents.length,
                           itemBuilder: (context, index) {
-                            final student=value.filteredstudents[index];
+                            final student = value.filteredstudents[index];
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 4),
                               child: ProfileTile(
+                                suffixText: "Select",
                                 imageUrl:
                                     "${baseUrl}${Urls.studentPhotos}${student.studentPhoto}",
                                 name: capitalizeFirstLetter(
-                                    student.fullName ??
-                                        ""),
+                                    student.fullName ?? ""),
                                 description:
                                     "${student.studentClass} ${student.section}",
                                 onPressed: () {
                                   context.pushNamed(
-                                      AppRouteConst
-                                          .AddNoteRouteName,
+                                      AppRouteConst.AddNoteRouteName,
                                       extra: student);
-                                 },
+                                },
                               ),
                             );
                           },

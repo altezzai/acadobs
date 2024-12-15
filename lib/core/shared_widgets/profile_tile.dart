@@ -5,6 +5,7 @@ import 'package:school_app/base/utils/constants.dart';
 class ProfileTile extends StatelessWidget {
   final String name;
   final String description;
+  final String suffixText;
   // final String? imagePath;
   final VoidCallback? onPressed;
   final String? imageUrl;
@@ -15,6 +16,7 @@ class ProfileTile extends StatelessWidget {
       required this.description,
       this.onPressed,
       this.icon = Icons.person_outline,
+      this.suffixText = "View",
       this.imageUrl});
 
   @override
@@ -63,7 +65,7 @@ class ProfileTile extends StatelessWidget {
           const Spacer(),
           IconButton(
             icon: Text(
-              "View",
+              suffixText,
               style: Theme.of(context).textTheme.bodySmall!.copyWith(
                   color: blackColor, fontSize: 14, fontWeight: FontWeight.w500),
             ),

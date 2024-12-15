@@ -151,7 +151,7 @@ import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
-import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+import 'package:school_app/core/shared_widgets/common_button.dart';
 //import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
@@ -189,30 +189,41 @@ class _NotesScreenState extends State<NotesScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           children: [
+            SizedBox(
+              height: Responsive.height * 2,
+            ),
             CustomAppbar(
               title: "Notes",
               isProfileIcon: false,
               onTap: () {
-                context.pushNamed(AppRouteConst.bottomNavRouteName,
-                    extra: UserType.teacher);
+                context.pushNamed(AppRouteConst.parentRouteName);
               },
             ),
-            const SizedBox(height: 16),
+
             Expanded(child: _buildParentTile(context, notificationCount: 1)),
-           FloatingActionButton.extended(
-        onPressed: () {
-          context.pushNamed(AppRouteConst.StudentNoteSelectionRouteName);
-        },
-        label: Text('Add New Note'),
-        icon: Icon(Icons.add),
-        backgroundColor: Colors.black,
-        foregroundColor: Colors.white,
-      ),
+            //      FloatingActionButton.extended(
+            //   onPressed: () {
+            //     context.pushNamed(AppRouteConst.StudentNoteSelectionRouteName);
+            //   },
+            //   label: Text('Add New Note'),
+            //   icon: Icon(Icons.add),
+            //   backgroundColor: Colors.black,
+            //   foregroundColor: Colors.white,
+            // ),
             SizedBox(
               height: Responsive.height * 1,
             ),
           ],
         ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.all(16),
+        child: CommonButton(
+            onPressed: () {
+              context.pushNamed(AppRouteConst.StudentNoteSelectionRouteName);
+            },
+            widget: Text("Add New Note")),
       ),
     );
   }
