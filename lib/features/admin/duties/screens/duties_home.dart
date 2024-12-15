@@ -30,7 +30,7 @@ class _DutiesHomeScreenState extends State<DutiesHomeScreen> {
 
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+        padding: EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

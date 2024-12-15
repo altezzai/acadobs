@@ -14,7 +14,7 @@ class NoticeItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      // margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       elevation: 4,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
@@ -29,7 +29,8 @@ class NoticeItem extends StatelessWidget {
           title,
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
         ),
-        subtitle: Text(date, style: TextStyle(color: Colors.grey, fontSize: 16)),
+        subtitle:
+            Text(date, style: TextStyle(color: Colors.grey, fontSize: 16)),
         trailing: Text(
           time,
           style: TextStyle(fontWeight: FontWeight.normal, fontSize: 13),
