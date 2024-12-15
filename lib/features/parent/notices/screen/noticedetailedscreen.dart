@@ -128,12 +128,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:http/http.dart' as http;
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
-import 'package:http/http.dart' as http;
 
 class NoticeDetailPage extends StatelessWidget {
   final String title;
@@ -214,9 +212,10 @@ class NoticeDetailPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.chevron_left, color: Colors.black),
           onPressed: () {
-            context.pushNamed(
-              AppRouteConst.ParentNoticePageRouteName,
-            );
+            // context.pushNamed(
+            //   AppRouteConst.ParentNoticePageRouteName,
+            // );
+            Navigator.pop(context);
           },
         ),
         title: Text(

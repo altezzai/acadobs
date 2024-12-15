@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/parent/chat/screen/parentchatdetailedscreen.dart';
 
@@ -31,6 +32,9 @@ class ParentChatPage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
           children: [
+            SizedBox(
+              height: Responsive.height * 2,
+            ),
             // Search bar
             Padding(
               padding: const EdgeInsets.only(bottom: 16.0),

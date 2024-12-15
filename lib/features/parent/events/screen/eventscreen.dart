@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/urls.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
 import 'package:school_app/features/parent/events/widget/eventcard.dart';
 
@@ -28,9 +29,8 @@ class _EventsPageState extends State<EventsPage> {
         leading: IconButton(
           icon: const Icon(Icons.chevron_left, color: Colors.black),
           onPressed: () {
-            context.pushNamed(
-              AppRouteConst.ParentHomeRouteName,
-            );
+            context.pushNamed(AppRouteConst.bottomNavRouteName,
+                extra: UserType.parent);
           },
         ),
         title: const Text(

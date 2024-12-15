@@ -1,12 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
 
 class EventDetailPage extends StatelessWidget {
   final String title;
   final String description;
   final String date;
-  final ImageProvider imageProvider;
+  final String imageProvider;
 
   const EventDetailPage({
     super.key,
@@ -23,10 +22,7 @@ class EventDetailPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.chevron_left, color: Colors.black),
           onPressed: () {
-            context.pushNamed(
-              AppRouteConst.EventsPageRouteName,
-            );
-            // Navigator.of(context).pop();
+            Navigator.pop(context);
           },
         ),
         title: Text(title),
@@ -38,10 +34,23 @@ class EventDetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Image(
-              image: imageProvider,
+            CachedNetworkImage(
+              imageUrl: imageProvider,
               height: 300,
+              // width: 100,
               fit: BoxFit.cover,
+              placeholder: (context, url) => Center(
+                child: CircularProgressIndicator(
+                  color: Colors.grey,
+                ),
+              ),
+              errorWidget: (context, url, error) => Center(
+                child: Icon(
+                  Icons.error,
+                  size: 40,
+                  color: Colors.red,
+                ),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),

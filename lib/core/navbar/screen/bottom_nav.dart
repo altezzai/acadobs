@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/navbar/controller/bottom_nav_controller.dart';
 import 'package:school_app/features/admin/duties/screens/duties_home.dart';
@@ -18,9 +19,16 @@ import 'package:school_app/features/teacher/home/homescreen.dart';
 import 'package:school_app/features/teacher/marks/screens/marks.dart';
 import 'package:school_app/features/teacher/payment/teacher_payment.dart';
 
-class BottomNavScreen extends StatelessWidget {
+class BottomNavScreen extends StatefulWidget {
   final UserType userType;
-  BottomNavScreen({super.key, required this.userType});
+  const BottomNavScreen({Key? key, required this.userType}) : super(key: key);
+
+  @override
+  State<BottomNavScreen> createState() => _BottomNavScreenState();
+}
+
+class _BottomNavScreenState extends State<BottomNavScreen> {
+  DateTime? lastPressed;
 
   // Define pages for each user type
   List<Widget> _getPages(UserType userType) {
@@ -53,7 +61,7 @@ class BottomNavScreen extends StatelessWidget {
     }
   }
 
-  /// Define BottomNavigationBarItems for each user type
+  // Define BottomNavigationBarItems for each user type
   List<BottomNavigationBarItem> _getBottomNavItems(UserType userType) {
     if (userType == UserType.admin) {
       return [
@@ -148,35 +156,58 @@ class BottomNavScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final bottomNavProvider = Provider.of<BottomNavController>(context);
     final int currentIndex = bottomNavProvider.currentIndex;
-    final _pages = _getPages(userType);
-    final _navItems =
-        _getBottomNavItems(userType); // Get navigation items based on user type
+    final _pages = _getPages(widget.userType);
+    final _navItems = _getBottomNavItems(widget.userType);
 
-    return Scaffold(
-      body: _pages[currentIndex],
-      bottomNavigationBar: Container(
-        height: Responsive.height * 8,
-        child: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          currentIndex: currentIndex,
-          selectedItemColor: Colors.black,
-          unselectedItemColor: Color(0xFF848484),
-          selectedFontSize: 12,
-          unselectedFontSize: 12,
-          selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-          unselectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-          onTap: (index) {
-            bottomNavProvider.setIndex(index);
-          },
-          items: _navItems, // Use dynamic items based on userType
+    // ignore: deprecated_member_use
+    return WillPopScope(
+      onWillPop: () async {
+        final now = DateTime.now();
+
+        if (lastPressed == null ||
+            now.difference(lastPressed!) > const Duration(seconds: 2)) {
+          lastPressed = now;
+          CustomSnackbar.show(context,
+              message: "Press back again to exit", type: SnackbarType.warning);
+          // Fluttertoast.showToast(
+          //   msg: "Press back again to exit",
+          //   toastLength: Toast.LENGTH_SHORT,
+          //   gravity: ToastGravity.BOTTOM,
+          //   backgroundColor: Colors.black54,
+          //   textColor: Colors.white,
+          // );
+
+          return false; // Prevent exiting
+        }
+
+        return true; // Exit the app
+      },
+      child: Scaffold(
+        body: _pages[currentIndex],
+        bottomNavigationBar: Container(
+          height: Responsive.height * 8,
+          child: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            currentIndex: currentIndex,
+            selectedItemColor: Colors.black,
+            unselectedItemColor: Color(0xFF848484),
+            selectedFontSize: 12,
+            unselectedFontSize: 12,
+            selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+            unselectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+            onTap: (index) {
+              bottomNavProvider.setIndex(index);
+            },
+            items: _navItems,
+          ),
         ),
       ),
     );
   }
 
   BottomNavigationBarItem _bottomNavItem({
-    required String iconPath, // Path to asset icon
-    required String activeIconPath, // Path to active state icon
+    required String iconPath,
+    required String activeIconPath,
     required String label,
   }) {
     return BottomNavigationBarItem(
@@ -205,8 +236,4 @@ class BottomNavScreen extends StatelessWidget {
   }
 }
 
-enum UserType {
-  admin,
-  teacher,
-  parent,
-}
+enum UserType { admin, teacher, parent }
