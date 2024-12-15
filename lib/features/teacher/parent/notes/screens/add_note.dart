@@ -10,9 +10,13 @@ import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
+import 'package:school_app/features/admin/student/model/student_data.dart';
 
 class AddNote extends StatefulWidget {
-  const AddNote({super.key});
+  final Student student; // Replace with int studentId if only ID is passed
+
+ 
+  const AddNote({required this.student});
 
   @override
   State<AddNote> createState() => _AddNoteState();

@@ -309,7 +309,10 @@ class StudentController extends ChangeNotifier {
     _isloading = false;
     notifyListeners();
   }
-
+ void clearParentList() {
+    _filteredparents.clear();
+    notifyListeners();
+  }
   // Day Attendance Status List
   List<DayAttendanceStatus> _dayAttendanceStatus = [];
   List<DayAttendanceStatus> get dayAttendanceStatus => _dayAttendanceStatus;

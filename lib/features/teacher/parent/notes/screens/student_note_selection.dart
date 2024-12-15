@@ -1,57 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+//import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
-import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+//import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/profile_tile.dart';
 import 'package:school_app/features/admin/student/controller/student_controller.dart';
 
-class ParentsScreen extends StatefulWidget {
+class StudentNoteSelectionPage extends StatefulWidget {
+  
+
+ 
   @override
-  _ParentsScreenState createState() => _ParentsScreenState();
+  _StudentNoteSelectionPageState createState() => _StudentNoteSelectionPageState();
 }
 
-class _ParentsScreenState extends State<ParentsScreen> {
+class _StudentNoteSelectionPageState extends State<StudentNoteSelectionPage> {
   // String searchQuery = "";
   // String selectedClass = "All";
 
- late DropdownProvider dropdownprovider;
+  late DropdownProvider dropdownprovider;
 
-   @override
+  @override
   void initState() {
     dropdownprovider = context.read<DropdownProvider>();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       dropdownprovider.clearSelectedItem('class');
       dropdownprovider.clearSelectedItem('division');
 
-      context.read<StudentController>().clearParentList();
-      
+      context.read<StudentController>().clearStudentList();
+      // super.dispose();
+
+      context.read<StudentController>().getStudentDetails();
     });
+
     super.initState();
-    
-    context.read<StudentController>().getParentDetails();
   }
-
-  // void _filterStudents(String query) {
-  //   setState(() {
-  //     searchQuery = query;
-  //   });
-  // }
-
-  // void _filterByClass(String? newClass) {
-  //   if (newClass != null) {
-  //     setState(() {
-  //       selectedClass = newClass;
-  //     });
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -60,32 +51,22 @@ class _ParentsScreenState extends State<ParentsScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: CustomAppbar(
-                    title: "Parents",
-                    isProfileIcon: false,
-                    onTap: () {
-                      context.pushNamed(AppRouteConst.bottomNavRouteName,
-                          extra: UserType.teacher);
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      right: 8.0), // Adjust spacing as needed
-                  child: IconButton(
-                    icon: Icon(Icons.draw_sharp),
-                    onPressed: () {
-                      context.pushNamed(AppRouteConst.NotesRouteName);
-                    },
-                    // Optional tooltip
-                  ),
-                ),
-              ],
+            SizedBox(
+              height: Responsive.height * 2,
+            ),
+            CustomAppbar(
+              title: 'Students',
+              onTap: () {
+                // widget.userType == UserType.admin
+                //     ? context.pushNamed(
+                //         AppRouteConst.bottomNavRouteName,
+                //         extra: UserType.admin,
+                //       )
+                //     : context.pushNamed(
+                //         AppRouteConst.bottomNavRouteName,
+                //         extra: UserType.teacher,
+                //       );
+              },
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 7),
@@ -95,7 +76,7 @@ class _ParentsScreenState extends State<ParentsScreen> {
                     flex: 3,
                     child: TextField(
                       decoration: InputDecoration(
-                        hintText: 'Search for Parents',
+                        hintText: 'Search for Students',
                         prefixIcon: Icon(Icons.search, color: Colors.grey),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
@@ -109,44 +90,6 @@ class _ParentsScreenState extends State<ParentsScreen> {
                           fontSize: 16, fontWeight: FontWeight.normal),
                     ),
                   ),
-                  // SizedBox(width: 8),
-                  // Flexible(
-                  //   child: Container(
-                  //     padding: EdgeInsets.symmetric(horizontal: 12),
-                  //     decoration: BoxDecoration(
-                  //       color: Colors.grey.shade100,
-                  //       borderRadius: BorderRadius.circular(30),
-                  //       border: Border.all(color: Colors.grey.shade300),
-                  //     ),
-                  //     child: DropdownButton<String>(
-                  //       value: selectedClass,
-                  //       underline: SizedBox(),
-                  //       isExpanded: true,
-                  //       items: <String>[
-                  //         'All',
-                  //         'V',
-                  //         'VI',
-                  //         'VII',
-                  //         'VIII',
-                  //         'IX',
-                  //         'X',
-                  //       ].map((String value) {
-                  //         return DropdownMenuItem<String>(
-                  //           value: value,
-                  //           child: Text(
-                  //             value,
-                  //             overflow: TextOverflow.ellipsis,
-                  //           ),
-                  //         );
-                  //       }).toList(),
-                  //       onChanged: (newValue) {
-                  //         if (newValue != null) {
-                  //           _filterByClass(newValue);
-                  //         }
-                  //       },
-                  //     ),
-                  //   ),
-                  // ),
                 ],
               ),
             ),
@@ -156,7 +99,7 @@ class _ParentsScreenState extends State<ParentsScreen> {
                   child: CustomDropdown(
                     dropdownKey: 'class',
                     label: 'Class',
-                    items: ['8', '9', '10'],
+                    items: ['5', '6', '7', '8', '9', '10'],
                     icon: Icons.school,
                     onChanged: (selectedClass) {
                       // Automatically fetch students when division is selected
@@ -166,7 +109,7 @@ class _ParentsScreenState extends State<ParentsScreen> {
                               'division'); // Get the currently selected class
                       context
                           .read<StudentController>()
-                          .getParentByClassAndDivision(
+                          .getStudentsClassAndDivision(
                               classname: selectedClass,
                               section: selectedDivision);
                     },
@@ -187,7 +130,7 @@ class _ParentsScreenState extends State<ParentsScreen> {
                               'class'); // Get the currently selected class
                       context
                           .read<StudentController>()
-                          .getParentByClassAndDivision(
+                          .getStudentsClassAndDivision(
                               classname: selectedClass,
                               section: selectedDivision);
                     },
@@ -207,7 +150,7 @@ class _ParentsScreenState extends State<ParentsScreen> {
                         color: Colors.grey,
                       ),
                     );
-                  } else if (value.filteredparents.isEmpty) {
+                  } else if (value.filteredstudents.isEmpty) {
                     return Center(
                       child: Column(
                         children: [
@@ -229,24 +172,25 @@ class _ParentsScreenState extends State<ParentsScreen> {
                           shrinkWrap: true,
                           padding: EdgeInsets
                               .zero, // Removes any extra padding at the top
-                          itemCount: value.filteredparents.length,
+                          itemCount: value.filteredstudents.length,
                           itemBuilder: (context, index) {
-                           final parent=value.filteredparents[index];
+                            final student=value.filteredstudents[index];
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 4),
                               child: ProfileTile(
                                 imageUrl:
-                                    "${baseUrl}${Urls.parentPhotos}${parent.fatherMotherPhoto}",
-                                name: capitalizeFirstLetter(parent
-                                        .guardianFullName ??
-                                    ""),
+                                    "${baseUrl}${Urls.studentPhotos}${student.studentPhoto}",
+                                name: capitalizeFirstLetter(
+                                    student.fullName ??
+                                        ""),
                                 description:
-                                    "${parent.fullName} ${parent.studentClass} ${parent.section}",
+                                    "${student.studentClass} ${student.section}",
                                 onPressed: () {
                                   context.pushNamed(
-                                      AppRouteConst.NoteDetailsRouteName,
-                                      extra:parent );
-                                },
+                                      AppRouteConst
+                                          .AddNoteRouteName,
+                                      extra: student);
+                                 },
                               ),
                             );
                           },
@@ -263,15 +207,15 @@ class _ParentsScreenState extends State<ParentsScreen> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          context.pushNamed(AppRouteConst.AddStudentRouteName);
-        },
-        label: Text('Add New Student'),
-        icon: Icon(Icons.add),
-        backgroundColor: Colors.black,
-        foregroundColor: Colors.white,
-      ),
+      // floatingActionButton: FloatingActionButton.extended(
+      //   onPressed: () {
+      //     context.pushNamed(AppRouteConst.AddStudentRouteName);
+      //   },
+      //   label: Text('Add New Student'),
+      //   icon: Icon(Icons.add),
+      //   backgroundColor: Colors.black,
+      //   foregroundColor: Colors.white,
+      // ),
     );
   }
 }

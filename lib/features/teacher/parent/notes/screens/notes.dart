@@ -152,12 +152,14 @@ import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+//import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 //import 'package:school_app/core/shared_widgets/profile_tile.dart';
 import 'package:school_app/features/admin/student/controller/student_controller.dart';
 
 class NotesScreen extends StatefulWidget {
+  const NotesScreen({Key? key}) : super(key: key);
   @override
   _NotesScreenState createState() => _NotesScreenState();
 }
@@ -165,36 +167,20 @@ class NotesScreen extends StatefulWidget {
 class _NotesScreenState extends State<NotesScreen> {
   // String searchQuery = "";
   // String selectedClass = "All";
-late DropdownProvider dropdownprovider;
+  late DropdownProvider dropdownprovider;
 
-   @override
+  @override
   void initState() {
     dropdownprovider = context.read<DropdownProvider>();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       dropdownprovider.clearSelectedItem('class');
       dropdownprovider.clearSelectedItem('division');
-
-      //context.read<StudentReportController>().clearStudentReportList();
-      // super.dispose();
+      context.read<StudentController>().clearParentList();
     });
     super.initState();
-    
+
     context.read<StudentController>().getParentDetails();
   }
- 
-  // void _filterStudents(String query) {
-  //   setState(() {
-  //     searchQuery = query;
-  //   });
-  // }
-
-  // void _filterByClass(String? newClass) {
-  //   if (newClass != null) {
-  //     setState(() {
-  //       selectedClass = newClass;
-  //     });
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -202,218 +188,155 @@ late DropdownProvider dropdownprovider;
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
-          
-             
-              children: [
-                
-                   CustomAppbar(
-                    title: "Parents",
-                    isProfileIcon: false,
-                    onTap: () {
-                      context.pushNamed(AppRouteConst.bottomNavRouteName,
-                          extra: UserType.teacher);
-                    },
-                  ),
-                const SizedBox(height: 16),
-               
-                
-            
-            
-            
-                  Expanded(
-                   
-                          child: _buildParentTile(context,notificationCount: 1)
-              )
-                  
-                  // SizedBox(width: 8),
-                  // Flexible(
-                  //   child: Container(
-                  //     padding: EdgeInsets.symmetric(horizontal: 12),
-                  //     decoration: BoxDecoration(
-                  //       color: Colors.grey.shade100,
-                  //       borderRadius: BorderRadius.circular(30),
-                  //       border: Border.all(color: Colors.grey.shade300),
-                  //     ),
-                  //     child: DropdownButton<String>(
-                  //       value: selectedClass,
-                  //       underline: SizedBox(),
-                  //       isExpanded: true,
-                  //       items: <String>[
-                  //         'All',
-                  //         'V',
-                  //         'VI',
-                  //         'VII',
-                  //         'VIII',
-                  //         'IX',
-                  //         'X',
-                  //       ].map((String value) {
-                  //         return DropdownMenuItem<String>(
-                  //           value: value,
-                  //           child: Text(
-                  //             value,
-                  //             overflow: TextOverflow.ellipsis,
-                  //           ),
-                  //         );
-                  //       }).toList(),
-                  //       onChanged: (newValue) {
-                  //         if (newValue != null) {
-                  //           _filterByClass(newValue);
-                  //         }
-                  //       },
-                  //     ),
-                  //   ),
-                  // ),
-                ],
-              ),
+          children: [
+            CustomAppbar(
+              title: "Notes",
+              isProfileIcon: false,
+              onTap: () {
+                context.pushNamed(AppRouteConst.bottomNavRouteName,
+                    extra: UserType.teacher);
+              },
             ),
-          
-     
+            const SizedBox(height: 16),
+            Expanded(child: _buildParentTile(context, notificationCount: 1)),
+           FloatingActionButton.extended(
+        onPressed: () {
+          context.pushNamed(AppRouteConst.StudentNoteSelectionRouteName);
+        },
+        label: Text('Add New Note'),
+        icon: Icon(Icons.add),
+        backgroundColor: Colors.black,
+        foregroundColor: Colors.white,
+      ),
+            SizedBox(
+              height: Responsive.height * 1,
+            ),
+          ],
+        ),
+      ),
     );
   }
-   Widget _buildParentTile(BuildContext context,
-      {
-      
-      int notificationCount = 0}) {  
-          return Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: CustomDropdown(
-                        dropdownKey: 'class',
-                        label: 'Class',
-                        items: ['8', '9', '10'],
-                        icon: Icons.school,
-                        onChanged: (selectedClass) {
-                          // Automatically fetch students when division is selected
-                          final selectedDivision = context
-                              .read<DropdownProvider>()
-                              .getSelectedItem(
-                                  'division'); // Get the currently selected class
-                          context
-                              .read<StudentController>()
-                              .getParentByClassAndDivision(
-                                  classname: selectedClass,
-                                  section: selectedDivision);
-                        },
-                      ),
-                    ),
-                    const SizedBox(width: 5),
-                    Expanded(
-                      child: CustomDropdown(
-                        dropdownKey: 'division',
-                        label: 'Division',
-                        items: ['A', 'B', 'C'],
-                        icon: Icons.group,
-                        onChanged: (selectedDivision) {
-                          // Automatically fetch students when division is selected
-                          final selectedClass = context
-                              .read<DropdownProvider>()
-                              .getSelectedItem(
-                                  'class'); // Get the currently selected class
-                          context
-                              .read<StudentController>()
-                              .getParentByClassAndDivision(
-                                  classname: selectedClass,
-                                  section: selectedDivision);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-             
-            
+
+  Widget _buildParentTile(BuildContext context, {int notificationCount = 0}) {
+    return Column(
+      children: [
+        Row(
+          children: [
             Expanded(
-              child: Consumer<StudentController>(
-                builder: (context, value, child) {
-                  if (value.isloading) {
-                    return const Center(
-                      child: Loading(
-                        color: Colors.grey,
-                      ),
-                    );
-                  } else if (value.filteredparents.isEmpty) {
-                    return Center(
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            'assets/empty.png',
-                            height: Responsive.height * 45,
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-                  return SingleChildScrollView(
-                    padding: EdgeInsets.zero, // Removes any default padding
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          padding: EdgeInsets
-                              .zero, // Removes any extra padding at the top
-                          itemCount: value.filteredparents.length,
-                          itemBuilder: (context, index) {
-                            final parent=value.filteredparents[index];
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 4),
-                              child: ListTile(
-      contentPadding: EdgeInsets.symmetric(vertical: 8.0),
-      leading: CircleAvatar(
-        backgroundImage: NetworkImage("${baseUrl}${Urls.parentPhotos}${value.parents[index].fatherMotherPhoto}"),
-        radius: 24,
-      ),
-      title: Text(
-        parent.guardianFullName,
-        style: TextStyle(fontWeight: FontWeight.bold),
-      ),
-      //subtitle: Text(subject),
-      trailing: notificationCount > 0
-          ? CircleAvatar(
-              radius: 12,
-              backgroundColor: Colors.red,
-              child: Text(
-                '$notificationCount',
-                style: TextStyle(color: Colors.white, fontSize: 12),
-              ),
-            )
-          : null,
-      onTap: () {
-        context.pushNamed(
-          AppRouteConst.NoteDetailsRouteName,extra: parent
-        );
-      },
-//     ) 
-// ProfileTile(
-// //                                 imageUrl:
-//                                     "${baseUrl}${Urls.parentPhotos}${value.parents[index].fatherMotherPhoto}",
-//                                 name: capitalizeFirstLetter(value
-//                                         .filteredparents[index]
-//                                         .guardianFullName ??
-//                                     ""),
-//                                 description:
-//                                     "${value.filteredparents[index].fullName} ${value.filteredparents[index].studentClass} ${value.filteredparents[index].section}",
-//                                 onPressed: () {
-//                                   context.pushNamed(
-//                                       AppRouteConst.NoteDetailsRouteName,
-//                                       extra: value.parents[index]);
-//                                 },
-                              ),
-                            );
-                          },
-                        ),
-                        SizedBox(
-                          height: Responsive.height * 7.5,
-                        ),
-                      ],
-                    ),
-                  );
+              child: CustomDropdown(
+                dropdownKey: 'class',
+                label: 'Class',
+                items: ['8', '9', '10'],
+                icon: Icons.school,
+                onChanged: (selectedClass) {
+                  // Automatically fetch students when division is selected
+                  final selectedDivision = context
+                      .read<DropdownProvider>()
+                      .getSelectedItem(
+                          'division'); // Get the currently selected class
+                  context.read<StudentController>().getParentByClassAndDivision(
+                      classname: selectedClass, section: selectedDivision);
                 },
               ),
             ),
-             ],
-            );}
-         
+            const SizedBox(width: 5),
+            Expanded(
+              child: CustomDropdown(
+                dropdownKey: 'division',
+                label: 'Division',
+                items: ['A', 'B', 'C'],
+                icon: Icons.group,
+                onChanged: (selectedDivision) {
+                  // Automatically fetch students when division is selected
+                  final selectedClass = context
+                      .read<DropdownProvider>()
+                      .getSelectedItem(
+                          'class'); // Get the currently selected class
+                  context.read<StudentController>().getParentByClassAndDivision(
+                      classname: selectedClass, section: selectedDivision);
+                },
+              ),
+            ),
+          ],
+        ),
+        Expanded(
+          child: Consumer<StudentController>(
+            builder: (context, value, child) {
+              if (value.isloading) {
+                return const Center(
+                  child: Loading(
+                    color: Colors.grey,
+                  ),
+                );
+              } else if (value.filteredparents.isEmpty) {
+                return Center(
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        'assets/empty.png',
+                        height: Responsive.height * 45,
+                      ),
+                    ],
+                  ),
+                );
+              }
+              return SingleChildScrollView(
+                padding: EdgeInsets.zero, // Removes any default padding
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      padding: EdgeInsets
+                          .zero, // Removes any extra padding at the top
+                      itemCount: value.filteredparents.length,
+                      itemBuilder: (context, index) {
+                        final parent = value.filteredparents[index];
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 4),
+                          child: ListTile(
+                            contentPadding: EdgeInsets.symmetric(vertical: 8.0),
+                            leading: CircleAvatar(
+                              backgroundImage: NetworkImage(
+                                  "${baseUrl}${Urls.parentPhotos}${value.parents[index].fatherMotherPhoto}"),
+                              radius: 24,
+                            ),
+                            title: Text(
+                              parent.guardianFullName ?? "",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            //subtitle: Text(subject),
+                            trailing: notificationCount > 0
+                                ? CircleAvatar(
+                                    radius: 12,
+                                    backgroundColor: Colors.red,
+                                    child: Text(
+                                      '$notificationCount',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 12),
+                                    ),
+                                  )
+                                : null,
+                            onTap: () {
+                              context.pushNamed(
+                                  AppRouteConst.NoteDetailsRouteName,
+                                  extra: parent);
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                    SizedBox(
+                      height: Responsive.height * 7.5,
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
 }
