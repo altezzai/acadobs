@@ -63,9 +63,9 @@ class AdminHomeScreen extends StatelessWidget {
                   context.pushNamed(AppRouteConst.LeaveRequestScreenRouteName);
                 }),
             SizedBox(
-              height: Responsive.height * 2,
+              height: Responsive.height * 1,
             ),
-            
+
             _customContainer(
                 color: Colors.black,
                 text: 'Subjects',
@@ -82,7 +82,8 @@ class AdminHomeScreen extends StatelessWidget {
                 CustomNameContainer(
                   text: "Students",
                   onPressed: () {
-                    context.pushNamed(AppRouteConst.studentRouteName, extra: UserType.admin);
+                    context.pushNamed(AppRouteConst.studentRouteName,
+                        extra: UserType.admin);
                   },
                 ),
                 CustomNameContainer(
