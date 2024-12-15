@@ -185,7 +185,7 @@ class _AddNoticePageState extends State<AddNoticePage> {
                       description: _descriptionController.text,
                       date: _dateController.text);
                 },
-                widget: value.isloading ? Loading() : Text('Submit'),
+                widget: value.isloadingTwo ? Loading() : Text('Submit'),
               );
             }),
             // Center(

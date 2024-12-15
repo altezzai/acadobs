@@ -20,7 +20,7 @@ class EventItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.asset(imagePath,
+          Image.network(imagePath,
               fit: BoxFit.cover, height: 150, width: double.infinity),
           Padding(
             padding: const EdgeInsets.all(16.0),
