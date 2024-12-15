@@ -93,56 +93,49 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                         // SizedBox(height: Responsive.height * 2),
                         // _buildTakeAttendanceTile(),
                         SizedBox(height: Responsive.height * 3),
-                        Container(
-                          padding: EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            children: [
-                              // AddButton(
-                              //   isSmallButton: false,
-                              //   iconSize: 27,
-                              //   iconPath: "assets/icons/check_attendance.png",
-                              //   onPressed: () {
-                              //      if (_formKey.currentState!.validate()) {
-                              //       _navigateToNextPage(context,
-                              //           AttendanceAction.checkAttendance);
-                              //     }
-                              //   },
-                              //   text: "Check Attendance",
-                              // ),
-                              // SizedBox(height: Responsive.height * 1),
-                              AddButton(
-                                isSmallButton: false,
-                                iconPath: "assets/icons/all_present.png",
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    // context.read<AttendanceController>().markAllPresent();
-                                    _navigateToNextPage(context,
-                                        AttendanceAction.markAllPresent);
-                                  }
-                                },
-                                text: "Mark All Present",
-                              ),
-                              // SizedBox(height: Responsive.height * 2),
-                              // const Text("Or"),
-                              SizedBox(height: Responsive.height * 1),
-                              AddButton(
-                                isSmallButton: false,
-                                iconPath: "assets/icons/start_attendance.png",
-                                iconSize: 30,
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    _navigateToNextPage(context,
-                                        AttendanceAction.markAttendance);
-                                  }
-                                },
-                                text: " Mark Attendance",
-                              ),
-                            ],
-                          ),
+                        Column(
+                          children: [
+                            // AddButton(
+                            //   isSmallButton: false,
+                            //   iconSize: 27,
+                            //   iconPath: "assets/icons/check_attendance.png",
+                            //   onPressed: () {
+                            //      if (_formKey.currentState!.validate()) {
+                            //       _navigateToNextPage(context,
+                            //           AttendanceAction.checkAttendance);
+                            //     }
+                            //   },
+                            //   text: "Check Attendance",
+                            // ),
+                            // SizedBox(height: Responsive.height * 1),
+                            // AddButton(
+                            //   isSmallButton: false,
+                            //   iconPath: "assets/icons/all_present.png",
+                            //   onPressed: () {
+                            //     if (_formKey.currentState!.validate()) {
+                            //       // context.read<AttendanceController>().markAllPresent();
+                            //       _navigateToNextPage(context,
+                            //           AttendanceAction.markAllPresent);
+                            //     }
+                            //   },
+                            //   text: "Mark All Present",
+                            // ),
+                            // SizedBox(height: Responsive.height * 2),
+                            // const Text("Or"),
+                            SizedBox(height: Responsive.height * 1),
+                            AddButton(
+                              isSmallButton: false,
+                              iconPath: "assets/icons/start_attendance.png",
+                              iconSize: 30,
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()) {
+                                  _navigateToNextPage(
+                                      context, AttendanceAction.markAttendance);
+                                }
+                              },
+                              text: " Mark Attendance",
+                            ),
+                          ],
                         ),
 
                         SizedBox(height: Responsive.height * 3),
