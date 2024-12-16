@@ -21,7 +21,7 @@ import 'package:school_app/features/admin/student/screens/homework_list.dart';
 import 'package:school_app/features/admin/student/widgets/daily_attendance_container.dart';
 import 'package:school_app/features/admin/student/widgets/date_group_function.dart';
 import 'package:school_app/features/parent/leave_request/screens/student_leaveRequest.dart';
-import 'package:school_app/features/teacher/homework/widgets/work_container.dart';
+// import 'package:school_app/features/teacher/homework/widgets/work_container.dart';
 
 class StudentDetailPage extends StatefulWidget {
   final Student student;
@@ -116,32 +116,31 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                   ),
                 ),
                 SliverOverlapAbsorber(
-                  handle:
-                      NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                  sliver: SliverAppBar(
-                    pinned: true,
-                    backgroundColor: Colors.grey.shade200,
-                    bottom: PreferredSize(
-                      preferredSize: const Size.fromHeight(0),
-                      child: TabBar(
-                        tabAlignment: TabAlignment.start,
-                        isScrollable: true,
-                        labelColor: Colors.black,
-                        unselectedLabelColor: Colors.grey,
-                        indicatorColor: Colors.black,
-                        labelPadding:
-                            const EdgeInsets.symmetric(horizontal: 16.0),
-                        tabs: const [
-                          Tab(text: "Dashboard"),
-                          Tab(text: "Achievements"),
-                          Tab(text: "Exam"),
-                          Tab(text: "Homework"),
-                          Tab(text: "Leave Request"),
-                        ],
+                    handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                        context),
+                    sliver: SliverAppBar(
+                      pinned: true,
+                      backgroundColor: Colors.grey.shade200,
+                      bottom: PreferredSize(
+                        preferredSize: const Size.fromHeight(0),
+                        child: TabBar(
+                          tabAlignment: TabAlignment.start,
+                          isScrollable: true,
+                          labelColor: Colors.black,
+                          unselectedLabelColor: Colors.grey,
+                          indicatorColor: Colors.black,
+                          labelPadding:
+                              const EdgeInsets.symmetric(horizontal: 16.0),
+                          tabs: const [
+                            Tab(text: "Dashboard"),
+                            Tab(text: "Achievements"),
+                            Tab(text: "Exam"),
+                            Tab(text: "Homework"),
+                            Tab(text: "Leave Request"),
+                          ],
+                        ),
                       ),
-                    ),
-                  )
-                ),
+                    )),
               ];
             },
             body: Padding(
@@ -167,7 +166,6 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                           extra: widget.student.id);
                     },
                   )
-
                 ],
               ),
             ),
@@ -210,38 +208,231 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
           (exam) => DateTime.parse(exam.date.toString()),
         );
 
-        return value.exam.isEmpty ? Center(child: Text("No Exams Found!"),) : ListView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-          itemCount: groupedExams.length,
-          itemBuilder: (context, index) {
-            final entry = groupedExams.entries.elementAt(index);
-            final dateGroup = entry.key;
-            final exams = entry.value;
+        return value.exam.isEmpty
+            ? const Center(
+                child: Text("No Exams Found!"),
+              )
+            : ListView.builder(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+                itemCount: groupedExams.length,
+                itemBuilder: (context, index) {
+                  final entry = groupedExams.entries.elementAt(index);
+                  final dateGroup = entry.key;
+                  final exams = entry.value;
 
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: Responsive.height * 2),
-                Text(
-                  dateGroup,
-                  style: textThemeData.bodyMedium,
-                ),
-                const SizedBox(height: 10),
-                ...exams.map((exam) => WorkContainer(
-                      sub: exam.subject ?? "",
-                      work: exam.title ?? "",
-                      icon: Icons.workspace_premium_outlined,
-                      icolor: Colors.green,
-                      bcolor: Colors.green.withOpacity(0.2),
-                      prefixText:
-                          '${exam.marks.toString()} / ${exam.totalMarks}',
-                    )),
-                const SizedBox(height: 10),
-              ],
-            );
-          },
-        );
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: Responsive.height * 2),
+                      Text(
+                        dateGroup,
+                        style: textThemeData.bodyMedium,
+                      ),
+                      const SizedBox(height: 10),
+                      _buildExamCard(
+                        exams.isNotEmpty
+                            ? exams.first.classGrade ?? "N/A"
+                            : "N/A",
+                        exams.isNotEmpty ? exams.first.section ?? "N/A" : "N/A",
+                        exams.isNotEmpty ? exams.first.title ?? "N/A" : "N/A",
+                        exams.map((exam) {
+                          return {
+                            "subject": exam.subject ?? "",
+                            "mark": exam.marks?.toString() ?? "0",
+                            "total": exam.totalMarks?.toString() ?? "0",
+                          };
+                        }).toList(),
+                      ),
+                      const SizedBox(height: 10),
+                    ],
+                  );
+                },
+              );
       },
     );
   }
+
+  Widget _buildExamCard(String grade, String division, String examName,
+      List<Map<String, String>> subjects) {
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: const BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(8),
+                topRight: Radius.circular(8),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "$grade $division",
+                        style: const TextStyle(
+                            color: Colors.white70, fontSize: 12),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        examName,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16),
+                      ),
+                    ],
+                  ),
+                ),
+                const Icon(Icons.assessment, color: Colors.white, size: 20),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Text("Subject",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                              color: Colors.grey[600])),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Text("Mark",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                              color: Colors.grey[600]),
+                          textAlign: TextAlign.center),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Text("Total",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                              color: Colors.grey[600]),
+                          textAlign: TextAlign.center),
+                    ),
+                  ],
+                ),
+                const Divider(),
+                ...subjects.map((subject) => Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: Text(subject["subject"]!,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w500, fontSize: 16)),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Text(subject["mark"]!,
+                                style: TextStyle(
+                                    color: Colors.green[700],
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Text(subject["total"]!,
+                                style: const TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center),
+                          ),
+                        ],
+                      ),
+                    )),
+                const SizedBox(height: 12),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     const Text("Total Score",
+                //         style: TextStyle(
+                //             fontWeight: FontWeight.bold, fontSize: 14)),
+                //     Text(
+                //       "${subjects.fold(0, (sum, subject) => sum + int.parse(subject["mark"]!))}/${subjects.fold(0, (sum, subject) => sum + int.parse(subject["total"]!))}",
+                //       style: TextStyle(
+                //           fontWeight: FontWeight.bold,
+                //           fontSize: 14,
+                //           color: Colors.blue[700]),
+                //     ),
+                //   ],
+                // ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+//   Widget _buildExamContent() {
+//     return Consumer<ExamController>(
+//       builder: (context, value, child) {
+//         if (value.isloading) {
+//           return const Center(
+//               child: Loading(
+//             color: Colors.grey,
+//           ));
+//         }
+
+//         final groupedExams = groupItemsByDate(
+//           value.exam,
+//           (exam) => DateTime.parse(exam.date.toString()),
+//         );
+
+//         return value.exam.isEmpty ? Center(child: Text("No Exams Found!"),) : ListView.builder(
+//           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+//           itemCount: groupedExams.length,
+//           itemBuilder: (context, index) {
+//             final entry = groupedExams.entries.elementAt(index);
+//             final dateGroup = entry.key;
+//             final exams = entry.value;
+
+//             return Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+//                 SizedBox(height: Responsive.height * 2),
+//                 Text(
+//                   dateGroup,
+//                   style: textThemeData.bodyMedium,
+//                 ),
+//                 const SizedBox(height: 10),
+//                 ...exams.map((exam) => WorkContainer(
+//                       sub: exam.subject ?? "",
+//                       work: exam.title ?? "",
+//                       icon: Icons.workspace_premium_outlined,
+//                       icolor: Colors.green,
+//                       bcolor: Colors.green.withOpacity(0.2),
+//                       prefixText:
+//                           '${exam.marks.toString()} / ${exam.totalMarks}',
+//                     )),
+//                 const SizedBox(height: 10),
+//               ],
+//             );
+//           },
+//         );
+//       },
+//     );
+//   }
+// }
 }
