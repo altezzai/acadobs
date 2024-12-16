@@ -98,6 +98,8 @@ class _DutiesHomeScreenState extends State<DutiesHomeScreen> {
                                     bottom: 15,
                                   ),
                                   child: DutyCard(
+                                    bottomRadius: 16,
+                                    topRadius: 16,
                                     title: value.duties[index].dutyTitle ?? "",
                                     date: DateFormatter.formatDateString(value
                                         .duties[index].createdAt

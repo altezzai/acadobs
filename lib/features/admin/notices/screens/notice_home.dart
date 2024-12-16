@@ -43,62 +43,103 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
         Responsive().init(constraints, orientation);
 
         return Scaffold(
-          body: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: Responsive.width * 4, // 16px equivalent
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomAppbar(
-                  title: "Notices and Events",
-                  isBackButton: false,
-                ),
-                SizedBox(height: Responsive.height * 2), // 20px equivalent
-                Row(
-                  children: [
-                    Expanded(
-                      child: AddButton(
-                        iconPath: noticeIcon,
-                        onPressed: () {
-                          context.pushNamed(AppRouteConst.AddNoticeRouteName);
-                        },
-                        text: "Add Notice",
-                      ),
+          body: NestedScrollView(
+            headerSliverBuilder: (context, innerBoxIsScrolled) {
+              return [
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      // crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: Responsive.height * 2),
+                        CustomAppbar(
+                          title: "Notices/Events",
+                          isBackButton: false,
+                        ),
+                        SizedBox(
+                            height: Responsive.height * 2), // 20px equivalent
+                        Row(
+                          children: [
+                            Expanded(
+                              child: AddButton(
+                                iconPath: noticeIcon,
+                                onPressed: () {
+                                  context.pushNamed(
+                                      AppRouteConst.AddNoticeRouteName);
+                                },
+                                text: "Add Notice",
+                              ),
+                            ),
+                            SizedBox(
+                                width: Responsive.width * 4), // 16px equivalent
+                            Expanded(
+                              child: AddButton(
+                                onPressed: () {
+                                  context.pushNamed(
+                                      AppRouteConst.AddEventRouteName);
+                                },
+                                iconPath: eventIcon,
+                                text: "Add Event",
+                              ),
+                            ),
+                          ],
+                        ),
+                        // SizedBox(height: Responsive.height * 2),
+                      ],
                     ),
-                    SizedBox(width: Responsive.width * 4), // 16px equivalent
-                    Expanded(
-                      child: AddButton(
-                        onPressed: () {
-                          context.pushNamed(AppRouteConst.AddEventRouteName);
-                        },
-                        iconPath: eventIcon,
-                        text: "Add Event",
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: Responsive.height * 2), // 20px equivalent
-                TabBar(
-                  controller: _tabController,
-                  labelStyle: textThemeData.bodyMedium?.copyWith(
-                    fontSize: Responsive.text * 2, // Responsive font size
-                  ),
-                  tabs: [
-                    Tab(text: 'Notices'),
-                    Tab(text: 'Events'),
-                  ],
-                ),
-                Expanded(
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: [
-                      _buildNotices(),
-                      _buildEvents(),
-                    ],
                   ),
                 ),
-              ],
+                SliverOverlapAbsorber(
+                  handle:
+                      NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                  sliver: SliverAppBar(
+                    pinned: true,
+                    backgroundColor: Colors.grey.shade200,
+                    bottom: PreferredSize(
+                      preferredSize: const Size.fromHeight(0),
+                      child: TabBar(
+                        labelPadding: EdgeInsets.symmetric(
+                            horizontal: Responsive.width * 4),
+                        dividerHeight: 3,
+                        indicatorWeight: 3,
+                        dividerColor: Colors.grey,
+                        // indicatorPadding: EdgeInsets.symmetric(horizontal: 1),
+                        tabAlignment: TabAlignment.center,
+                        indicatorColor: Colors.black,
+                        unselectedLabelColor: Color(0xFF757575),
+                        unselectedLabelStyle: TextStyle(fontSize: 14),
+                        indicatorSize: TabBarIndicatorSize.tab,
+                        controller: _tabController,
+                        labelStyle: textThemeData.bodyMedium?.copyWith(
+                            fontSize: 14, fontWeight: FontWeight.bold),
+                        tabs: [
+                          Tab(text: 'Notices'),
+                          Tab(text: 'Events'),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ];
+            },
+            body: Padding(
+              padding: EdgeInsets.only(top: Responsive.height * 14),
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                    ),
+                    child: _buildNotices(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: _buildEvents(),
+                  ),
+                ],
+              ),
             ),
           ),
         );
@@ -129,7 +170,8 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
           itemDate.isBefore(upcomingThreshold)) {
         formattedDate = "Upcoming";
       } else {
-        formattedDate = DateFormatter.formatDateString(itemDate.toString());
+        // formattedDate = DateFormatter.formatDateString(itemDate.toString());
+        formattedDate = "Previous";
       }
 
       if (!groupedItems.containsKey(formattedDate)) {
@@ -179,13 +221,24 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
         (notice) => DateTime.tryParse(notice.date.toString()) ?? DateTime.now(),
       );
 
-      return _buildGroupedList(groupedNotices, (notice) {
-        return DutyCard(
+      return _buildGroupedList(groupedNotices, (notice, index, total) {
+        final isFirst = index == 0;
+        final isLast = index == total - 1;
+        final topRadius = isFirst ? 16 : 0;
+        final bottomRadius = isLast ? 16 : 0;
+
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 1.5),
+          child: DutyCard(
+            bottomRadius: bottomRadius.toDouble(),
+            topRadius: topRadius.toDouble(),
             title: notice.title ?? "",
-            date: notice.description ?? "",
+            date: DateFormatter.formatDateString(notice.date.toString()),
             time:
                 TimeFormatter.formatTimeFromString(notice.createdAt.toString()),
-            onTap: () {});
+            onTap: () {},
+          ),
+        );
       });
     });
   }
@@ -205,32 +258,38 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
             DateTime.tryParse(event.eventDate.toString()) ?? DateTime.now(),
       );
 
-      return _buildGroupedList(groupedEvents, (event) {
-        return EventCard(
-          eventTitle: event.title ?? "",
-          eventDescription: event.description ?? "",
-          date: DateFormatter.formatDateString(event.eventDate.toString()),
-          time: TimeFormatter.formatTimeFromString(event.createdAt.toString()),
-          imageProvider:
-              "${baseUrl}${Urls.eventPhotos}${event.images![0].imagePath}",
+      return _buildGroupedList(groupedEvents, (event, index, total) {
+        final isFirst = index == 0;
+        final isLast = index == total - 1;
+        final topRadius = isFirst ? 16 : 0;
+        final bottomRadius = isLast ? 16 : 0;
+
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 1.5),
+          child: EventCard(
+            bottomRadius: bottomRadius.toDouble(),
+            topRadius: topRadius.toDouble(),
+            eventTitle: event.title ?? "",
+            eventDescription: event.description ?? "",
+            date: DateFormatter.formatDateString(event.eventDate.toString()),
+            time:
+                TimeFormatter.formatTimeFromString(event.createdAt.toString()),
+            imageProvider:
+                "${baseUrl}${Urls.eventPhotos}${event.images![0].imagePath}",
+          ),
         );
-        //  EventItem(
-        //     title: event.title ?? "",
-        //     description: event.description ?? "",
-        //     date:
-        //         TimeFormatter.formatTimeFromString(event.createdAt.toString()),
-        //     imagePath:
-        //         "${baseUrl}${Urls.eventPhotos}${event.images![0].imagePath}");
       });
     });
   }
 
-  Widget _buildGroupedList<T>(
-      Map<String, List<T>> groupedItems, Widget Function(T) buildItem) {
+  Widget _buildGroupedList<T>(Map<String, List<T>> groupedItems,
+      Widget Function(T, int, int) buildItem) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: groupedItems.entries.map((entry) {
+          final itemCount = entry.value.length;
+
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -239,9 +298,9 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 padding: EdgeInsets.zero,
-                itemCount: entry.value.length,
+                itemCount: itemCount,
                 itemBuilder: (context, index) {
-                  return buildItem(entry.value[index]);
+                  return buildItem(entry.value[index], index, itemCount);
                 },
               ),
             ],
@@ -254,13 +313,13 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
   Widget _buildDateHeader(String date) {
     return Padding(
       padding: EdgeInsets.only(
-        top: Responsive.height * 2, // 20px equivalent
+        // top: Responsive.height * 2, // 20px equivalent
         bottom: Responsive.height * 1, // 10px equivalent
       ),
       child: Text(
         date,
         style: textThemeData.bodyMedium?.copyWith(
-          fontSize: Responsive.text * 2, // Responsive font size
+          fontSize: 16, // Responsive font size
         ),
       ),
     );

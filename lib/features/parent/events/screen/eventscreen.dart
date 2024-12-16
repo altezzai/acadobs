@@ -91,6 +91,8 @@ class _EventsPageState extends State<EventsPage> {
                         itemBuilder: (context, index) {
                           final event = upcomingEvents[index];
                           return EventCard(
+                            bottomRadius: 16,
+              topRadius: 16,
                             eventDescription: event.description ?? "",
                             eventTitle: event.title ?? "",
                             date: DateFormatter.formatDateString(
@@ -119,6 +121,8 @@ class _EventsPageState extends State<EventsPage> {
                         itemBuilder: (context, index) {
                           final event = latestEvents[index];
                           return EventCard(
+                            bottomRadius: 16,
+              topRadius: 16,
                             eventDescription: event.description ?? "",
                             eventTitle: event.title ?? "",
                             date: DateFormatter.formatDateString(
@@ -147,6 +151,8 @@ class _EventsPageState extends State<EventsPage> {
                         itemBuilder: (context, index) {
                           final event = previousEvents[index];
                           return EventCard(
+                            bottomRadius: 16,
+              topRadius: 16,
                             eventDescription: event.description ?? "",
                             eventTitle: event.title ?? "",
                             date: DateFormatter.formatDateString(
