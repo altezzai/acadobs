@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/theme/text_theme.dart';
+import 'package:school_app/base/utils/responsive.dart';
 
 class EventCard extends StatelessWidget {
   final String eventTitle;
@@ -94,19 +96,19 @@ class EventCard extends StatelessWidget {
       // )
       child: Card(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16.0),
+          borderRadius: BorderRadius.circular(Responsive.radius * 3),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(Responsive.height * 1),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.circular(12.0),
+                borderRadius: BorderRadius.circular(Responsive.radius * 3),
                 child: CachedNetworkImage(
                   imageUrl: imageProvider,
-                  height: 100,
-                  width: 100,
+                  height: Responsive.height * 12,
+                  width: Responsive.height * 12,
                   fit: BoxFit.cover,
                   placeholder: (context, url) => Center(
                     child: CircularProgressIndicator(
@@ -122,30 +124,33 @@ class EventCard extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(width: 10),
+              SizedBox(width: Responsive.width * 3),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      eventTitle,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                    const SizedBox(height: 5),
+                    Text(eventTitle,
+                        style: textThemeData.bodyMedium!.copyWith(
+                          fontWeight: FontWeight.bold,
+                        )
+                        // const TextStyle(
+                        //   fontWeight: FontWeight.bold,
+                        //   fontSize: 16,
+                        // ),
+                        ),
+                    SizedBox(height: Responsive.height * .5),
                     Text(
                       eventDescription,
                       maxLines: 3, // Limit description to avoid overflow
                       overflow: TextOverflow
                           .ellipsis, // Handle overflow with ellipsis
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey,
-                      ),
+                      style: textThemeData.bodySmall,
+                      // const TextStyle(
+                      //   fontSize: 14,
+                      //   color: Colors.grey,
+                      // ),
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: Responsive.height * 1),
                     Row(
                       children: [
                         Container(

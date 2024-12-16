@@ -5,13 +5,14 @@ import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/constants.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
+import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/shared_widgets/add_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
+import 'package:school_app/features/admin/duties/widgets/duty_card.dart';
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
-import 'package:school_app/features/admin/notices/widgets/event_item.dart';
-import 'package:school_app/features/admin/notices/widgets/notice_item.dart';
+import 'package:school_app/features/parent/events/widget/eventcard.dart';
 
 class NoticeHomeScreen extends StatefulWidget {
   @override
@@ -36,74 +37,85 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CustomAppbar(
-              title: "Notices and Events",
-              isBackButton: false,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        Orientation orientation = MediaQuery.of(context).orientation;
+        Responsive().init(constraints, orientation);
+
+        return Scaffold(
+          body: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: Responsive.width * 4, // 16px equivalent
             ),
-            Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: AddButton(
-                    iconPath: noticeIcon,
-                    onPressed: () {
-                      context.pushNamed(AppRouteConst.AddNoticeRouteName);
-                    },
-                    text: "Add Notice",
-                  ),
+                CustomAppbar(
+                  title: "Notices and Events",
+                  isBackButton: false,
                 ),
-                SizedBox(width: 16),
+                SizedBox(height: Responsive.height * 2), // 20px equivalent
+                Row(
+                  children: [
+                    Expanded(
+                      child: AddButton(
+                        iconPath: noticeIcon,
+                        onPressed: () {
+                          context.pushNamed(AppRouteConst.AddNoticeRouteName);
+                        },
+                        text: "Add Notice",
+                      ),
+                    ),
+                    SizedBox(width: Responsive.width * 4), // 16px equivalent
+                    Expanded(
+                      child: AddButton(
+                        onPressed: () {
+                          context.pushNamed(AppRouteConst.AddEventRouteName);
+                        },
+                        iconPath: eventIcon,
+                        text: "Add Event",
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: Responsive.height * 2), // 20px equivalent
+                TabBar(
+                  controller: _tabController,
+                  labelStyle: textThemeData.bodyMedium?.copyWith(
+                    fontSize: Responsive.text * 2, // Responsive font size
+                  ),
+                  tabs: [
+                    Tab(text: 'Notices'),
+                    Tab(text: 'Events'),
+                  ],
+                ),
                 Expanded(
-                  child: AddButton(
-                    onPressed: () {
-                      context.pushNamed(AppRouteConst.AddEventRouteName);
-                    },
-                    iconPath: eventIcon,
-                    text: "Add Event",
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: [
+                      _buildNotices(),
+                      _buildEvents(),
+                    ],
                   ),
                 ),
               ],
             ),
-            TabBar(
-              controller: _tabController,
-              tabs: [
-                Tab(text: 'Notices'),
-                Tab(text: 'Events'),
-              ],
-            ),
-            Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                children: [
-                  _buildNotices(),
-                  _buildEvents(),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
-  /// Function to group items by date with sections for Upcoming and Tomorrow.
+  // The rest of the code remains unchanged
   Map<String, List<T>> groupItemsByDateWithUpcoming<T>(
-    List<T> items,
-    DateTime Function(T) getDate,
-  ) {
+      List<T> items, DateTime Function(T) getDate) {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     final tomorrow = today.add(Duration(days: 1));
     final upcomingThreshold = today.add(Duration(days: 7));
 
     Map<String, List<T>> groupedItems = {};
-    Map<String, DateTime> dateKeys =
-        {}; // To track the parsed date for each key
+    Map<String, DateTime> dateKeys = {};
 
     for (var item in items) {
       final itemDate = getDate(item);
@@ -122,12 +134,11 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
 
       if (!groupedItems.containsKey(formattedDate)) {
         groupedItems[formattedDate] = [];
-        dateKeys[formattedDate] = itemDate; // Store the actual date
+        dateKeys[formattedDate] = itemDate;
       }
       groupedItems[formattedDate]!.add(item);
     }
 
-    // Sort grouped dates with "Today," "Tomorrow," and "Upcoming" on top, and others in descending order.
     List<MapEntry<String, List<T>>> sortedEntries = [];
     if (groupedItems.containsKey("Today")) {
       sortedEntries.add(MapEntry("Today", groupedItems["Today"]!));
@@ -142,13 +153,12 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
       groupedItems.remove("Upcoming");
     }
 
-    // Sort the remaining entries by the actual date stored in `dateKeys`
     sortedEntries.addAll(
       groupedItems.entries.toList()
         ..sort((a, b) {
           final dateA = dateKeys[a.key]!;
           final dateB = dateKeys[b.key]!;
-          return dateB.compareTo(dateA); // Descending order
+          return dateB.compareTo(dateA);
         }),
     );
 
@@ -170,11 +180,12 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
       );
 
       return _buildGroupedList(groupedNotices, (notice) {
-        return NoticeItem(
-          title: notice.title ?? "",
-          date: notice.description ?? "",
-          time: TimeFormatter.formatTimeFromString(notice.createdAt.toString()),
-        );
+        return DutyCard(
+            title: notice.title ?? "",
+            date: notice.description ?? "",
+            time:
+                TimeFormatter.formatTimeFromString(notice.createdAt.toString()),
+            onTap: () {});
       });
     });
   }
@@ -195,13 +206,21 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
       );
 
       return _buildGroupedList(groupedEvents, (event) {
-        return EventItem(
-            title: event.title ?? "",
-            description: event.description ?? "",
-            date:
-                TimeFormatter.formatTimeFromString(event.createdAt.toString()),
-            imagePath:
-                "${baseUrl}${Urls.eventPhotos}${event.images![0].imagePath}");
+        return EventCard(
+          eventTitle: event.title ?? "",
+          eventDescription: event.description ?? "",
+          date: DateFormatter.formatDateString(event.eventDate.toString()),
+          time: TimeFormatter.formatTimeFromString(event.createdAt.toString()),
+          imageProvider:
+              "${baseUrl}${Urls.eventPhotos}${event.images![0].imagePath}",
+        );
+        //  EventItem(
+        //     title: event.title ?? "",
+        //     description: event.description ?? "",
+        //     date:
+        //         TimeFormatter.formatTimeFromString(event.createdAt.toString()),
+        //     imagePath:
+        //         "${baseUrl}${Urls.eventPhotos}${event.images![0].imagePath}");
       });
     });
   }
@@ -234,10 +253,15 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
 
   Widget _buildDateHeader(String date) {
     return Padding(
-      padding: const EdgeInsets.only(top: 10, bottom: 5),
+      padding: EdgeInsets.only(
+        top: Responsive.height * 2, // 20px equivalent
+        bottom: Responsive.height * 1, // 10px equivalent
+      ),
       child: Text(
         date,
-        style: textThemeData.bodyMedium,
+        style: textThemeData.bodyMedium?.copyWith(
+          fontSize: Responsive.text * 2, // Responsive font size
+        ),
       ),
     );
   }
