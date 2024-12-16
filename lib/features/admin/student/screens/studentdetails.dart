@@ -210,7 +210,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
           (exam) => DateTime.parse(exam.date.toString()),
         );
 
-        return ListView.builder(
+        return value.exam.isEmpty ? Center(child: Text("No Exams Found!"),) : ListView.builder(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
           itemCount: groupedExams.length,
           itemBuilder: (context, index) {

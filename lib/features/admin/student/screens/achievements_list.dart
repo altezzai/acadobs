@@ -41,7 +41,7 @@ class AchievementsList extends StatelessWidget {
                 DateTime.parse(achievement.dateOfAchievement.toString()),
           );
 
-          return ListView.builder(
+          return value.achievements.isEmpty ? Center(child: Text("No Achievements Found!"),) : ListView.builder(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
             itemCount: groupedAchievements.length,
             itemBuilder: (context, index) {

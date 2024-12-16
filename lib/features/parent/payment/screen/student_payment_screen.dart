@@ -172,7 +172,7 @@ class _StudentPaymentScreenState extends State<StudentPaymentScreen>
             DateTime.tryParse(payment.paymentDate.toString()) ?? DateTime.now(),
       );
 
-      return SingleChildScrollView(
+      return value.studentPayments.isEmpty ? Center(child: Text("No Payments Found!"),) : SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: groupedPayments.entries.map((entry) {
@@ -238,7 +238,7 @@ class _StudentPaymentScreenState extends State<StudentPaymentScreen>
             DateTime.now(),
       );
 
-      return SingleChildScrollView(
+      return value.studentdonations.isEmpty ? Center(child: Text("No Donations Found!"),) : SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: groupedDonations.entries.map((entry) {

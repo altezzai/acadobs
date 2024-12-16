@@ -26,7 +26,7 @@ class HomeworkList extends StatelessWidget {
         (homework) => DateTime.parse(homework.assignedDate.toString()),
       );
 
-      return ListView.builder(
+      return value.homeworks.isEmpty ? Center(child: Text("No Homeworks Found!"),): ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
         itemCount: groupedHomework.length,
         itemBuilder: (context, index) {
