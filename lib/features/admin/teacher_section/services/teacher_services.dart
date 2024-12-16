@@ -50,7 +50,8 @@ class TeacherServices {
       required String gender,
       required String address,
       required String contactNumber,
-      required String emailAddress}) async {
+      required String emailAddress,
+      String? profilePhoto}) async {
     // Create the form data to pass to the API
     final formData = {
       'full_name': fullName,
@@ -58,7 +59,10 @@ class TeacherServices {
       'gender': gender,
       'address': address,
       'contact_number': contactNumber,
-      'email': emailAddress, // Make sure this date is a string
+      'email': emailAddress,
+       if (profilePhoto!= null) // Only include if the photo is provided
+        "profile_photo": await MultipartFile.fromFile(profilePhoto,
+            filename: profilePhoto.split('/').last)// Make sure this date is a string
     };
 
     // Call the ApiServices post method with formData and isFormData: true

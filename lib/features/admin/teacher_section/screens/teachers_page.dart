@@ -165,7 +165,7 @@ class _TeachersPageState extends State<TeachersPage> {
                       padding: const EdgeInsets.only(bottom: 4),
                       child: ProfileTile(
                         imageUrl:
-                            "${baseUrl}${Urls.studentPhotos}${value.teachers[index].profilePhoto}",
+                            "${baseUrl}${Urls.teacherPhotos}${value.teachers[index].profilePhoto}",
                         name: capitalizeFirstLetter(
                             value.teachers[index].fullName ?? ""),
                         description:
