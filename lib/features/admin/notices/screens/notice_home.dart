@@ -303,6 +303,9 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
                   return buildItem(entry.value[index], index, itemCount);
                 },
               ),
+              // SizedBox(
+              //   height: Responsive.height * 2,
+              // )
             ],
           );
         }).toList(),
@@ -313,7 +316,7 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
   Widget _buildDateHeader(String date) {
     return Padding(
       padding: EdgeInsets.only(
-        // top: Responsive.height * 2, // 20px equivalent
+        top: Responsive.height * 2, // 20px equivalent
         bottom: Responsive.height * 1, // 10px equivalent
       ),
       child: Text(
