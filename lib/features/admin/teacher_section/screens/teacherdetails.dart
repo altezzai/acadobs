@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/profile_container.dart';
 import 'package:school_app/features/admin/teacher_section/model/teacher_model.dart';
@@ -39,7 +40,7 @@ class TeacherDetailsPage extends StatelessWidget {
               },
             ),
             ProfileContainer(
-              imagePath: "assets/staff3.png",
+              imagePath: "${baseUrl}${Urls.teacherPhotos}${teacher.profilePhoto}",
               name: capitalizeFirstLetter(teacher.fullName ?? ""),
               present: '27',
               absent: '7',

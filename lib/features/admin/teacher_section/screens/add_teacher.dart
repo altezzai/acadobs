@@ -4,9 +4,11 @@ import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/core/controller/file_picker_provider.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
+import 'package:school_app/core/shared_widgets/custom_filepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/admin/teacher_section/controller/teacher_controller.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
@@ -28,7 +30,15 @@ class _AddTeacherState extends State<AddTeacher> {
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+   @override
+  void initState() {
+    super.initState();
 
+    // Clear selected file when the page loads
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<FilePickerProvider>(context, listen: false).clearFile();
+    });
+  }
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -42,6 +52,7 @@ class _AddTeacherState extends State<AddTeacher> {
 
   @override
   Widget build(BuildContext context) {
+    final fileProvider = Provider.of<FilePickerProvider>(context);
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -122,21 +133,28 @@ class _AddTeacherState extends State<AddTeacher> {
                 iconData: Icon(Icons.email),
               ),
               SizedBox(
+                height: Responsive.height * 1,
+              ),
+              CustomFilePicker(label: 'Teacher Photo'),
+              SizedBox(
                 height: Responsive.height * 30,
               ),
+              
               Consumer<TeacherController>(builder: (context, value, child) {
                 return CommonButton(
                   onPressed: () {
                     final selectedGender = context
                         .read<DropdownProvider>()
                         .getSelectedItem('gender');
+                    final filePath = fileProvider.selectedFile!.path;
                     context.read<TeacherController>().addNewTeacher(context,
                         fullName: _nameController.text,
                         dateOfBirth: _dateOfBirthController.text,
                         gender: selectedGender,
                         address: _addressController.text,
                         contactNumber: _phoneController.text,
-                        emailAddress: _emailController.text);
+                        emailAddress: _emailController.text,
+                        profilePhoto: filePath);
                   },
                   widget: value.isloading ? ButtonLoading() : Text('Submit'),
                 );

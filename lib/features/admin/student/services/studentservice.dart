@@ -10,7 +10,7 @@ class StudentServices {
       final Response response = await ApiServices.get('/students');
       return response;
     } on DioException catch (e) {
-      throw Exception('Failed to load data: $e');
+      throw Exception('Failed to load data: $e'); 
     }
   }
 

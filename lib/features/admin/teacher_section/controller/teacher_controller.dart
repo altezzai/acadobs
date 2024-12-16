@@ -41,7 +41,8 @@ class TeacherController extends ChangeNotifier {
       required String gender,
       required String address,
       required String contactNumber,
-      required String emailAddress}) async {
+      required String emailAddress,
+      String? profilePhoto}) async {
     _isloading = true;
     try {
       //  _isloading = false;
@@ -51,7 +52,9 @@ class TeacherController extends ChangeNotifier {
           gender: gender,
           address: address,
           contactNumber: contactNumber,
-          emailAddress: emailAddress);
+          emailAddress: emailAddress,
+          profilePhoto:profilePhoto);
+          
       if (response.statusCode == 201) {
         log(">>>>>>>>>>>>>Teacher Added}");
         context.pushNamed(AppRouteConst.AdminteacherRouteName);
