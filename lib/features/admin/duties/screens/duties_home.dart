@@ -77,7 +77,7 @@ class _DutiesHomeScreenState extends State<DutiesHomeScreen> {
                         DateTime.tryParse(duty.createdAt.toString()) ??
                         DateTime.now(),
                   );
-                  return SingleChildScrollView(
+                  return value.duties.isEmpty ? Center(child: Text("No Duties Found!"),) : SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: groupedDuities.entries.map((entry) {
