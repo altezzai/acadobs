@@ -116,36 +116,35 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                   ),
                 ),
                 SliverOverlapAbsorber(
-                  handle:
-                      NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                  sliver: SliverAppBar(
-                    pinned: true,
-                    backgroundColor: Colors.grey.shade200,
-                    bottom: PreferredSize(
-                      preferredSize: const Size.fromHeight(0),
-                      child: TabBar(
-                        tabAlignment: TabAlignment.start,
-                        isScrollable: true,
-                        labelColor: Colors.black,
-                        unselectedLabelColor: Colors.grey,
-                        indicatorColor: Colors.black,
-                        labelPadding:
-                            const EdgeInsets.symmetric(horizontal: 16.0),
-                        tabs: const [
-                          Tab(text: "Dashboard"),
-                          Tab(text: "Achievements"),
-                          Tab(text: "Exam"),
-                          Tab(text: "Homework"),
-                          Tab(text: "Leave Request"),
-                        ],
+                    handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                        context),
+                    sliver: SliverAppBar(
+                      pinned: true,
+                      backgroundColor: Colors.grey.shade200,
+                      bottom: PreferredSize(
+                        preferredSize: const Size.fromHeight(0),
+                        child: TabBar(
+                          tabAlignment: TabAlignment.start,
+                          isScrollable: true,
+                          labelColor: Colors.black,
+                          unselectedLabelColor: Colors.grey,
+                          indicatorColor: Colors.black,
+                          labelPadding:
+                              const EdgeInsets.symmetric(horizontal: 16.0),
+                          tabs: const [
+                            Tab(text: "Dashboard"),
+                            Tab(text: "Achievements"),
+                            Tab(text: "Exam"),
+                            Tab(text: "Homework"),
+                            Tab(text: "Leave Request"),
+                          ],
+                        ),
                       ),
-                    ),
-                  )
-                ),
+                    )),
               ];
             },
             body: Padding(
-              padding: const EdgeInsets.only(top: 40),
+              padding: EdgeInsets.only(top: Responsive.height * 30),
               child: TabBarView(
                 children: [
                   _buildDashboardContent(),
@@ -167,7 +166,6 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                           extra: widget.student.id);
                     },
                   )
-
                 ],
               ),
             ),
@@ -210,37 +208,42 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
           (exam) => DateTime.parse(exam.date.toString()),
         );
 
-        return value.exam.isEmpty ? Center(child: Text("No Exams Found!"),) : ListView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-          itemCount: groupedExams.length,
-          itemBuilder: (context, index) {
-            final entry = groupedExams.entries.elementAt(index);
-            final dateGroup = entry.key;
-            final exams = entry.value;
+        return value.exam.isEmpty
+            ? Center(
+                child: Text("No Exams Found!"),
+              )
+            : ListView.builder(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+                itemCount: groupedExams.length,
+                itemBuilder: (context, index) {
+                  final entry = groupedExams.entries.elementAt(index);
+                  final dateGroup = entry.key;
+                  final exams = entry.value;
 
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: Responsive.height * 2),
-                Text(
-                  dateGroup,
-                  style: textThemeData.bodyMedium,
-                ),
-                const SizedBox(height: 10),
-                ...exams.map((exam) => WorkContainer(
-                      sub: exam.subject ?? "",
-                      work: exam.title ?? "",
-                      icon: Icons.workspace_premium_outlined,
-                      icolor: Colors.green,
-                      bcolor: Colors.green.withOpacity(0.2),
-                      prefixText:
-                          '${exam.marks.toString()} / ${exam.totalMarks}',
-                    )),
-                const SizedBox(height: 10),
-              ],
-            );
-          },
-        );
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: Responsive.height * 2),
+                      Text(
+                        dateGroup,
+                        style: textThemeData.bodyMedium,
+                      ),
+                      const SizedBox(height: 10),
+                      ...exams.map((exam) => WorkContainer(
+                            sub: exam.subject ?? "",
+                            work: exam.title ?? "",
+                            icon: Icons.workspace_premium_outlined,
+                            icolor: Colors.green,
+                            bcolor: Colors.green.withOpacity(0.2),
+                            prefixText:
+                                '${exam.marks.toString()} / ${exam.totalMarks}',
+                          )),
+                      const SizedBox(height: 10),
+                    ],
+                  );
+                },
+              );
       },
     );
   }

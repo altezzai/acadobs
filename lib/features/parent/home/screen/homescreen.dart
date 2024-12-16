@@ -409,6 +409,8 @@ class _HomePageState extends State<HomePage> {
                                 itemCount: value.events.take(2).length,
                                 itemBuilder: (context, index) {
                                   return EventCard(
+                                    bottomRadius: 16,
+              topRadius: 16,
                                     eventDescription:
                                         value.events[index].description ?? "",
                                     eventTitle: value.events[index].title ?? "",

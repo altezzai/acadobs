@@ -22,15 +22,16 @@ class NoticeItem extends StatelessWidget {
       child: ListTile(
         contentPadding: EdgeInsets.all(16),
         leading: CircleAvatar(
-          backgroundColor: Colors.blue.shade100,
+          backgroundColor: Color(0xFFCEF2FF),
           child: Icon(Icons.announcement, color: Colors.blue),
         ),
         title: Text(
           title,
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
         ),
-        subtitle:
-            Text(date, style: TextStyle(color: Colors.grey, fontSize: 16)),
+        subtitle: Text(date,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(color: Colors.grey, fontSize: 16)),
         trailing: Text(
           time,
           style: TextStyle(fontWeight: FontWeight.normal, fontSize: 13),

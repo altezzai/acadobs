@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:school_app/base/theme/text_theme.dart';
+import 'package:school_app/base/utils/capitalize_first_letter.dart';
+import 'package:school_app/base/utils/responsive.dart';
 
 class DutyCard extends StatelessWidget {
   final String title;
   final String date;
   final String time;
+  final double bottomRadius;
+  final double topRadius;
   final void Function() onTap;
 
   const DutyCard({
@@ -12,11 +16,13 @@ class DutyCard extends StatelessWidget {
     required this.date,
     required this.time,
     required this.onTap,
+    required this.bottomRadius,
+    required this.topRadius,
   });
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
+    // double screenWidth = MediaQuery.of(context).size.width;
 
     return InkWell(
       onTap: onTap,
@@ -24,14 +30,18 @@ class DutyCard extends StatelessWidget {
         padding: EdgeInsets.all(12),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.shade300,
-              blurRadius: 10,
-              spreadRadius: 3,
-            ),
-          ],
+          borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(bottomRadius),
+              bottomRight: Radius.circular(bottomRadius),
+              topLeft: Radius.circular(topRadius),
+              topRight: Radius.circular(topRadius)),
+          // boxShadow: [
+          //   BoxShadow(
+          //     color: Colors.grey.shade300,
+          //     blurRadius: 4,
+          //     spreadRadius: 1,
+          //   ),
+          // ],
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -39,41 +49,55 @@ class DutyCard extends StatelessWidget {
             Row(
               children: [
                 CircleAvatar(
-                  radius: 25,
-                  backgroundColor: Colors.blue.withOpacity(0.2),
+                  radius: 22,
+                  backgroundColor: Color(0xFFCEF2FF),
                   child: Image.asset(
                     'assets/icons/Vector.png',
-                    height: 20,
+                    height: 18,
                   ),
                 ),
                 SizedBox(width: 15),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(title,
+                    Text(capitalizeEachWord(title),
                         style: textThemeData.bodyMedium!.copyWith(
                           fontWeight: FontWeight.bold,
-                          fontSize: screenWidth * 0.04,
+                          fontSize: 14,
                         )
                         // TextStyle(
                         //   fontWeight: FontWeight.normal,
                         //   fontSize: screenWidth * 0.04,
                         // ),
                         ),
-                    // SizedBox(height: 2),
-                    Text(
-                      date,
-                      style: TextStyle(color: Colors.grey, fontSize: 13),
+                    SizedBox(height: 2),
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: Color(0xFFCEF2FF)),
+                      child: Text(
+                        date,
+                        style: TextStyle(
+                          color: Color(0xFF378AA8),
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ],
             ),
-            Text(
-              time,
-              style: TextStyle(
-                fontWeight: FontWeight.normal,
-                fontSize: screenWidth * 0.03,
+            Padding(
+              padding: EdgeInsets.only(top: Responsive.height * 3),
+              child: Text(
+                time,
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ],
