@@ -13,12 +13,16 @@ import 'package:school_app/features/admin/payments/services/payment_services.dar
 class PaymentController extends ChangeNotifier {
   bool _isloading = false;
   bool get isloading => _isloading;
+    bool _isloadingTwo = false;
+  bool get isloadingTwo => _isloadingTwo;
   List<Payment> _payments = [];
   List<Payment> get payments => _payments;
   List<Payment> _filteredpayments = [];
   List<Payment> get filteredpayments => _filteredpayments;
   List<Payment> _studentPayments = [];
   List<Payment> get studentPayments => _studentPayments;
+  List<Payment> _teacherPayments = [];
+  List<Payment> get teacherPayments => _teacherPayments;
 
 // Get all Payments
   Future<void> getPayments() async {
@@ -84,6 +88,28 @@ class PaymentController extends ChangeNotifier {
     }
   }
 
+  // Get payments by recorded id
+  Future<void> getPaymentsByRecordId() async {
+    _isloading = true;
+    try {
+      final recordId = await SecureStorageService.getUserId();
+      final response =
+          await PaymentServices().getPaymentsByRecordedId(recordId: recordId);
+      print("***********${response.statusCode}");
+      // print(response.toString());
+      if (response.statusCode == 200) {
+        _teacherPayments.clear();
+        _teacherPayments = (response.data as List<dynamic>)
+            .map((result) => Payment.fromJson(result))
+            .toList();
+      }
+    } catch (e) {
+      // print(e);
+    }
+    _isloading = false;
+    notifyListeners();
+  }
+
   void clearPaymentList() {
     _filteredpayments.clear();
     notifyListeners();
@@ -95,6 +121,9 @@ class PaymentController extends ChangeNotifier {
   List<Donation> _studentdonations = [];
   List<Donation> get studentdonations => _studentdonations;
 
+  List<Donation> _teacherdonations = [];
+  List<Donation> get teacherdonations => _teacherdonations;
+
   Future<void> getDonations() async {
     _isloading = true;
     try {
@@ -103,6 +132,49 @@ class PaymentController extends ChangeNotifier {
       // print(response.toString());
       if (response.statusCode == 200) {
         _donations = (response.data as List<dynamic>)
+            .map((result) => Donation.fromJson(result))
+            .toList();
+      }
+    } catch (e) {
+      // print(e);
+    }
+    _isloading = false;
+    notifyListeners();
+  }
+
+  // Get individual student donations
+  Future<void> getDonationByStudentId({required int studentId}) async {
+    _isloading = true;
+    try {
+      final response =
+          await PaymentServices().getDonationsByStudentId(studentId: studentId);
+      print("***********${response.statusCode}");
+      // print(response.toString());
+      if (response.statusCode == 200) {
+        _studentdonations.clear();
+        _studentdonations = (response.data as List<dynamic>)
+            .map((result) => Donation.fromJson(result))
+            .toList();
+      }
+    } catch (e) {
+      // print(e);
+    }
+    _isloading = false;
+    notifyListeners();
+  }
+
+  // Get teacher donations
+  Future<void> getDonationByRecordId() async {
+    _isloading = true;
+    try {
+      final recordId = await SecureStorageService.getUserId();
+      final response =
+          await PaymentServices().getDonationsByRecordedId(recordId: recordId);
+      print("***********${response.statusCode}");
+      // print(response.toString());
+      if (response.statusCode == 200) {
+        _teacherdonations.clear();
+        _teacherdonations = (response.data as List<dynamic>)
             .map((result) => Donation.fromJson(result))
             .toList();
       }
@@ -126,7 +198,8 @@ class PaymentController extends ChangeNotifier {
     required String payment_status,
     File? file,
   }) async {
-    _isloading = true;
+    _isloadingTwo = true;
+    notifyListeners();
     try {
       final teacherId = await SecureStorageService.getUserId();
       final response = await PaymentServices().addPayment(
@@ -149,7 +222,7 @@ class PaymentController extends ChangeNotifier {
     } catch (e) {
       log(e.toString());
     } finally {
-      _isloading = false;
+      _isloadingTwo = false;
       notifyListeners();
     }
   }
@@ -165,7 +238,8 @@ class PaymentController extends ChangeNotifier {
     required String transaction_id,
     File? file,
   }) async {
-    _isloading = true;
+    _isloadingTwo = true;
+    notifyListeners();
     try {
       final teacherId = await SecureStorageService.getUserId();
       final response = await PaymentServices().addDonation(context,
@@ -185,7 +259,7 @@ class PaymentController extends ChangeNotifier {
     } catch (e) {
       log(e.toString());
     } finally {
-      _isloading = false;
+      _isloadingTwo = false;
       notifyListeners();
     }
   }

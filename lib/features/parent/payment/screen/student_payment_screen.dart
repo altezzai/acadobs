@@ -5,11 +5,10 @@ import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
-import 'package:school_app/base/utils/constants.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
-import 'package:school_app/core/shared_widgets/add_button.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/admin/payments/controller/payment_controller.dart';
 import 'package:school_app/features/admin/payments/widgets/payment_item.dart';
@@ -45,31 +44,34 @@ class _StudentPaymentScreenState extends State<StudentPaymentScreen>
           children: [
             CustomAppbar(
               title: "Payments",
-              isBackButton: false,
+              onTap: () {
+                context.goNamed(AppRouteConst.bottomNavRouteName,
+                    extra: UserType.parent);
+              },
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: AddButton(
-                    iconPath: paymentIcon,
-                    onPressed: () {
-                      context.pushNamed(AppRouteConst.AddPaymentRouteName);
-                    },
-                    text: "Add Payment",
-                  ),
-                ),
-                SizedBox(width: 16),
-                Expanded(
-                  child: AddButton(
-                    iconPath: donationIcon,
-                    onPressed: () {
-                      context.pushNamed(AppRouteConst.AddDonationRouteName);
-                    },
-                    text: "Add Donation",
-                  ),
-                ),
-              ],
-            ),
+            // Row(
+            //   children: [
+            //     Expanded(
+            //       child: AddButton(
+            //         iconPath: paymentIcon,
+            //         onPressed: () {
+            //           context.pushNamed(AppRouteConst.AddPaymentRouteName);
+            //         },
+            //         text: "Add Payment",
+            //       ),
+            //     ),
+            //     SizedBox(width: 16),
+            //     Expanded(
+            //       child: AddButton(
+            //         iconPath: donationIcon,
+            //         onPressed: () {
+            //           context.pushNamed(AppRouteConst.AddDonationRouteName);
+            //         },
+            //         text: "Add Donation",
+            //       ),
+            //     ),
+            //   ],
+            // ),
             SizedBox(height: 20),
             TabBar(
               controller: _tabController,
@@ -147,7 +149,9 @@ class _StudentPaymentScreenState extends State<StudentPaymentScreen>
   }
 
   Widget _buildPaymentsList() {
-    context.read<PaymentController>().getPayments();
+    context
+        .read<PaymentController>()
+        .getPaymentsByStudentId(studentId: widget.studentId);
     return Consumer<PaymentController>(builder: (context, value, child) {
       if (value.isloading) {
         return Column(
@@ -163,12 +167,12 @@ class _StudentPaymentScreenState extends State<StudentPaymentScreen>
       }
 
       final groupedPayments = groupItemsByDate(
-        value.payments,
+        value.studentPayments,
         (payment) =>
             DateTime.tryParse(payment.paymentDate.toString()) ?? DateTime.now(),
       );
 
-      return SingleChildScrollView(
+      return value.studentPayments.isEmpty ? Center(child: Text("No Payments Found!"),) : SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: groupedPayments.entries.map((entry) {
@@ -210,7 +214,9 @@ class _StudentPaymentScreenState extends State<StudentPaymentScreen>
   }
 
   Widget _buildDonationsList() {
-    context.read<PaymentController>().getDonations();
+    context
+        .read<PaymentController>()
+        .getDonationByStudentId(studentId: widget.studentId);
     return Consumer<PaymentController>(builder: (context, value, child) {
       if (value.isloading) {
         return Column(
@@ -226,13 +232,13 @@ class _StudentPaymentScreenState extends State<StudentPaymentScreen>
       }
 
       final groupedDonations = groupItemsByDate(
-        value.donations,
+        value.studentdonations,
         (donation) =>
             DateTime.tryParse(donation.donationDate.toString()) ??
             DateTime.now(),
       );
 
-      return SingleChildScrollView(
+      return value.studentdonations.isEmpty ? Center(child: Text("No Donations Found!"),) : SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: groupedDonations.entries.map((entry) {

@@ -45,7 +45,6 @@ import 'package:school_app/features/admin/teacher_section/screens/teacherdetails
 import 'package:school_app/features/admin/teacher_section/screens/teachers_page.dart';
 import 'package:school_app/features/parent/events/screen/eventdetailedscreen.dart';
 import 'package:school_app/features/parent/events/screen/eventscreen.dart';
-import 'package:school_app/features/parent/home/screen/homescreen.dart';
 import 'package:school_app/features/parent/leave_request/model/studentLeaveReq_model.dart';
 import 'package:school_app/features/parent/leave_request/screens/add_student_leaveReq.dart';
 // import 'package:school_app/features/parent/leave_request/screens/student_leaveRequest.dart';
@@ -70,6 +69,7 @@ import 'package:school_app/features/teacher/leave_request/screens/teacher_leaver
 import 'package:school_app/features/teacher/mark_work/screens/mark_star.dart';
 import 'package:school_app/features/teacher/marks/models/marks_upload_model.dart';
 import 'package:school_app/features/teacher/marks/screens/student_marklist.dart';
+import 'package:school_app/features/teacher/parent/notes/screens/student_note_selection.dart';
 import 'package:school_app/features/teacher/parent/notes/screens/add_note.dart';
 import 'package:school_app/features/teacher/parent/notes/screens/note_details.dart';
 import 'package:school_app/features/teacher/parent/notes/screens/notes.dart';
@@ -217,19 +217,27 @@ class Approuter {
         name: AppRouteConst.AddNoteRouteName,
         path: '/addnotes',
         pageBuilder: (context, state) {
-          return MaterialPage(child: AddNote());
+          final student = state.extra as Student;
+          return MaterialPage(child: AddNote(student:student));
         },
       ),
       GoRoute(
         name: AppRouteConst.NoteDetailsRouteName,
         path: '/notedetails',
         pageBuilder: (context, state) {
-          final Student student = state.extra as Student;
+          final Student parent = state.extra as Student;
 
           return MaterialPage(
               child: NoteChatDetailPage(
-            student: student,
+            parent: parent,
           ));
+        },
+      ),
+       GoRoute(
+        name: AppRouteConst.StudentNoteSelectionRouteName,
+        path: '/studentnoteselection',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: StudentNoteSelectionPage());
         },
       ),
 
@@ -370,13 +378,13 @@ class Approuter {
           return MaterialPage(child: AddHomeworkPage());
         },
       ),
-      GoRoute(
-        name: AppRouteConst.ParentHomeRouteName,
-        path: '/parenthome',
-        pageBuilder: (context, state) {
-          return MaterialPage(child: ParentHomeScreen());
-        },
-      ),
+      // GoRoute(
+      //   name: AppRouteConst.ParentHomeRouteName,
+      //   path: '/parenthome',
+      //   pageBuilder: (context, state) {
+      //     return MaterialPage(child: ParentHomeScreen());
+      //   },
+      // ),
       // GoRoute(
       //   name: AppRouteConst.StudentLeaveRequestViewRouteName,
       //   path: '/studentleaverequestview',
@@ -534,6 +542,19 @@ class Approuter {
           );
         },
       ),
+
+      // GoRoute(
+      //   name: AppRouteConst.TeacherPaymentScreenRouteName,
+      //   path: '/teacherpaymentscreen',
+      //   pageBuilder: (context, state) {
+      //     final int recordId = state.extra as int;
+      //     return MaterialPage(
+      //       child: TeacherPaymentScreen(
+      //         recordId: recordId,
+      //       ),
+      //     );
+      //   },
+      // ),
 
       GoRoute(
         name: AppRouteConst.AddTeacherRouteName,

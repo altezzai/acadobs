@@ -17,6 +17,7 @@ class AuthController extends ChangeNotifier {
       required String email,
       required String password}) async {
     _isloading = true;
+    notifyListeners();
     try {
       log("Start");
       final response =
@@ -29,9 +30,8 @@ class AuthController extends ChangeNotifier {
         log("User type from api===== ${response.data['user']["user_type"].toString()} ");
         log("User type from secure storage===== $userType ");
         if (userType == "student") {
-          context.pushReplacementNamed(
-            AppRouteConst.ParentHomeRouteName,
-          );
+          context.goNamed(AppRouteConst.bottomNavRouteName,
+              extra: UserType.parent);
         } else if (userType == "teacher") {
           context.goNamed(AppRouteConst.bottomNavRouteName,
               extra: UserType.teacher);

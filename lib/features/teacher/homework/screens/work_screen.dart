@@ -111,7 +111,7 @@ class _WorkScreenState extends State<WorkScreen> {
                       DateTime.now(),
                 );
 
-                return Column(
+                return value.teacherHomework.isEmpty ? Center(child: Text("No Homeworks Found!"),) : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: groupedHomework.entries.map((entry) {
                     return Column(

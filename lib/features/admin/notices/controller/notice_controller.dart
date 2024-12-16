@@ -14,6 +14,8 @@ class NoticeController extends ChangeNotifier {
   // get notices
   bool _isloading = false;
   bool get isloading => _isloading;
+  bool _isloadingTwo = false;
+  bool get isloadingTwo => _isloadingTwo;
   List<Notice> _notices = [];
   List<Notice> get notices => _notices;
 
@@ -40,7 +42,8 @@ class NoticeController extends ChangeNotifier {
   List<Event> get events => _events;
 
   Future<void> getEvents() async {
-    _isloading =true;
+    _isloading = true;
+    // notifyListeners();
     try {
       final response = await NoticeServices().getEvents();
       print("***********${response.statusCode}");
@@ -71,7 +74,8 @@ class NoticeController extends ChangeNotifier {
     // final loadingProvider =
     //     Provider.of<LoadingProvider>(context, listen: false); //loading provider
     // loadingProvider.setLoading(true); //start loader
-    _isloading = true;
+    _isloadingTwo = true;
+    notifyListeners();
     try {
       final response = await NoticeServices().addNotice(context,
           title: title,
@@ -89,7 +93,7 @@ class NoticeController extends ChangeNotifier {
       log(e.toString());
     } finally {
       // loadingProvider.setLoading(false); // End loader
-      _isloading = false;
+      _isloadingTwo = false;
       notifyListeners();
     }
   }
@@ -104,7 +108,8 @@ class NoticeController extends ChangeNotifier {
     // final loadingProvider =
     //     Provider.of<LoadingProvider>(context, listen: false); //loading provider
     // loadingProvider.setLoading(true); //start loader
-    _isloading = true;
+    _isloadingTwo = true;
+    notifyListeners();
     try {
       final response = await NoticeServices().addEvent(
           title: title,
@@ -123,7 +128,7 @@ class NoticeController extends ChangeNotifier {
       log(e.toString());
     } finally {
       // loadingProvider.setLoading(false); // End loader
-      _isloading =false;
+      _isloadingTwo = false;
       notifyListeners();
     }
   }

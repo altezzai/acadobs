@@ -22,9 +22,19 @@ class _ParentsScreenState extends State<ParentsScreen> {
   // String searchQuery = "";
   // String selectedClass = "All";
 
+  late DropdownProvider dropdownprovider;
+
   @override
   void initState() {
+    dropdownprovider = context.read<DropdownProvider>();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      dropdownprovider.clearSelectedItem('class');
+      dropdownprovider.clearSelectedItem('division');
+
+      context.read<StudentController>().clearParentList();
+    });
     super.initState();
+
     context.read<StudentController>().getParentDetails();
   }
 
@@ -55,7 +65,7 @@ class _ParentsScreenState extends State<ParentsScreen> {
               children: [
                 Expanded(
                   child: CustomAppbar(
-                    title: "Parents",
+                    title: "         Parents",
                     isProfileIcon: false,
                     onTap: () {
                       context.pushNamed(AppRouteConst.bottomNavRouteName,
@@ -63,16 +73,12 @@ class _ParentsScreenState extends State<ParentsScreen> {
                     },
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      right: 8.0), // Adjust spacing as needed
-                  child: IconButton(
-                    icon: Icon(Icons.draw_sharp),
-                    onPressed: () {
-                      context.pushNamed(AppRouteConst.NotesRouteName);
-                    },
-                    // Optional tooltip
-                  ),
+                IconButton(
+                  icon: Icon(Icons.draw_sharp),
+                  onPressed: () {
+                    context.pushNamed(AppRouteConst.NotesRouteName);
+                  },
+                  // Optional tooltip
                 ),
               ],
             ),
@@ -220,21 +226,20 @@ class _ParentsScreenState extends State<ParentsScreen> {
                               .zero, // Removes any extra padding at the top
                           itemCount: value.filteredparents.length,
                           itemBuilder: (context, index) {
+                            final parent = value.filteredparents[index];
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 4),
                               child: ProfileTile(
                                 imageUrl:
-                                    "${baseUrl}${Urls.parentPhotos}${value.parents[index].fatherMotherPhoto}",
-                                name: capitalizeFirstLetter(value
-                                        .filteredparents[index]
-                                        .guardianFullName ??
-                                    ""),
+                                    "${baseUrl}${Urls.parentPhotos}${parent.fatherMotherPhoto}",
+                                name: capitalizeFirstLetter(
+                                    parent.guardianFullName ?? ""),
                                 description:
-                                    "${value.filteredparents[index].fullName} ${value.filteredparents[index].studentClass} ${value.filteredparents[index].section}",
+                                    "${parent.fullName} ${parent.studentClass} ${parent.section}",
                                 onPressed: () {
                                   context.pushNamed(
                                       AppRouteConst.NoteDetailsRouteName,
-                                      extra: value.parents[index]);
+                                      extra: parent);
                                 },
                               ),
                             );
@@ -252,15 +257,15 @@ class _ParentsScreenState extends State<ParentsScreen> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          context.pushNamed(AppRouteConst.AddStudentRouteName);
-        },
-        label: Text('Add New Student'),
-        icon: Icon(Icons.add),
-        backgroundColor: Colors.black,
-        foregroundColor: Colors.white,
-      ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // floatingActionButton: Padding(
+      //   padding: const EdgeInsets.all(16),
+      //   child: CommonButton(
+      //       onPressed: () {
+      //         context.pushNamed(AppRouteConst.StudentNoteSelectionRouteName);
+      //       },
+      //       widget: Text("Add  Note")),
+      // ),
     );
   }
 }

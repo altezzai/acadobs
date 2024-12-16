@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/responsive.dart';
-import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/admin/payments/model/payment_model.dart';
 
@@ -59,10 +56,7 @@ class _PaymentViewState extends State<PaymentView> {
               title: "Payments",
               isProfileIcon: false,
               onTap: () {
-                context.pushNamed(
-                  AppRouteConst.bottomNavRouteName,
-                  extra: UserType.admin,
-                );
+                Navigator.pop(context);
               },
             ),
             SizedBox(height: Responsive.height * 2),

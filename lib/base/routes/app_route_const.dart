@@ -45,6 +45,7 @@ class AppRouteConst {
   static const String NotesRouteName = 'notes';
   static const String AddNoteRouteName = 'addnotes';
   static const String NoteDetailsRouteName = 'notedetails';
+   static const String StudentNoteSelectionRouteName = 'studentnoteselection';
 
   static const String StudentLeaveRequestViewRouteName =
       'studentleaverequestview';
@@ -75,6 +76,7 @@ class AppRouteConst {
       'parentpaymentdetailedpage';
 
   static const String ParentPaymentScreenRouteName = 'parentpaymentscreen';
+  // static const String TeacherPaymentScreenRouteName = 'teacherpaymentscreen';
 
   static const String bottomNavRouteName = 'bottomNav';
   static const String teacherSelectionRouteName = 'teacherSelection';

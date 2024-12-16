@@ -161,7 +161,7 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
             DateTime.tryParse(payment.paymentDate.toString()) ?? DateTime.now(),
       );
 
-      return SingleChildScrollView(
+      return value.payments.isEmpty ? Center(child: Text("No Payments Found!"),) : SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: groupedPayments.entries.map((entry) {
@@ -225,7 +225,7 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
             DateTime.now(),
       );
 
-      return SingleChildScrollView(
+      return value.donations.isEmpty ? Center(child: Text("No Donations Found!"),) : SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: groupedDonations.entries.map((entry) {

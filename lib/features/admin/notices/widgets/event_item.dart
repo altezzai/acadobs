@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class EventItem extends StatelessWidget {
@@ -16,12 +17,28 @@ class EventItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      // margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.asset(imagePath,
-              fit: BoxFit.cover, height: 150, width: double.infinity),
+          CachedNetworkImage(
+            imageUrl: imagePath,
+            height: 150,
+            width: double.infinity,
+            fit: BoxFit.cover,
+            placeholder: (context, url) => Center(
+              child: CircularProgressIndicator(
+                color: Colors.grey,
+              ),
+            ),
+            errorWidget: (context, url, error) => Center(
+              child: Icon(
+                Icons.error,
+                size: 40,
+                color: Colors.red,
+              ),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(

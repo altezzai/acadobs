@@ -5,13 +5,13 @@ import 'package:school_app/features/admin/student/controller/student_controller.
 import 'package:school_app/features/admin/student/model/student_data.dart';
 
 class NoteChatDetailPage extends StatefulWidget {
-  final Student student;
+  final Student parent;
   // final String name;
   // final String subject;
   // final String imageUrl;
 
   NoteChatDetailPage({
-    required this.student,
+    required this.parent,
     // required this.name,
     // required this.subject,
     // required this.imageUrl,
@@ -44,14 +44,14 @@ class _NoteChatDetailPageState extends State<NoteChatDetailPage> {
         title: Row(
           children: [
             CircleAvatar(
-              backgroundImage: NetworkImage("${baseUrl}${Urls.parentPhotos}${widget.student.fatherMotherPhoto??""}"),
+              backgroundImage: NetworkImage("${baseUrl}${Urls.parentPhotos}${widget.parent.fatherMotherPhoto??""}"),
             ),
             SizedBox(width: 10),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.student.guardianFullName??"",
+                  widget.parent.guardianFullName??"",
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -125,7 +125,7 @@ class _NoteChatDetailPageState extends State<NoteChatDetailPage> {
             SizedBox(height: 10),
             _buildReply("shibu", "Why are you so mad?? don't you have any life",
                 'assets/angus.png'),
-           // _buildReply("April Curtis", "What bro?", widget.student.studentPhoto??""),
+           _buildReply("April Curtis", "What bro?", widget.parent.studentPhoto??""),
 
             // Comment Input Field
             Spacer(),
