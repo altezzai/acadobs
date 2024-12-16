@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:school_app/base/theme/text_theme.dart';
 
 class DutyCard extends StatelessWidget {
   final String title;
@@ -23,7 +24,7 @@ class DutyCard extends StatelessWidget {
         padding: EdgeInsets.all(12),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.shade300,
@@ -37,19 +38,29 @@ class DutyCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.meeting_room, color: Colors.blue, size: 40),
-                SizedBox(width: 10),
+                CircleAvatar(
+                  radius: 25,
+                  backgroundColor: Colors.blue.withOpacity(0.2),
+                  child: Image.asset(
+                    'assets/icons/Vector.png',
+                    height: 20,
+                  ),
+                ),
+                SizedBox(width: 15),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      title,
-                      style: TextStyle(
-                        fontWeight: FontWeight.normal,
-                        fontSize: screenWidth * 0.04,
-                      ),
-                    ),
-                    SizedBox(height: 4),
+                    Text(title,
+                        style: textThemeData.bodyMedium!.copyWith(
+                          fontWeight: FontWeight.bold,
+                          fontSize: screenWidth * 0.04,
+                        )
+                        // TextStyle(
+                        //   fontWeight: FontWeight.normal,
+                        //   fontSize: screenWidth * 0.04,
+                        // ),
+                        ),
+                    // SizedBox(height: 2),
                     Text(
                       date,
                       style: TextStyle(color: Colors.grey, fontSize: 13),
@@ -62,7 +73,7 @@ class DutyCard extends StatelessWidget {
               time,
               style: TextStyle(
                 fontWeight: FontWeight.normal,
-                fontSize: screenWidth * 0.04,
+                fontSize: screenWidth * 0.03,
               ),
             ),
           ],
