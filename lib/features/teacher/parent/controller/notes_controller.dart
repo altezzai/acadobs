@@ -11,7 +11,7 @@ class NotesController extends ChangeNotifier {
   // ******Add notes to parents********
   Future<void> addParentNote({
     required BuildContext context,
-    required int studentId,
+    required List<int> studentIds,
     required String title,
     required String description,
   }) async {
@@ -20,7 +20,7 @@ class NotesController extends ChangeNotifier {
     try {
       final teacherId = await SecureStorageService.getUserId();
       final response = await NoteServices().addNotes(
-          studentId: studentId,
+          studentId: studentIds,
           teacherId: teacherId,
           title: title,
           description: description);
