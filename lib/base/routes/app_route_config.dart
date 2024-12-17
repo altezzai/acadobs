@@ -69,10 +69,10 @@ import 'package:school_app/features/teacher/leave_request/screens/teacher_leaver
 import 'package:school_app/features/teacher/mark_work/screens/mark_star.dart';
 import 'package:school_app/features/teacher/marks/models/marks_upload_model.dart';
 import 'package:school_app/features/teacher/marks/screens/student_marklist.dart';
-import 'package:school_app/features/teacher/parent/notes/screens/student_note_selection.dart';
 import 'package:school_app/features/teacher/parent/notes/screens/add_note.dart';
 import 'package:school_app/features/teacher/parent/notes/screens/note_details.dart';
 import 'package:school_app/features/teacher/parent/notes/screens/notes.dart';
+import 'package:school_app/features/teacher/parent/notes/screens/student_note_selection.dart';
 import 'package:school_app/features/teacher/parent/screens/parents.dart';
 
 class Approuter {
@@ -217,8 +217,11 @@ class Approuter {
         name: AppRouteConst.AddNoteRouteName,
         path: '/addnotes',
         pageBuilder: (context, state) {
-          final student = state.extra as Student;
-          return MaterialPage(child: AddNote(student:student));
+          // final student = state.extra as Student;
+          return MaterialPage(
+              child: AddNote(
+                  // student:student
+                  ));
         },
       ),
       GoRoute(
@@ -233,7 +236,7 @@ class Approuter {
           ));
         },
       ),
-       GoRoute(
+      GoRoute(
         name: AppRouteConst.StudentNoteSelectionRouteName,
         path: '/studentnoteselection',
         pageBuilder: (context, state) {

@@ -95,7 +95,7 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
                       NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                   sliver: SliverAppBar(
                     pinned: true,
-                    backgroundColor: Colors.grey.shade200,
+                    backgroundColor: Colors.transparent,
                     bottom: PreferredSize(
                       preferredSize: const Size.fromHeight(0),
                       child: TabBar(

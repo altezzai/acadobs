@@ -8,6 +8,7 @@ import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/profile_tile.dart';
@@ -257,15 +258,15 @@ class _ParentsScreenState extends State<ParentsScreen> {
           ],
         ),
       ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      // floatingActionButton: Padding(
-      //   padding: const EdgeInsets.all(16),
-      //   child: CommonButton(
-      //       onPressed: () {
-      //         context.pushNamed(AppRouteConst.StudentNoteSelectionRouteName);
-      //       },
-      //       widget: Text("Add  Note")),
-      // ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.all(16),
+        child: CommonButton(
+            onPressed: () {
+              context.pushNamed(AppRouteConst.AddNoteRouteName);
+            },
+            widget: Text("Add  Note")),
+      ),
     );
   }
 }
