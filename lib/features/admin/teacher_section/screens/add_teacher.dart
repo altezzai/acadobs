@@ -30,13 +30,20 @@ class _AddTeacherState extends State<AddTeacher> {
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+
+   late DropdownProvider dropdownProvider;
+  
+  late FilePickerProvider filePickerProvider;
    @override
   void initState() {
     super.initState();
+    filePickerProvider = context.read<FilePickerProvider>();
+    dropdownProvider=context.read<DropdownProvider>();
 
-    // Clear selected file when the page loads
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<FilePickerProvider>(context, listen: false).clearFile();
+      filePickerProvider.clearFile('profile photo');
+      dropdownProvider.clearSelectedItem('gender');
+
     });
   }
   @override
@@ -52,7 +59,7 @@ class _AddTeacherState extends State<AddTeacher> {
 
   @override
   Widget build(BuildContext context) {
-    final fileProvider = Provider.of<FilePickerProvider>(context);
+    
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -135,7 +142,7 @@ class _AddTeacherState extends State<AddTeacher> {
               SizedBox(
                 height: Responsive.height * 1,
               ),
-              CustomFilePicker(label: 'Teacher Photo'),
+              CustomFilePicker(label: 'Teacher Photo', fieldName: 'profile photo',),
               SizedBox(
                 height: Responsive.height * 30,
               ),
@@ -146,7 +153,8 @@ class _AddTeacherState extends State<AddTeacher> {
                     final selectedGender = context
                         .read<DropdownProvider>()
                         .getSelectedItem('gender');
-                    final filePath = fileProvider.selectedFile!.path;
+                    final profilePhoto = context.read<FilePickerProvider>().getFile('profile photo');
+                    final profilePhotoPath=profilePhoto?.path;
                     context.read<TeacherController>().addNewTeacher(context,
                         fullName: _nameController.text,
                         dateOfBirth: _dateOfBirthController.text,
@@ -154,7 +162,7 @@ class _AddTeacherState extends State<AddTeacher> {
                         address: _addressController.text,
                         contactNumber: _phoneController.text,
                         emailAddress: _emailController.text,
-                        profilePhoto: filePath);
+                        profilePhoto: profilePhotoPath);
                   },
                   widget: value.isloading ? ButtonLoading() : Text('Submit'),
                 );

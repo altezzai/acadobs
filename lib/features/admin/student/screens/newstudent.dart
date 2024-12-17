@@ -1,11 +1,13 @@
-import 'package:file_picker/file_picker.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
+import 'package:school_app/core/controller/file_picker_provider.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
+import 'package:school_app/core/shared_widgets/custom_filepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/admin/student/controller/student_controller.dart';
 
@@ -44,6 +46,22 @@ class _AddStudentPageState extends State<AddStudentPage> {
       TextEditingController();
   final TextEditingController _bloodgroupController = TextEditingController();
   final TextEditingController parentEmailController = TextEditingController();
+   late DropdownProvider dropdownProvider;
+  
+  late FilePickerProvider filePickerProvider;
+   @override
+  void initState() {
+    super.initState();
+    filePickerProvider = context.read<FilePickerProvider>();
+    dropdownProvider=context.read<DropdownProvider>();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      filePickerProvider.clearFile('student photo');
+      dropdownProvider.clearSelectedItem('gender');
+      dropdownProvider.clearSelectedItem('class');
+      dropdownProvider.clearSelectedItem('division');
+  });
+}
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -62,23 +80,6 @@ class _AddStudentPageState extends State<AddStudentPage> {
     super.dispose();
   }
 
-  Future<void> pickFile(Function(String) onFilePicked) async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.any,
-    );
-
-    if (result != null) {
-      if (result.files.single.path != null) {
-        setState(() {
-          onFilePicked(result.files.single.path!);
-        });
-      } else {
-        print('Selected file path is null.');
-      }
-    } else {
-      print('No file selected');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -359,41 +360,10 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 _sectionTitle('Documents'),
                 SizedBox(height: 10),
 
-                GestureDetector(
-                    onTap: () async {
-                      await pickFile((filePath) {
-                        setState(() {
-                          selectedStudentPhoto = filePath;
-                        });
-                      });
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(25.0),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10.0, vertical: 12.0),
-                      child: Row(
-                        children: [
-                          Icon(Icons.attachment_rounded, color: Colors.black),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              selectedStudentPhoto ?? 'Student Photo',
-                              style: TextStyle(
-                                  color: selectedStudentPhoto != null
-                                      ? Colors.black
-                                      : Colors.grey,
-                                  fontSize: 14),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )),
+               CustomFilePicker(label: 'student Photo', fieldName: 'student photo'),
 
                 SizedBox(height: 20),
-
+              CustomFilePicker(label: 'Aadhar Photo', fieldName: 'aadhar photo'),
 
                 SizedBox(height: 40),
 
@@ -431,6 +401,10 @@ class _AddStudentPageState extends State<AddStudentPage> {
           context.read<DropdownProvider>().getSelectedItem('class');
       final selectedDivision =
           context.read<DropdownProvider>().getSelectedItem('division');
+      final selectedStudentPhoto=context.read<FilePickerProvider>().getFile('student photo');
+      final selectedAadharPhoto=context.read<FilePickerProvider>().getFile('aadhar photo');
+      final studentPhotoPath=selectedStudentPhoto?.path;
+      final aadharPhotoPath=selectedAadharPhoto?.path;
 
       // final student = Student(
       //   fullName: _fullNameController.text,
@@ -468,7 +442,8 @@ class _AddStudentPageState extends State<AddStudentPage> {
           motherFullName: _motherFullNameController.text,
           bloodGroup: _bloodgroupController.text,
           parentEmail: parentEmailController.text,
-          studentPhoto: selectedStudentPhoto);
+          studentPhoto: studentPhotoPath,
+          aadharPhoto: aadharPhotoPath);
 
       _clearFormFields();
     } catch (e) {

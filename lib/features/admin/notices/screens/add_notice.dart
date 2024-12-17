@@ -43,7 +43,7 @@ class _AddNoticePageState extends State<AddNoticePage> {
       dropdownProvider.clearSelectedItem('class');
       dropdownProvider.clearSelectedItem('division');
       dropdownProvider.clearSelectedItem('targetAudience');
-      filePickerProvider.clearFile();
+      filePickerProvider.clearFile('notice file');
     });
   }
 
@@ -164,7 +164,7 @@ class _AddNoticePageState extends State<AddNoticePage> {
             ),
 
             SizedBox(height: 16),
-            CustomFilePicker(label: "Add Receipt"),
+           CustomFilePicker(label: "Add Receipt", fieldName: 'notice file',),
             SizedBox(height: 40),
             Consumer<NoticeController>(builder: (context, value, child) {
               return CommonButton(

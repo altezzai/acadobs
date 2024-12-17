@@ -52,7 +52,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
       dropdownProvider.clearSelectedItem('selectedMonth');
       dropdownProvider.clearSelectedItem('paymentStatus');
       dropdownProvider.clearSelectedItem('paymentMethod');
-      filePickerProvider.clearFile();
+      //filePickerProvider.clearFile();
       studentIdController.clearSelection();
     });
   }
@@ -225,7 +225,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                 ],
               ),
               const SizedBox(height: 16),
-              CustomFilePicker(label: "Add Receipt"),
+              CustomFilePicker(label: "Add Receipt", fieldName: 'receipt',),
               const SizedBox(height: 45),
               Center(child: Consumer<PaymentController>(
                       builder: (context, value, child) {
