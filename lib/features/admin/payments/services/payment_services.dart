@@ -67,9 +67,11 @@ class PaymentServices {
     required String payment_status,
     // File? file, // Add file parameter
   }) async {
-    // Create FormData to pass to the API
-    final fileProvider =
-        Provider.of<FilePickerProvider>(context, listen: false);
+    final fileUpload = context.read<FilePickerProvider>().getFile('receipt');
+    final fileUploadPath =
+        fileUpload?.path; // Create FormData to pass to the API
+    //final fileProvider =
+    //     Provider.of<FilePickerProvider>(context, listen: false);
     final formData = FormData.fromMap({
       'student_id': userId,
       'recorded_by': staffId,
@@ -80,8 +82,10 @@ class PaymentServices {
       'payment_method': payment_method,
       'transaction_id': transaction_id,
       'payment_status': payment_status,
-      'file_upload':
-          await MultipartFile.fromFile(fileProvider.selectedFile!.path!)
+      'file_upload': await MultipartFile.fromFile(fileUploadPath!,
+          filename: fileUploadPath.split('/').last),
+      // 'file_upload':
+      //     await MultipartFile.fromFile(fileProvider.selectedFile!.path!)
     });
 
     // Call the ApiServices post method with FormData and isFormData: true
@@ -104,8 +108,10 @@ class PaymentServices {
     required String transaction_id,
     // File? file, // Add the file parameter
   }) async {
-    final fileProvider =
-        Provider.of<FilePickerProvider>(context, listen: false);
+    final receiptUpload = context.read<FilePickerProvider>().getFile('donation receipt');
+    final receiptUploadPath = receiptUpload?.path;
+    //final fileProvider =
+    //     Provider.of<FilePickerProvider>(context, listen: false);
     // Create FormData to pass to the API
     final formData = FormData.fromMap({
       'donor_id': userId,
@@ -116,8 +122,8 @@ class PaymentServices {
       'donation_type': donation_type,
       'payment_method': payment_method,
       'transaction_id': transaction_id,
-      'file_upload':
-          await MultipartFile.fromFile(fileProvider.selectedFile!.path!)
+      'receipt_upload': await MultipartFile.fromFile(receiptUploadPath!,
+          filename: receiptUploadPath.split('/').last),
     });
 
     // Call the ApiServices post method with FormData and isFormData: true

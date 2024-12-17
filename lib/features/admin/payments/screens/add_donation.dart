@@ -55,7 +55,7 @@ class _AddDonationPageState extends State<AddDonationPage> {
       dropdownProvider.clearSelectedItem('division');
       dropdownProvider.clearSelectedItem('donationType');
       dropdownProvider.clearSelectedItem('paymentMethod');
-      filePickerProvider.clearFile();
+      filePickerProvider.clearFile('donation receipt');
       studentIdController.clearSelection();
     });
   }
@@ -212,7 +212,7 @@ class _AddDonationPageState extends State<AddDonationPage> {
                 ],
               ),
               const SizedBox(height: 16),
-              CustomFilePicker(label: "Add Receipt"),
+              CustomFilePicker(label: "Add Receipt", fieldName: 'donation receipt',),
               Padding(
                   padding: const EdgeInsets.only(top: 45),
                   child: Consumer<PaymentController>(

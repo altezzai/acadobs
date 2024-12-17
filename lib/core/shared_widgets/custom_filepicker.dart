@@ -4,8 +4,9 @@ import 'package:school_app/core/controller/file_picker_provider.dart';
 
 class CustomFilePicker extends StatelessWidget {
   final String label;
+  final String fieldName;  // Use field name to distinguish between file types
 
-  CustomFilePicker({required this.label});
+  CustomFilePicker({required this.label, required this.fieldName});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class CustomFilePicker extends StatelessWidget {
         const SizedBox(height: 8),
         GestureDetector(
           onTap: () async {
-            await fileProvider.pickFile();
+            await fileProvider.pickFile(fieldName);
           },
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
@@ -34,7 +35,7 @@ class CustomFilePicker extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    fileProvider.selectedFile?.name ?? 'No file selected',
+                    fileProvider.getFile(fieldName)?.name ?? 'No file selected',
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(fontSize: 14, color: Colors.black54),
                   ),

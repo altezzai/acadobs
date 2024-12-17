@@ -10,6 +10,7 @@ import 'package:school_app/base/routes/app_route_const.dart';
 //import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
+import 'package:school_app/core/controller/file_picker_provider.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
@@ -36,6 +37,7 @@ class _AddNoteState extends State<AddNote> {
   final TextEditingController _titleController = TextEditingController();
   late DropdownProvider dropdownProvider;
   late StudentIdController studentIdController;
+  late FilePickerProvider fileprovider;
 
   @override
   void initState() {
@@ -43,11 +45,12 @@ class _AddNoteState extends State<AddNote> {
 
     dropdownProvider = context.read<DropdownProvider>();
     studentIdController = context.read<StudentIdController>();
+    fileprovider=context.read<FilePickerProvider>();
     // Clear dropdown selections when page loads
     WidgetsBinding.instance.addPostFrameCallback((_) {
       dropdownProvider.clearSelectedItem('classGrade');
       dropdownProvider.clearSelectedItem('division');
-
+      fileprovider.clearFile('note document');
       if (studentIdController.selectedStudentIds.isNotEmpty) {
         studentIdController.clearSelection();
       }
@@ -183,7 +186,7 @@ class _AddNoteState extends State<AddNote> {
                 height: Responsive.height * 2,
               ),
               CustomFilePicker(
-                label: 'Document',
+                label: 'Document', fieldName: 'note document',
               ),
               SizedBox(
                 height: Responsive.height * 2,

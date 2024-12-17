@@ -1,4 +1,4 @@
-import 'dart:developer';
+//import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -30,8 +30,10 @@ class NoticeServices {
     String? className,
     String? division,
   }) async {
-    final fileProvider =
-        Provider.of<FilePickerProvider>(context, listen: false);
+     final fileUpload = context.read<FilePickerProvider>().getFile('notice file');
+                    final fileUploadPath=fileUpload?.path;
+    // final fileProvider =
+    //     Provider.of<FilePickerProvider>(context, listen: false);
     // Create the form data to pass to the API
     final formData = FormData.fromMap({
       'audience_type': audience_type,
@@ -39,18 +41,21 @@ class NoticeServices {
       'division': division,
       'title': title,
       'description': description,
-      'date': date, // Make sure this date is a string
+      'date': date,
       'file_upload':
-          await MultipartFile.fromFile(fileProvider.selectedFile!.path!)
+         await MultipartFile.fromFile(fileUploadPath!,
+            filename: fileUploadPath.split('/').last), // Make sure this date is a string
+      //'file_upload':
+          //await MultipartFile.fromFile(fileProvider.selectedFile!.path!)
     });
 
     // Log the file details
-    if (fileProvider.selectedFile != null) {
-      log('File selected: ${fileProvider.selectedFile!.path}');
-      log('File name: ${fileProvider.selectedFile!.name}');
-    } else {
-      log('No file selected');
-    }
+    // if (fileProvider.selectedFile != null) {
+    //   log('File selected: ${fileProvider.selectedFile!.path}');
+    //   log('File name: ${fileProvider.selectedFile!.name}');
+    // } else {
+    //   log('No file selected');
+    // }
 
     // Call the ApiServices post method with formData and isFormData: true
     final Response response =

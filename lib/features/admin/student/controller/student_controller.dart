@@ -172,7 +172,8 @@ class StudentController extends ChangeNotifier {
       required String motherFullName,
       required String bloodGroup,
       required String parentEmail,
-      String? studentPhoto}) async {
+      String? studentPhoto,
+      String? aadharPhoto}) async {
     _isloading = true;
     try {
       final response = await StudentServices().addNewStudent(
@@ -191,7 +192,8 @@ class StudentController extends ChangeNotifier {
           motherFullName: motherFullName,
           parentEmail: parentEmail,
           bloodGroup: bloodGroup,
-          studentPhotoPath: studentPhoto);
+          studentPhotoPath: studentPhoto,
+          aadhaarCard: aadharPhoto);
       if (response.statusCode == 201) {
         log(">>>>>>>>>>>>>Student Added}");
         ScaffoldMessenger.of(context).showSnackBar(

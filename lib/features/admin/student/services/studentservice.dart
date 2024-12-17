@@ -57,6 +57,7 @@ class StudentServices {
     required String bloodGroup,
     required String parentEmail,
     String? studentPhotoPath,
+    String? aadhaarCard
   }) async {
     // Create the form data to pass to the API
     final formData = {
@@ -75,9 +76,11 @@ class StudentServices {
       "mother_full_name": motherFullName,
       "blood_group": bloodGroup,
       "parent_email": parentEmail,
-      if (studentPhotoPath != null) // Only include if the photo is provided
-        "student_photo": await MultipartFile.fromFile(studentPhotoPath,
+       // Only include if the photo is provided
+      "student_photo": await MultipartFile.fromFile(studentPhotoPath!,
             filename: studentPhotoPath.split('/').last),
+      "aadhaar_card": await MultipartFile.fromFile(aadhaarCard!,
+            filename: aadhaarCard.split('/').last),
     };
 
     // Call the ApiServices post method with formData and isFormData: true
