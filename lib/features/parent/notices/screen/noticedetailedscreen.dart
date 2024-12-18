@@ -220,7 +220,8 @@ class NoticeDetailPage extends StatelessWidget {
         ),
         title: Text(
           title,
-          style: const TextStyle(color: Colors.black),
+          style: const TextStyle(
+              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
         ),
         centerTitle: true,
         backgroundColor: Colors.grey[200],
