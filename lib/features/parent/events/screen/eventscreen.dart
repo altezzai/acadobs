@@ -92,7 +92,7 @@ class _EventsPageState extends State<EventsPage> {
                           final event = upcomingEvents[index];
                           return EventCard(
                             bottomRadius: 16,
-              topRadius: 16,
+                            topRadius: 16,
                             eventDescription: event.description ?? "",
                             eventTitle: event.title ?? "",
                             date: DateFormatter.formatDateString(
@@ -122,7 +122,7 @@ class _EventsPageState extends State<EventsPage> {
                           final event = latestEvents[index];
                           return EventCard(
                             bottomRadius: 16,
-              topRadius: 16,
+                            topRadius: 16,
                             eventDescription: event.description ?? "",
                             eventTitle: event.title ?? "",
                             date: DateFormatter.formatDateString(
@@ -150,17 +150,20 @@ class _EventsPageState extends State<EventsPage> {
                         itemCount: previousEvents.length,
                         itemBuilder: (context, index) {
                           final event = previousEvents[index];
-                          return EventCard(
-                            bottomRadius: 16,
-              topRadius: 16,
-                            eventDescription: event.description ?? "",
-                            eventTitle: event.title ?? "",
-                            date: DateFormatter.formatDateString(
-                                event.eventDate.toString()),
-                            time: TimeFormatter.formatTimeFromString(
-                                event.createdAt.toString()),
-                            imageProvider:
-                                "${baseUrl}${Urls.eventPhotos}${event.images![0].imagePath}",
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: EventCard(
+                              bottomRadius: 16,
+                              topRadius: 16,
+                              eventDescription: event.description ?? "",
+                              eventTitle: event.title ?? "",
+                              date: DateFormatter.formatDateString(
+                                  event.eventDate.toString()),
+                              time: TimeFormatter.formatTimeFromString(
+                                  event.createdAt.toString()),
+                              imageProvider:
+                                  "${baseUrl}${Urls.eventPhotos}${event.images![0].imagePath}",
+                            ),
                           );
                         },
                       )
