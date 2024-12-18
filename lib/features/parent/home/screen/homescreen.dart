@@ -408,20 +408,24 @@ class _HomePageState extends State<HomePage> {
                                 shrinkWrap: true,
                                 itemCount: value.events.take(2).length,
                                 itemBuilder: (context, index) {
-                                  return EventCard(
-                                    bottomRadius: 16,
-              topRadius: 16,
-                                    eventDescription:
-                                        value.events[index].description ?? "",
-                                    eventTitle: value.events[index].title ?? "",
-                                    date: DateFormatter.formatDateString(value
-                                        .events[index].eventDate
-                                        .toString()),
-                                    time: TimeFormatter.formatTimeFromString(
-                                        value.events[index].createdAt
-                                            .toString()),
-                                    imageProvider:
-                                        "${baseUrl}${Urls.eventPhotos}${value.events[index].images![0].imagePath}",
+                                  return Padding(
+                                    padding: const EdgeInsets.only(bottom: 8),
+                                    child: EventCard(
+                                      bottomRadius: 16,
+                                      topRadius: 16,
+                                      eventDescription:
+                                          value.events[index].description ?? "",
+                                      eventTitle:
+                                          value.events[index].title ?? "",
+                                      date: DateFormatter.formatDateString(value
+                                          .events[index].eventDate
+                                          .toString()),
+                                      time: TimeFormatter.formatTimeFromString(
+                                          value.events[index].createdAt
+                                              .toString()),
+                                      imageProvider:
+                                          "${baseUrl}${Urls.eventPhotos}${value.events[index].images![0].imagePath}",
+                                    ),
                                   );
                                 },
                               );

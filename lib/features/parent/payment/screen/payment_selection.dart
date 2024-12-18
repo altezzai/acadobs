@@ -6,7 +6,7 @@ import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/base/utils/urls.dart';
-import 'package:school_app/core/shared_widgets/custom_appbar.dart';
+// import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/profile_tile.dart';
 import 'package:school_app/features/admin/student/controller/student_controller.dart';
 
@@ -27,6 +27,17 @@ class _PaymentSelectionState extends State<PaymentSelection> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Payments',
+          style: TextStyle(
+              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.grey[200],
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.black),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
@@ -34,10 +45,10 @@ class _PaymentSelectionState extends State<PaymentSelection> {
             // SizedBox(
             //   height: Responsive.height * 1,
             // ),
-            CustomAppbar(
-              title: 'Payments',
-              isBackButton: false,
-            ),
+            // CustomAppbar(
+            //   title: 'Payments',
+            //   isBackButton: false,
+            // ),
             SizedBox(
               height: Responsive.height * 1,
             ),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+// import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
+// import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
-import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+// import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
 import 'package:school_app/features/parent/notices/widget/noticecard.dart';
 
@@ -25,21 +25,21 @@ class _NoticePageState extends State<NoticePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.chevron_left, color: Colors.black),
-          onPressed: () {
-            context.pushNamed(AppRouteConst.bottomNavRouteName,
-                extra: UserType.parent);
-            // Navigator.pop(context);
-          },
+        // leading: IconButton(
+        //   icon: const Icon(Icons.chevron_left, color: Colors.black),
+        //   onPressed: () {
+        //     context.pushNamed(AppRouteConst.bottomNavRouteName,
+        //         extra: UserType.parent);
+        //     // Navigator.pop(context);
+        //   },
+        // ),
+        title: Text(
+          'Notices',
+          style: TextStyle(
+              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
         ),
-        title: const Center(
-          child: Text(
-            'Notices',
-            style: TextStyle(color: Colors.black),
-          ),
-        ),
-        backgroundColor: Colors.white,
+        centerTitle: true,
+        backgroundColor: Colors.grey.shade200,
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.black),
       ),
