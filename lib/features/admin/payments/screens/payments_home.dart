@@ -29,63 +29,114 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
     _tabController = TabController(length: 2, vsync: this);
   }
 
+  
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+     return LayoutBuilder(
+      builder: (context, constraints) {
+        Orientation orientation = MediaQuery.of(context).orientation;
+        Responsive().init(constraints, orientation);
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            CustomAppbar(
-              title: "Payments",
-              isBackButton: false,
-            ),
-            Row(
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+              return [
+         SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
               children: [
-                Expanded(
-                  child: AddButton(
-                    iconPath: paymentIcon,
-                    onPressed: () {
-                      context.pushNamed(AppRouteConst.AddPaymentRouteName);
-                    },
-                    text: "Add Payment",
-                  ),
+                SizedBox(height: Responsive.height * 2),
+                CustomAppbar(
+                  title: "Payments",
+                  isBackButton: false,
                 ),
-                SizedBox(width: 16),
-                Expanded(
-                  child: AddButton(
-                    iconPath: donationIcon,
-                    onPressed: () {
-                      context.pushNamed(AppRouteConst.AddDonationRouteName);
-                    },
-                    text: "Add Donation",
-                  ),
+                 SizedBox(
+                            height: Responsive.height * 2),
+                Row(
+                  children: [
+                    Expanded(
+                      child: AddButton(
+                        iconPath: paymentIcon,
+                        onPressed: () {
+                          context.pushNamed(AppRouteConst.AddPaymentRouteName);
+                        },
+                        text: "Add Payment",
+                      ),
+                    ),
+                     SizedBox(                                width: Responsive.width * 4), // 16px equivalent
+                    Expanded(
+                      child: AddButton(
+                        iconPath: donationIcon,
+                        onPressed: () {
+                          context.pushNamed(AppRouteConst.AddDonationRouteName);
+                        },
+                        text: "Add Donation",
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            SizedBox(height: 20),
-            TabBar(
-              controller: _tabController,
-              indicatorColor: Colors.black,
-              labelColor: Colors.black,
-              tabs: [
-                Tab(text: 'Payments'),
-                Tab(text: 'Donations'),
-              ],
-            ),
-            Expanded(
+                //SizedBox(height: 20),
+         
+                ]))),
+                SliverOverlapAbsorber(
+                  handle:
+                      NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                  sliver: SliverAppBar(
+                    pinned: true,
+                    backgroundColor: Colors.transparent,
+                    bottom: PreferredSize(
+                      preferredSize: const Size.fromHeight(0),
+                      child: TabBar(
+                        labelPadding: EdgeInsets.symmetric(
+                            horizontal: Responsive.width * 4),
+                        dividerHeight: 3,
+                        indicatorWeight: 3,
+                        dividerColor: Colors.grey,
+                        // indicatorPadding: EdgeInsets.symmetric(horizontal: 1),
+                        tabAlignment: TabAlignment.center,
+                        indicatorColor: Colors.black,
+                        unselectedLabelColor: Color(0xFF757575),
+                        unselectedLabelStyle: TextStyle(fontSize: 14),
+                        indicatorSize: TabBarIndicatorSize.tab,
+                        controller: _tabController,
+                        labelStyle: textThemeData.bodyMedium?.copyWith(
+                            fontSize: 14, fontWeight: FontWeight.bold),
+                        tabs: [
+                          Tab(text: 'Payments'),
+                          Tab(text: 'Donations'),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),];
+                },
+                body: Padding(
+              padding: EdgeInsets.only(top: Responsive.height * 14),
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  SingleChildScrollView(child: _buildPaymentsList()),
-                  _buildDonationsList(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                    ),
+                    child: _buildPaymentsList(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: _buildDonationsList(),
+                  ),
                 ],
               ),
             ),
-          ],
-        ),
       ),
     );
+      });
   }
 
   /// Reusable function to group items by date.
@@ -143,15 +194,8 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
     context.read<PaymentController>().getPayments();
     return Consumer<PaymentController>(builder: (context, value, child) {
       if (value.isloading) {
-        return Column(
-          children: [
-            SizedBox(
-              height: Responsive.height * 30,
-            ),
-            Loading(
-              color: Colors.grey,
-            ),
-          ],
+       return Loading(
+          color: Colors.grey,
         );
       }
 
@@ -161,24 +205,17 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
             DateTime.tryParse(payment.paymentDate.toString()) ?? DateTime.now(),
       );
 
-      return value.payments.isEmpty ? Center(child: Text("No Payments Found!"),) : SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: groupedPayments.entries.map((entry) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: Responsive.height * 1),
-                _buildDateHeader(entry.key),
-                SizedBox(height: Responsive.height * 1),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.zero,
-                  itemCount: entry.value.length,
-                  itemBuilder: (context, index) {
-                    final payment = entry.value[index];
-                    return PaymentItem(
+      return _buildGroupedList(groupedPayments, (payment, index, total) {
+        final isFirst = index == 0;
+        final isLast = index == total - 1;
+        final topRadius = isFirst ? 16 : 0;
+        final bottomRadius = isLast ? 16 : 0;
+
+      return  Padding(
+        padding: const EdgeInsets.only(bottom: 1.5),
+        child:value.payments.isEmpty ? Center(child: Text("No Payments Found!"),) : PaymentItem(
+                      bottomRadius: bottomRadius.toDouble(),
+            topRadius: topRadius.toDouble(),
                       amount: payment.amountPaid ?? "",
                       name: capitalizeFirstLetter(payment.fullName ?? ""),
                       time: TimeFormatter.formatTimeFromString(
@@ -187,18 +224,13 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
                       onTap: () {
                         context.pushNamed(
                           AppRouteConst.PaymentViewRouteName,
-                          extra: entry.value[index],
+                          extra: payment,
                         );
                       },
-                    );
-                  },
-                ),
-                SizedBox(height: Responsive.height * 1),
-              ],
-            );
-          }).toList(),
-        ),
-      );
+                    )
+                  
+                 );
+      });
     });
   }
 
@@ -206,15 +238,11 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
     context.read<PaymentController>().getDonations();
     return Consumer<PaymentController>(builder: (context, value, child) {
       if (value.isloading) {
-        return Column(
-          children: [
-            SizedBox(
-              height: Responsive.height * 30,
-            ),
+        return 
             Loading(
               color: Colors.grey,
-            ),
-          ],
+            
+          
         );
       }
 
@@ -224,55 +252,79 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
             DateTime.tryParse(donation.donationDate.toString()) ??
             DateTime.now(),
       );
+        return _buildGroupedList(groupedDonations, (donation, index, total) {
+        final isFirst = index == 0;
+        final isLast = index == total - 1;
+        final topRadius = isFirst ? 16 : 0;
+        final bottomRadius = isLast ? 16 : 0;
 
-      return value.donations.isEmpty ? Center(child: Text("No Donations Found!"),) : SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: groupedDonations.entries.map((entry) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: Responsive.height * 1),
-                _buildDateHeader(entry.key),
-                SizedBox(height: Responsive.height * 1),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.zero,
-                  itemCount: entry.value.length,
-                  itemBuilder: (context, index) {
-                    final donation = entry.value[index];
-                    return PaymentItem(
-                      amount: donation.amountDonated ?? "",
-                      name: capitalizeFirstLetter(donation.fullName ?? ""),
-                      time: TimeFormatter.formatTimeFromString(
-                          donation.createdAt.toString()),
-                      status: donation.purpose ?? "",
-                      onTap: () {
-                        context.pushNamed(
-                          AppRouteConst.DonationViewRouteName,
-                          extra: entry.value[index],
-                        );
-                      },
-                    );
-                  },
-                ),
-                SizedBox(height: Responsive.height * 1),
-              ],
-            );
-          }).toList(),
-        ),
-      );
+      return 
+       Padding(
+        padding: const EdgeInsets.only(bottom: 1.5),
+         child:value.donations.isEmpty ? Center(child: Text("No Donations Found!"),) :  PaymentItem(
+          bottomRadius: bottomRadius.toDouble(),
+              topRadius: topRadius.toDouble(),
+                        amount: donation.amountDonated ?? "",
+                        name: capitalizeFirstLetter(donation.fullName ?? ""),
+                        time: TimeFormatter.formatTimeFromString(
+                            donation.createdAt.toString()),
+                        status: donation.purpose ?? "",
+                        onTap: () {
+                          context.pushNamed(
+                            AppRouteConst.DonationViewRouteName,
+                            extra: donation,
+                          );
+                        },
+                    
+                   ),
+       );
+      });
     });
   }
 
-  Widget _buildDateHeader(String date) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: 10,
-        bottom: 5,
+ 
+  Widget _buildGroupedList<T>(Map<String, List<T>> groupedItems,
+      Widget Function(T, int, int) buildItem) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: groupedItems.entries.map((entry) {
+          final itemCount = entry.value.length;
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildDateHeader(entry.key),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                padding: EdgeInsets.zero,
+                itemCount: itemCount,
+                itemBuilder: (context, index) {
+                  return buildItem(entry.value[index], index, itemCount);
+                },
+              ),
+              // SizedBox(
+              //   height: Responsive.height * 2,
+              // )
+            ],
+          );
+        }).toList(),
       ),
-      child: Text(date, style: textThemeData.bodyMedium),
+    );
+  }
+   Widget _buildDateHeader(String date) {
+    return Padding(
+      padding: EdgeInsets.only(
+        top: Responsive.height * 2, // 20px equivalent
+        bottom: Responsive.height * 1, // 10px equivalent
+      ),
+      child: Text(
+        date,
+        style: textThemeData.bodyMedium?.copyWith(
+          fontSize: 16, // Responsive font size
+        ),
+      ),
     );
   }
 }
