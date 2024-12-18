@@ -10,7 +10,7 @@ class ParentChatPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.grey.shade200,
         elevation: 0,
         // leading: IconButton(
         //   icon: Icon(Icons.chevron_left, color: Colors.black),

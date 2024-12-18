@@ -28,14 +28,13 @@ class _PaymentSelectionState extends State<PaymentSelection> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(
-          child: Text(
-            'Payments',
-            style: TextStyle(
-                color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
-          ),
+        title: Text(
+          'Payments',
+          style: TextStyle(
+              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
         ),
-        backgroundColor: Colors.white,
+        centerTitle: true,
+        backgroundColor: Colors.grey[200],
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.black),
       ),

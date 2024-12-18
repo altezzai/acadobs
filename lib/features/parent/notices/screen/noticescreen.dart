@@ -33,14 +33,13 @@ class _NoticePageState extends State<NoticePage> {
         //     // Navigator.pop(context);
         //   },
         // ),
-        title: const Center(
-          child: Text(
-            'Notices',
-            style: TextStyle(
-                color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
-          ),
+        title: Text(
+          'Notices',
+          style: TextStyle(
+              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
         ),
-        backgroundColor: Colors.white,
+        centerTitle: true,
+        backgroundColor: Colors.grey.shade200,
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.black),
       ),

@@ -33,14 +33,13 @@ class _EventsPageState extends State<EventsPage> {
         //         extra: UserType.parent);
         //   },
         // ),
-        title: Center(
-          child: const Text(
-            'Events',
-            style: TextStyle(
-                color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
-          ),
+        title: const Text(
+          'Events',
+          style: TextStyle(
+              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
         ),
-        backgroundColor: Colors.white,
+        centerTitle: true,
+        backgroundColor: Colors.grey.shade200,
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.black),
       ),
