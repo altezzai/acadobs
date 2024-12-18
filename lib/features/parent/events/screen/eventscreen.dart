@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+// import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
+// import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/urls.dart';
-import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+// import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
 import 'package:school_app/features/parent/events/widget/eventcard.dart';
 
@@ -26,16 +26,19 @@ class _EventsPageState extends State<EventsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.chevron_left, color: Colors.black),
-          onPressed: () {
-            context.pushNamed(AppRouteConst.bottomNavRouteName,
-                extra: UserType.parent);
-          },
-        ),
-        title: const Text(
-          'Events',
-          style: TextStyle(color: Colors.black),
+        // leading: IconButton(
+        //   icon: const Icon(Icons.chevron_left, color: Colors.black),
+        //   onPressed: () {
+        //     context.pushNamed(AppRouteConst.bottomNavRouteName,
+        //         extra: UserType.parent);
+        //   },
+        // ),
+        title: Center(
+          child: const Text(
+            'Events',
+            style: TextStyle(
+                color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
+          ),
         ),
         backgroundColor: Colors.white,
         elevation: 0,

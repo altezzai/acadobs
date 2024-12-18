@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
+// import 'package:go_router/go_router.dart';
+// import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/responsive.dart';
-import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+// import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/parent/chat/screen/parentchatdetailedscreen.dart';
 
 class ParentChatPage extends StatelessWidget {
@@ -12,19 +12,17 @@ class ParentChatPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.chevron_left, color: Colors.black),
-          onPressed: () {
-            context.goNamed(AppRouteConst.bottomNavRouteName,
-                extra: UserType.parent);
-          },
-        ),
+        // leading: IconButton(
+        //   icon: Icon(Icons.chevron_left, color: Colors.black),
+        //   onPressed: () {
+        //     context.goNamed(AppRouteConst.bottomNavRouteName,
+        //         extra: UserType.parent);
+        //   },
+        // ),
         title: Text(
           'Chat',
           style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
+              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
         ),
         centerTitle: true,
       ),
