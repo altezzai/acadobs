@@ -104,6 +104,8 @@ class _DutiesHomeScreenState extends State<DutiesHomeScreen> {
                                   duty.createdAt.toString()),
                               time: TimeFormatter.formatTimeFromString(
                                   duty.createdAt.toString()),
+                              description: duty.description ?? "",
+                              fileUpload: duty.fileAttachment ?? "",
                               onTap: () {
                                 context.pushNamed(
                                   AppRouteConst.AdminViewDutyRouteName,

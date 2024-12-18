@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 
+import '../../../../base/routes/app_route_const.dart';
+
 class DutyCard extends StatelessWidget {
   final String title;
+  final String description;
+  final String fileUpload;
   final String date;
   final String time;
   final double bottomRadius;
@@ -13,6 +18,8 @@ class DutyCard extends StatelessWidget {
 
   const DutyCard({
     required this.title,
+    required this.description,
+    required this.fileUpload,
     required this.date,
     required this.time,
     required this.onTap,
@@ -25,7 +32,20 @@ class DutyCard extends StatelessWidget {
     // double screenWidth = MediaQuery.of(context).size.width;
 
     return InkWell(
-      onTap: onTap,
+      // onTap: onTap,
+      onTap: () {
+        context.pushNamed(
+          AppRouteConst.NoticeDetailedPageRouteName,
+          extra: {
+            'title': title,
+            'description': description,
+            'fileUpload': fileUpload,
+            'imageProvider': const AssetImage('assets/class12.png'),
+          },
+        );
+      },
+
+     
       child: Container(
         padding: EdgeInsets.all(12),
         decoration: BoxDecoration(
