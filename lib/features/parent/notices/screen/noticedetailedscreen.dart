@@ -220,9 +220,11 @@ class NoticeDetailPage extends StatelessWidget {
         ),
         title: Text(
           title,
-          style: const TextStyle(color: Colors.black),
+          style: const TextStyle(
+              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
         ),
-        backgroundColor: Colors.white,
+        centerTitle: true,
+        backgroundColor: Colors.grey[200],
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.black),
       ),

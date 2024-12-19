@@ -5,7 +5,7 @@ class AttendanceData {
   final String selectedPeriod;
   final String selectedDivision;
   final String selectedDate;
-  final String subject;
+  final int subject;
   final AttendanceAction action;
   final List<int>? completedPeriods;
 

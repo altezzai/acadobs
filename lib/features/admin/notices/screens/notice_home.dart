@@ -237,6 +237,8 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
             time:
                 TimeFormatter.formatTimeFromString(notice.createdAt.toString()),
             onTap: () {},
+            description: notice.description ?? "",
+            fileUpload: notice.fileUpload ?? "",
           ),
         );
       });

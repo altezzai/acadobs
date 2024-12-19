@@ -6,6 +6,8 @@ class PaymentItem extends StatelessWidget {
   final String time;
   final String? status;
   final VoidCallback? onTap;
+  final double? topRadius; // Added property
+  final double? bottomRadius; // Added property
 
   const PaymentItem({
     required this.amount,
@@ -13,6 +15,8 @@ class PaymentItem extends StatelessWidget {
     required this.time,
     this.status,
     this.onTap,
+    this.topRadius, // Initialize property
+    this.bottomRadius, // Initialize property
   });
 
   // Method to get color based on status
@@ -41,7 +45,12 @@ class PaymentItem extends StatelessWidget {
             color: Colors.grey.shade300, // Border color
             width: 1.0, // Border width
           ),
-          borderRadius: BorderRadius.circular(8), // Rounded corners
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(topRadius ?? 8), // Default radius: 8
+            topRight: Radius.circular(topRadius ?? 8), // Default radius: 8
+            bottomLeft: Radius.circular(bottomRadius ?? 8), // Default radius: 8
+            bottomRight: Radius.circular(bottomRadius ?? 8), // Default radius: 8
+          ),
         ),
         child: ListTile(
           leading: CircleAvatar(
@@ -101,3 +110,4 @@ class PaymentItem extends StatelessWidget {
     );
   }
 }
+

@@ -25,8 +25,12 @@ class EventDetailPage extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
-        title: Text(title),
-        backgroundColor: Colors.white,
+        title: Text(
+          title,
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.grey[200],
         iconTheme: const IconThemeData(color: Colors.black),
         elevation: 0,
       ),
@@ -34,6 +38,10 @@ class EventDetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // CustomAppbar(title: title),
+            // SizedBox(
+            //   height: 20,
+            // ),
             CachedNetworkImage(
               imageUrl: imageProvider,
               height: 300,

@@ -7,6 +7,9 @@ import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
+import 'package:school_app/features/admin/subjects/controller/subject_controller.dart';
+import 'package:school_app/features/admin/subjects/model/subject_model.dart';
+//import 'package:school_app/features/admin/subjects/model/subject_model.dart';
 import 'package:school_app/features/teacher/attendance/controller/attendance_controller.dart';
 import 'package:school_app/features/teacher/attendance/model/attendance_data.dart';
 import 'package:school_app/features/teacher/attendance/screens/attendance.dart';
@@ -58,11 +61,19 @@ class TakeAttendance extends StatelessWidget {
                   ],
                 ),
                 Text(
-                  attendanceData.subject,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(fontWeight: FontWeight.bold),
+                  context
+                          .read<SubjectController>()
+                          .subjects
+                          .firstWhere(
+                            (subject) => subject.id == attendanceData.subject,
+                            orElse: () => Subject(
+                                id: -1, subject: 'Unknown', description: ''),
+                          )
+                          .subject ??
+                      'Unknown', // Default to 'Unknown' if subject is null
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
                 SizedBox(height: Responsive.height * 2),
                 Row(
@@ -109,6 +120,9 @@ class TakeAttendance extends StatelessWidget {
                         //   );
                         // }
                         final studentsList = value.attendanceList;
+                        if (studentsList.isEmpty) {
+                          return Center(child: Text("No students found."));
+                        }
 
                         return ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
@@ -176,6 +190,7 @@ class TakeAttendance extends StatelessWidget {
                         }
                         final attendanceStatusList = value.attendanceStatusList;
                         final teacherId = value.attendanceList[0].recordedBy;
+
                         return teacherId != null
                             ? SizedBox()
                             : CommonButton(
@@ -193,7 +208,8 @@ class TakeAttendance extends StatelessWidget {
                                           periodNumber:
                                               attendanceData.selectedPeriod,
                                           // recordedBy: 1,
-                                          students: attendanceStatusList);
+                                          students: attendanceStatusList,
+                                          subject: attendanceData.subject);
                                 },
                                 widget: value.isloading
                                     ? ButtonLoading()

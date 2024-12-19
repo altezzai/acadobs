@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+// import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
+// import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/urls.dart';
-import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+// import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
 import 'package:school_app/features/parent/events/widget/eventcard.dart';
 
@@ -26,18 +26,20 @@ class _EventsPageState extends State<EventsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.chevron_left, color: Colors.black),
-          onPressed: () {
-            context.pushNamed(AppRouteConst.bottomNavRouteName,
-                extra: UserType.parent);
-          },
-        ),
+        // leading: IconButton(
+        //   icon: const Icon(Icons.chevron_left, color: Colors.black),
+        //   onPressed: () {
+        //     context.pushNamed(AppRouteConst.bottomNavRouteName,
+        //         extra: UserType.parent);
+        //   },
+        // ),
         title: const Text(
           'Events',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(
+              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
         ),
-        backgroundColor: Colors.white,
+        centerTitle: true,
+        backgroundColor: Colors.grey.shade200,
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.black),
       ),
@@ -92,7 +94,7 @@ class _EventsPageState extends State<EventsPage> {
                           final event = upcomingEvents[index];
                           return EventCard(
                             bottomRadius: 16,
-              topRadius: 16,
+                            topRadius: 16,
                             eventDescription: event.description ?? "",
                             eventTitle: event.title ?? "",
                             date: DateFormatter.formatDateString(
@@ -122,7 +124,7 @@ class _EventsPageState extends State<EventsPage> {
                           final event = latestEvents[index];
                           return EventCard(
                             bottomRadius: 16,
-              topRadius: 16,
+                            topRadius: 16,
                             eventDescription: event.description ?? "",
                             eventTitle: event.title ?? "",
                             date: DateFormatter.formatDateString(
@@ -150,17 +152,20 @@ class _EventsPageState extends State<EventsPage> {
                         itemCount: previousEvents.length,
                         itemBuilder: (context, index) {
                           final event = previousEvents[index];
-                          return EventCard(
-                            bottomRadius: 16,
-              topRadius: 16,
-                            eventDescription: event.description ?? "",
-                            eventTitle: event.title ?? "",
-                            date: DateFormatter.formatDateString(
-                                event.eventDate.toString()),
-                            time: TimeFormatter.formatTimeFromString(
-                                event.createdAt.toString()),
-                            imageProvider:
-                                "${baseUrl}${Urls.eventPhotos}${event.images![0].imagePath}",
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: EventCard(
+                              bottomRadius: 16,
+                              topRadius: 16,
+                              eventDescription: event.description ?? "",
+                              eventTitle: event.title ?? "",
+                              date: DateFormatter.formatDateString(
+                                  event.eventDate.toString()),
+                              time: TimeFormatter.formatTimeFromString(
+                                  event.createdAt.toString()),
+                              imageProvider:
+                                  "${baseUrl}${Urls.eventPhotos}${event.images![0].imagePath}",
+                            ),
                           );
                         },
                       )
