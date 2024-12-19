@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:school_app/base/utils/constants.dart';
 
@@ -28,9 +29,19 @@ class ProfileTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(8)),
       child: Row(
         children: [
-          CircleAvatar(
-            backgroundImage: NetworkImage(imageUrl ?? ""),
-            radius: 25,
+          SizedBox(
+            width: 48,
+            height: 48,
+            child: ClipOval(
+              child: CachedNetworkImage(
+                imageUrl: imageUrl ?? "",
+                placeholder: (context, url) => const CircularProgressIndicator(
+                  color: Colors.grey,
+                ),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
           const SizedBox(
             width: 10,
