@@ -38,7 +38,13 @@ class ProfileTile extends StatelessWidget {
                 placeholder: (context, url) => const CircularProgressIndicator(
                   color: Colors.grey,
                 ),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
+                errorWidget: (context, url, error) => CircleAvatar(
+                  radius: 26,
+                  backgroundColor: Colors.transparent,
+                  backgroundImage: AssetImage(
+                    "assets/icons/avatar.png",
+                  ),
+                ),
                 fit: BoxFit.cover,
               ),
             ),
