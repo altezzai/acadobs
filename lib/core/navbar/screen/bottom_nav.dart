@@ -8,7 +8,6 @@ import 'package:school_app/features/admin/home/admin_home.dart';
 import 'package:school_app/features/admin/notices/screens/notice_home.dart';
 import 'package:school_app/features/admin/payments/screens/payments_home.dart';
 import 'package:school_app/features/admin/reports/screens/reports_home.dart';
-import 'package:school_app/features/parent/chat/screen/parentchatscreen.dart';
 import 'package:school_app/features/parent/events/screen/eventscreen.dart';
 import 'package:school_app/features/parent/home/screen/homescreen.dart';
 import 'package:school_app/features/parent/notices/screen/noticescreen.dart';
@@ -54,7 +53,10 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
         EventsPage(),
         NoticePage(),
         PaymentSelection(),
-        ParentChatPage()
+        // ParentChatPage()
+        Center(
+          child: Text("Chats Available Soon"),
+        )
       ];
     } else {
       return [];

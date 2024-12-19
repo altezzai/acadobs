@@ -149,7 +149,6 @@ import 'package:school_app/base/routes/app_route_const.dart';
 //import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
-import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
 //import 'package:school_app/core/shared_widgets/common_button.dart';
@@ -157,6 +156,7 @@ import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 //import 'package:school_app/core/shared_widgets/profile_tile.dart';
 import 'package:school_app/features/admin/student/controller/student_controller.dart';
+import 'package:school_app/features/teacher/parent/controller/notes_controller.dart';
 
 class NotesScreen extends StatefulWidget {
   const NotesScreen({Key? key}) : super(key: key);
@@ -165,21 +165,12 @@ class NotesScreen extends StatefulWidget {
 }
 
 class _NotesScreenState extends State<NotesScreen> {
-  // String searchQuery = "";
-  // String selectedClass = "All";
-  late DropdownProvider dropdownprovider;
-
   @override
   void initState() {
-    dropdownprovider = context.read<DropdownProvider>();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      dropdownprovider.clearSelectedItem('class');
-      dropdownprovider.clearSelectedItem('division');
-      context.read<StudentController>().clearParentList();
+      context.read<NotesController>().getNotesByTeacherId();
     });
     super.initState();
-
-    context.read<StudentController>().getParentDetails();
   }
 
   @override
@@ -200,7 +191,78 @@ class _NotesScreenState extends State<NotesScreen> {
               },
             ),
 
-            Expanded(child: _buildParentTile(context, notificationCount: 1)),
+            Expanded(
+              child: Consumer<NotesController>(
+                builder: (context, value, child) {
+                  if (value.isloading) {
+                    return const Center(
+                      child: Loading(
+                        color: Colors.grey,
+                      ),
+                    );
+                  } else if (value.notesByTeacher.isEmpty) {
+                    return Center(
+                      child: Column(
+                        children: [
+                          Image.asset(
+                            'assets/empty.png',
+                            height: Responsive.height * 45,
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  return SingleChildScrollView(
+                    padding: EdgeInsets.zero, // Removes any default padding
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          padding: EdgeInsets
+                              .zero, // Removes any extra padding at the top
+                          itemCount: value.notesByTeacher.length,
+                          itemBuilder: (context, index) {
+                            final note = value.notesByTeacher[index];
+                            return Padding(
+                                padding: const EdgeInsets.only(bottom: 4),
+                                child: InkWell(
+                                  onTap: (){
+                                       context.pushNamed(
+                                      AppRouteConst.NoteDetailsRouteName,
+                                      extra: note['id']);
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(16),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        border: Border.all()),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          note['title'],
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium!
+                                              .copyWith(fontSize: 16),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                )
+                                );
+                          },
+                        ),
+                        SizedBox(
+                          height: Responsive.height * 7.5,
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
             //      FloatingActionButton.extended(
             //   onPressed: () {
             //     context.pushNamed(AppRouteConst.StudentNoteSelectionRouteName);
@@ -221,7 +283,7 @@ class _NotesScreenState extends State<NotesScreen> {
         padding: const EdgeInsets.all(16),
         child: CommonButton(
             onPressed: () {
-              context.pushNamed(AppRouteConst.StudentNoteSelectionRouteName);
+              context.pushNamed(AppRouteConst.AddNoteRouteName);
             },
             widget: Text("Add New Note")),
       ),
@@ -269,83 +331,6 @@ class _NotesScreenState extends State<NotesScreen> {
               ),
             ),
           ],
-        ),
-        Expanded(
-          child: Consumer<StudentController>(
-            builder: (context, value, child) {
-              if (value.isloading) {
-                return const Center(
-                  child: Loading(
-                    color: Colors.grey,
-                  ),
-                );
-              } else if (value.filteredparents.isEmpty) {
-                return Center(
-                  child: Column(
-                    children: [
-                      Image.asset(
-                        'assets/empty.png',
-                        height: Responsive.height * 45,
-                      ),
-                    ],
-                  ),
-                );
-              }
-              return SingleChildScrollView(
-                padding: EdgeInsets.zero, // Removes any default padding
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      padding: EdgeInsets
-                          .zero, // Removes any extra padding at the top
-                      itemCount: value.filteredparents.length,
-                      itemBuilder: (context, index) {
-                        final parent = value.filteredparents[index];
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 4),
-                          child: ListTile(
-                            contentPadding: EdgeInsets.symmetric(vertical: 8.0),
-                            leading: CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                  "${baseUrl}${Urls.parentPhotos}${value.parents[index].fatherMotherPhoto}"),
-                              radius: 24,
-                            ),
-                            title: Text(
-                              parent.guardianFullName ?? "",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            //subtitle: Text(subject),
-                            trailing: notificationCount > 0
-                                ? CircleAvatar(
-                                    radius: 12,
-                                    backgroundColor: Colors.red,
-                                    child: Text(
-                                      '$notificationCount',
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 12),
-                                    ),
-                                  )
-                                : null,
-                            onTap: () {
-                              context.pushNamed(
-                                  AppRouteConst.NoteDetailsRouteName,
-                                  extra: parent);
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                    SizedBox(
-                      height: Responsive.height * 7.5,
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
         ),
       ],
     );

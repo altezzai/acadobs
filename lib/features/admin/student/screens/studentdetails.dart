@@ -10,7 +10,6 @@ import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/calender_widget.dart';
-import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/profile_container.dart';
 import 'package:school_app/features/admin/student/controller/achievement_controller.dart';
 import 'package:school_app/features/admin/student/controller/exam_controller.dart';
@@ -21,6 +20,7 @@ import 'package:school_app/features/admin/student/screens/homework_list.dart';
 import 'package:school_app/features/admin/student/widgets/daily_attendance_container.dart';
 import 'package:school_app/features/admin/student/widgets/date_group_function.dart';
 import 'package:school_app/features/parent/leave_request/screens/student_leaveRequest.dart';
+import 'package:school_app/features/teacher/parent/controller/notes_controller.dart';
 // import 'package:school_app/features/teacher/homework/widgets/work_container.dart';
 
 class StudentDetailPage extends StatefulWidget {
@@ -37,12 +37,14 @@ class StudentDetailPage extends StatefulWidget {
 class _StudentDetailPageState extends State<StudentDetailPage> {
   late AchievementController achievementController;
   late ExamController examController;
+  late NotesController noteController;
 
   @override
   void initState() {
     super.initState();
     achievementController = context.read<AchievementController>();
     examController = context.read<ExamController>();
+    noteController = context.read<NotesController>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final studentController = context.read<StudentController>();
@@ -51,6 +53,8 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
       achievementController.getAchievements(studentId: widget.student.id ?? 0);
       studentController.getStudentHomework(studentId: widget.student.id ?? 0);
       examController.getExamMarks(studentId: widget.student.id ?? 0);
+      noteController.fetchUnviewedNotesCountByStudentId(
+          studentId: widget.student.id ?? 0);
     });
   }
 
@@ -92,13 +96,90 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Column(
                       children: [
-                        SizedBox(height: Responsive.height * 2),
-                        CustomAppbar(
-                          title: "Students",
-                          isProfileIcon: false,
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
+                        SizedBox(height: Responsive.height * 5),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: const CircleAvatar(
+                                radius: 16,
+                                backgroundColor: Color(0xFFD9D9D9),
+                                child: Icon(
+                                  Icons.arrow_back_ios_new,
+                                  size: 18,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              textAlign: TextAlign.center,
+                              "Student",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge!
+                                  .copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 18,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                            ),
+                            widget.userType == UserType.parent
+                                ? Consumer<NotesController>(
+                                    builder: (context, noteController, child) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        context.pushNamed(
+                                          AppRouteConst.parentNoteRouteName,
+                                          extra: widget.student.id,
+                                        );
+                                      },
+                                      child: Stack(
+                                        alignment: Alignment.topRight,
+                                        children: [
+                                          Icon(Icons.draw_sharp,
+                                              size: 30), // Base icon
+                                          if (noteController
+                                                  .unviewedNotesCount >
+                                              0) // Show badge only if count > 0
+                                            Positioned(
+                                              right: 0,
+                                              top: 0,
+                                              child: Container(
+                                                padding: EdgeInsets.all(4),
+                                                decoration: BoxDecoration(
+                                                  color: Colors
+                                                      .red, // Badge background color
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                constraints: BoxConstraints(
+                                                  minWidth: 16,
+                                                  minHeight: 16,
+                                                ),
+                                                child: Text(
+                                                  '${noteController.unviewedNotesCount}',
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 10,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ),
+                                            ),
+                                        ],
+                                      ),
+                                    );
+                                  })
+                                : SizedBox(
+                                    height: 50,
+                                    width: 20,
+                                  ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: Responsive.height * 3,
                         ),
                         ProfileContainer(
                           imagePath:
