@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
@@ -29,20 +28,12 @@ class _ParentNoteScreenState extends State<ParentNoteScreen> {
     });
   }
 
-// import 'package:go_router/go_router.dart';
-// import 'package:school_app/base/routes/app_route_const.dart';
-import 'package:school_app/base/utils/responsive.dart';
-// import 'package:school_app/core/navbar/screen/bottom_nav.dart';
-import 'package:school_app/features/parent/chat/screen/parentchatdetailedscreen.dart';
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey.shade200,
         elevation: 0,
-
         leading: IconButton(
           icon: const Icon(Icons.chevron_left, color: Colors.black),
           onPressed: () {
