@@ -182,6 +182,7 @@ class AttendanceController extends ChangeNotifier {
       required String classGrade,
       required String section,
       required String periodNumber,
+      required int subject,
       // required int recordedBy,
       required List<Map<String, dynamic>> students}) async {
     _isloading = true;
@@ -194,6 +195,7 @@ class AttendanceController extends ChangeNotifier {
       'period_number': periodNumber,
       'recorded_by': teacherId,
       'students': students,
+      "subject": subject,
     };
 
     try {

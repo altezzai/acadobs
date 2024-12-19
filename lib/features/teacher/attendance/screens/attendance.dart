@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/shared_widgets/add_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
+import 'package:school_app/features/admin/subjects/controller/subject_controller.dart';
 import 'package:school_app/features/teacher/attendance/controller/attendance_controller.dart';
 import 'package:school_app/features/teacher/attendance/model/attendance_data.dart';
 
@@ -27,6 +30,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   };
 
   final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _subjectController = TextEditingController();
 
   @override
   void initState() {
@@ -67,18 +71,31 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                             SizedBox(height: Responsive.height * 2),
                             _buildDateAndPeriodRow(),
                             SizedBox(height: Responsive.height * 2),
-                            CustomDropdown(
-                              dropdownKey: 'subject',
-                              icon: Icons.school_outlined,
-                              label: "Select Subject",
-                              items: ["Physics", "Chemistry", "Mathematics"],
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "Please select subject";
-                                }
-                                return null;
-                              },
-                            ),
+                            Consumer<SubjectController>(
+                builder: (context, subjectProvider, child) {
+                  return InkWell(
+                    onTap: () {
+                      context.pushNamed(
+                        AppRouteConst.subjectSelectionRouteName,
+                        extra: _subjectController,
+                      );
+                    },
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        hintText: subjectProvider.selectedSubjectId != null
+                            ? subjectProvider.subjects
+                                .firstWhere((subject) =>
+                                    subject.id ==
+                                    subjectProvider.selectedSubjectId)
+                                .subject // Fetch the selected subject name
+                            : "Select Subject", // Default hint text when no subject is selected
+                      ),
+                      enabled:
+                          false, // Prevent editing as it's controlled by selection
+                    ),
+                  );
+                },
+              ),
                           ],
                         ),
 
@@ -234,15 +251,16 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     String selectedDivision =
         context.read<DropdownProvider>().getSelectedItem('division');
     String selectedDate = _dateController.text;
-    String selectedSubject =
-        context.read<DropdownProvider>().getSelectedItem('subject');
+    final selectedSubjectId =
+                        Provider.of<SubjectController>(context, listen: false)
+                            .selectedSubjectId;
 
     final attendanceData = AttendanceData(
         selectedClass: selectedClass,
         selectedPeriod: selectedPeriod,
         selectedDivision: selectedDivision,
         selectedDate: selectedDate,
-        subject: selectedSubject,
+        subject: selectedSubjectId??0,
         action: action);
 
     context.read<AttendanceController>().takeAttendance(
