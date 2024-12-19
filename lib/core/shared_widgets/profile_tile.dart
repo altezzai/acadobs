@@ -25,7 +25,9 @@ class ProfileTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
-          border: Border.all(color: Color(0xFFCCCCCC)),
+          border: Border.all(
+            color: Color(0xFFCCCCCC),
+          ),
           borderRadius: BorderRadius.circular(8)),
       child: Row(
         children: [
