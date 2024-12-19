@@ -82,4 +82,6 @@ class AppRouteConst {
   static const String teacherSelectionRouteName = 'teacherSelection';
   static const String studentSelectionRouteName = 'studentSelection';
   static const String subjectSelectionRouteName = 'subjectSelection';
+  static const String parentNoteRouteName = 'parentNoteScreen';
+  static const String parentNoteDetailRouteName = 'parentNoteDetailScreen';
 }

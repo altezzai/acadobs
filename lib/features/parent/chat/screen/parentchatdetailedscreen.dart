@@ -1,15 +1,17 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:school_app/base/utils/date_formatter.dart';
+import 'package:school_app/base/utils/urls.dart';
+import 'package:school_app/features/teacher/parent/model/parent_note_student_model.dart';
 
 class ChatDetailPage extends StatelessWidget {
-  final String name;
-  final String subject;
-  final String imageUrl;
+  final NoteData studentNote;
 
-  ChatDetailPage({
-    required this.name,
-    required this.subject,
-    required this.imageUrl,
-  });
+  const ChatDetailPage({super.key, required this.studentNote});
+
+  // ChatDetailPage({
+  //   required this.studentNote
+  // });
 
   @override
   Widget build(BuildContext context) {
@@ -25,22 +27,32 @@ class ChatDetailPage extends StatelessWidget {
         ),
         title: Row(
           children: [
-            CircleAvatar(
-              backgroundImage: AssetImage(imageUrl),
+            SizedBox(
+              width: 44, // Diameter of the circle
+              height: 44, // Diameter of the circle
+              child: ClipOval(
+                child: CachedNetworkImage(
+                  imageUrl:
+                      "${baseUrl}${Urls.teacherPhotos}${studentNote.teacherProfilePhoto ?? ""}",
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
             SizedBox(width: 10),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  name,
+                  studentNote.teacherName ?? "",
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
-                  subject,
+                  "subject",
                   style: TextStyle(color: Colors.grey, fontSize: 12),
                 ),
               ],
@@ -69,7 +81,7 @@ class ChatDetailPage extends StatelessWidget {
                       Icon(Icons.note, color: Colors.green),
                       SizedBox(width: 8),
                       Text(
-                        "Note",
+                        "Note:",
                         style: TextStyle(
                           color: Colors.green[900],
                           fontWeight: FontWeight.bold,
@@ -82,7 +94,8 @@ class ChatDetailPage extends StatelessWidget {
                               size: 14, color: Colors.white),
                           SizedBox(width: 5),
                           Text(
-                            '09/01/2001',
+                            DateFormatter.formatDateString(
+                                studentNote.createdAt.toString()),
                             style: TextStyle(color: Colors.white),
                           ),
                         ],
@@ -91,7 +104,14 @@ class ChatDetailPage extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   Text(
-                    "Bring his all books by tomorrow okay?????? understand??????????",
+                    studentNote.noteTitle ?? "",
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    studentNote.noteContent ?? "",
                     style: TextStyle(fontSize: 14, color: Colors.black),
                   ),
                 ],
@@ -104,10 +124,10 @@ class ChatDetailPage extends StatelessWidget {
               "Replies",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 10),
-            _buildReply("shibu", "Why are you so mad?? don't you have any life",
-                'assets/angus.png'),
-            _buildReply("April Curtis", "What bro?", imageUrl),
+            // SizedBox(height: 10),
+            // _buildReply("shibu", "Why are you so mad?? don't you have any life",
+            //     'assets/angus.png'),
+            // _buildReply("April Curtis", "What bro?", "imageUrl"),
 
             // Comment Input Field
             Spacer(),
@@ -149,10 +169,10 @@ class ChatDetailPage extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         children: [
-          CircleAvatar(
-            backgroundImage: AssetImage(imageUrl),
-            radius: 20,
-          ),
+          // CircleAvatar(
+          //   backgroundImage: AssetImage(imageUrl),
+          //   radius: 20,
+          // ),
           SizedBox(width: 10),
           Expanded(
             child: Column(

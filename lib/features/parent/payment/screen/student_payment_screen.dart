@@ -172,44 +172,54 @@ class _StudentPaymentScreenState extends State<StudentPaymentScreen>
             DateTime.tryParse(payment.paymentDate.toString()) ?? DateTime.now(),
       );
 
-      return value.studentPayments.isEmpty ? Center(child: Text("No Payments Found!"),) : SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: groupedPayments.entries.map((entry) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      return value.studentPayments.isEmpty
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: Responsive.height * 1),
-                _buildDateHeader(entry.key),
-                SizedBox(height: Responsive.height * 1),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.zero,
-                  itemCount: entry.value.length,
-                  itemBuilder: (context, index) {
-                    final payment = entry.value[index];
-                    return PaymentItem(
-                      amount: payment.amountPaid ?? "",
-                      name: capitalizeFirstLetter(payment.fullName ?? ""),
-                      time: TimeFormatter.formatTimeFromString(
-                          payment.createdAt.toString()),
-                      status: payment.paymentStatus ?? "",
-                      onTap: () {
-                        context.pushNamed(
-                          AppRouteConst.PaymentViewRouteName,
-                          extra: entry.value[index],
-                        );
-                      },
-                    );
-                  },
+                SizedBox(
+                  height: Responsive.height * 36.9,
                 ),
-                SizedBox(height: Responsive.height * 1),
+                Text("No Payments Found!"),
               ],
+            )
+          : SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: groupedPayments.entries.map((entry) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: Responsive.height * 1),
+                      _buildDateHeader(entry.key),
+                      SizedBox(height: Responsive.height * 1),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        padding: EdgeInsets.zero,
+                        itemCount: entry.value.length,
+                        itemBuilder: (context, index) {
+                          final payment = entry.value[index];
+                          return PaymentItem(
+                            amount: payment.amountPaid ?? "",
+                            name: capitalizeFirstLetter(payment.fullName ?? ""),
+                            time: TimeFormatter.formatTimeFromString(
+                                payment.createdAt.toString()),
+                            status: payment.paymentStatus ?? "",
+                            onTap: () {
+                              context.pushNamed(
+                                AppRouteConst.PaymentViewRouteName,
+                                extra: entry.value[index],
+                              );
+                            },
+                          );
+                        },
+                      ),
+                      SizedBox(height: Responsive.height * 1),
+                    ],
+                  );
+                }).toList(),
+              ),
             );
-          }).toList(),
-        ),
-      );
     });
   }
 
@@ -238,44 +248,49 @@ class _StudentPaymentScreenState extends State<StudentPaymentScreen>
             DateTime.now(),
       );
 
-      return value.studentdonations.isEmpty ? Center(child: Text("No Donations Found!"),) : SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: groupedDonations.entries.map((entry) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: Responsive.height * 1),
-                _buildDateHeader(entry.key),
-                SizedBox(height: Responsive.height * 1),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.zero,
-                  itemCount: entry.value.length,
-                  itemBuilder: (context, index) {
-                    final donation = entry.value[index];
-                    return PaymentItem(
-                      amount: donation.amountDonated ?? "",
-                      name: capitalizeFirstLetter(donation.fullName ?? ""),
-                      time: TimeFormatter.formatTimeFromString(
-                          donation.createdAt.toString()),
-                      status: donation.purpose ?? "",
-                      onTap: () {
-                        context.pushNamed(
-                          AppRouteConst.DonationViewRouteName,
-                          extra: entry.value[index],
-                        );
-                      },
-                    );
-                  },
-                ),
-                SizedBox(height: Responsive.height * 1),
-              ],
+      return value.studentdonations.isEmpty
+          ? Center(
+              child: Text("No Donations Found!"),
+            )
+          : SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: groupedDonations.entries.map((entry) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: Responsive.height * 1),
+                      _buildDateHeader(entry.key),
+                      SizedBox(height: Responsive.height * 1),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        padding: EdgeInsets.zero,
+                        itemCount: entry.value.length,
+                        itemBuilder: (context, index) {
+                          final donation = entry.value[index];
+                          return PaymentItem(
+                            amount: donation.amountDonated ?? "",
+                            name:
+                                capitalizeFirstLetter(donation.fullName ?? ""),
+                            time: TimeFormatter.formatTimeFromString(
+                                donation.createdAt.toString()),
+                            status: donation.purpose ?? "",
+                            onTap: () {
+                              context.pushNamed(
+                                AppRouteConst.DonationViewRouteName,
+                                extra: entry.value[index],
+                              );
+                            },
+                          );
+                        },
+                      ),
+                      SizedBox(height: Responsive.height * 1),
+                    ],
+                  );
+                }).toList(),
+              ),
             );
-          }).toList(),
-        ),
-      );
     });
   }
 

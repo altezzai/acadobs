@@ -43,6 +43,8 @@ import 'package:school_app/features/admin/teacher_section/model/teacher_model.da
 import 'package:school_app/features/admin/teacher_section/screens/add_teacher.dart';
 import 'package:school_app/features/admin/teacher_section/screens/teacherdetails.dart';
 import 'package:school_app/features/admin/teacher_section/screens/teachers_page.dart';
+import 'package:school_app/features/parent/chat/screen/parentchatdetailedscreen.dart';
+import 'package:school_app/features/parent/chat/screen/parentchatscreen.dart';
 import 'package:school_app/features/parent/events/screen/eventdetailedscreen.dart';
 import 'package:school_app/features/parent/events/screen/eventscreen.dart';
 import 'package:school_app/features/parent/leave_request/model/studentLeaveReq_model.dart';
@@ -69,6 +71,7 @@ import 'package:school_app/features/teacher/leave_request/screens/teacher_leaver
 import 'package:school_app/features/teacher/mark_work/screens/mark_star.dart';
 import 'package:school_app/features/teacher/marks/models/marks_upload_model.dart';
 import 'package:school_app/features/teacher/marks/screens/student_marklist.dart';
+import 'package:school_app/features/teacher/parent/model/parent_note_student_model.dart';
 import 'package:school_app/features/teacher/parent/notes/screens/add_note.dart';
 import 'package:school_app/features/teacher/parent/notes/screens/note_details.dart';
 import 'package:school_app/features/teacher/parent/notes/screens/notes.dart';
@@ -228,11 +231,11 @@ class Approuter {
         name: AppRouteConst.NoteDetailsRouteName,
         path: '/notedetails',
         pageBuilder: (context, state) {
-          final Student parent = state.extra as Student;
+          final int noteId = state.extra as int;
 
           return MaterialPage(
               child: NoteChatDetailPage(
-            parent: parent,
+            noteId: noteId,
           ));
         },
       ),
@@ -666,6 +669,25 @@ class Approuter {
           return MaterialPage(
               child: SubjectSelectionPage(
             subjectTextEditingController: subjectController,
+          ));
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.parentNoteRouteName,
+        path: '/parentNoteScreen',
+        pageBuilder: (context, state) {
+          final studentId = state.extra as int;
+          return MaterialPage(child: ParentNoteScreen(studentId: studentId));
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.parentNoteDetailRouteName,
+        path: '/parentNoteDetailScreen',
+        pageBuilder: (context, state) {
+          final studentNote = state.extra as NoteData;
+          return MaterialPage(
+              child: ChatDetailPage(
+            studentNote: studentNote,
           ));
         },
       ),

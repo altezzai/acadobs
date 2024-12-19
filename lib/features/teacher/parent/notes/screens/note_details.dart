@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:school_app/base/utils/urls.dart';
-import 'package:school_app/features/admin/student/controller/student_controller.dart';
-import 'package:school_app/features/admin/student/model/student_data.dart';
+import 'package:school_app/features/teacher/parent/controller/notes_controller.dart';
 
 class NoteChatDetailPage extends StatefulWidget {
-  final Student parent;
+  final int noteId;
   // final String name;
   // final String subject;
   // final String imageUrl;
 
   NoteChatDetailPage({
-    required this.parent,
+    required this.noteId,
     // required this.name,
     // required this.subject,
     // required this.imageUrl,
@@ -22,10 +20,15 @@ class NoteChatDetailPage extends StatefulWidget {
 }
 
 class _NoteChatDetailPageState extends State<NoteChatDetailPage> {
-
   @override
   void initState() {
-    context.read<StudentController>().getParentDetails();
+    // context.read<StudentController>().getParentDetails();
+    //  WidgetsBinding.instance.addPostFrameCallback((_){
+    //   context
+    //     .read<NotesController>()
+    //     .getNotesByStudentId(studentId: widget.noteId);
+    // });
+    
     super.initState();
   }
 
@@ -43,20 +46,20 @@ class _NoteChatDetailPageState extends State<NoteChatDetailPage> {
         ),
         title: Row(
           children: [
-            CircleAvatar(
-              backgroundImage: NetworkImage("${baseUrl}${Urls.parentPhotos}${widget.parent.fatherMotherPhoto??""}"),
-            ),
+            // CircleAvatar(
+            //   backgroundImage: NetworkImage("${baseUrl}${Urls.parentPhotos}${widget.parent.fatherMotherPhoto??""}"),
+            // ),
             SizedBox(width: 10),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  widget.parent.guardianFullName??"",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                // Text(
+                //   widget.parent.guardianFullName??"",
+                //   style: TextStyle(
+                //     color: Colors.black,
+                //     fontWeight: FontWeight.bold,
+                //   ),
+                // ),
                 // Text(
                 //   widget.subject,
                 //   style: TextStyle(color: Colors.grey, fontSize: 12),
@@ -123,11 +126,22 @@ class _NoteChatDetailPageState extends State<NoteChatDetailPage> {
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 10),
-            _buildReply("shibu", "Why are you so mad?? don't you have any life",
-                'assets/angus.png'),
-           _buildReply("April Curtis", "What bro?", widget.parent.studentPhoto??""),
+            //   _buildReply("shibu", "Why are you so mad?? don't you have any life",
+            //       'assets/angus.png'),
+            //  _buildReply("April Curtis", "What bro?", widget.parent.studentPhoto??""),
 
             // Comment Input Field
+            Consumer<NotesController>(builder: (context, value, child) {
+              return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: value.parentNoteStudent.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title:
+                          Text(value.parentNoteStudent[index].noteTitle ?? ""),
+                    );
+                  });
+            }),
             Spacer(),
             Row(
               children: [
