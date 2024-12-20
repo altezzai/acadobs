@@ -226,32 +226,84 @@ class _NotesScreenState extends State<NotesScreen> {
                           itemBuilder: (context, index) {
                             final note = value.notesByTeacher[index];
                             return Padding(
-                                padding: const EdgeInsets.only(bottom: 4),
-                                child: InkWell(
-                                  onTap: (){
-                                       context.pushNamed(
-                                      AppRouteConst.NoteDetailsRouteName,
-                                      extra: note['id']);
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.all(16),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        border: Border.all()),
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          note['title'],
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyMedium!
-                                              .copyWith(fontSize: 16),
-                                        )
-                                      ],
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 6.0),
+                              child: InkWell(
+                                onTap: () {
+                                  context.pushNamed(
+                                    AppRouteConst.NoteDetailsRouteName,
+                                    extra: note['id'],
+                                  );
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(16),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(12),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.2),
+                                        spreadRadius: 2,
+                                        blurRadius: 5,
+                                        offset: Offset(
+                                            0, 3), // changes position of shadow
+                                      ),
+                                    ],
+                                    border: Border.all(
+                                      color: Colors.grey.shade300,
                                     ),
                                   ),
-                                )
-                                );
+                                  child: Row(
+                                    children: [
+                                      // Add an icon or avatar for a visual element
+                                      CircleAvatar(
+                                        radius: 24,
+                                        backgroundColor: Colors.black26,
+                                        child: Icon(
+                                          Icons.notes,
+                                          color: Colors.black54,
+                                          size: 24,
+                                        ),
+                                      ),
+                                      SizedBox(width: 16),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              note['title'],
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium
+                                                  ?.copyWith(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                            ),
+                                            SizedBox(height: 4),
+                                            Text(
+                                              "Last updated: ${note['updated_at']}",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodySmall
+                                                  ?.copyWith(
+                                                    color: Colors.grey,
+                                                  ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Icon(
+                                        Icons.arrow_forward_ios,
+                                        size: 16,
+                                        color: Colors.grey.shade400,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
                           },
                         ),
                         SizedBox(
