@@ -10,7 +10,7 @@ class StudentServices {
       final Response response = await ApiServices.get('/students');
       return response;
     } on DioException catch (e) {
-      throw Exception('Failed to load data: $e'); 
+      throw Exception('Failed to load data: $e');
     }
   }
 
@@ -40,25 +40,25 @@ class StudentServices {
   }
 
   // Add student
-  Future<Response> addNewStudent({
-    required String fullName,
-    required String dateOfBirth,
-    required String gender,
-    required String studentClass,
-    required String section,
-    required String rollNumber,
-    required String admissionNumber,
-    required String aadhaarNumber,
-    required String residentialAddress,
-    required String contactNumber,
-    required String email,
-    required String fatherFullName,
-    required String motherFullName,
-    required String bloodGroup,
-    required String parentEmail,
-    String? studentPhotoPath,
-    String? aadhaarCard
-  }) async {
+  Future<Response> addNewStudent(
+      {required String fullName,
+      required String dateOfBirth,
+      required String gender,
+      required String studentClass,
+      required String section,
+      required String rollNumber,
+      required String admissionNumber,
+      required String aadhaarNumber,
+      required String residentialAddress,
+      required String contactNumber,
+      required String email,
+      required String fatherFullName,
+      required String motherFullName,
+      required String guardianFullName,
+      required String bloodGroup,
+      required String parentEmail,
+      String? studentPhotoPath,
+      String? aadhaarCard}) async {
     // Create the form data to pass to the API
     final formData = {
       "full_name": fullName,
@@ -74,13 +74,14 @@ class StudentServices {
       "email": email,
       "father_full_name": fatherFullName,
       "mother_full_name": motherFullName,
+      "guardian_FullName": guardianFullName,
       "blood_group": bloodGroup,
       "parent_email": parentEmail,
-       // Only include if the photo is provided
+      // Only include if the photo is provided
       "student_photo": await MultipartFile.fromFile(studentPhotoPath!,
-            filename: studentPhotoPath.split('/').last),
+          filename: studentPhotoPath.split('/').last),
       "aadhaar_card": await MultipartFile.fromFile(aadhaarCard!,
-            filename: aadhaarCard.split('/').last),
+          filename: aadhaarCard.split('/').last),
     };
 
     // Call the ApiServices post method with formData and isFormData: true

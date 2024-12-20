@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/utils/button_loading.dart';
@@ -44,24 +43,26 @@ class _AddStudentPageState extends State<AddStudentPage> {
       TextEditingController();
   final TextEditingController _motherFullNameController =
       TextEditingController();
+  final TextEditingController _guardianNameController = TextEditingController();
   final TextEditingController _bloodgroupController = TextEditingController();
   final TextEditingController parentEmailController = TextEditingController();
-   late DropdownProvider dropdownProvider;
-  
+  late DropdownProvider dropdownProvider;
+
   late FilePickerProvider filePickerProvider;
-   @override
+  @override
   void initState() {
     super.initState();
     filePickerProvider = context.read<FilePickerProvider>();
-    dropdownProvider=context.read<DropdownProvider>();
+    dropdownProvider = context.read<DropdownProvider>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       filePickerProvider.clearFile('student photo');
       dropdownProvider.clearSelectedItem('gender');
       dropdownProvider.clearSelectedItem('class');
       dropdownProvider.clearSelectedItem('division');
-  });
-}
+    });
+  }
+
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -79,7 +80,6 @@ class _AddStudentPageState extends State<AddStudentPage> {
 
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -301,6 +301,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 // Guardian, Parent Email, Occupation Inputs
                 CustomTextfield(
                   hintText: 'Guardian Fullname',
+                  controller: _guardianNameController,
                   iconData: Icon(Icons.person_2_outlined),
                 ),
                 SizedBox(height: 20),
@@ -360,10 +361,12 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 _sectionTitle('Documents'),
                 SizedBox(height: 10),
 
-               CustomFilePicker(label: 'student Photo', fieldName: 'student photo'),
+                CustomFilePicker(
+                    label: 'student Photo', fieldName: 'student photo'),
 
                 SizedBox(height: 20),
-              CustomFilePicker(label: 'Aadhar Photo', fieldName: 'aadhar photo'),
+                CustomFilePicker(
+                    label: 'Aadhar Photo', fieldName: 'aadhar photo'),
 
                 SizedBox(height: 40),
 
@@ -401,10 +404,12 @@ class _AddStudentPageState extends State<AddStudentPage> {
           context.read<DropdownProvider>().getSelectedItem('class');
       final selectedDivision =
           context.read<DropdownProvider>().getSelectedItem('division');
-      final selectedStudentPhoto=context.read<FilePickerProvider>().getFile('student photo');
-      final selectedAadharPhoto=context.read<FilePickerProvider>().getFile('aadhar photo');
-      final studentPhotoPath=selectedStudentPhoto?.path;
-      final aadharPhotoPath=selectedAadharPhoto?.path;
+      final selectedStudentPhoto =
+          context.read<FilePickerProvider>().getFile('student photo');
+      final selectedAadharPhoto =
+          context.read<FilePickerProvider>().getFile('aadhar photo');
+      final studentPhotoPath = selectedStudentPhoto?.path;
+      final aadharPhotoPath = selectedAadharPhoto?.path;
 
       // final student = Student(
       //   fullName: _fullNameController.text,
@@ -440,6 +445,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
           email: _emailController.text,
           fatherFullName: _fatherFullNameController.text,
           motherFullName: _motherFullNameController.text,
+          guardianFullName: _guardianNameController.text,
           bloodGroup: _bloodgroupController.text,
           parentEmail: parentEmailController.text,
           studentPhoto: studentPhotoPath,

@@ -233,7 +233,9 @@ class _ParentsScreenState extends State<ParentsScreen> {
                                 imageUrl:
                                     "${baseUrl}${Urls.parentPhotos}${parent.fatherMotherPhoto}",
                                 name: capitalizeFirstLetter(
-                                    parent.guardianFullName ?? ""),
+                                    parent.guardianFullName ??
+                                        parent.fatherFullName ??
+                                        ""),
                                 description:
                                     "${parent.fullName} ${parent.studentClass} ${parent.section}",
                                 onPressed: () {
