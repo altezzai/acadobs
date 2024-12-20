@@ -30,11 +30,11 @@ class NoteServices {
 
   // **********Get Note by Id ********************
   Future<Response> getNoteById({required int noteId}) async{
-    final response = await ApiServices.get("/getParentNotesByTeacherId/$noteId");
+    final response = await ApiServices.get("/parentNotes/$noteId");
     return response;
   }
 
-  // **********Get Note by Id ********************
+  // **********Get Note by Student Id ********************
   Future<Response> getNoteByStudentId({required int studentId}) async{
     final response = await ApiServices.get("/getParentNotesByStudentId/$studentId");
     return response;
