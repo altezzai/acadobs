@@ -16,6 +16,9 @@ class PaymentController extends ChangeNotifier {
   bool get isloading => _isloading;
     bool _isloadingTwo = false;
   bool get isloadingTwo => _isloadingTwo;
+  bool _isFiltered = false;  // New flag to track filtering
+  bool get isFiltered => _isFiltered;  // Public getter to access the filter state
+
   List<Payment> _payments = [];
   List<Payment> get payments => _payments;
   List<Payment> _filteredpayments = [];
@@ -71,6 +74,7 @@ class PaymentController extends ChangeNotifier {
       {required String className, required String section}) async {
     _isloading = true;
     _filteredpayments.clear();
+    _isFiltered = false;
     try {
       final response = await PaymentServices().getPaymentsByClassAndDivision(
           className: className, section: section);
@@ -80,11 +84,13 @@ class PaymentController extends ChangeNotifier {
         _filteredpayments = (response.data as List<dynamic>)
             .map((result) => Payment.fromJson(result))
             .toList();
+            
       }
     } catch (e) {
       log(e.toString());
     } finally {
       _isloading = false;
+      _isFiltered = true;
       notifyListeners();
     }
   }
@@ -114,6 +120,12 @@ class PaymentController extends ChangeNotifier {
   void clearPaymentList() {
     _filteredpayments.clear();
     notifyListeners();
+  }
+
+  void resetFilter() {
+    _isFiltered = false;
+    _filteredpayments = []; // Clear the list of filtered payments
+    notifyListeners(); // Notify listeners to update the UI
   }
 
   List<Donation> _donations = [];

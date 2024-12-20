@@ -13,6 +13,9 @@ import 'package:school_app/features/admin/reports/services/student_report_servic
 class StudentReportController extends ChangeNotifier {
   bool _isloading = false;
   bool get isloading => _isloading;
+  bool _isFiltered = false;  // New flag to track filtering
+  bool get isFiltered => _isFiltered;  // Public getter to access the filter state
+
   List<StudentReport> _studentreports = [];
   List<StudentReport> get studentreports => _studentreports;
   List<StudentReport> _filteredstudentreports = [];
@@ -41,6 +44,7 @@ class StudentReportController extends ChangeNotifier {
   Future<void> getStudentReportsByClassAndDivision(
       {required String className, required String section}) async {
     _isloading = true;
+    _isFiltered = false;
     _filteredstudentreports.clear();
     try {
       final response = await StudentReportServices().getStudentReportByClassAndDivision(
@@ -56,6 +60,7 @@ class StudentReportController extends ChangeNotifier {
       log(e.toString());
     } finally {
       _isloading = false;
+      _isFiltered = true;
       notifyListeners();
     }
   }
@@ -63,6 +68,11 @@ class StudentReportController extends ChangeNotifier {
   void clearStudentReportList() {
     _filteredstudentreports.clear();
     notifyListeners();
+  }
+  void resetFilter() {
+    _isFiltered = false;
+    
+    notifyListeners(); // Notify listeners to update the UI
   }
 
 }

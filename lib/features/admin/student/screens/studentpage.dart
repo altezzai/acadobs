@@ -36,9 +36,11 @@ class _StudentsPageState extends State<StudentsPage> {
       dropdownprovider.clearSelectedItem('division');
 
       context.read<StudentController>().clearStudentList();
+      context.read<StudentController>().resetFilter();
       // super.dispose();
 
       context.read<StudentController>().getStudentDetails();
+
     });
 
     super.initState();
@@ -68,31 +70,31 @@ class _StudentsPageState extends State<StudentsPage> {
                       );
               },
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 7),
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Search for Students',
-                        prefixIcon: Icon(Icons.search, color: Colors.grey),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide(color: Colors.grey.shade300),
-                        ),
-                        filled: true,
-                        fillColor: Colors.grey.shade100,
-                        contentPadding: EdgeInsets.symmetric(vertical: 12),
-                      ),
-                      style: TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.normal),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(vertical: 7),
+            //   child: Row(
+            //     children: [
+            //       Expanded(
+            //         flex: 3,
+            //         child: TextField(
+            //           decoration: InputDecoration(
+            //             hintText: 'Search for Students',
+            //             prefixIcon: Icon(Icons.search, color: Colors.grey),
+            //             border: OutlineInputBorder(
+            //               borderRadius: BorderRadius.circular(30),
+            //               borderSide: BorderSide(color: Colors.grey.shade300),
+            //             ),
+            //             filled: true,
+            //             fillColor: Colors.grey.shade100,
+            //             contentPadding: EdgeInsets.symmetric(vertical: 12),
+            //           ),
+            //           style: TextStyle(
+            //               fontSize: 16, fontWeight: FontWeight.normal),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
             Row(
               children: [
                 Expanded(
@@ -103,15 +105,15 @@ class _StudentsPageState extends State<StudentsPage> {
                     icon: Icons.school,
                     onChanged: (selectedClass) {
                       // Automatically fetch students when division is selected
-                      final selectedDivision = context
-                          .read<DropdownProvider>()
-                          .getSelectedItem(
-                              'division'); // Get the currently selected class
-                      context
-                          .read<StudentController>()
-                          .getStudentsClassAndDivision(
-                              classname: selectedClass,
-                              section: selectedDivision);
+                      // final selectedDivision = context
+                      //     .read<DropdownProvider>()
+                      //     .getSelectedItem(
+                      //         'division'); // Get the currently selected class
+                      // context
+                      //     .read<StudentController>()
+                      //     .getStudentsClassAndDivision(
+                      //         classname: selectedClass,
+                      //         section: selectedDivision);
                     },
                   ),
                 ),
@@ -150,18 +152,33 @@ class _StudentsPageState extends State<StudentsPage> {
                         color: Colors.grey,
                       ),
                     );
-                  } else if (value.filteredstudents.isEmpty) {
-                    return Center(
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            'assets/empty.png',
-                            height: Responsive.height * 45,
-                          ),
-                        ],
+                  }  else if (!value.isFiltered) {
+                // Show image before filtering
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/money.png',
+                        height: Responsive.height * 45,
                       ),
-                    );
-                  }
+                      const SizedBox(height: 16),
+                      Text(
+                        'No filter applied. Please select a class and division.',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
+                );
+              }else  if (value.isFiltered&&value.filteredstudents.isEmpty) {
+                // Show message after filtering with no results
+                return Center(
+                  child: Text(
+                    'No Reports Found',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                );
+              }else{
                   return SingleChildScrollView(
                     padding: EdgeInsets.zero, // Removes any default padding
                     child: Column(
@@ -199,7 +216,7 @@ class _StudentsPageState extends State<StudentsPage> {
                         ),
                       ],
                     ),
-                  );
+                  );}
                 },
               ),
             ),

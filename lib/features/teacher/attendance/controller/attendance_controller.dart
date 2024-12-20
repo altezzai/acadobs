@@ -127,17 +127,23 @@ class AttendanceController extends ChangeNotifier {
             .map((e) => e as int)
             .toList();
         log(_alreadyTakenPeriodList.toString());
-        log("attendance list ==== ${attendanceList[0].recordedBy}");
-        final _teacherId = attendanceList[0].recordedBy;
-        if (_teacherId != null) {
-          CustomSnackbar.show(context,
-              message: "Attendance Already Taken", type: SnackbarType.info);
-          context.pushNamed(AppRouteConst.attendanceRouteName,
-              extra: attendanceData);
-        } else {
-          context.pushNamed(AppRouteConst.attendanceRouteName,
-              extra: attendanceData);
-        }
+       if (_attendanceList.isNotEmpty) {
+  final _teacherId = attendanceList[0].recordedBy;
+  if (_teacherId != null) {
+    CustomSnackbar.show(context,
+        message: "Attendance Already Taken", type: SnackbarType.info);
+    context.pushNamed(AppRouteConst.attendanceRouteName,
+        extra: attendanceData);
+  } else {
+    context.pushNamed(AppRouteConst.attendanceRouteName,
+        extra: attendanceData);
+  }
+} else {
+  CustomSnackbar.show(context,
+      message: "No students found for this class and division.",
+      type: SnackbarType.warning);
+}
+
       }
     } catch (e) {
       log(e.toString());

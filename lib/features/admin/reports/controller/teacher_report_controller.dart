@@ -7,6 +7,10 @@ class TeacherReportController extends ChangeNotifier {
   bool _isloading = false;
   bool get isloading => _isloading;
 
+  bool _isFiltered = false;  // New flag to track filtering
+  bool get isFiltered => _isFiltered;  // Public getter to access the filter state
+
+
   List<TeacherReport> _teacherreports = [];
   List<TeacherReport> get teacherreports => _teacherreports;
 
@@ -42,6 +46,7 @@ class TeacherReportController extends ChangeNotifier {
     required String endDate,
   }) async {
     _isloading = true;
+    _isFiltered = false;
     notifyListeners();
     try {
       final response = await TeacherReportServices().getTeacherReportByNameAndDate(
@@ -61,6 +66,7 @@ class TeacherReportController extends ChangeNotifier {
       log("Error filtering reports: $e");
     } finally {
       _isloading = false;
+      _isFiltered = true;
       notifyListeners();
     }
   }
@@ -70,4 +76,10 @@ class TeacherReportController extends ChangeNotifier {
     _filteredteacherreports.clear();
     notifyListeners();
   }
+  void resetFilter() {
+    _isFiltered = false;
+    _filteredteacherreports = []; // Clear the list of filtered payments
+    notifyListeners(); // Notify listeners to update the UI
+  }
+
 }

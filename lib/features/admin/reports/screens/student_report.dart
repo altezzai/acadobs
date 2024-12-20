@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
 
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/features/admin/reports/controller/student_report_controller.dart';
+
+import 'package:school_app/features/admin/reports/widgets/report_tile.dart';
 
 class StudentReport extends StatefulWidget {
   const StudentReport({Key? key}) : super(key: key);
@@ -18,7 +21,7 @@ class StudentReport extends StatefulWidget {
 class _StudentReportState extends State<StudentReport> {
   late DropdownProvider dropdownprovider;
 
-   @override
+  @override
   void initState() {
     dropdownprovider = context.read<DropdownProvider>();
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -26,40 +29,35 @@ class _StudentReportState extends State<StudentReport> {
       dropdownprovider.clearSelectedItem('division');
 
       context.read<StudentReportController>().clearStudentReportList();
+      context.read<StudentReportController>().resetFilter();
       // super.dispose();
     });
     super.initState();
-    
+
     context.read<StudentReportController>().getStudentReports();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            CustomAppbar(
-              title: "Student Report",
-              isBackButton: true,
-              onTap: () {
-                context.pop(              
-                );
-              },
-            ),
-           
-            const SizedBox(height: 16),
-            Expanded(
-              child: _buildClassDivisionStudentReport(context: context),
-            ),
-          ]))
-    );
+        body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(children: [
+              CustomAppbar(
+                title: "Student Report",
+                isBackButton: true,
+                onTap: () {
+                  context.pop();
+                },
+              ),
+              const SizedBox(height: 16),
+              Expanded(
+                child: _buildClassDivisionStudentReport(context: context),
+              ),
+            ])));
   }
 
-Widget _buildClassDivisionStudentReport({required BuildContext context}) {
-
-  
+  Widget _buildClassDivisionStudentReport({required BuildContext context}) {
     return Column(
       children: [
         Row(
@@ -68,18 +66,18 @@ Widget _buildClassDivisionStudentReport({required BuildContext context}) {
               child: CustomDropdown(
                 dropdownKey: 'class',
                 label: 'Class',
-                items: ['5', '6', '7','8','9','10'],
+                items: ['5', '6', '7', '8', '9', '10'],
                 icon: Icons.school,
                 onChanged: (selectedClass) {
-                  final selectedDivision = context
-                      .read<DropdownProvider>()
-                      .getSelectedItem('division');
-                  context
-                      .read<StudentReportController>()
-                      .getStudentReportsByClassAndDivision(
-                        className: selectedClass,
-                        section: selectedDivision,
-                      );
+                  // final selectedDivision = context
+                  //     .read<DropdownProvider>()
+                  //     .getSelectedItem('division');
+                  // context
+                  //     .read<StudentReportController>()
+                  //     .getStudentReportsByClassAndDivision(
+                  //       className: selectedClass,
+                  //       section: selectedDivision,
+                  //     );
                 },
               ),
             ),
@@ -112,52 +110,68 @@ Widget _buildClassDivisionStudentReport({required BuildContext context}) {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
-              } else if (value.filteredstudentreports.isEmpty) {
+              } else if (!value.isFiltered) {
+                // Show image before filtering
                 return Center(
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset(
                         'assets/money.png',
                         height: Responsive.height * 45,
                       ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'No filter applied. Please select a class and division.',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
+                );
+              } else if (value.isFiltered &&
+                  value.filteredstudentreports.isEmpty) {
+                // Show message after filtering with no results
+                return Center(
+                  child: Text(
+                    'No Reports Found',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                );
+              } else {
+                return SingleChildScrollView(
+                  padding: EdgeInsets.zero, // Removes any default padding
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        padding: EdgeInsets.zero,
+                        itemCount: value.filteredstudentreports.length,
+                        itemBuilder: (context, index) {
+                          final studentreport =
+                              value.filteredstudentreports[index];
+                          return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 4),
+                              child: ReportTile(
+                                icon: Icons.assignment,
+                                title: capitalizeFirstLetter(studentreport.fullName ?? "",),
+                                subtitle:
+                                    '${studentreport.studentReportClass ?? ""} ${studentreport.section ?? ""}',
+                                
+                                onTap: () {},
+                                
+                              ));
+                        },
+                      )
                     ],
                   ),
                 );
               }
-                return SingleChildScrollView(
-                    padding: EdgeInsets.zero, // Removes any default padding
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          padding: EdgeInsets
-                              .zero,
-                itemCount: value.filteredstudentreports.length,
-                itemBuilder: (context, index) {
-                  final studentreport = value.filteredstudentreports[index];
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4),
-                    child: Card(
-                      child: ListTile(
-                        title:Text(studentreport.fullName??"",  style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16)) ,
-                        subtitle:Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [ Text(studentreport.studentReportClass ?? "",),
-     Text(studentreport.section ?? "",) ])
-                        
-                      ),
-                    )
-                  );
-                },
-              )],),);
             },
           ),
         ),
       ],
     );
   }
-
 }
