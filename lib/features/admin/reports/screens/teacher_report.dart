@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/admin/reports/controller/teacher_report_controller.dart';
+import 'package:school_app/features/admin/reports/widgets/report_tile.dart';
 
 class TeacherReport extends StatefulWidget {
   const TeacherReport({Key? key}) : super(key: key);
@@ -34,6 +36,7 @@ class _TeacherReportState extends State<TeacherReport> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<TeacherReportController>().clearTeacherReportList();
       context.read<TeacherReportController>().getTeacherReports();
+      context.read<TeacherReportController>().resetFilter();
     });
     super.initState();
   }
@@ -63,14 +66,9 @@ class _TeacherReportState extends State<TeacherReport> {
   }
 
   Widget _buildTeacherReportByNameAndDate({required BuildContext context}) {
-    final teacherReports =
-        context.watch<TeacherReportController>().teacherreports; // Full list
-    final filteredReports =
-        context.watch<TeacherReportController>().filteredteacherreports; // Filtered list
-    final isloading = context.watch<TeacherReportController>().isloading;
+   
 
-    final bool isFilterApplied = filteredReports.isNotEmpty;
-    final List reportsToDisplay = isFilterApplied ? filteredReports : teacherReports;
+    
 
     return Column(
       children: [
@@ -116,58 +114,68 @@ class _TeacherReportState extends State<TeacherReport> {
         ),
         const SizedBox(height: 16),
         Expanded(
-          child: isloading
-              ? const Center(child: CircularProgressIndicator())
-              : (reportsToDisplay.isEmpty && isFilterApplied)
-                  ? Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'assets/money.png',
-                            height: Responsive.height * 0.45,
-                          ),
-                          const Text(
-                            'No matching reports found.',
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
-                        ],
+          child: Consumer<TeacherReportController>(
+            builder: (context, value, child) {
+              if (value.isloading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }  else if (!value.isFiltered) {
+                // Show image before filtering
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/money.png',
+                        height: Responsive.height * 45,
                       ),
-                    )
-                  : (reportsToDisplay.isEmpty)
-                      ? Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                'assets/money.png',
-                                height: Responsive.height * 0.45,
-                              ),
-                              const Text(
-                                'No reports found.',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                        )
-                      : ListView.builder(
-                          itemCount: reportsToDisplay.length,
-                          itemBuilder: (context, index) {
-                            final report = reportsToDisplay[index];
-                            return Card(
-                              child: ListTile(
-                                leading: const Icon(Icons.person_2),
-                                title: Text(
-                                  report.fullName ?? "N/A",
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold, fontSize: 16),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'No filter applied.',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
+                );
+              }else  if (value.isFiltered&&value.filteredteacherreports.isEmpty) {
+                // Show message after filtering with no results
+                return Center(
+                  child: Text(
+                    'No Reports Found',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                );
+              }else{
+                return SingleChildScrollView(
+                    padding: EdgeInsets.zero, // Removes any default padding
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          padding: EdgeInsets
+                              .zero,
+                itemCount: value.filteredteacherreports.length,
+                itemBuilder: (context, index) {
+                  final teacherreport = value.filteredteacherreports[index];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: ReportTile(
+                                icon: Icons.assignment,
+                                title: capitalizeFirstLetter(teacherreport.fullName ?? ""),
+                                // subtitle:
+                                //     '${teacherreport.studentReportClass ?? ""} ${teacherreport.section ?? ""}',
+                                
+                                onTap: () {},
+                                
+                              )
+                  );
+                },
+              )],),);}
+            },
+          ),
         ),
       ],
     );

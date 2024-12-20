@@ -15,6 +15,9 @@ import 'package:school_app/features/admin/student/services/studentservice.dart';
 class StudentController extends ChangeNotifier {
   bool _isloading = false;
   bool get isloading => _isloading;
+  bool _isFiltered = false;  // New flag to track filtering
+  bool get isFiltered => _isFiltered;  // Public getter to access the filter state
+
 
   List<Student> _students = [];
   List<Student> get students => _students;
@@ -226,6 +229,7 @@ class StudentController extends ChangeNotifier {
     required String section,
   }) async {
     _isloading = true; // Set loading state to true
+    _isFiltered = false;
     notifyListeners(); // Notify listeners to update the UI
 
     try {
@@ -256,6 +260,7 @@ class StudentController extends ChangeNotifier {
     } finally {
       // Reset the loading state and notify listeners
       _isloading = false;
+      _isFiltered = true;
       notifyListeners();
     }
   }
@@ -264,6 +269,11 @@ class StudentController extends ChangeNotifier {
   void clearStudentList() {
     _filteredstudents.clear();
     notifyListeners();
+  }
+   void resetFilter() {
+    _isFiltered = false;
+    
+    notifyListeners(); // Notify listeners to update the UI
   }
 
   // Fetch Parent details (GET request)

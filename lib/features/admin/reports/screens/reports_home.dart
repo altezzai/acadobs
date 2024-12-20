@@ -42,15 +42,7 @@ class ReportsHomeScreen extends StatelessWidget {
                 context.pushNamed(AppRouteConst.TeacherReportRouteName);// Navigate to Teacher Report page
               },
             ),
-            SizedBox(height: 16),
-            ReportCard(
-              title: 'Class Report',
-              icon: Icons.school_outlined,
-              color: Colors.purple,
-              onTap: () {
-                context.pushNamed(AppRouteConst.ClassReportRouteName);// Navigate to Class Report page
-              },
-            ),
+            
           ],
         ),
       ),

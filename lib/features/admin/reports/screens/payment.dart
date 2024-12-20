@@ -29,11 +29,13 @@ late DropdownProvider dropdownprovider;
       dropdownprovider.clearSelectedItem('division');
 
       context.read<PaymentController>().clearPaymentList();
+      context.read<PaymentController>().resetFilter();
       // super.dispose();
     });
     super.initState();
     
     context.read<PaymentController>().getPayments();
+    
   }
   
 
@@ -77,15 +79,15 @@ late DropdownProvider dropdownprovider;
                 items: ['5', '6', '7','8','9','10'],
                 icon: Icons.school,
                 onChanged: (selectedClass) {
-                  final selectedDivision = context
-                      .read<DropdownProvider>()
-                      .getSelectedItem('division');
-                  context
-                      .read<PaymentController>()
-                      .getPaymentsByClassAndDivision(
-                        className: selectedClass,
-                        section: selectedDivision,
-                      );
+                  // final selectedDivision = context
+                  //     .read<DropdownProvider>()
+                  //     .getSelectedItem('division');
+                  // context
+                  //     .read<PaymentController>()
+                  //     .getPaymentsByClassAndDivision(
+                  //       className: selectedClass,
+                  //       section: selectedDivision,
+                  //     );
                 },
               ),
             ),
@@ -118,18 +120,33 @@ late DropdownProvider dropdownprovider;
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
-              } else if (value.filteredpayments.isEmpty) {
+              }  else if (!value.isFiltered) {
+                // Show image before filtering
                 return Center(
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset(
                         'assets/money.png',
                         height: Responsive.height * 45,
                       ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'No filter applied. Please select a class and division.',
+                        style: TextStyle(fontSize: 16),
+                      ),
                     ],
                   ),
                 );
-              }
+              }  if (value.isFiltered&&value.filteredpayments.isEmpty) {
+                // Show message after filtering with no results
+                return Center(
+                  child: Text(
+                    'No Reports Found',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                );
+              } else{
                 return SingleChildScrollView(
                     padding: EdgeInsets.zero, // Removes any default padding
                     child: Column(
@@ -154,7 +171,7 @@ late DropdownProvider dropdownprovider;
                     ),
                   );
                 },
-              )],),);
+              )],),);}
             },
           ),
         ),
