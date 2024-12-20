@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:school_app/base/services/secure_storage_services.dart';
+import 'package:school_app/features/teacher/parent/model/parent_note_model.dart';
 import 'package:school_app/features/teacher/parent/model/parent_note_student_model.dart';
 import 'package:school_app/features/teacher/parent/services/note_services.dart';
 
@@ -37,6 +38,30 @@ class NotesController extends ChangeNotifier {
     } finally {
       _isloading = false;
       notifyListeners();
+    }
+  }
+
+  // **********Get Notes by Note Id************
+  ParentNote? _parentNote;
+  ParentNote? get parentNote => _parentNote;
+  Future<void> getNotesByNoteId({required int noteId}) async {
+    _isloading = true;
+    notifyListeners(); // Notify the UI about the loading state
+    try {
+      // final teacherId = await SecureStorageService.getUserId();
+      final response = await NoteServices().getNoteById(noteId: noteId);
+      final responseData = response.data;
+      if (responseData is Map<String, dynamic>) {
+        // If the response is a single object.
+        _parentNote = ParentNote.fromJson(responseData);
+      } else {
+        log('Failed to fetch notes: ${response.statusCode}');
+      }
+    } catch (e) {
+      log('Error fetching notes: $e');
+    } finally {
+      _isloading = false;
+      notifyListeners(); // Notify the UI about the updated state
     }
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/features/teacher/parent/controller/notes_controller.dart';
 
 class NoteChatDetailPage extends StatefulWidget {
@@ -23,12 +24,10 @@ class _NoteChatDetailPageState extends State<NoteChatDetailPage> {
   @override
   void initState() {
     // context.read<StudentController>().getParentDetails();
-    //  WidgetsBinding.instance.addPostFrameCallback((_){
-    //   context
-    //     .read<NotesController>()
-    //     .getNotesByStudentId(studentId: widget.noteId);
-    // });
-    
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<NotesController>().getNotesByNoteId(noteId: widget.noteId);
+    });
+
     super.initState();
   }
 
@@ -70,109 +69,119 @@ class _NoteChatDetailPageState extends State<NoteChatDetailPage> {
         ),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Note Section
-            Container(
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.green[100],
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.note, color: Colors.green),
-                      SizedBox(width: 8),
-                      Text(
-                        "Note",
-                        style: TextStyle(
-                          color: Colors.green[900],
-                          fontWeight: FontWeight.bold,
-                        ),
+      body: Consumer<NotesController>(builder: (context, value, child) {
+        final parentNote = value.parentNote;
+        return value.isloading
+            ? Center(
+                child: Loading(
+                color: Colors.grey,
+              ))
+            : Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Note Section
+                    Container(
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.green[100],
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      Spacer(),
-                      Row(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(Icons.calendar_today,
-                              size: 14, color: Colors.white),
-                          SizedBox(width: 5),
+                          Row(
+                            children: [
+                              Icon(Icons.note, color: Colors.green),
+                              SizedBox(width: 8),
+                              Text(
+                                "Note",
+                                style: TextStyle(
+                                  color: Colors.green[900],
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Spacer(),
+                              Row(
+                                children: [
+                                  Icon(Icons.calendar_today,
+                                      size: 14, color: Colors.white),
+                                  SizedBox(width: 5),
+                                  Text(
+                                    '09/01/2001',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 10),
                           Text(
-                            '09/01/2001',
-                            style: TextStyle(color: Colors.white),
+                            parentNote?.data?.noteTitle ?? "",
+                            style: TextStyle(fontSize: 14, color: Colors.black),
                           ),
                         ],
                       ),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    "Bring his all books by tomorrow okay?????? understand??????????",
-                    style: TextStyle(fontSize: 14, color: Colors.black),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 20),
-
-            // Replies Section
-            Text(
-              "Replies",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 10),
-            //   _buildReply("shibu", "Why are you so mad?? don't you have any life",
-            //       'assets/angus.png'),
-            //  _buildReply("April Curtis", "What bro?", widget.parent.studentPhoto??""),
-
-            // Comment Input Field
-            Consumer<NotesController>(builder: (context, value, child) {
-              return ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: value.parentNoteStudent.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title:
-                          Text(value.parentNoteStudent[index].noteTitle ?? ""),
-                    );
-                  });
-            }),
-            Spacer(),
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: "Add a comment...",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: Colors.grey[200],
                     ),
-                  ),
+                    SizedBox(height: 20),
+
+                    // Replies Section
+                    Text(
+                      "Replies",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 10),
+                    //   _buildReply("shibu", "Why are you so mad?? don't you have any life",
+                    //       'assets/angus.png'),
+                    //  _buildReply("April Curtis", "What bro?", widget.parent.studentPhoto??""),
+
+                    // Comment Input Field
+                    Consumer<NotesController>(builder: (context, value, child) {
+                      return ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: value.parentNoteStudent.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              title: Text(
+                                  value.parentNoteStudent[index].noteTitle ??
+                                      ""),
+                            );
+                          });
+                    }),
+                    Spacer(),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            decoration: InputDecoration(
+                              hintText: "Add a comment...",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                                borderSide: BorderSide.none,
+                              ),
+                              filled: true,
+                              fillColor: Colors.grey[200],
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        CircleAvatar(
+                          backgroundColor: Colors.black,
+                          child: IconButton(
+                            icon: Icon(Icons.send, color: Colors.white),
+                            onPressed: () {
+                              // Handle send comment
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                SizedBox(width: 10),
-                CircleAvatar(
-                  backgroundColor: Colors.black,
-                  child: IconButton(
-                    icon: Icon(Icons.send, color: Colors.white),
-                    onPressed: () {
-                      // Handle send comment
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
+              );
+      }),
     );
   }
 
