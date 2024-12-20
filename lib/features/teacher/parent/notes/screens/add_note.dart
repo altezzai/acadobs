@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:school_app/base/controller/student_id_controller.dart';
 import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/button_loading.dart';
 //import 'package:go_router/go_router.dart';
 //import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/responsive.dart';
@@ -45,7 +46,7 @@ class _AddNoteState extends State<AddNote> {
 
     dropdownProvider = context.read<DropdownProvider>();
     studentIdController = context.read<StudentIdController>();
-    fileprovider=context.read<FilePickerProvider>();
+    fileprovider = context.read<FilePickerProvider>();
     // Clear dropdown selections when page loads
     WidgetsBinding.instance.addPostFrameCallback((_) {
       dropdownProvider.clearSelectedItem('classGrade');
@@ -142,7 +143,6 @@ class _AddNoteState extends State<AddNote> {
                     //     .map((id) => value.students
                     //         .firstWhere((student) => student['id'] == id))
                     //     .join(", "); // Concatenate names with a comma
-
                     return TextFormField(
                       decoration: InputDecoration(
                         hintText: "Select Students",
@@ -186,13 +186,15 @@ class _AddNoteState extends State<AddNote> {
                 height: Responsive.height * 2,
               ),
               CustomFilePicker(
-                label: 'Document', fieldName: 'note document',
+                label: 'Document',
+                fieldName: 'note document',
               ),
               SizedBox(
                 height: Responsive.height * 2,
               ),
-              Consumer<StudentIdController>(builder: (context, value, child) {
-                final studentIds = value.selectedStudentIds;
+              Consumer2<StudentIdController, NotesController>(
+                  builder: (context, value1, value2, child) {
+                final studentIds = value1.selectedStudentIds;
                 log(">>>>>>>>>>>>${studentIds.toString()}");
                 return CommonButton(
                   onPressed: () {
@@ -202,7 +204,8 @@ class _AddNoteState extends State<AddNote> {
                         title: _titleController.text,
                         description: _descriptionController.text);
                   },
-                  widget: Text('Submit'),
+                  widget:
+                      value2.isloadingTwo ? ButtonLoading() : Text('Submit'),
                 );
               }),
               // CustomButton(text: 'Submit', onPressed: (){})

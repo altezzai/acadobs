@@ -29,7 +29,6 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
     _tabController = TabController(length: 2, vsync: this);
   }
 
-  
   @override
   void dispose() {
     _tabController.dispose();
@@ -38,105 +37,105 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
 
   @override
   Widget build(BuildContext context) {
-     return LayoutBuilder(
-      builder: (context, constraints) {
-        Orientation orientation = MediaQuery.of(context).orientation;
-        Responsive().init(constraints, orientation);
-    return Scaffold(
-      body: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
-              return [
-         SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              children: [
-                SizedBox(height: Responsive.height * 2),
-                CustomAppbar(
-                  title: "Payments",
-                  isBackButton: false,
+    return LayoutBuilder(builder: (context, constraints) {
+      Orientation orientation = MediaQuery.of(context).orientation;
+      Responsive().init(constraints, orientation);
+      return Scaffold(
+        body: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              SliverToBoxAdapter(
+                  child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Column(children: [
+                        SizedBox(height: Responsive.height * 2),
+                        CustomAppbar(
+                          title: "Payments",
+                          isBackButton: false,
+                        ),
+                        SizedBox(height: Responsive.height * 2),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: AddButton(
+                                iconPath: paymentIcon,
+                                onPressed: () {
+                                  context.pushNamed(
+                                      AppRouteConst.AddPaymentRouteName);
+                                },
+                                text: "Add Payment",
+                              ),
+                            ),
+                            SizedBox(
+                                width: Responsive.width * 4), // 16px equivalent
+                            Expanded(
+                              child: AddButton(
+                                iconPath: donationIcon,
+                                onPressed: () {
+                                  context.pushNamed(
+                                      AppRouteConst.AddDonationRouteName);
+                                },
+                                text: "Add Donation",
+                              ),
+                            ),
+                          ],
+                        ),
+                        //SizedBox(height: 20),
+                      ]))),
+              SliverOverlapAbsorber(
+                handle:
+                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                sliver: SliverAppBar(
+                  pinned: true,
+                  backgroundColor: Colors.transparent,
+                  bottom: PreferredSize(
+                    preferredSize: const Size.fromHeight(0),
+                    child: TabBar(
+                      labelPadding: EdgeInsets.symmetric(
+                          horizontal: Responsive.width * 4),
+                      dividerHeight: 3,
+                      indicatorWeight: 3,
+                      dividerColor: Colors.grey,
+                      // indicatorPadding: EdgeInsets.symmetric(horizontal: 1),
+                      tabAlignment: TabAlignment.center,
+                      indicatorColor: Colors.black,
+                      unselectedLabelColor: Color(0xFF757575),
+                      unselectedLabelStyle: TextStyle(fontSize: 14),
+                      indicatorSize: TabBarIndicatorSize.tab,
+                      controller: _tabController,
+                      labelStyle: textThemeData.bodyMedium
+                          ?.copyWith(fontSize: 14, fontWeight: FontWeight.bold),
+                      tabs: [
+                        Tab(text: 'Payments'),
+                        Tab(text: 'Donations'),
+                      ],
+                    ),
+                  ),
                 ),
-                 SizedBox(
-                            height: Responsive.height * 2),
-                Row(
-                  children: [
-                    Expanded(
-                      child: AddButton(
-                        iconPath: paymentIcon,
-                        onPressed: () {
-                          context.pushNamed(AppRouteConst.AddPaymentRouteName);
-                        },
-                        text: "Add Payment",
-                      ),
-                    ),
-                     SizedBox(                                width: Responsive.width * 4), // 16px equivalent
-                    Expanded(
-                      child: AddButton(
-                        iconPath: donationIcon,
-                        onPressed: () {
-                          context.pushNamed(AppRouteConst.AddDonationRouteName);
-                        },
-                        text: "Add Donation",
-                      ),
-                    ),
-                  ],
-                ),
-                //SizedBox(height: 20),
-         
-                ]))),
-                SliverOverlapAbsorber(
-                  handle:
-                      NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                  sliver: SliverAppBar(
-                    pinned: true,
-                    backgroundColor: Colors.transparent,
-                    bottom: PreferredSize(
-                      preferredSize: const Size.fromHeight(0),
-                      child: TabBar(
-                        labelPadding: EdgeInsets.symmetric(
-                            horizontal: Responsive.width * 4),
-                        dividerHeight: 3,
-                        indicatorWeight: 3,
-                        dividerColor: Colors.grey,
-                        // indicatorPadding: EdgeInsets.symmetric(horizontal: 1),
-                        tabAlignment: TabAlignment.center,
-                        indicatorColor: Colors.black,
-                        unselectedLabelColor: Color(0xFF757575),
-                        unselectedLabelStyle: TextStyle(fontSize: 14),
-                        indicatorSize: TabBarIndicatorSize.tab,
-                        controller: _tabController,
-                        labelStyle: textThemeData.bodyMedium?.copyWith(
-                            fontSize: 14, fontWeight: FontWeight.bold),
-                        tabs: [
-                          Tab(text: 'Payments'),
-                          Tab(text: 'Donations'),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),];
-                },
-                body: Padding(
-              padding: EdgeInsets.only(top: Responsive.height * 14),
-              child: TabBarView(
-                controller: _tabController,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                    ),
-                    child: _buildPaymentsList(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: _buildDonationsList(),
-                  ),
-                ],
               ),
+            ];
+          },
+          body: Padding(
+            padding: EdgeInsets.only(top: Responsive.height * 14),
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                  ),
+                  child: _buildPaymentsList(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: _buildDonationsList(),
+                ),
+              ],
             ),
-      ),
-    );
-      });
+          ),
+        ),
+      );
+    });
   }
 
   /// Reusable function to group items by date.
@@ -194,7 +193,7 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
     context.read<PaymentController>().getPayments();
     return Consumer<PaymentController>(builder: (context, value, child) {
       if (value.isloading) {
-       return Loading(
+        return Loading(
           color: Colors.grey,
         );
       }
@@ -211,25 +210,27 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
         final topRadius = isFirst ? 16 : 0;
         final bottomRadius = isLast ? 16 : 0;
 
-      return  Padding(
-        padding: const EdgeInsets.only(bottom: 1.5),
-        child:value.payments.isEmpty ? Center(child: Text("No Payments Found!"),) : PaymentItem(
-                      bottomRadius: bottomRadius.toDouble(),
-            topRadius: topRadius.toDouble(),
-                      amount: payment.amountPaid ?? "",
-                      name: capitalizeFirstLetter(payment.fullName ?? ""),
-                      time: TimeFormatter.formatTimeFromString(
-                          payment.createdAt.toString()),
-                      status: payment.paymentStatus ?? "",
-                      onTap: () {
-                        context.pushNamed(
-                          AppRouteConst.PaymentViewRouteName,
-                          extra: payment,
-                        );
-                      },
-                    )
-                  
-                 );
+        return Padding(
+            padding: const EdgeInsets.only(bottom: 1.5),
+            child: value.payments.isEmpty
+                ? Center(
+                    child: Text("No Payments Found!"),
+                  )
+                : PaymentItem(
+                    bottomRadius: bottomRadius.toDouble(),
+                    topRadius: topRadius.toDouble(),
+                    amount: payment.amountPaid ?? "",
+                    name: capitalizeFirstLetter(payment.fullName ?? ""),
+                    time: TimeFormatter.formatTimeFromString(
+                        payment.createdAt.toString()),
+                    status: payment.paymentStatus ?? "",
+                    onTap: () {
+                      context.pushNamed(
+                        AppRouteConst.PaymentViewRouteName,
+                        extra: payment,
+                      );
+                    },
+                  ));
       });
     });
   }
@@ -238,11 +239,8 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
     context.read<PaymentController>().getDonations();
     return Consumer<PaymentController>(builder: (context, value, child) {
       if (value.isloading) {
-        return 
-            Loading(
-              color: Colors.grey,
-            
-          
+        return Loading(
+          color: Colors.grey,
         );
       }
 
@@ -252,37 +250,38 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
             DateTime.tryParse(donation.donationDate.toString()) ??
             DateTime.now(),
       );
-        return _buildGroupedList(groupedDonations, (donation, index, total) {
+      return _buildGroupedList(groupedDonations, (donation, index, total) {
         final isFirst = index == 0;
         final isLast = index == total - 1;
         final topRadius = isFirst ? 16 : 0;
         final bottomRadius = isLast ? 16 : 0;
 
-      return 
-       Padding(
-        padding: const EdgeInsets.only(bottom: 1.5),
-         child:value.donations.isEmpty ? Center(child: Text("No Donations Found!"),) :  PaymentItem(
-          bottomRadius: bottomRadius.toDouble(),
-              topRadius: topRadius.toDouble(),
-                        amount: donation.amountDonated ?? "",
-                        name: capitalizeFirstLetter(donation.fullName ?? ""),
-                        time: TimeFormatter.formatTimeFromString(
-                            donation.createdAt.toString()),
-                        status: donation.purpose ?? "",
-                        onTap: () {
-                          context.pushNamed(
-                            AppRouteConst.DonationViewRouteName,
-                            extra: donation,
-                          );
-                        },
-                    
-                   ),
-       );
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 1.5),
+          child: value.donations.isEmpty
+              ? Center(
+                  child: Text("No Donations Found!"),
+                )
+              : PaymentItem(
+                  bottomRadius: bottomRadius.toDouble(),
+                  topRadius: topRadius.toDouble(),
+                  amount: donation.amountDonated ?? "",
+                  name: capitalizeFirstLetter(donation.fullName ?? ""),
+                  time: TimeFormatter.formatTimeFromString(
+                      donation.createdAt.toString()),
+                  status: donation.purpose ?? "",
+                  onTap: () {
+                    context.pushNamed(
+                      AppRouteConst.DonationViewRouteName,
+                      extra: donation,
+                    );
+                  },
+                ),
+        );
       });
     });
   }
 
- 
   Widget _buildGroupedList<T>(Map<String, List<T>> groupedItems,
       Widget Function(T, int, int) buildItem) {
     return SingleChildScrollView(
@@ -313,7 +312,8 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
       ),
     );
   }
-   Widget _buildDateHeader(String date) {
+
+  Widget _buildDateHeader(String date) {
     return Padding(
       padding: EdgeInsets.only(
         top: Responsive.height * 2, // 20px equivalent
@@ -336,80 +336,3 @@ extension DateOnlyCompare on DateTime {
         this.day == other.day;
   }
 }
-
-
-// ******************Payment in report page***************************
-  // Widget _buildClassDivisionPayment({required BuildContext context}) {
-  //   return Column(
-  //     children: [
-  //       Row(
-  //         children: [
-  //           Expanded(
-  //             child: CustomDropdown(
-  //               dropdownKey: 'class',
-  //               label: 'Class',
-  //               items: ['8', '9', '10'],
-  //               icon: Icons.school,
-  //               onChanged: (selectedClass) {
-  //                 final selectedDivision = context
-  //                     .read<DropdownProvider>()
-  //                     .getSelectedItem('division');
-  //                 context
-  //                     .read<PaymentController>()
-  //                     .getPaymentsByClassAndDivision(
-  //                       className: selectedClass,
-  //                       section: selectedDivision,
-  //                     );
-  //               },
-  //             ),
-  //           ),
-  //           const SizedBox(width: 5),
-  //           Expanded(
-  //             child: CustomDropdown(
-  //               dropdownKey: 'division',
-  //               label: 'Division',
-  //               items: ['A', 'B', 'C'],
-  //               icon: Icons.group,
-  //               onChanged: (selectedDivision) {
-  //                 final selectedClass =
-  //                     context.read<DropdownProvider>().getSelectedItem('class');
-  //                 context
-  //                     .read<PaymentController>()
-  //                     .getPaymentsByClassAndDivision(
-  //                       className: selectedClass,
-  //                       section: selectedDivision,
-  //                     );
-  //               },
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //       SizedBox(height: 10),
-  //       Expanded(
-  //         child: Consumer<PaymentController>(
-  //           builder: (context, value, child) {
-              
-  //             return ListView.builder(
-  //               padding: EdgeInsets.zero,
-  //               itemCount: value.payments.length,
-  //               itemBuilder: (context, index) {
-  //                 final payment = value.payments[index];
-  //                 return Padding(
-  //                   padding: const EdgeInsets.symmetric(vertical: 4),
-  //                   child: PaymentItem(
-  //                     amount: payment.amountPaid ?? "",
-  //                     name: payment.fullName ?? "",
-  //                     time: TimeFormatter.formatTimeFromString(
-  //                         payment.createdAt.toString()),
-  //                     status: payment.paymentStatus ?? "",
-  //                   ),
-  //                 );
-  //               },
-  //             );
-  //           },
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
-  // ******************End of Payment in report page***************************//

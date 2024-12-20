@@ -5,9 +5,7 @@ import 'dart:developer';
 //import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/services/secure_storage_services.dart';
 import 'package:school_app/features/admin/student/model/day_attendance_status.dart';
 import 'package:school_app/features/admin/student/model/student_data.dart';
@@ -194,7 +192,7 @@ class StudentController extends ChangeNotifier {
           bloodGroup: bloodGroup,
           studentPhotoPath: studentPhoto,
           aadhaarCard: aadharPhoto);
-      if (response.statusCode == 201) {
+      if (response.statusCode == 201 || response.statusCode == 200) {
         log(">>>>>>>>>>>>>Student Added}");
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -204,7 +202,7 @@ class StudentController extends ChangeNotifier {
         );
         // Navigate to the desired route
 
-        context.pushNamed(AppRouteConst.AdminstudentRouteName);
+        Navigator.pop(context);
       } else {
         // Handle failure case here if needed
         ScaffoldMessenger.of(context).showSnackBar(
@@ -311,10 +309,12 @@ class StudentController extends ChangeNotifier {
     _isloading = false;
     notifyListeners();
   }
- void clearParentList() {
+
+  void clearParentList() {
     _filteredparents.clear();
     notifyListeners();
   }
+
   // Day Attendance Status List
   List<DayAttendanceStatus> _dayAttendanceStatus = [];
   List<DayAttendanceStatus> get dayAttendanceStatus => _dayAttendanceStatus;

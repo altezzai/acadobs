@@ -20,7 +20,7 @@ class NotesController extends ChangeNotifier {
     required String title,
     required String description,
   }) async {
-    _isloading = true;
+    _isloadingTwo = true;
     notifyListeners();
     try {
       final teacherId = await SecureStorageService.getUserId();
@@ -36,7 +36,7 @@ class NotesController extends ChangeNotifier {
     } catch (e) {
       log(e.toString());
     } finally {
-      _isloading = false;
+      _isloadingTwo = false;
       notifyListeners();
     }
   }
