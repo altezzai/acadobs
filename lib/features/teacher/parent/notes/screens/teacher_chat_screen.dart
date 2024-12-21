@@ -9,16 +9,16 @@ import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/features/teacher/parent/controller/notes_controller.dart';
 import 'package:school_app/features/teacher/parent/model/parent_note_student_model.dart';
 
-class ChatDetailPage extends StatefulWidget {
+class TeacherChatScreen extends StatefulWidget {
   final NoteData studentNote;
 
-  ChatDetailPage({super.key, required this.studentNote});
+  TeacherChatScreen({super.key, required this.studentNote});
 
   @override
-  State<ChatDetailPage> createState() => _ChatDetailPageState();
+  State<TeacherChatScreen> createState() => _TeacherChatScreenState();
 }
 
-class _ChatDetailPageState extends State<ChatDetailPage> {
+class _TeacherChatScreenState extends State<TeacherChatScreen> {
   // ChatDetailPage({
   final TextEditingController _chatController = TextEditingController();
   late NotesController notesController;

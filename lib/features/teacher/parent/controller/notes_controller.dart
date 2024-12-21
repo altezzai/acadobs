@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:school_app/base/services/secure_storage_services.dart';
+import 'package:school_app/features/teacher/parent/model/parent_chat_model.dart';
 import 'package:school_app/features/teacher/parent/model/parent_note_model.dart';
 import 'package:school_app/features/teacher/parent/model/parent_note_student_model.dart';
 import 'package:school_app/features/teacher/parent/services/note_services.dart';
@@ -31,6 +32,7 @@ class NotesController extends ChangeNotifier {
           description: description);
       if (response.statusCode == 200 || response.statusCode == 201) {
         log("Note Added Successfully");
+        await getNotesByTeacherId();
         Navigator.pop(context);
       }
     } catch (e) {
@@ -54,6 +56,7 @@ class NotesController extends ChangeNotifier {
       if (responseData is Map<String, dynamic>) {
         // If the response is a single object.
         _parentNote = ParentNote.fromJson(responseData);
+        log("Parent note: ${_parentNote.toString()}");
       } else {
         log('Failed to fetch notes: ${response.statusCode}');
       }
@@ -177,6 +180,93 @@ class NotesController extends ChangeNotifier {
       log(e.toString());
     } finally {
       _isloadingTwo = false;
+      notifyListeners();
+    }
+  }
+
+  // *********Get teacherChatId from teacherId************
+  int _teacherChatId = 0;
+  int get teacherChatId => _teacherChatId;
+  Future<int> getTeacherChatIdFromTeacherId({required int teacherId}) async {
+    _isloading = true;
+    notifyListeners();
+    try {
+      final response =
+          await NoteServices().getTeacherChatId(teacherId: teacherId);
+
+      if (response.statusCode == 200) {
+        // Update _teacherChatId and return it
+        _teacherChatId = response.data["teacher_id"] ?? 0;
+        return _teacherChatId;
+      } else {
+        log('Failed to fetch teacher chat ID. Status code: ${response.statusCode}');
+        return 0; // Return a default value on failure
+      }
+    } catch (e) {
+      log('Error fetching teacher chat ID: $e');
+      return 0; // Return a default value on error
+    } finally {
+      _isloading = false;
+      notifyListeners(); // Notify the UI that the loading process has ended
+    }
+  }
+
+  // ******************Parent Note Chat******************
+  Future<void> sendParentNoteChat(
+      {required int parentNoteId,
+      required bool isTeacher,
+      required int receiverId,
+      required String message,
+      required String senderRole}) async {
+    _isloadingTwo = true;
+    notifyListeners();
+    try {
+      final senderId = await SecureStorageService.getChatId();
+      final response = await NoteServices().parentNoteChat(
+          parentNoteId: parentNoteId,
+          senderId: senderId ?? 0,
+          receiverId: receiverId,
+          message: message,
+          senderRole: senderRole);
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        log(("Parent Note Chat response: ${response.data.toString()}"));
+        await getAllParentNoteChat(
+            parentNoteId: parentNoteId,
+            teacherId: isTeacher ? senderId ?? 0 : receiverId,
+            studentId: isTeacher ? receiverId : senderId ?? 0);
+      }
+    } catch (e) {
+      log(e.toString());
+    } finally {
+      _isloadingTwo = false;
+      notifyListeners();
+    }
+  }
+
+  // ************Get parent note chta***************
+  List<ParentChat> _parentChat = [];
+  List<ParentChat> get parentChat => _parentChat;
+  Future<void> getAllParentNoteChat(
+      {required int parentNoteId,
+      required int teacherId,
+      required int studentId}) async {
+    _isloading = true;
+    try {
+      final response = await NoteServices().getAllMessages(
+          parentNoteId: parentNoteId,
+          teacherId: teacherId,
+          studentId: studentId);
+      _parentChat.clear();
+      if (response.statusCode == 200) {
+        _parentChat = (response.data as List<dynamic>)
+            .map((result) => ParentChat.fromJson(result))
+            .toList();
+        log(_parentChat.toString());
+      }
+    } catch (e) {
+      log(e.toString());
+    } finally {
+      _isloading = false;
       notifyListeners();
     }
   }
