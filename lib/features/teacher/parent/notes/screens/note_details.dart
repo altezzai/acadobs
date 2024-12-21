@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/features/teacher/parent/controller/notes_controller.dart';
 
@@ -141,12 +142,28 @@ class _NoteChatDetailPageState extends State<NoteChatDetailPage> {
                     Consumer<NotesController>(builder: (context, value, child) {
                       return ListView.builder(
                           shrinkWrap: true,
-                          itemCount: value.parentNoteStudent.length,
+                          itemCount: value
+                              .parentNote?.data?.ParentNoteStudents?.length,
                           itemBuilder: (context, index) {
-                            return ListTile(
-                              title: Text(
-                                  value.parentNoteStudent[index].noteTitle ??
-                                      ""),
+                            final studentDetail = value.parentNote?.data
+                                ?.ParentNoteStudents![index].student;
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 4),
+                              child: InkWell(
+                                onTap:() {
+                                  
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 12, vertical: 14),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Text(capitalizeEachWord(
+                                      studentDetail?.fullName ?? "")),
+                                ),
+                              ),
                             );
                           });
                     }),

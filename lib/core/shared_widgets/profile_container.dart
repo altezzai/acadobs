@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:school_app/base/utils/constants.dart';
 import 'package:school_app/base/utils/responsive.dart';
@@ -41,12 +42,27 @@ class ProfileContainer extends StatelessWidget {
             Positioned(
               bottom: -avatarRadius * 0.5,
               child: Container(
+                width: 75,
+                height: 75,
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(color: whiteColor, width: 2)),
-                child: CircleAvatar(
-                  radius: avatarRadius,
-                  backgroundImage: NetworkImage(imagePath),
+                child: ClipOval(
+                  child: CachedNetworkImage(
+                    imageUrl: imagePath,
+                    placeholder: (context, url) =>
+                        const CircularProgressIndicator(
+                      color: Colors.grey,
+                    ),
+                    errorWidget: (context, url, error) => CircleAvatar(
+                      radius: 26,
+                      backgroundColor: Colors.transparent,
+                      backgroundImage: AssetImage(
+                        "assets/icons/avatar.png",
+                      ),
+                    ),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),

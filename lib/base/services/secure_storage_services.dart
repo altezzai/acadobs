@@ -48,6 +48,12 @@ class SecureStorageService {
     return user?['user_type'];
   }
 
+  /// Get chatId
+  static Future<int?> getChatId() async {
+    final user = await getUser();
+    return user?['id'];
+  }
+
   /// Delete all stored data
   static Future<void> clearSecureStorage() async {
     await _storage.deleteAll();
