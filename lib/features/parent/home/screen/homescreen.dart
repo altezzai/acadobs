@@ -411,6 +411,12 @@ class _HomePageState extends State<HomePage> {
                                   return Padding(
                                     padding: const EdgeInsets.only(bottom: 8),
                                     child: EventCard(
+                                      onTap: () {
+                                        context.pushNamed(
+                                            AppRouteConst
+                                                .EventDetailedPageRouteName,
+                                            extra: value.events[index]);
+                                      },
                                       bottomRadius: 16,
                                       topRadius: 16,
                                       eventDescription:
