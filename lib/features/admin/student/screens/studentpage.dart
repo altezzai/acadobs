@@ -159,7 +159,7 @@ class _StudentsPageState extends State<StudentsPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset(
-                        'assets/money.png',
+                        'assets/empty.png',
                         height: Responsive.height * 45,
                       ),
                       const SizedBox(height: 16),
@@ -174,7 +174,7 @@ class _StudentsPageState extends State<StudentsPage> {
                 // Show message after filtering with no results
                 return Center(
                   child: Text(
-                    'No Reports Found',
+                    'No Students Found',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 );
