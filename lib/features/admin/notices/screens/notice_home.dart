@@ -269,6 +269,10 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
         return Padding(
           padding: const EdgeInsets.only(bottom: 1.5),
           child: EventCard(
+            onTap: () {
+              context.pushNamed(AppRouteConst.EventDetailedPageRouteName,
+                  extra: event);
+            },
             bottomRadius: bottomRadius.toDouble(),
             topRadius: topRadius.toDouble(),
             eventTitle: event.title ?? "",

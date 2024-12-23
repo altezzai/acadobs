@@ -13,6 +13,7 @@ import 'package:school_app/features/admin/duties/screens/view_duty.dart';
 import 'package:school_app/features/admin/leave_request/screens/leaveRequest_page.dart';
 import 'package:school_app/features/admin/leave_request/screens/student_leaveRequest_details.dart';
 import 'package:school_app/features/admin/leave_request/screens/teacher_leaveRequest_details.dart';
+import 'package:school_app/features/admin/notices/models/event_model.dart';
 import 'package:school_app/features/admin/notices/screens/add_event.dart';
 import 'package:school_app/features/admin/notices/screens/add_notice.dart';
 import 'package:school_app/features/admin/payments/model/donation_model.dart';
@@ -21,7 +22,6 @@ import 'package:school_app/features/admin/payments/screens/add_donation.dart';
 import 'package:school_app/features/admin/payments/screens/add_payment.dart';
 import 'package:school_app/features/admin/payments/screens/donation_view.dart';
 import 'package:school_app/features/admin/payments/screens/payment_view.dart';
-
 import 'package:school_app/features/admin/reports/screens/payment.dart';
 import 'package:school_app/features/admin/reports/screens/student_report.dart';
 import 'package:school_app/features/admin/reports/screens/teacher_report.dart';
@@ -491,13 +491,10 @@ class Approuter {
         name: AppRouteConst.EventDetailedPageRouteName,
         path: '/eventdetailedpage',
         pageBuilder: (context, state) {
-          final eventData = state.extra as Map<String, dynamic>;
+          final eventData = state.extra as Event;
           return MaterialPage(
               child: EventDetailPage(
-            title: eventData['title'],
-            description: eventData['description'],
-            date: eventData['date'],
-            imageProvider: eventData['imageProvider'],
+            event: eventData,
           ));
         },
       ),
@@ -590,7 +587,7 @@ class Approuter {
           return MaterialPage(child: TeacherReport());
         },
       ),
-     
+
       GoRoute(
         name: AppRouteConst.teacherSelectionRouteName,
         path: '/teacherSelection',
