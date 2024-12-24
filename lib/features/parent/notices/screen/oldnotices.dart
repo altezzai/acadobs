@@ -88,6 +88,7 @@ class _NoticePageState extends State<NoticePage> {
                       time: TimeFormatter.formatTimeFromString(
                           value.notices[index].createdAt.toString()),
                       fileUpload: value.notices[index].fileUpload ?? "",
+                      onTap: () {},
                     );
                   },
                 );

@@ -101,7 +101,7 @@ class NoticeDetailPage extends StatelessWidget {
                 return PopupMenuButton<String>(
                   onSelected: (String value) {
                     if (value == 'delete') {
-                      noticeController.deleteNotices(
+                      noticeController.deleteNotices(context,
                           noticeId: notice.id!); // Pass the notice ID
                       Navigator.pop(
                           context); // Close the detailed screen after deletion

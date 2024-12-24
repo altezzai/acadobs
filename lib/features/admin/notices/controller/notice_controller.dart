@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/admin/notices/models/event_model.dart';
 import 'package:school_app/features/admin/notices/models/notice_model.dart';
@@ -188,7 +189,8 @@ class NoticeController extends ChangeNotifier {
   }
 
 // delete notices
-  Future<void> deleteNotices({required int noticeId}) async {
+  Future<void> deleteNotices(BuildContext context,
+      {required int noticeId}) async {
     _isloading = true;
     try {
       final response = await NoticeServices().deleteNotices(noticeId: noticeId);
@@ -196,6 +198,8 @@ class NoticeController extends ChangeNotifier {
       // print(response.toString());
       if (response.statusCode == 200 || response.statusCode == 201) {
         log("notice deleted successfully.");
+        CustomSnackbar.show(context,
+            message: 'Deleted successfully', type: SnackbarType.info);
       }
     } catch (e) {
       // print(e);
@@ -206,7 +210,8 @@ class NoticeController extends ChangeNotifier {
   }
 
 // delete events
-  Future<void> deleteEvents({required int eventId}) async {
+  Future<void> deleteEvents(BuildContext context,
+      {required int eventId}) async {
     _isloading = true;
     // notifyListeners();
     try {
@@ -215,6 +220,8 @@ class NoticeController extends ChangeNotifier {
       // print(response.toString());
       if (response.statusCode == 200 || response.statusCode == 201) {
         log("event deleted successfully.");
+        CustomSnackbar.show(context,
+            message: 'Deleted successfully', type: SnackbarType.info);
       }
     } catch (e) {
       // print(e);

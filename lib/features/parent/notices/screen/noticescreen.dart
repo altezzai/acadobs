@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 // import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/routes/app_route_config.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
 // import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 // import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
 import 'package:school_app/features/parent/notices/widget/noticecard.dart';
@@ -103,6 +107,14 @@ class _NoticePageState extends State<NoticePage> {
                             time: TimeFormatter.formatTimeFromString(
                                 notice.createdAt.toString()),
                             fileUpload: notice.fileUpload ?? "",
+                            onTap: () {
+                              context.pushNamed(
+                                  AppRouteConst.NoticeDetailedPageRouteName,
+                                  extra: NoticeDetailArguments(
+                                    notice: notice,
+                                    userType: UserType.parent,
+                                  ));
+                            },
                           );
                         },
                       )
@@ -133,6 +145,14 @@ class _NoticePageState extends State<NoticePage> {
                             time: TimeFormatter.formatTimeFromString(
                                 notice.createdAt.toString()),
                             fileUpload: notice.fileUpload ?? "",
+                            onTap: () {
+                              context.pushNamed(
+                                  AppRouteConst.NoticeDetailedPageRouteName,
+                                  extra: NoticeDetailArguments(
+                                    notice: notice,
+                                    userType: UserType.parent,
+                                  ));
+                            },
                           );
                         },
                       )
@@ -163,6 +183,14 @@ class _NoticePageState extends State<NoticePage> {
                             time: TimeFormatter.formatTimeFromString(
                                 notice.createdAt.toString()),
                             fileUpload: notice.fileUpload ?? "",
+                            onTap: () {
+                              context.pushNamed(
+                                  AppRouteConst.NoticeDetailedPageRouteName,
+                                  extra: NoticeDetailArguments(
+                                    notice: notice,
+                                    userType: UserType.parent,
+                                  ));
+                            },
                           );
                         },
                       )
