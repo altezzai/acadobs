@@ -154,24 +154,30 @@ class NoticeController extends ChangeNotifier {
   //     log('Error picking image: $e');
   //   }
   // }
+  // ignore: unused_field
   final ImagePicker _picker = ImagePicker();
   List<XFile> _chosenFiles = []; // List to store selected images
 
   List<XFile>? get chosenFiles => _chosenFiles;
 
-  // Function to pick multiple images from the gallery
   Future<void> pickMultipleImages() async {
     try {
-      final pickedFiles = await _picker.pickMultiImage();
-      if (pickedFiles.isNotEmpty) {
-        log('Picked files count: ${pickedFiles.length}');
-        _chosenFiles = pickedFiles;
-        notifyListeners(); // Notify listeners to rebuild UI
-      } else {
-        log('No images selected.');
+      final ImagePicker picker = ImagePicker();
+      final List<XFile>? selectedImages = await picker.pickMultiImage();
+
+      if (selectedImages != null && selectedImages.isNotEmpty) {
+        _chosenFiles.addAll(selectedImages); // Append new images
+        notifyListeners();
       }
     } catch (e) {
-      log('Error picking images: $e');
+      print("Error picking images: $e");
+    }
+  }
+
+  void removeImage(int index) {
+    if (index >= 0 && index < _chosenFiles.length) {
+      _chosenFiles.removeAt(index);
+      notifyListeners();
     }
   }
 

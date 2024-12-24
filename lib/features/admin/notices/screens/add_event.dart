@@ -61,32 +61,6 @@ class _AddEventPageState extends State<AddEventPage> {
                   fontSize: 16,
                 ),
               ),
-              SizedBox(height: 16),
-
-              // Add Cover Photo
-              // GestureDetector(
-              //   onTap: pickCoverPhoto, // Call pickCoverPhoto here
-              //   child: Container(
-              //     height: 150,
-              //     decoration: BoxDecoration(
-              //       border: Border.all(color: Colors.grey),
-              //       borderRadius: BorderRadius.circular(30),
-              //     ),
-              //     child: Center(
-              //       child: Column(
-              //         mainAxisAlignment: MainAxisAlignment.center,
-              //         children: [
-              //           Icon(Icons.camera_alt, size: 40),
-              //           SizedBox(height: 8),
-              //           Text(
-              //             coverPhoto ?? 'Add Cover Photo',
-              //             style: TextStyle(fontSize: 16),
-              //           ),
-              //         ],
-              //       ),
-              //     ),
-              //   ),
-              // ),
               SizedBox(height: 12),
 
               // Add Cover Photo
@@ -96,8 +70,7 @@ class _AddEventPageState extends State<AddEventPage> {
                 },
                 child: Consumer<NoticeController>(
                   builder: (context, noticeController, _) {
-                    final files =
-                        noticeController.chosenFiles; // Access the chosen files
+                    final files = noticeController.chosenFiles;
                     return Container(
                       height: 150,
                       width: double.infinity,
@@ -111,18 +84,44 @@ class _AddEventPageState extends State<AddEventPage> {
                                   Axis.horizontal, // Horizontal scrolling
                               itemCount: files.length,
                               itemBuilder: (context, index) {
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: Image.file(
-                                      File(files[index].path),
-                                      fit: BoxFit.cover,
-                                      height: 150,
-                                      width: 100, // Adjust width as needed
+                                return Stack(
+                                  children: [
+                                    // Display the image
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: Image.file(
+                                          File(files[index].path),
+                                          fit: BoxFit.cover,
+                                          height: 150,
+                                          width: 100,
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                    // Cancel icon to remove the image
+                                    Positioned(
+                                      top: 5,
+                                      right: 15,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          context
+                                              .read<NoticeController>()
+                                              .removeImage(index);
+                                        },
+                                        child: CircleAvatar(
+                                          radius: 12,
+                                          backgroundColor: Colors.grey,
+                                          child: Icon(
+                                            Icons.close,
+                                            color: Colors.white,
+                                            size: 16,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 );
                               },
                             )
@@ -208,19 +207,6 @@ class _AddEventPageState extends State<AddEventPage> {
                   widget: value.isloadingTwo ? Loading() : Text('Submit'),
                 );
               }),
-              // Center(
-              //   child: CustomButton(
-              //     text: 'Submit',
-              //     onPressed: () {
-              //       context.read<NoticeController>().addEvent(
-              //             context,
-              //             title: _titleController.text,
-              //             description: _descriptionController.text,
-              //             date: _dateController.text,
-              //           );
-              //     },
-              //   ),
-              // ),
             ],
           ),
         ),
