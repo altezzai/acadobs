@@ -15,9 +15,9 @@ import 'package:school_app/features/admin/student/services/studentservice.dart';
 class StudentController extends ChangeNotifier {
   bool _isloading = false;
   bool get isloading => _isloading;
-  bool _isFiltered = false;  // New flag to track filtering
-  bool get isFiltered => _isFiltered;  // Public getter to access the filter state
-
+  bool _isFiltered = false; // New flag to track filtering
+  bool get isFiltered =>
+      _isFiltered; // Public getter to access the filter state
 
   List<Student> _students = [];
   List<Student> get students => _students;
@@ -272,9 +272,10 @@ class StudentController extends ChangeNotifier {
     _filteredstudents.clear();
     notifyListeners();
   }
-   void resetFilter() {
+
+  void resetFilter() {
     _isFiltered = false;
-    
+
     notifyListeners(); // Notify listeners to update the UI
   }
 
@@ -327,12 +328,19 @@ class StudentController extends ChangeNotifier {
     notifyListeners();
   }
 
+  // ****************DAILY ATTENDANCE STATUS*************************
+
   // Day Attendance Status List
   List<DayAttendanceStatus> _dayAttendanceStatus = [];
   List<DayAttendanceStatus> get dayAttendanceStatus => _dayAttendanceStatus;
 
   // Selected Date
-  DateTime _selectedDate = DateTime.now();
+  DateTime _selectedDate = DateTime(
+    DateTime.now().year,
+    DateTime.now().month,
+    DateTime.now().day,
+  ); // Current date with time set to 00:00:00.000
+
   DateTime get selectedDate => _selectedDate;
 
   // Loading State
@@ -360,23 +368,34 @@ class StudentController extends ChangeNotifier {
   }
 
   // Update Date and Fetch Data
-  Future<void> updateDate(DateTime newDate, {required String studentId}) async {
+  Future<void> updateDate(DateTime newDate,
+      {required String studentId, bool forBuildScreen = false}) async {
+    _isloading = true;
     _selectedDate = newDate;
+    notifyListeners();
     await getDayAttendance(
         studentId: studentId); // Automatically fetch attendance
+    _isloading = false;
+    notifyListeners();
   }
 
   // Fetch Attendance Data
-  Future<void> getDayAttendance({required String studentId}) async {
+  Future<void> getDayAttendance(
+      {required String studentId, bool forBuildScreen = false}) async {
     _isLoadingTwo = true;
     notifyListeners();
-
+    final date = DateTime(
+      DateTime.now().year,
+      DateTime.now().month,
+      DateTime.now().day,
+    );
     try {
       final response = await StudentServices().getDayAttendance(
         studentId: studentId,
-        date: _selectedDate.toIso8601String(),
+        date:
+            forBuildScreen ? date.toString() : _selectedDate.toIso8601String(),
       );
-      log("Attendance Response: ${response.data}");
+      log("Attendance Response: ${response.data} with date: ${_selectedDate.toString()}");
 
       if (response.statusCode == 200) {
         // Map API Response to Model
@@ -397,35 +416,5 @@ class StudentController extends ChangeNotifier {
       notifyListeners(); // Notify listeners once at the end
     }
   }
-
-  // get today attendance
-  Future<void> getTodayAttendance({required String studentId}) async {
-    // _selectedDate = DateTime.now();
-    try {
-      final response = await StudentServices().getDayAttendance(
-        studentId: studentId,
-        date: DateTime.now().toString(),
-      );
-      log("Attendance Response: ${response.data}");
-
-      if (response.statusCode == 200) {
-        // Map API Response to Model
-        _dayAttendanceStatus = (response.data as List<dynamic>)
-            .map((result) => DayAttendanceStatus.fromJson(result))
-            .toList();
-        notifyListeners();
-      } else {
-        // Handle non-200 response (optional)
-        _dayAttendanceStatus = [];
-        log("Non-200 response: ${response.statusCode}");
-      }
-    } catch (e) {
-      // Handle API Errors
-      log("Error fetching attendance: $e");
-      _dayAttendanceStatus = [];
-    } finally {
-      // Notify Listeners after every attempt
-      notifyListeners();
-    }
-  }
+  // ***********END OF DAILY ATTENDANCE STATUS********************//
 }
