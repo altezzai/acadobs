@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/constants.dart';
@@ -8,6 +9,7 @@ import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/base/utils/urls.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/add_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/admin/duties/widgets/duty_card.dart';
@@ -236,7 +238,13 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
             date: DateFormatter.formatDateString(notice.date.toString()),
             time:
                 TimeFormatter.formatTimeFromString(notice.createdAt.toString()),
-            onTap: () {},
+            onTap: () {
+              context.pushNamed(
+                AppRouteConst.NoticeDetailedPageRouteName,
+                extra: NoticeDetailArguments(
+                    notice: notice, userType: UserType.admin),
+              );
+            },
             description: notice.description ?? "",
             fileUpload: notice.fileUpload ?? "",
           ),
@@ -270,8 +278,11 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
           padding: const EdgeInsets.only(bottom: 1.5),
           child: EventCard(
             onTap: () {
-              context.pushNamed(AppRouteConst.EventDetailedPageRouteName,
-                  extra: event);
+              context.pushNamed(
+                AppRouteConst.EventDetailedPageRouteName,
+                extra: EventDetailArguments(
+                    event: event, userType: UserType.admin),
+              );
             },
             bottomRadius: bottomRadius.toDouble(),
             topRadius: topRadius.toDouble(),

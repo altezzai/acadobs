@@ -30,8 +30,9 @@ class NoticeServices {
     String? className,
     String? division,
   }) async {
-     final fileUpload = context.read<FilePickerProvider>().getFile('notice file');
-                    final fileUploadPath=fileUpload?.path;
+    final fileUpload =
+        context.read<FilePickerProvider>().getFile('notice file');
+    final fileUploadPath = fileUpload?.path;
     // final fileProvider =
     //     Provider.of<FilePickerProvider>(context, listen: false);
     // Create the form data to pass to the API
@@ -42,11 +43,12 @@ class NoticeServices {
       'title': title,
       'description': description,
       'date': date,
-      'file_upload':
-         await MultipartFile.fromFile(fileUploadPath!,
-            filename: fileUploadPath.split('/').last), // Make sure this date is a string
+      'file_upload': await MultipartFile.fromFile(fileUploadPath!,
+          filename: fileUploadPath
+              .split('/')
+              .last), // Make sure this date is a string
       //'file_upload':
-          //await MultipartFile.fromFile(fileProvider.selectedFile!.path!)
+      //await MultipartFile.fromFile(fileProvider.selectedFile!.path!)
     });
 
     // Log the file details
@@ -76,14 +78,14 @@ class NoticeServices {
       'description': description,
       'event_date': date, // Make sure this date is a string
       // if (images != null)
-        'images[]': await Future.wait(
-          images.map(
-            (image) async => await MultipartFile.fromFile(
-              image.path,
-              filename: image.name,
-            ),
+      'images[]': await Future.wait(
+        images.map(
+          (image) async => await MultipartFile.fromFile(
+            image.path,
+            filename: image.name,
           ),
         ),
+      ),
     };
     // Log formData for debugging
 
@@ -91,6 +93,18 @@ class NoticeServices {
     final Response response =
         await ApiServices.post("/events", formData, isFormData: true);
 
+    return response;
+  }
+
+  // Delete Notices
+  Future<Response> deleteNotices({required int noticeId}) async {
+    final Response response = await ApiServices.delete("/notices/$noticeId");
+    return response;
+  }
+
+  // Delete events
+  Future<Response> deleteEvents({required int eventId}) async {
+    final Response response = await ApiServices.delete("/events/$eventId");
     return response;
   }
 }
