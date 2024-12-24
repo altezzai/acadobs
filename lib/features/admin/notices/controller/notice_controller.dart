@@ -186,4 +186,41 @@ class NoticeController extends ChangeNotifier {
     _chosenFiles = [];
     notifyListeners();
   }
+
+// delete notices
+  Future<void> deleteNotices({required int noticeId}) async {
+    _isloading = true;
+    try {
+      final response = await NoticeServices().deleteNotices(noticeId: noticeId);
+      print("***********${response.statusCode}");
+      // print(response.toString());
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        log("notice deleted successfully.");
+      }
+    } catch (e) {
+      // print(e);
+    } finally {
+      _isloading = false;
+      notifyListeners();
+    }
+  }
+
+// delete events
+  Future<void> deleteEvents({required int eventId}) async {
+    _isloading = true;
+    // notifyListeners();
+    try {
+      final response = await NoticeServices().deleteEvents(eventId: eventId);
+      print("***********${response.statusCode}");
+      // print(response.toString());
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        log("event deleted successfully.");
+      }
+    } catch (e) {
+      // print(e);
+    } finally {
+      _isloading = false;
+      notifyListeners();
+    }
+  }
 }

@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
-
-import '../../../../base/routes/app_route_const.dart';
 
 class DutyCard extends StatelessWidget {
   final String title;
@@ -33,19 +30,8 @@ class DutyCard extends StatelessWidget {
 
     return InkWell(
       // onTap: onTap,
-      onTap: () {
-        context.pushNamed(
-          AppRouteConst.NoticeDetailedPageRouteName,
-          extra: {
-            'title': title,
-            'description': description,
-            'fileUpload': fileUpload,
-            'imageProvider': const AssetImage('assets/class12.png'),
-          },
-        );
-      },
+      onTap: onTap,
 
-     
       child: Container(
         padding: EdgeInsets.all(12),
         decoration: BoxDecoration(

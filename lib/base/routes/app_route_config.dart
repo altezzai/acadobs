@@ -14,6 +14,7 @@ import 'package:school_app/features/admin/leave_request/screens/leaveRequest_pag
 import 'package:school_app/features/admin/leave_request/screens/student_leaveRequest_details.dart';
 import 'package:school_app/features/admin/leave_request/screens/teacher_leaveRequest_details.dart';
 import 'package:school_app/features/admin/notices/models/event_model.dart';
+import 'package:school_app/features/admin/notices/models/notice_model.dart';
 import 'package:school_app/features/admin/notices/screens/add_event.dart';
 import 'package:school_app/features/admin/notices/screens/add_notice.dart';
 import 'package:school_app/features/admin/payments/model/donation_model.dart';
@@ -491,10 +492,11 @@ class Approuter {
         name: AppRouteConst.EventDetailedPageRouteName,
         path: '/eventdetailedpage',
         pageBuilder: (context, state) {
-          final eventData = state.extra as Event;
+          final args = state.extra as EventDetailArguments;
           return MaterialPage(
               child: EventDetailPage(
-            event: eventData,
+            event: args.event,
+            userType: args.userType,
           ));
         },
       ),
@@ -502,14 +504,13 @@ class Approuter {
         name: AppRouteConst.NoticeDetailedPageRouteName,
         path: '/noticedetailedpage',
         pageBuilder: (context, state) {
-          final noticeData = state.extra as Map<String, dynamic>;
+          final args = state.extra as NoticeDetailArguments;
           return MaterialPage(
-              child: NoticeDetailPage(
-            title: noticeData['title'],
-            description: noticeData['description'],
-            fileUpload: noticeData['fileUpload'],
-            imageProvider: noticeData['imageProvider'],
-          ));
+            child: NoticeDetailPage(
+              notice: args.notice,
+              userType: args.userType,
+            ),
+          );
         },
       ),
       GoRoute(
@@ -702,6 +703,18 @@ class StudentDetailArguments {
   Student student;
   UserType userType;
   StudentDetailArguments({required this.student, required this.userType});
+}
+
+class NoticeDetailArguments {
+  Notice notice;
+  UserType userType;
+  NoticeDetailArguments({required this.notice, required this.userType});
+}
+
+class EventDetailArguments {
+  Event event;
+  UserType userType;
+  EventDetailArguments({required this.event, required this.userType});
 }
 
 class StudentLeaverequestArguments {
