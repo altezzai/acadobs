@@ -129,7 +129,7 @@ class StudentServices {
   Future<Response> getDayAttendance(
       {required String studentId, required String date}) async {
     final Response response = await ApiServices.get(
-        "/getStudentAttendanceADay/$studentId?date=$date");
+        "/getStudentAttendanceADay/?student_id=$studentId&date=$date");
     return response;
   }
 }

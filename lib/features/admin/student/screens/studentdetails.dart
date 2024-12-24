@@ -18,6 +18,7 @@ import 'package:school_app/features/admin/student/model/student_data.dart';
 import 'package:school_app/features/admin/student/screens/achievements_list.dart';
 import 'package:school_app/features/admin/student/screens/homework_list.dart';
 import 'package:school_app/features/admin/student/widgets/daily_attendance_container.dart';
+import 'package:school_app/features/admin/student/widgets/daily_attendance_shimmer.dart';
 import 'package:school_app/features/admin/student/widgets/date_group_function.dart';
 import 'package:school_app/features/parent/leave_request/screens/student_leaveRequest.dart';
 import 'package:school_app/features/teacher/parent/controller/notes_controller.dart';
@@ -41,7 +42,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
 
   @override
   void initState() {
-    super.initState();
+    // super.initState();
     achievementController = context.read<AchievementController>();
     examController = context.read<ExamController>();
     noteController = context.read<NotesController>();
@@ -49,6 +50,13 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final studentController = context.read<StudentController>();
       studentController.getDayAttendance(
+          studentId: widget.student.id.toString(), forBuildScreen: true);
+      studentController.updateDate(
+          DateTime(
+            DateTime.now().year,
+            DateTime.now().month,
+            DateTime.now().day,
+          ),
           studentId: widget.student.id.toString());
       achievementController.getAchievements(studentId: widget.student.id ?? 0);
       studentController.getStudentHomework(studentId: widget.student.id ?? 0);
@@ -56,6 +64,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
       noteController.fetchUnviewedNotesCountByStudentId(
           studentId: widget.student.id ?? 0);
     });
+    super.initState();
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -257,21 +266,25 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
   }
 
   Widget _buildDashboardContent() {
-    return ListView(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      children: [
-        SizedBox(height: Responsive.height * 8),
-        const Text("Attendance", style: TextStyle(fontSize: 20)),
-        SizedBox(height: Responsive.height * 2),
-        DailyAttendanceContainer(
-          studentId: widget.student.id.toString(),
-          onSelectDate: () => _selectDate(context),
-        ),
-        SizedBox(height: Responsive.height * 3),
-        CalenderWidget(),
-        SizedBox(height: Responsive.height * 8),
-      ],
-    );
+    return Consumer<StudentController>(builder: (context, value, child) {
+      return ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        children: [
+          SizedBox(height: Responsive.height * 8),
+          const Text("Attendance", style: TextStyle(fontSize: 20)),
+          SizedBox(height: Responsive.height * 2),
+          value.isloading
+              ? DailyAttendanceShimmer()
+              : DailyAttendanceContainer(
+                  studentId: widget.student.id.toString(),
+                  onSelectDate: () => _selectDate(context),
+                ),
+          SizedBox(height: Responsive.height * 3),
+          CalenderWidget(),
+          SizedBox(height: Responsive.height * 8),
+        ],
+      );
+    });
   }
 
   Widget _buildExamContent() {
