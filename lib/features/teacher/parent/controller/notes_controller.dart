@@ -117,6 +117,7 @@ class NotesController extends ChangeNotifier {
       final response =
           await NoteServices().getNoteByStudentId(studentId: studentId);
       if (response.statusCode == 200) {
+        // _parentNoteStudent.clear();
         _parentNoteStudent = (response.data['data'] as List<dynamic>)
             .map((result) => NoteData.fromJson(result))
             .toList();
@@ -258,6 +259,7 @@ class NotesController extends ChangeNotifier {
           studentId: studentId);
       _parentChat.clear();
       if (response.statusCode == 200) {
+        _parentChat.clear();
         _parentChat = (response.data as List<dynamic>)
             .map((result) => ParentChat.fromJson(result))
             .toList();
