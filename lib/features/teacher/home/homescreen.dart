@@ -1,12 +1,39 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/services/secure_storage_services.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_name_container.dart';
 
-class TeacherScreen extends StatelessWidget {
+class TeacherScreen extends StatefulWidget {
   TeacherScreen({super.key});
+
+  @override
+  State<TeacherScreen> createState() => _TeacherScreenState();
+}
+
+class _TeacherScreenState extends State<TeacherScreen> {
+  String? _teacherName;
+  String? _profilePhoto;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchTeacherData();
+  }
+
+  Future<void> _fetchTeacherData() async {
+    final name = await SecureStorageService.getTeacherName();
+    final photo = await SecureStorageService.getTeacherProfilePhoto();
+    setState(() {
+      _teacherName = name ?? 'Teacher'; // Fallback if name is null
+      _profilePhoto =
+          photo != null ? '$baseUrl${Urls.teacherPhotos}$photo' : null;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +59,7 @@ class TeacherScreen extends StatelessWidget {
                             .copyWith(fontSize: 48),
                       ),
                       Text(
-                        'Vincent',
+                        _teacherName ?? "",
                         style: Theme.of(context)
                             .textTheme
                             .headlineLarge!
@@ -46,9 +73,26 @@ class TeacherScreen extends StatelessWidget {
                       context.pushNamed(AppRouteConst.logoutRouteName,
                           extra: UserType.teacher);
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 30),
-                      child: Image.asset('assets/admin.png'),
+                    child: SizedBox(
+                      width: 30,
+                      height: 30,
+                      child: ClipOval(
+                        child: CachedNetworkImage(
+                          imageUrl: _profilePhoto ?? "",
+                          placeholder: (context, url) =>
+                              const CircularProgressIndicator(
+                            color: Colors.grey,
+                          ),
+                          errorWidget: (context, url, error) => CircleAvatar(
+                            radius: 26,
+                            backgroundColor: Colors.transparent,
+                            backgroundImage: AssetImage(
+                              "assets/icons/avatar.png",
+                            ),
+                          ),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                   ),
                 ],
