@@ -33,6 +33,7 @@ class AuthController extends ChangeNotifier {
           context.goNamed(AppRouteConst.bottomNavRouteName,
               extra: UserType.parent);
         } else if (userType == "teacher") {
+          await getTeacherProfile();
           context.goNamed(AppRouteConst.bottomNavRouteName,
               extra: UserType.teacher);
         } else if (userType == "admin") {
@@ -59,6 +60,25 @@ class AuthController extends ChangeNotifier {
         log("==============Logout Successfully================");
         await SecureStorageService.clearSecureStorage();
         context.goNamed(AppRouteConst.loginRouteName);
+      }
+    } catch (e) {
+      log(e.toString());
+    } finally {
+      _isloading = false;
+      notifyListeners();
+    }
+  }
+
+  // get logged in teacher
+  Future<void> getTeacherProfile() async {
+    _isloading = true;
+    try {
+      final teacherId = await SecureStorageService.getUserId();
+      final response =
+          await AuthServices().getTeacherProfile(teacherId: teacherId);
+      if (response.statusCode == 200) {
+        final result = response.data;
+        await SecureStorageService.saveTeacherData(result);
       }
     } catch (e) {
       log(e.toString());
