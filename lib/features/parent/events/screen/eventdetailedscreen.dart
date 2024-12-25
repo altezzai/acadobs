@@ -61,8 +61,8 @@ class _EventDetailPageState extends State<EventDetailPage> {
                     if (value == 'delete') {
                       eventController.deleteEvents(context,
                           eventId: event.eventId!);
-                      Navigator.pop(
-                          context); // Close the detail page after deletion
+                      // Navigator.pop(
+                      //     context); // Close the detail page after deletion
                     }
                   },
                   itemBuilder: (BuildContext context) =>

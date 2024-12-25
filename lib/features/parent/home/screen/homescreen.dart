@@ -423,7 +423,10 @@ class _HomePageState extends State<HomePage> {
                                         context.pushNamed(
                                             AppRouteConst
                                                 .EventDetailedPageRouteName,
-                                            extra: value.events[index]);
+                                            extra: EventDetailArguments(
+                                              event: value.events[index],
+                                              userType: UserType.parent,
+                                            ));
                                       },
                                       bottomRadius: 16,
                                       topRadius: 16,

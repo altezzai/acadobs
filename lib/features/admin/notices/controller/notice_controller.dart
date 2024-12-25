@@ -198,6 +198,7 @@ class NoticeController extends ChangeNotifier {
       // print(response.toString());
       if (response.statusCode == 200 || response.statusCode == 201) {
         log("notice deleted successfully.");
+        Navigator.pop(context);
         CustomSnackbar.show(context,
             message: 'Deleted successfully', type: SnackbarType.info);
       }
@@ -220,6 +221,7 @@ class NoticeController extends ChangeNotifier {
       // print(response.toString());
       if (response.statusCode == 200 || response.statusCode == 201) {
         log("event deleted successfully.");
+        Navigator.pop(context);
         CustomSnackbar.show(context,
             message: 'Deleted successfully', type: SnackbarType.info);
       }
