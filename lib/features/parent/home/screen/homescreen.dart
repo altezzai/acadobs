@@ -348,19 +348,27 @@ class _HomePageState extends State<HomePage> {
                                 itemCount: value.notices.take(2).length,
                                 itemBuilder: (context, index) {
                                   return NoticeCard(
-                                      description:
-                                          value.notices[index].description ??
-                                              "",
-                                      noticeTitle:
-                                          value.notices[index].title ?? "",
-                                      date: DateFormatter.formatDateString(
-                                          value.notices[index].date.toString()),
-                                      time: TimeFormatter.formatTimeFromString(
-                                          value.notices[index].createdAt
-                                              .toString()),
-                                      fileUpload:
-                                          value.notices[index].fileUpload ??
-                                              "");
+                                    description:
+                                        value.notices[index].description ?? "",
+                                    noticeTitle:
+                                        value.notices[index].title ?? "",
+                                    date: DateFormatter.formatDateString(
+                                        value.notices[index].date.toString()),
+                                    time: TimeFormatter.formatTimeFromString(
+                                        value.notices[index].createdAt
+                                            .toString()),
+                                    fileUpload:
+                                        value.notices[index].fileUpload ?? "",
+                                    onTap: () {
+                                      context.pushNamed(
+                                          AppRouteConst
+                                              .NoticeDetailedPageRouteName,
+                                          extra: NoticeDetailArguments(
+                                            notice: value.notices[index],
+                                            userType: UserType.parent,
+                                          ));
+                                    },
+                                  );
                                 },
                               );
                             }),
@@ -415,7 +423,10 @@ class _HomePageState extends State<HomePage> {
                                         context.pushNamed(
                                             AppRouteConst
                                                 .EventDetailedPageRouteName,
-                                            extra: value.events[index]);
+                                            extra: EventDetailArguments(
+                                              event: value.events[index],
+                                              userType: UserType.parent,
+                                            ));
                                       },
                                       bottomRadius: 16,
                                       topRadius: 16,

@@ -59,9 +59,10 @@ class _EventDetailPageState extends State<EventDetailPage> {
                 return PopupMenuButton<String>(
                   onSelected: (String value) {
                     if (value == 'delete') {
-                      eventController.deleteEvents(eventId: event.eventId!);
-                      Navigator.pop(
-                          context); // Close the detail page after deletion
+                      eventController.deleteEvents(context,
+                          eventId: event.eventId!);
+                      // Navigator.pop(
+                      //     context); // Close the detail page after deletion
                     }
                   },
                   itemBuilder: (BuildContext context) =>

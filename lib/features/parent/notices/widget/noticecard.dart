@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
 
 class NoticeCard extends StatelessWidget {
   final String noticeTitle;
@@ -8,6 +6,7 @@ class NoticeCard extends StatelessWidget {
   final String date;
   final String time;
   final String fileUpload;
+  final VoidCallback onTap;
 
   const NoticeCard({
     super.key,
@@ -16,37 +15,13 @@ class NoticeCard extends StatelessWidget {
     required this.description,
     required this.time,
     required this.fileUpload,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        context.pushNamed(
-          AppRouteConst.NoticeDetailedPageRouteName,
-          extra: {
-            'title': noticeTitle,
-            'description': description,
-            'fileUpload': fileUpload,
-
-            // 'fileName': "Exam-details.pdf",
-            'imageProvider': const AssetImage('assets/class12.png'),
-          },
-        );
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => NoticeDetailPage(
-        //       title: noticeTitle,
-        //       description:
-        //           "You have to complete the registration of 12th class students before 2022.",
-        //       fileName: "Exam-details.pdf",
-        //       imageProvider: const AssetImage(
-        //           'assets/class12.png'), // Pass your image here
-        //     ),
-        //   ),
-        // );
-      },
+      onTap: onTap,
       child: Card(
         child: ListTile(
           leading: CircleAvatar(
