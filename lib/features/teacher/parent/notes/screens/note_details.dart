@@ -150,9 +150,7 @@ class _NoteChatDetailPageState extends State<NoteChatDetailPage> {
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 4),
                               child: InkWell(
-                                onTap:() {
-                                  
-                                },
+                                onTap: () {},
                                 child: Container(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 12, vertical: 14),

@@ -1,7 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/responsive.dart';
 
@@ -13,32 +11,34 @@ class EventCard extends StatelessWidget {
   final String imageProvider;
   final double bottomRadius;
   final double topRadius;
+  final VoidCallback onTap;
 
-  const EventCard({
-    super.key,
-    required this.eventTitle,
-    required this.eventDescription,
-    required this.date,
-    required this.time,
-    required this.imageProvider,
-    required this.bottomRadius,
-    required this.topRadius,
-  });
+  const EventCard(
+      {super.key,
+      required this.eventTitle,
+      required this.eventDescription,
+      required this.date,
+      required this.time,
+      required this.imageProvider,
+      required this.bottomRadius,
+      required this.topRadius,
+      required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        context.pushNamed(
-          AppRouteConst.EventDetailedPageRouteName,
-          extra: {
-            'title': eventTitle,
-            'description': eventDescription,
-            'date': date,
-            'imageProvider': imageProvider,
-          },
-        );
-      },
+      onTap: onTap,
+      // () {
+      //   context.pushNamed(
+      //     AppRouteConst.EventDetailedPageRouteName,
+      //     extra: {
+      //       'title': eventTitle,
+      //       'description': eventDescription,
+      //       'date': date,
+      //       'imageProvider': imageProvider,
+      //     },
+      //   );
+      // },
       // child: Card(
       //   shape:
       //       RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),

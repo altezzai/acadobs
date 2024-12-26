@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/admin/notices/models/event_model.dart';
 import 'package:school_app/features/admin/notices/models/notice_model.dart';
@@ -154,24 +155,30 @@ class NoticeController extends ChangeNotifier {
   //     log('Error picking image: $e');
   //   }
   // }
+  // ignore: unused_field
   final ImagePicker _picker = ImagePicker();
   List<XFile> _chosenFiles = []; // List to store selected images
 
   List<XFile>? get chosenFiles => _chosenFiles;
 
-  // Function to pick multiple images from the gallery
   Future<void> pickMultipleImages() async {
     try {
-      final pickedFiles = await _picker.pickMultiImage();
-      if (pickedFiles.isNotEmpty) {
-        log('Picked files count: ${pickedFiles.length}');
-        _chosenFiles = pickedFiles;
-        notifyListeners(); // Notify listeners to rebuild UI
-      } else {
-        log('No images selected.');
+      final ImagePicker picker = ImagePicker();
+      final List<XFile>? selectedImages = await picker.pickMultiImage();
+
+      if (selectedImages != null && selectedImages.isNotEmpty) {
+        _chosenFiles.addAll(selectedImages); // Append new images
+        notifyListeners();
       }
     } catch (e) {
-      log('Error picking images: $e');
+      print("Error picking images: $e");
+    }
+  }
+
+  void removeImage(int index) {
+    if (index >= 0 && index < _chosenFiles.length) {
+      _chosenFiles.removeAt(index);
+      notifyListeners();
     }
   }
 
@@ -179,5 +186,50 @@ class NoticeController extends ChangeNotifier {
   void clearSelectedImages() {
     _chosenFiles = [];
     notifyListeners();
+  }
+
+// delete notices
+  Future<void> deleteNotices(BuildContext context,
+      {required int noticeId}) async {
+    _isloading = true;
+    try {
+      final response = await NoticeServices().deleteNotices(noticeId: noticeId);
+      print("***********${response.statusCode}");
+      // print(response.toString());
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        log("notice deleted successfully.");
+        Navigator.pop(context);
+        CustomSnackbar.show(context,
+            message: 'Deleted successfully', type: SnackbarType.info);
+      }
+    } catch (e) {
+      // print(e);
+    } finally {
+      _isloading = false;
+      notifyListeners();
+    }
+  }
+
+// delete events
+  Future<void> deleteEvents(BuildContext context,
+      {required int eventId}) async {
+    _isloading = true;
+    // notifyListeners();
+    try {
+      final response = await NoticeServices().deleteEvents(eventId: eventId);
+      print("***********${response.statusCode}");
+      // print(response.toString());
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        log("event deleted successfully.");
+        Navigator.pop(context);
+        CustomSnackbar.show(context,
+            message: 'Deleted successfully', type: SnackbarType.info);
+      }
+    } catch (e) {
+      // print(e);
+    } finally {
+      _isloading = false;
+      notifyListeners();
+    }
   }
 }

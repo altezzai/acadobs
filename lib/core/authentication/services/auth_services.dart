@@ -12,4 +12,9 @@ class AuthServices {
     log(response.data.toString());
     return response;
   }
+
+  Future<Response> getTeacherProfile({required int teacherId}) async {
+    final Response response = await ApiServices.get('/teachers/$teacherId');
+    return response;
+  }
 }

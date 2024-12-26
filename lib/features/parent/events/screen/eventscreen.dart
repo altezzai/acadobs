@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 // import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/routes/app_route_config.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
 // import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/urls.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 // import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
 import 'package:school_app/features/parent/events/widget/eventcard.dart';
@@ -93,6 +97,14 @@ class _EventsPageState extends State<EventsPage> {
                         itemBuilder: (context, index) {
                           final event = upcomingEvents[index];
                           return EventCard(
+                            onTap: () {
+                              context.pushNamed(
+                                  AppRouteConst.EventDetailedPageRouteName,
+                                  extra: EventDetailArguments(
+                                    event: event,
+                                    userType: UserType.parent,
+                                  ));
+                            },
                             bottomRadius: 16,
                             topRadius: 16,
                             eventDescription: event.description ?? "",
@@ -123,6 +135,15 @@ class _EventsPageState extends State<EventsPage> {
                         itemBuilder: (context, index) {
                           final event = latestEvents[index];
                           return EventCard(
+                            onTap: () {
+                              context.pushNamed(
+                                AppRouteConst.EventDetailedPageRouteName,
+                                extra: EventDetailArguments(
+                                  event: event,
+                                  userType: UserType.parent,
+                                ),
+                              );
+                            },
                             bottomRadius: 16,
                             topRadius: 16,
                             eventDescription: event.description ?? "",
@@ -155,6 +176,15 @@ class _EventsPageState extends State<EventsPage> {
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 8),
                             child: EventCard(
+                              onTap: () {
+                                context.pushNamed(
+                                  AppRouteConst.EventDetailedPageRouteName,
+                                  extra: EventDetailArguments(
+                                    event: event,
+                                    userType: UserType.parent,
+                                  ),
+                                );
+                              },
                               bottomRadius: 16,
                               topRadius: 16,
                               eventDescription: event.description ?? "",

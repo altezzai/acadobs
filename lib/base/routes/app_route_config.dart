@@ -13,6 +13,8 @@ import 'package:school_app/features/admin/duties/screens/view_duty.dart';
 import 'package:school_app/features/admin/leave_request/screens/leaveRequest_page.dart';
 import 'package:school_app/features/admin/leave_request/screens/student_leaveRequest_details.dart';
 import 'package:school_app/features/admin/leave_request/screens/teacher_leaveRequest_details.dart';
+import 'package:school_app/features/admin/notices/models/event_model.dart';
+import 'package:school_app/features/admin/notices/models/notice_model.dart';
 import 'package:school_app/features/admin/notices/screens/add_event.dart';
 import 'package:school_app/features/admin/notices/screens/add_notice.dart';
 import 'package:school_app/features/admin/payments/model/donation_model.dart';
@@ -21,7 +23,6 @@ import 'package:school_app/features/admin/payments/screens/add_donation.dart';
 import 'package:school_app/features/admin/payments/screens/add_payment.dart';
 import 'package:school_app/features/admin/payments/screens/donation_view.dart';
 import 'package:school_app/features/admin/payments/screens/payment_view.dart';
-
 import 'package:school_app/features/admin/reports/screens/payment.dart';
 import 'package:school_app/features/admin/reports/screens/student_report.dart';
 import 'package:school_app/features/admin/reports/screens/teacher_report.dart';
@@ -491,13 +492,11 @@ class Approuter {
         name: AppRouteConst.EventDetailedPageRouteName,
         path: '/eventdetailedpage',
         pageBuilder: (context, state) {
-          final eventData = state.extra as Map<String, dynamic>;
+          final args = state.extra as EventDetailArguments;
           return MaterialPage(
               child: EventDetailPage(
-            title: eventData['title'],
-            description: eventData['description'],
-            date: eventData['date'],
-            imageProvider: eventData['imageProvider'],
+            event: args.event,
+            userType: args.userType,
           ));
         },
       ),
@@ -505,14 +504,13 @@ class Approuter {
         name: AppRouteConst.NoticeDetailedPageRouteName,
         path: '/noticedetailedpage',
         pageBuilder: (context, state) {
-          final noticeData = state.extra as Map<String, dynamic>;
+          final args = state.extra as NoticeDetailArguments;
           return MaterialPage(
-              child: NoticeDetailPage(
-            title: noticeData['title'],
-            description: noticeData['description'],
-            fileUpload: noticeData['fileUpload'],
-            imageProvider: noticeData['imageProvider'],
-          ));
+            child: NoticeDetailPage(
+              notice: args.notice,
+              userType: args.userType,
+            ),
+          );
         },
       ),
       GoRoute(
@@ -590,7 +588,7 @@ class Approuter {
           return MaterialPage(child: TeacherReport());
         },
       ),
-     
+
       GoRoute(
         name: AppRouteConst.teacherSelectionRouteName,
         path: '/teacherSelection',
@@ -705,6 +703,18 @@ class StudentDetailArguments {
   Student student;
   UserType userType;
   StudentDetailArguments({required this.student, required this.userType});
+}
+
+class NoticeDetailArguments {
+  Notice notice;
+  UserType userType;
+  NoticeDetailArguments({required this.notice, required this.userType});
+}
+
+class EventDetailArguments {
+  Event event;
+  UserType userType;
+  EventDetailArguments({required this.event, required this.userType});
 }
 
 class StudentLeaverequestArguments {
