@@ -7,11 +7,13 @@ import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
+import 'package:school_app/core/controller/file_picker_provider.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
+import 'package:school_app/core/shared_widgets/custom_filepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/admin/duties/controller/duty_controller.dart';
 import 'package:school_app/features/admin/teacher_section/controller/teacher_controller.dart';
@@ -39,6 +41,7 @@ class _AddDutyPageState extends State<AddDutyPage> {
 
   late TeacherController teacherController;
   late DropdownProvider dropdownProvider;
+  late FilePickerProvider filePickerProvider;
 
   @override
   void initState() {
@@ -46,9 +49,11 @@ class _AddDutyPageState extends State<AddDutyPage> {
 
     teacherController = Provider.of<TeacherController>(context, listen: false);
     dropdownProvider = context.read<DropdownProvider>();
+    filePickerProvider=context.read<FilePickerProvider>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       dropdownProvider.clearAllDropdowns();
+      filePickerProvider.clearFile('duty file');
 
       if (teacherController.selectedTeacherIds.isNotEmpty) {
         teacherController.clearSelection();
@@ -147,11 +152,16 @@ class _AddDutyPageState extends State<AddDutyPage> {
                   ),
                   SizedBox(height: Responsive.height * 2),
 
+                   CustomFilePicker(label: 'Document', fieldName: 'duty file'),
+                  SizedBox(height:Responsive.height*2),
+
+
                   // Selected Teachers
                   Text("Selected Teachers:",
                       style: TextStyle(fontSize: Responsive.text * 2)),
                   SizedBox(height: Responsive.height * 1),
 
+                 
                   InkWell(
                     onTap: () {
                       context
@@ -198,12 +208,15 @@ class _AddDutyPageState extends State<AddDutyPage> {
                           final status = context
                               .read<DropdownProvider>()
                               .getSelectedItem('status');
+                          final dutyfile=context.read<FilePickerProvider>().getFile('duty file');
+                          final dutyfilepath=dutyfile?.path;
                           context.read<DutyController>().addDuty(context,
                               duty_title: _titleController.text,
                               description: _descriptionController.text,
                               status: status,
                               remark: _remarkController.text,
-                              teachers: value1.selectedTeacherIds);
+                              teachers: value1.selectedTeacherIds,
+                              fileattachment: dutyfilepath);
                         },
                         widget: value2.isloadingTwo
                             ? ButtonLoading()

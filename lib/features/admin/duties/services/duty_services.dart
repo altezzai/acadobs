@@ -33,6 +33,7 @@ class DutyServices {
     required String status,
     required String remark,
     required List<int> teachers,
+    String? fileAttachment,
   }) async {
     // Create the form data to pass to the API
     final formData = {
@@ -40,7 +41,10 @@ class DutyServices {
       'description': description,
       'status': status,
       'remark': remark,
-      'teachers[]': teachers
+      'teachers[]': teachers,
+       if (fileAttachment!= null) // Only include if the photo is provided
+        "file_attachment": await MultipartFile.fromFile(fileAttachment,
+            filename: fileAttachment.split('/').last)
     };
 
     // Call the ApiServices post method with formData and isFormData: true

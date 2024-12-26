@@ -127,6 +127,7 @@ class DutyController extends ChangeNotifier {
     required String status,
     required String remark,
     required List<int> teachers,
+    String? fileattachment
   }) async {
     // final loadingProvider =
     //     Provider.of<LoadingProvider>(context, listen: false); //loading provider
@@ -140,6 +141,7 @@ class DutyController extends ChangeNotifier {
         status: status,
         remark: remark,
         teachers: teachers,
+        fileAttachment: fileattachment
       );
       if (response.statusCode == 201 || response.statusCode == 200) {
         log(">>>>>>${response.statusMessage}");
