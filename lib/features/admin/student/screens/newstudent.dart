@@ -57,6 +57,8 @@ class _AddStudentPageState extends State<AddStudentPage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       filePickerProvider.clearFile('student photo');
+      filePickerProvider.clearFile('parent photo');
+
       dropdownProvider.clearSelectedItem('gender');
       dropdownProvider.clearSelectedItem('class');
       dropdownProvider.clearSelectedItem('division');
@@ -77,6 +79,9 @@ class _AddStudentPageState extends State<AddStudentPage> {
     _fatherFullNameController.dispose();
     _motherFullNameController.dispose();
     _emailController.dispose();
+    _guardianNameController.dispose();
+    _bloodgroupController.dispose();
+    parentEmailController.dispose();
 
     super.dispose();
   }
@@ -121,9 +126,9 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   hintText: 'Name',
                   controller: _fullNameController,
                   iconData: Icon(Icons.person),
-                  validator: (value) {
+                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Name is required';
+                      return 'This field is required';
                     }
                     return null;
                   },
@@ -137,7 +142,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   iconData: Icon(Icons.badge),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Roll Number Required';
+                      return 'This field is required';
                     }
                     return null;
                   },
@@ -149,6 +154,12 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   label: 'Gender',
                   icon: Icons.person_2_outlined,
                   items: ['Male', 'Female', 'Other'],
+                 validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(height: 20),
                 // Class and Division dropdowns
@@ -161,6 +172,12 @@ class _AddStudentPageState extends State<AddStudentPage> {
                         label: 'Class',
                         items: ['5', '6', '7', '8', '9', '10'],
                         icon: Icons.school,
+                         validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
                       ),
                     ),
                     SizedBox(width: 10),
@@ -172,6 +189,12 @@ class _AddStudentPageState extends State<AddStudentPage> {
                         label: 'Division',
                         items: ['A', 'B', 'C'],
                         icon: Icons.group,
+                        validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
                       ),
                     ),
                   ],
@@ -187,6 +210,12 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   onDateSelected: (selectedDate) {
                     print("End Date selected: $selectedDate");
                   },
+                   validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
                 ),
 
                 SizedBox(height: 20),
@@ -199,6 +228,12 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   onDateSelected: (selectedDate) {
                     print("End Date selected: $selectedDate");
                   },
+                    validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(height: 20),
 
@@ -208,6 +243,12 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   controller: _addressController,
                   iconData: Icon(Icons.location_on),
                   keyBoardtype: TextInputType.streetAddress,
+                   validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(height: 20),
 
@@ -216,12 +257,24 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   hintText: 'Admission Number',
                   controller: _admissionNumberController,
                   iconData: Icon(Icons.credit_card),
+                   validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(height: 20),
                 CustomTextfield(
                   hintText: 'Aadhar Number',
                   controller: _aadhaarNumberController,
                   iconData: Icon(Icons.account_box_outlined),
+                   validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(height: 20),
 
@@ -230,12 +283,24 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   hintText: 'Blood Group',
                   controller: _bloodgroupController,
                   iconData: Icon(Icons.bloodtype),
+                   validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(height: 20),
                 CustomTextfield(
                   hintText: 'Email',
                   controller: _emailController,
                   iconData: Icon(Icons.email),
+                   validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(height: 20),
                 CustomTextfield(
@@ -303,12 +368,24 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   hintText: 'Guardian Fullname',
                   controller: _guardianNameController,
                   iconData: Icon(Icons.person_2_outlined),
+                   validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(height: 20),
                 CustomTextfield(
                   controller: parentEmailController,
                   hintText: 'Parent Email',
                   iconData: Icon(Icons.email),
+                   validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(height: 20),
                 CustomTextfield(
@@ -368,6 +445,11 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 CustomFilePicker(
                     label: 'Aadhar Photo', fieldName: 'aadhar photo'),
 
+                SizedBox(height: 20),
+
+                CustomFilePicker(
+                    label: 'Parent Photo', fieldName: 'parent photo'),
+
                 SizedBox(height: 40),
 
                 Center(child: Consumer<StudentController>(
@@ -395,74 +477,71 @@ class _AddStudentPageState extends State<AddStudentPage> {
     );
   }
 
-  void _submitForm(BuildContext context) {
+ void _submitForm(BuildContext context) {
+  // Validate the form first
+  if (_formKey.currentState?.validate() ?? false) {
     try {
-      // Create StudentData from form data
-      final selectedGender =
-          context.read<DropdownProvider>().getSelectedItem('gender');
-      final selectedClass =
-          context.read<DropdownProvider>().getSelectedItem('class');
-      final selectedDivision =
-          context.read<DropdownProvider>().getSelectedItem('division');
+      // Fetch data from dropdowns and file pickers
+      final selectedGender = context.read<DropdownProvider>().getSelectedItem('gender');
+      final selectedClass = context.read<DropdownProvider>().getSelectedItem('class');
+      final selectedDivision = context.read<DropdownProvider>().getSelectedItem('division');
       final selectedStudentPhoto =
           context.read<FilePickerProvider>().getFile('student photo');
       final selectedAadharPhoto =
           context.read<FilePickerProvider>().getFile('aadhar photo');
+      final parentPhoto =
+          context.read<FilePickerProvider>().getFile('parent photo');
       final studentPhotoPath = selectedStudentPhoto?.path;
       final aadharPhotoPath = selectedAadharPhoto?.path;
+      final parentPhotoPath = parentPhoto?.path;
 
-      // final student = Student(
-      //   fullName: _fullNameController.text,
-      //   dateOfBirth: DateTime.parse(_dateOfBirthController.text),
-      //   dateOfJoining: DateTime.parse(_dateOfJoiningController.text),
-      //   studentClass: selectedClass,
-      //   section: selectedDivision,
-      //   rollNumber: int.tryParse(_rollNumberController.text),
-      //   gender: selectedGender,
-      //   admissionNumber: _admissionNumberController.text,
-      //   aadhaarNumber: _aadhaarNumberController.text,
-      //   residentialAddress: _addressController.text,
-      //   contactNumber: _contactNumberController.text,
-      //   email: _emailController.text,
-      //   fatherFullName: _fatherFullNameController.text,
-      //   motherFullName: _motherFullNameController.text,
-      //   bloodGroup: null, // Optional
-      //   studentClass: '',
-      //   division: '', // Optional
-      // );
+      // Call the controller method to add the student
+      context.read<StudentController>().addNewStudent(
+            context,
+            fullName: _fullNameController.text,
+            dateOfBirth: _dateOfBirthController.text,
+            gender: selectedGender,
+            studentClass: selectedClass,
+            section: selectedDivision,
+            rollNumber: _rollNumberController.text,
+            admissionNumber: _admissionNumberController.text,
+            aadhaarNumber: _aadhaarNumberController.text,
+            residentialAddress: _addressController.text,
+            contactNumber: _contactNumberController.text,
+            email: _emailController.text,
+            fatherFullName: _fatherFullNameController.text,
+            motherFullName: _motherFullNameController.text,
+            guardianFullName: _guardianNameController.text,
+            bloodGroup: _bloodgroupController.text,
+            parentEmail: parentEmailController.text,
+            studentPhoto: studentPhotoPath,
+            aadharPhoto: aadharPhotoPath,
+            fatherMotherPhoto: parentPhotoPath,
+          );
 
-      context.read<StudentController>().addNewStudent(context,
-          fullName: _fullNameController.text,
-          dateOfBirth: _dateOfBirthController.text,
-          gender: selectedGender,
-          studentClass: selectedClass,
-          section: selectedDivision,
-          rollNumber: _rollNumberController.text,
-          admissionNumber: _admissionNumberController.text,
-          aadhaarNumber: _aadhaarNumberController.text,
-          residentialAddress: _addressController.text,
-          contactNumber: _contactNumberController.text,
-          email: _emailController.text,
-          fatherFullName: _fatherFullNameController.text,
-          motherFullName: _motherFullNameController.text,
-          guardianFullName: _guardianNameController.text,
-          bloodGroup: _bloodgroupController.text,
-          parentEmail: parentEmailController.text,
-          studentPhoto: studentPhotoPath,
-          aadharPhoto: aadharPhotoPath);
-
+      // Clear the form fields upon success
       _clearFormFields();
     } catch (e) {
       // Handle any errors and show an error message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Failed to add student complete all required fields'),
+          content: Text('Failed to add student. Please try again.'),
           backgroundColor: Colors.red,
           duration: Duration(seconds: 3),
         ),
       );
     }
+  } else {
+    // Highlight missing fields if the form is invalid
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Please complete all required fields.'),
+        backgroundColor: Colors.orange,
+        duration: Duration(seconds: 3),
+      ),
+    );
   }
+}
 
 // Optional: Method to clear form fields after successful submission
   void _clearFormFields() {
