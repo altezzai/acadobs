@@ -57,6 +57,9 @@ class StudentServices {
       required String guardianFullName,
       required String bloodGroup,
       required String parentEmail,
+      required String fatherContactNumber,
+      required String motherContactNumber,
+      
       String? studentPhotoPath,
       String? aadhaarCard,
       String? fatherMotherPhoto,}) async {
@@ -75,9 +78,11 @@ class StudentServices {
       "email": email,
       "father_full_name": fatherFullName,
       "mother_full_name": motherFullName,
-      "guardian_FullName": guardianFullName,
+      "guardian_full_name": guardianFullName,
       "blood_group": bloodGroup,
       "parent_email": parentEmail,
+      "father_contact_number":fatherContactNumber,
+      "mother_contact_number":motherContactNumber,
       // Only include if the photo is provided
       "student_photo": await MultipartFile.fromFile(studentPhotoPath!,
           filename: studentPhotoPath.split('/').last),

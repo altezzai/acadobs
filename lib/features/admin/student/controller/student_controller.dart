@@ -174,6 +174,8 @@ class StudentController extends ChangeNotifier {
       required String guardianFullName,
       required String bloodGroup,
       required String parentEmail,
+       required String fatherContactNumber,
+      required String motherContactNumber,
       String? studentPhoto,
       String? aadharPhoto,
       String? fatherMotherPhoto}) async {
@@ -197,6 +199,8 @@ class StudentController extends ChangeNotifier {
           guardianFullName: guardianFullName,
           parentEmail: parentEmail,
           bloodGroup: bloodGroup,
+          fatherContactNumber: fatherContactNumber,
+          motherContactNumber: motherContactNumber,
           studentPhotoPath: studentPhoto,
           aadhaarCard: aadharPhoto,
           fatherMotherPhoto: fatherMotherPhoto);
@@ -306,6 +310,7 @@ class StudentController extends ChangeNotifier {
   Future<void> getParentByClassAndDivision(
       {required String classname, required String section}) async {
     _isloading = true;
+    _isFiltered = false;
     try {
       final response = await StudentServices().getParentByClassAndDivision(
         classname: classname,
@@ -323,6 +328,7 @@ class StudentController extends ChangeNotifier {
       print(e);
     }
     _isloading = false;
+    _isFiltered = true;
     notifyListeners();
   }
 

@@ -36,8 +36,8 @@ class _AddStudentPageState extends State<AddStudentPage> {
   final TextEditingController _aadhaarNumberController =
       TextEditingController();
   final TextEditingController _addressController = TextEditingController();
-  final TextEditingController _contactNumberController =
-      TextEditingController();
+  // final TextEditingController _contactNumberController =
+  //     TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _fatherFullNameController =
       TextEditingController();
@@ -46,6 +46,8 @@ class _AddStudentPageState extends State<AddStudentPage> {
   final TextEditingController _guardianNameController = TextEditingController();
   final TextEditingController _bloodgroupController = TextEditingController();
   final TextEditingController parentEmailController = TextEditingController();
+  final TextEditingController _fatherContactNumberController= TextEditingController();
+  final TextEditingController _motherContactNumberController= TextEditingController();
   late DropdownProvider dropdownProvider;
 
   late FilePickerProvider filePickerProvider;
@@ -75,13 +77,15 @@ class _AddStudentPageState extends State<AddStudentPage> {
     _admissionNumberController.dispose();
     _addressController.dispose();
     _aadhaarNumberController.dispose();
-    _contactNumberController.dispose();
+    // _contactNumberController.dispose();
     _fatherFullNameController.dispose();
     _motherFullNameController.dispose();
     _emailController.dispose();
     _guardianNameController.dispose();
     _bloodgroupController.dispose();
     parentEmailController.dispose();
+    _fatherContactNumberController.dispose();
+    _motherContactNumberController.dispose();
 
     super.dispose();
   }
@@ -327,7 +331,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 SizedBox(height: 20),
                 CustomTextfield(
                   hintText: 'Father\'s Phone Number',
-                  controller: _contactNumberController,
+                  controller:  _fatherContactNumberController,
                   iconData: Icon(Icons.phone),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -353,6 +357,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 CustomTextfield(
                   hintText: 'Mother\'s Phone Number',
                   iconData: Icon(Icons.phone),
+                  controller:  _motherContactNumberController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Mother\'s Phone Number is required';
@@ -507,13 +512,15 @@ class _AddStudentPageState extends State<AddStudentPage> {
             admissionNumber: _admissionNumberController.text,
             aadhaarNumber: _aadhaarNumberController.text,
             residentialAddress: _addressController.text,
-            contactNumber: _contactNumberController.text,
+            contactNumber: _fatherContactNumberController.text,
             email: _emailController.text,
             fatherFullName: _fatherFullNameController.text,
             motherFullName: _motherFullNameController.text,
             guardianFullName: _guardianNameController.text,
             bloodGroup: _bloodgroupController.text,
             parentEmail: parentEmailController.text,
+            fatherContactNumber:  _fatherContactNumberController.text,
+            motherContactNumber: _motherContactNumberController.text,
             studentPhoto: studentPhotoPath,
             aadharPhoto: aadharPhotoPath,
             fatherMotherPhoto: parentPhotoPath,
@@ -552,10 +559,12 @@ class _AddStudentPageState extends State<AddStudentPage> {
     _admissionNumberController.clear();
     _aadhaarNumberController.clear();
     _addressController.clear();
-    _contactNumberController.clear();
+    // _contactNumberController.clear();
     _emailController.clear();
     _fatherFullNameController.clear();
     _motherFullNameController.clear();
+    _fatherContactNumberController.clear();
+    _motherContactNumberController.clear();
 
     context.read<DropdownProvider>().clearAllDropdowns();
   }
