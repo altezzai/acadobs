@@ -94,16 +94,17 @@ class _ParentNoteScreenState extends State<ParentNoteScreen> {
           context,
           isNewMessage: teacherNote.viewed == 0,
           name: teacherNote.teacherName ?? "",
-          subject: 'Subject',
+          subject: "Parent Note Id: ${teacherNote.id.toString()}",
           imageUrl:
               "${baseUrl}${Urls.teacherPhotos}${teacherNote.teacherProfilePhoto}",
-          onTap: () async {
+          onTap: () {
             controller.markParentNoteAsViewed(
               context: context,
               studentId: widget.studentId,
-              parentNoteId: teacherNote.id ?? 0,
+              parentNoteId: teacherNote.id,
               teacherNote: teacherNote,
             );
+
             context.pushNamed(AppRouteConst.parentNoteDetailRouteName,
                 extra: teacherNote);
           },

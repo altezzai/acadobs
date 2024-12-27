@@ -72,11 +72,13 @@ import 'package:school_app/features/teacher/leave_request/screens/teacher_leaver
 import 'package:school_app/features/teacher/mark_work/screens/mark_star.dart';
 import 'package:school_app/features/teacher/marks/models/marks_upload_model.dart';
 import 'package:school_app/features/teacher/marks/screens/student_marklist.dart';
+import 'package:school_app/features/teacher/parent/model/latest_chat_model.dart';
 import 'package:school_app/features/teacher/parent/model/parent_note_student_model.dart';
 import 'package:school_app/features/teacher/parent/notes/screens/add_note.dart';
 import 'package:school_app/features/teacher/parent/notes/screens/note_details.dart';
 import 'package:school_app/features/teacher/parent/notes/screens/notes.dart';
 import 'package:school_app/features/teacher/parent/notes/screens/student_note_selection.dart';
+import 'package:school_app/features/teacher/parent/notes/screens/teacher_chat_screen.dart';
 import 'package:school_app/features/teacher/parent/screens/parents.dart';
 
 class Approuter {
@@ -680,7 +682,17 @@ class Approuter {
           return MaterialPage(
               child: ChatDetailPage(
             studentNote: studentNote,
+            // teacherId: args.teacherChatId,
           ));
+        },
+      ),
+       GoRoute(
+        name: AppRouteConst.teacherChatRouteName,
+        path: '/teacherChatScreen',
+        pageBuilder: (context, state) {
+          final latestChat = state.extra as LatestChat;
+          return MaterialPage(
+              child: TeacherChatScreen(latestChat: latestChat));
         },
       ),
     ],
@@ -721,4 +733,10 @@ class StudentLeaverequestArguments {
   Student student;
   UserType userType;
   StudentLeaverequestArguments({required this.student, required this.userType});
+}
+
+class ChatDetailArguments {
+  NoteData studentNote;
+  int teacherChatId;
+  ChatDetailArguments({required this.studentNote, required this.teacherChatId});
 }

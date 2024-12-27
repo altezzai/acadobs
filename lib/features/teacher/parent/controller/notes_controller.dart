@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:school_app/base/services/secure_storage_services.dart';
+import 'package:school_app/features/teacher/parent/model/latest_chat_model.dart';
 import 'package:school_app/features/teacher/parent/model/parent_chat_model.dart';
 import 'package:school_app/features/teacher/parent/model/parent_note_model.dart';
 import 'package:school_app/features/teacher/parent/model/parent_note_student_model.dart';
@@ -13,6 +14,12 @@ class NotesController extends ChangeNotifier {
 
   bool _isloadingTwo = false;
   bool get isloadingTwo => _isloadingTwo;
+
+  bool _isloadingForChats = false;
+  bool get isloadingForChats => _isloadingForChats;
+
+  List<ParentChat> _parentChat = [];
+  List<ParentChat> get parentChat => _parentChat;
 
   // *********Add notes to Students/Parents********
   Future<void> addParentNote({
@@ -117,11 +124,13 @@ class NotesController extends ChangeNotifier {
       final response =
           await NoteServices().getNoteByStudentId(studentId: studentId);
       if (response.statusCode == 200) {
-        // _parentNoteStudent.clear();
+        _parentNoteStudent.clear();
+
         _parentNoteStudent = (response.data['data'] as List<dynamic>)
             .map((result) => NoteData.fromJson(result))
             .toList();
         log("Parent notes:${_parentNoteStudent.toString()}");
+        // log("=================Parent note message:${_parentNoteStudent.}=========================");
       }
     } catch (e) {
       log(e.toString());
@@ -213,7 +222,7 @@ class NotesController extends ChangeNotifier {
   }
 
   // ******************Parent Note Chat******************
-  Future<void> sendParentNoteChat(
+  Future<void> sendParentNoteChatParent(
       {required int parentNoteId,
       required bool isTeacher,
       required int receiverId,
@@ -231,10 +240,8 @@ class NotesController extends ChangeNotifier {
           senderRole: senderRole);
       if (response.statusCode == 201 || response.statusCode == 200) {
         log(("Parent Note Chat response: ${response.data.toString()}"));
-        await getAllParentNoteChat(
-            parentNoteId: parentNoteId,
-            teacherId: isTeacher ? senderId ?? 0 : receiverId,
-            studentId: isTeacher ? receiverId : senderId ?? 0);
+        await getAllParentChats(
+            parentNoteId: parentNoteId, forTeacherScreen: false);
       }
     } catch (e) {
       log(e.toString());
@@ -244,31 +251,133 @@ class NotesController extends ChangeNotifier {
     }
   }
 
-  // ************Get parent note chta***************
-  List<ParentChat> _parentChat = [];
-  List<ParentChat> get parentChat => _parentChat;
+  // ******************Parent Note Chat******************
+  Future<void> sendParentNoteChatTeacher(
+      {required int parentNoteId,
+      // required bool isTeacher,
+      required int receiverId,
+      required String message,
+      required String senderRole}) async {
+    _isloadingTwo = true;
+    notifyListeners();
+    try {
+      final senderId = await SecureStorageService.getChatId();
+      final response = await NoteServices().parentNoteChat(
+          parentNoteId: parentNoteId,
+          senderId: senderId ?? 0,
+          receiverId: receiverId,
+          message: message,
+          senderRole: senderRole);
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        log(("Parent Note Chat response: ${response.data.toString()}"));
+        await getAllParentChats(
+            parentNoteId: parentNoteId,
+            forTeacherScreen: true,
+            studentIdforChat: receiverId);
+        await getLatestParentChats(parentNoteId: parentNoteId);
+      }
+    } catch (e) {
+      log(e.toString());
+    } finally {
+      _isloadingTwo = false;
+      notifyListeners();
+    }
+  }
+  // ************Get parent note chat***************
+
   Future<void> getAllParentNoteChat(
       {required int parentNoteId,
       required int teacherId,
       required int studentId}) async {
     _isloading = true;
     try {
+      final studentChatId = await SecureStorageService.getChatId();
+
       final response = await NoteServices().getAllMessages(
           parentNoteId: parentNoteId,
-          teacherId: teacherId,
-          studentId: studentId);
+          teacherId: _teacherChatId,
+          studentId: studentChatId ?? 0);
+
       _parentChat.clear();
+      log("parent note id: $parentNoteId, teacher id : $teacherChatId, student chat id: $studentChatId");
       if (response.statusCode == 200) {
-        _parentChat.clear();
+        // _parentChat.clear();
         _parentChat = (response.data as List<dynamic>)
             .map((result) => ParentChat.fromJson(result))
             .toList();
-        log(_parentChat.toString());
+        log("Parent Chats:${parentChat.toString()}");
+        log("Parent Chat first message: ${parentChat[0].message}");
       }
     } catch (e) {
       log(e.toString());
     } finally {
       _isloading = false;
+      notifyListeners();
+    }
+  }
+
+  // ************Get all parent chats***************
+  Future<void> getAllParentChats(
+      {required int parentNoteId,
+      bool forTeacherScreen = false,
+      int studentIdforChat = 0}) async {
+    _isloadingForChats = true;
+    // _parentChat = []; // Clear the list immediately
+    notifyListeners();
+    log("++++++++++++++++++++++++++++Get Chat length: ${_parentChat.length.toString()}");
+    try {
+      final studentChatId = await SecureStorageService.getChatId();
+      final response = await NoteServices().getAllParentChats(
+        parentNoteId: parentNoteId,
+        studentChatId: forTeacherScreen ? studentIdforChat : studentChatId ?? 0,
+      );
+      log("Get all chats: ${response.data.toString()}");
+
+      if (response.statusCode == 200 && response.data['data'] != null) {
+        // Populate the list only if data is valid
+        _parentChat.clear();
+        _parentChat = (response.data['data'] as List<dynamic>)
+            .map((result) => ParentChat.fromJson(result))
+            .toList();
+        log("Parent Chats: ${_parentChat.toString()}");
+      } else {
+        _parentChat = []; // Fallback to an empty list if no data is returned
+      }
+    } catch (e) {
+      log("Error in fetching parent chats: $e");
+      _parentChat = []; // Reset the list on error
+    } finally {
+      _isloadingForChats = false;
+      log("++++++++++++++++++++++++++++Get Chat length: ${_parentChat.length.toString()}++++++++++++++++++++++++++++++");
+      notifyListeners(); // Notify listeners when loading is complete.
+    }
+  }
+
+  // **********Get Latest chats for teacher***************
+  List<LatestChat> _latestChats = [];
+  List<LatestChat> get latestChats => _latestChats;
+  Future<void> getLatestParentChats({
+    required int parentNoteId,
+  }) async {
+    _isloadingForChats = true;
+    _latestChats.clear();
+    notifyListeners();
+    try {
+      final response =
+          await NoteServices().getLatestParentChats(parentNoteId: parentNoteId);
+      _latestChats.clear();
+      log("parent note id: $parentNoteId, teacher id : $teacherChatId");
+      if (response.statusCode == 200) {
+        // _parentChat.clear();
+        _latestChats = (response.data as List<dynamic>)
+            .map((result) => LatestChat.fromJson(result))
+            .toList();
+        log("Parent Chats:${_latestChats.toString()}");
+      }
+    } catch (e) {
+      log(e.toString());
+    } finally {
+      _isloadingForChats = false;
       notifyListeners();
     }
   }

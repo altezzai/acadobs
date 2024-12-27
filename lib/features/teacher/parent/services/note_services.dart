@@ -81,8 +81,27 @@ class NoteServices {
   }
 
   // ***********Get All messages***************
-  Future<Response> getAllMessages({required int parentNoteId, required int teacherId, required int studentId}) async {
-    final response = await ApiServices.get("/getMessagesByParentNoteAndParticipants?parent_note_id=$parentNoteId&teacher_id=$teacherId&student_id=$studentId");
+  Future<Response> getAllMessages(
+      {required int parentNoteId,
+      required int teacherId,
+      required int studentId}) async {
+    final response = await ApiServices.get(
+        "/getMessagesByParentNoteAndParticipants?parent_note_id=$parentNoteId&teacher_id=$teacherId&student_id=$studentId");
+    return response;
+  }
+
+  // **********Get all parent chats***************
+  Future<Response> getAllParentChats(
+      {required int parentNoteId, required int studentChatId}) async {
+    final response = await ApiServices.get(
+        "/getMessagesByParentNoteAndStudent?parent_note_id=$parentNoteId&student_id=$studentChatId");
+    return response;
+  }
+
+  // **********Get Latest chats for teacher***************
+  Future<Response> getLatestParentChats({required int parentNoteId}) async {
+    final response =
+        await ApiServices.get("/getLatestMessageByParentNoteId/$parentNoteId");
     return response;
   }
 }

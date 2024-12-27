@@ -24,7 +24,7 @@ class ParentNoteStudent {
 }
 
 class NoteData {
-    int? id;
+    int id;
     String? noteTitle;
     String? noteContent;
     dynamic noteAttachment;
@@ -36,7 +36,7 @@ class NoteData {
     int? viewed;
 
     NoteData({
-        this.id,
+        required this.id,
         this.noteTitle,
         this.noteContent,
         this.noteAttachment,
