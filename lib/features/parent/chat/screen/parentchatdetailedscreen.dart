@@ -3,16 +3,22 @@ import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:school_app/base/services/secure_storage_services.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
+import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/features/teacher/parent/controller/notes_controller.dart';
 import 'package:school_app/features/teacher/parent/model/parent_note_student_model.dart';
 
 class ChatDetailPage extends StatefulWidget {
   final NoteData studentNote;
+  // final int teacherId;
 
-  ChatDetailPage({super.key, required this.studentNote});
+  ChatDetailPage({
+    super.key,
+    required this.studentNote,
+    //  required this.teacherId
+  });
 
   @override
   State<ChatDetailPage> createState() => _ChatDetailPageState();
@@ -22,32 +28,16 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   // ChatDetailPage({
   final TextEditingController _chatController = TextEditingController();
   late NotesController notesController;
-  int? teacherId;
 
   @override
   void initState() {
-    super.initState();
-
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final studentId = await SecureStorageService.getChatId();
       notesController = context.read<NotesController>();
-
-      // Fetch teacherId and then make the second API call
-      teacherId = await notesController.getTeacherChatIdFromTeacherId(
-        teacherId: widget.studentNote.teacherId ?? 0,
-      );
-
-      if (teacherId != null) {
-        notesController.getAllParentNoteChat(
-          parentNoteId: widget.studentNote.id ?? 0,
-          teacherId: teacherId!,
-          studentId: studentId ?? 0,
-        );
-      } else {
-        // Handle the case where teacherId is null (optional)
-        log("Failed to fetch teacherId");
-      }
+      notesController.getAllParentChats(
+        
+          parentNoteId: widget.studentNote.id);
     });
+    super.initState();
   }
 
   @override
@@ -98,129 +88,182 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
         ),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Note Section
-            Container(
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.green[100],
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      body:
+          Consumer<NotesController>(builder: (context, chatController, child) {
+        return chatController.isloadingForChats
+            ? Column(
                 children: [
-                  Row(
-                    children: [
-                      Icon(Icons.note, color: Colors.green),
-                      SizedBox(width: 8),
-                      Text(
-                        "Note:",
-                        style: TextStyle(
-                          color: Colors.green[900],
-                          fontWeight: FontWeight.bold,
-                        ),
+                  SizedBox(
+                    height: Responsive.height * 40,
+                  ),
+                  Loading(
+                    color: Colors.grey,
+                  ),
+                ],
+              )
+            : Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Note Section
+                    Container(
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.green[100],
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      Spacer(),
-                      Row(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(Icons.calendar_today,
-                              size: 14, color: Colors.white),
-                          SizedBox(width: 5),
+                          Row(
+                            children: [
+                              Icon(Icons.note, color: Colors.green),
+                              SizedBox(width: 8),
+                              Text(
+                                "Note:",
+                                style: TextStyle(
+                                  color: Colors.green[900],
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Spacer(),
+                              Row(
+                                children: [
+                                  Icon(Icons.calendar_today,
+                                      size: 14, color: Colors.white),
+                                  SizedBox(width: 5),
+                                  Text(
+                                    DateFormatter.formatDateString(widget
+                                        .studentNote.createdAt
+                                        .toString()),
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 10),
                           Text(
-                            DateFormatter.formatDateString(
-                                widget.studentNote.createdAt.toString()),
-                            style: TextStyle(color: Colors.white),
+                            widget.studentNote.noteTitle ?? "",
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            widget.studentNote.noteContent ?? "",
+                            style: TextStyle(fontSize: 14, color: Colors.black),
                           ),
                         ],
                       ),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    widget.studentNote.noteTitle ?? "",
-                    style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    widget.studentNote.noteContent ?? "",
-                    style: TextStyle(fontSize: 14, color: Colors.black),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 20),
-
-            // Replies Section
-            Text(
-              "Replies",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            Consumer<NotesController>(
-                builder: (context, chatController, child) {
-              return ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: chatController.parentChat.length,
-                  itemBuilder: (context, index) {
-                    final parentChat = chatController.parentChat[index];
-                    return _buildReply("You", parentChat.message ?? "");
-                  });
-            }),
-            // SizedBox(height: 10),
-            // _buildReply("shibu", "Why are you so mad?? don't you have any life",
-            //     'assets/angus.png'),
-            // _buildReply("April Curtis", "What bro?", "imageUrl"),
-
-            // Comment Input Field
-            Spacer(),
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _chatController,
-                    decoration: InputDecoration(
-                      hintText: "Add a comment...",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: Colors.grey[200],
                     ),
-                  ),
+                    SizedBox(height: 20),
+
+                    // Replies Section
+                    Text(
+                      "Replies",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    // Consumer<NotesController>(
+                    //     builder: (context, chatController, child) {
+                    // if (chatController.isloading) {
+                    //   // Display a loading indicator while fetching data
+                      // return Column(
+                      //   children: [
+                      //     SizedBox(height: Responsive.height * 30),
+                      //     Loading(color: Colors.grey),
+                      //   ],
+                      // );
+                    // }
+                    // else
+                    //if (chatController.parentChat.isEmpty) {
+                    //   // Display a fallback message when there are no chats
+                    //   return Center(
+                    //     child: Text(
+                    //       "No chats available.",
+                    //       style: TextStyle(color: Colors.grey),
+                    //     ),
+                    //   );
+                    // }
+
+                    // Render the list only when it's safe to access the parentChat list
+                    // else {
+                    // return
+
+                    chatController.parentChat == 0
+                        ? Text("Start Chat")
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: chatController.parentChat.length,
+                            itemBuilder: (context, index) {
+                              final parentChat =
+                                  chatController.parentChat[index];
+                              return _buildReply(
+                                  "You", parentChat.message ?? "No message");
+                              // },
+                              // );
+                            }
+                            // },
+                            ),
+
+                    // SizedBox(height: 10),
+                    // _buildReply("shibu", "Why are you so mad?? don't you have any life",
+                    //     'assets/angus.png'),
+                    // _buildReply("April Curtis", "What bro?", "imageUrl"),
+
+                    // Comment Input Field
+                    Spacer(),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: _chatController,
+                            decoration: InputDecoration(
+                              hintText: "Add a comment...",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                                borderSide: BorderSide.none,
+                              ),
+                              filled: true,
+                              fillColor: Colors.grey[200],
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Consumer<NotesController>(
+                            builder: (context, value, child) {
+                          final teacherReceiverId =
+                              value.parentChat[0].receiverId ?? 0;
+                          return CircleAvatar(
+                            backgroundColor: Colors.black,
+                            child: IconButton(
+                              icon: Icon(Icons.send, color: Colors.white),
+                              onPressed: () async {
+                                // _chatController.clear();
+                                log("TeacherChatId = ${teacherReceiverId}");
+                                context
+                                    .read<NotesController>()
+                                    .sendParentNoteChatParent(
+                                        isTeacher: false,
+                                        parentNoteId:
+                                            widget.studentNote.id,
+                                        receiverId: teacherReceiverId,
+                                        message: _chatController.text,
+                                        senderRole: "student");
+                                _chatController.clear();
+                              },
+                            ),
+                          );
+                        }),
+                      ],
+                    ),
+                  ],
                 ),
-                SizedBox(width: 10),
-                Consumer<NotesController>(builder: (context, value, child) {
-                  final teacherReceiverId = value.teacherChatId;
-                  return CircleAvatar(
-                    backgroundColor: Colors.black,
-                    child: IconButton(
-                      icon: Icon(Icons.send, color: Colors.white),
-                      onPressed: () async {
-                        // _chatController.clear();
-                        log("TeacherChatId = ${teacherReceiverId}");
-                        context.read<NotesController>().sendParentNoteChat(
-                            isTeacher: false,
-                            parentNoteId: widget.studentNote.id ?? 0,
-                            receiverId: teacherReceiverId,
-                            message: _chatController.text,
-                            senderRole: "student");
-                        _chatController.clear();
-                      },
-                    ),
-                  );
-                }),
-              ],
-            ),
-          ],
-        ),
-      ),
+              );
+      }),
     );
   }
 

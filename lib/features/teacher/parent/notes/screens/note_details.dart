@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:school_app/base/utils/capitalize_first_letter.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/features/teacher/parent/controller/notes_controller.dart';
 
@@ -22,11 +24,14 @@ class NoteChatDetailPage extends StatefulWidget {
 }
 
 class _NoteChatDetailPageState extends State<NoteChatDetailPage> {
+  late NotesController notesController;
   @override
   void initState() {
     // context.read<StudentController>().getParentDetails();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<NotesController>().getNotesByNoteId(noteId: widget.noteId);
+      notesController = context.read<NotesController>();
+      notesController.getLatestParentChats(parentNoteId: widget.noteId);
+      notesController.getNotesByNoteId(noteId: widget.noteId);
     });
 
     super.initState();
@@ -140,30 +145,38 @@ class _NoteChatDetailPageState extends State<NoteChatDetailPage> {
 
                     // Comment Input Field
                     Consumer<NotesController>(builder: (context, value, child) {
-                      return ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: value
-                              .parentNote?.data?.ParentNoteStudents?.length,
-                          itemBuilder: (context, index) {
-                            final studentDetail = value.parentNote?.data
-                                ?.ParentNoteStudents![index].student;
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 4),
-                              child: InkWell(
-                                onTap: () {},
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 12, vertical: 14),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(),
-                                    borderRadius: BorderRadius.circular(8),
+                      return value.isloadingForChats
+                          ? Column(
+                              children: [
+                                SizedBox(height: Responsive.height * 30),
+                                Loading(color: Colors.grey),
+                              ],
+                            )
+                          : ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: value.latestChats.length,
+                              itemBuilder: (context, index) {
+                                final latestChat = value.latestChats[index];
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 4),
+                                  child: InkWell(
+                                    onTap: () {
+                                      context.pushNamed(
+                                          AppRouteConst.teacherChatRouteName,
+                                          extra: latestChat);
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 14),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Text(latestChat.message ?? ""),
+                                    ),
                                   ),
-                                  child: Text(capitalizeEachWord(
-                                      studentDetail?.fullName ?? "")),
-                                ),
-                              ),
-                            );
-                          });
+                                );
+                              });
                     }),
                     Spacer(),
                     Row(

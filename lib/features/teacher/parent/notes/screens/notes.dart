@@ -283,7 +283,7 @@ class _NotesScreenState extends State<NotesScreen> {
                                             ),
                                             SizedBox(height: 4),
                                             Text(
-                                              "Last updated: ${note['updated_at']}",
+                                              "Note Id: ${note['id']}",
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .bodySmall

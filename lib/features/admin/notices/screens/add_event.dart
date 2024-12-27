@@ -177,7 +177,7 @@ class _AddEventPageState extends State<AddEventPage> {
                         bottom: 75.0), // Adjust this value to your needs
                     child: Icon(Icons.description),
                   ),
-                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                  // floatingLabelBehavior: FloatingLabelBehavior.always,
                 ),
               ),
 
