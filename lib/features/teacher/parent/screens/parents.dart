@@ -31,6 +31,8 @@ class _ParentsScreenState extends State<ParentsScreen> {
       dropdownprovider.clearSelectedItem('class');
       dropdownprovider.clearSelectedItem('division');
 
+       context.read<StudentController>().resetFilter();
+
       context.read<StudentController>().clearParentList();
     });
     super.initState();
@@ -86,24 +88,24 @@ class _ParentsScreenState extends State<ParentsScreen> {
               padding: const EdgeInsets.symmetric(vertical: 7),
               child: Row(
                 children: [
-                  Expanded(
-                    flex: 3,
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Search for Parents',
-                        prefixIcon: Icon(Icons.search, color: Colors.grey),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide(color: Colors.grey.shade300),
-                        ),
-                        filled: true,
-                        fillColor: Colors.grey.shade100,
-                        contentPadding: EdgeInsets.symmetric(vertical: 12),
-                      ),
-                      style: TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.normal),
-                    ),
-                  ),
+                  // Expanded(
+                  //   flex: 3,
+                  //   child: TextField(
+                  //     decoration: InputDecoration(
+                  //       hintText: 'Search for Parents',
+                  //       prefixIcon: Icon(Icons.search, color: Colors.grey),
+                  //       border: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(30),
+                  //         borderSide: BorderSide(color: Colors.grey.shade300),
+                  //       ),
+                  //       filled: true,
+                  //       fillColor: Colors.grey.shade100,
+                  //       contentPadding: EdgeInsets.symmetric(vertical: 12),
+                  //     ),
+                  //     style: TextStyle(
+                  //         fontSize: 16, fontWeight: FontWeight.normal),
+                  //   ),
+                  // ),
                   // SizedBox(width: 8),
                   // Flexible(
                   //   child: Container(
@@ -155,15 +157,15 @@ class _ParentsScreenState extends State<ParentsScreen> {
                     icon: Icons.school,
                     onChanged: (selectedClass) {
                       // Automatically fetch students when division is selected
-                      final selectedDivision = context
-                          .read<DropdownProvider>()
-                          .getSelectedItem(
-                              'division'); // Get the currently selected class
-                      context
-                          .read<StudentController>()
-                          .getParentByClassAndDivision(
-                              classname: selectedClass,
-                              section: selectedDivision);
+                      // final selectedDivision = context
+                      //     .read<DropdownProvider>()
+                      //     .getSelectedItem(
+                      //         'division'); // Get the currently selected class
+                      // context
+                      //     .read<StudentController>()
+                      //     .getParentByClassAndDivision(
+                      //         classname: selectedClass,
+                      //         section: selectedDivision);
                     },
                   ),
                 ),
@@ -202,18 +204,33 @@ class _ParentsScreenState extends State<ParentsScreen> {
                         color: Colors.grey,
                       ),
                     );
-                  } else if (value.filteredparents.isEmpty) {
-                    return Center(
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            'assets/empty.png',
-                            height: Responsive.height * 45,
-                          ),
-                        ],
+                  }  else if (!value.isFiltered) {
+                // Show image before filtering
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/empty.png',
+                        height: Responsive.height * 45,
                       ),
-                    );
-                  }
+                      const SizedBox(height: 16),
+                      Text(
+                        'No filter applied. Please select a class and division.',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
+                );
+              }else  if (value.isFiltered&&value.filteredparents.isEmpty) {
+                // Show message after filtering with no results
+                return Center(
+                  child: Text(
+                    'No Parents Found',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                );
+              }else{
                   return SingleChildScrollView(
                     padding: EdgeInsets.zero, // Removes any default padding
                     child: Column(
@@ -239,9 +256,9 @@ class _ParentsScreenState extends State<ParentsScreen> {
                                 description:
                                     "${parent.fullName} ${parent.studentClass} ${parent.section}",
                                 onPressed: () {
-                                  context.pushNamed(
-                                      AppRouteConst.NoteDetailsRouteName,
-                                      extra: parent);
+                                  // context.pushNamed(
+                                  //     AppRouteConst.NoteDetailsRouteName,
+                                  //     extra: parent);
                                 },
                               ),
                             );
@@ -252,7 +269,7 @@ class _ParentsScreenState extends State<ParentsScreen> {
                         ),
                       ],
                     ),
-                  );
+                  );}
                 },
               ),
             ),
