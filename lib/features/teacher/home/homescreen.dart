@@ -74,8 +74,8 @@ class _TeacherScreenState extends State<TeacherScreen> {
                           extra: UserType.teacher);
                     },
                     child: SizedBox(
-                      width: 30,
-                      height: 30,
+                      width: 50,
+                      height: 50,
                       child: ClipOval(
                         child: CachedNetworkImage(
                           imageUrl: _profilePhoto ?? "",

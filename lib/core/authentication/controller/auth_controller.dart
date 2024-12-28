@@ -30,6 +30,7 @@ class AuthController extends ChangeNotifier {
         log("User type from api===== ${response.data['user']["user_type"].toString()} ");
         log("User type from secure storage===== $userType ");
         if (userType == "student") {
+          await getParentProfile();
           context.goNamed(AppRouteConst.bottomNavRouteName,
               extra: UserType.parent);
         } else if (userType == "teacher") {
@@ -79,6 +80,25 @@ class AuthController extends ChangeNotifier {
       if (response.statusCode == 200) {
         final result = response.data;
         await SecureStorageService.saveTeacherData(result);
+      }
+    } catch (e) {
+      log(e.toString());
+    } finally {
+      _isloading = false;
+      notifyListeners();
+    }
+  }
+
+  // get logged in parent
+  Future<void> getParentProfile() async {
+    _isloading = true;
+    try {
+      final studentId = await SecureStorageService.getUserId();
+      final response =
+          await AuthServices().getParentProfile(studentId: studentId);
+      if (response.statusCode == 200) {
+        final result = response.data;
+        await SecureStorageService.saveStudentData(result);
       }
     } catch (e) {
       log(e.toString());

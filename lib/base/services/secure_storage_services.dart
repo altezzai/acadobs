@@ -9,6 +9,7 @@ class SecureStorageService {
   static const _tokenKey = 'token';
   static const _userKey = 'user';
   static const _teacherKey = 'teacher';
+  static const _studentKey = 'student';
 
   /// Save data to secure storage
   static Future<void> saveTokenAndUserData(Map<String, dynamic> data) async {
@@ -65,11 +66,25 @@ class SecureStorageService {
     await _storage.write(key: _teacherKey, value: jsonEncode(teacherData));
   }
 
+  // Save student data
+  static Future<void> saveStudentData(Map<String, dynamic> studentData) async {
+    await _storage.write(key: _studentKey, value: jsonEncode(studentData));
+  }
+
   /// Retrieve teacher data
   static Future<Map<String, dynamic>?> getTeacherData() async {
     final teacherData = await _storage.read(key: _teacherKey);
     if (teacherData != null) {
       return jsonDecode(teacherData) as Map<String, dynamic>;
+    }
+    return null;
+  }
+
+  // Retrieve student data
+  static Future<Map<String, dynamic>?> getStudentData() async {
+    final studentData = await _storage.read(key: _studentKey);
+    if (studentData != null) {
+      return jsonDecode(studentData) as Map<String, dynamic>;
     }
     return null;
   }
@@ -96,8 +111,35 @@ class SecureStorageService {
     return teacher?['profile_photo'];
   }
 
+  // Get individual student details
+  static Future<int?> getStudentId() async {
+    final student = await getStudentData();
+    return student?['id'];
+  }
+
+  static Future<String?> getParentEmail() async {
+    final student = await getStudentData();
+    return student?['parent_email'];
+  }
+
+  static Future<String?> getParentName() async {
+    final student = await getStudentData();
+    return student?['guardian_full_name'];
+  }
+
+  /// Get parent profile photo
+  static Future<String?> getParentProfilePhoto() async {
+    final student = await getStudentData();
+    return student?['father_mother_photo'];
+  }
+
   /// Delete teacher data
   static Future<void> clearTeacherData() async {
     await _storage.delete(key: _teacherKey);
+  }
+
+  // Delete student data
+  static Future<void> clearStudentData() async {
+    await _storage.delete(key: _studentKey);
   }
 }
