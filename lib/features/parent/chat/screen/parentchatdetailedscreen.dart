@@ -192,7 +192,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                     // else {
                     // return
 
-                    chatController.parentChat == 0
+                    chatController.parentChat.isEmpty
                         ? Text("Start Chat")
                         : ListView.builder(
                             shrinkWrap: true,
@@ -235,8 +235,10 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                         SizedBox(width: 10),
                         Consumer<NotesController>(
                             builder: (context, value, child) {
-                          final teacherReceiverId =
-                              value.parentChat[0].receiverId ?? 0;
+                           final teacherReceiverId = value.parentChat.isNotEmpty 
+      ? value.parentChat[0].receiverId ?? 0 
+      : 0;
+
                           return CircleAvatar(
                             backgroundColor: Colors.black,
                             child: IconButton(
@@ -250,7 +252,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                                         isTeacher: false,
                                         parentNoteId:
                                             widget.studentNote.id,
-                                        receiverId: teacherReceiverId,
+                                        receiverId: widget.studentNote.id,
                                         message: _chatController.text,
                                         senderRole: "student");
                                 _chatController.clear();
