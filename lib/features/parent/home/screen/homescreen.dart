@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/services/secure_storage_services.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/responsive.dart';
@@ -106,13 +108,26 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String? _parentName;
+  String? _profilePhoto;
   @override
   void initState() {
     context.read<NoticeController>().getEvents();
     context.read<NoticeController>().getNotices();
     // context.read<StudentController>().getIndividualStudentDetails();
     context.read<StudentController>().getStudentsByParentEmail();
+    _fetchStudentData();
     super.initState();
+  }
+
+  Future<void> _fetchStudentData() async {
+    final name = await SecureStorageService.getParentName();
+    final photo = await SecureStorageService.getParentProfilePhoto();
+    setState(() {
+      _parentName = name ?? 'Parent'; // Fallback if name is null
+      _profilePhoto =
+          photo != null ? '$baseUrl${Urls.parentPhotos}$photo' : null;
+    });
   }
 
   @override
@@ -131,7 +146,7 @@ class _HomePageState extends State<HomePage> {
                 Padding(
                   padding: EdgeInsets.only(left: 10),
                   child: Text(
-                    "Hi, \nVincent",
+                    "Hi, \n${_parentName}",
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 22,
@@ -145,10 +160,25 @@ class _HomePageState extends State<HomePage> {
                     context.pushNamed(AppRouteConst.logoutRouteName,
                         extra: UserType.parent);
                   },
-                  child: Padding(
-                    padding: EdgeInsets.only(right: 10),
-                    child: CircleAvatar(
-                      backgroundImage: AssetImage('assets/child1.png'),
+                  child: SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: ClipOval(
+                      child: CachedNetworkImage(
+                        imageUrl: _profilePhoto ?? "",
+                        placeholder: (context, url) =>
+                            const CircularProgressIndicator(
+                          color: Colors.grey,
+                        ),
+                        errorWidget: (context, url, error) => CircleAvatar(
+                          radius: 26,
+                          backgroundColor: Colors.transparent,
+                          backgroundImage: AssetImage(
+                            "assets/icons/avatar.png",
+                          ),
+                        ),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),

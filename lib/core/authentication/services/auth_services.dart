@@ -17,4 +17,9 @@ class AuthServices {
     final Response response = await ApiServices.get('/teachers/$teacherId');
     return response;
   }
+
+  Future<Response> getParentProfile({required int studentId}) async {
+    final Response response = await ApiServices.get('/students/$studentId');
+    return response;
+  }
 }
