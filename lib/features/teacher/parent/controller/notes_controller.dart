@@ -241,7 +241,9 @@ class NotesController extends ChangeNotifier {
       if (response.statusCode == 201 || response.statusCode == 200) {
         log(("Parent Note Chat response: ${response.data.toString()}"));
         await getAllParentChats(
-            parentNoteId: parentNoteId, forTeacherScreen: false);
+            parentNoteId: parentNoteId,
+            forTeacherScreen: false,
+            forChatScreen: true);
       }
     } catch (e) {
       log(e.toString());
@@ -273,7 +275,8 @@ class NotesController extends ChangeNotifier {
         await getAllParentChats(
             parentNoteId: parentNoteId,
             forTeacherScreen: true,
-            studentIdforChat: receiverId);
+            studentIdforChat: receiverId,
+            forChatScreen: true);
         await getLatestParentChats(parentNoteId: parentNoteId);
       }
     } catch (e) {
@@ -320,8 +323,13 @@ class NotesController extends ChangeNotifier {
   Future<void> getAllParentChats(
       {required int parentNoteId,
       bool forTeacherScreen = false,
+      bool forChatScreen = false,
       int studentIdforChat = 0}) async {
-    _isloadingForChats = true;
+    if (forChatScreen == false) {
+      // notifyListeners();
+      _isloadingForChats = true;
+    }
+
     // _parentChat = []; // Clear the list immediately
     notifyListeners();
     log("++++++++++++++++++++++++++++Get Chat length: ${_parentChat.length.toString()}");
@@ -347,7 +355,10 @@ class NotesController extends ChangeNotifier {
       log("Error in fetching parent chats: $e");
       _parentChat = []; // Reset the list on error
     } finally {
-      _isloadingForChats = false;
+      if (forChatScreen == false) {
+        // notifyListeners();
+        _isloadingForChats = false;
+      }
       log("++++++++++++++++++++++++++++Get Chat length: ${_parentChat.length.toString()}++++++++++++++++++++++++++++++");
       notifyListeners(); // Notify listeners when loading is complete.
     }
