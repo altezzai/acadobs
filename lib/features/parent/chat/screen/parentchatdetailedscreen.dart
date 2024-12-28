@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/features/teacher/parent/controller/notes_controller.dart';
 import 'package:school_app/features/teacher/parent/model/parent_note_student_model.dart';
@@ -23,7 +24,6 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   // ChatDetailPage({
   final TextEditingController _chatController = TextEditingController();
   late NotesController notesController;
-  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -32,13 +32,6 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
       notesController.getAllParentChats(parentNoteId: widget.studentNote.id);
       notesController.getTeacherChatIdFromTeacherId(
           teacherId: widget.studentNote.teacherId ?? 0);
-           if (_scrollController.hasClients) {
-        _scrollController.animateTo(
-          _scrollController.position.minScrollExtent,
-          duration: Duration(milliseconds: 300),
-          curve: Curves.easeOut,
-        );
-      }
     });
     super.initState();
   }
@@ -95,6 +88,59 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
         builder: (context, chatController, child) {
           return Column(
             children: [
+              // Note Section
+              Container(
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.green[100],
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                margin: EdgeInsets.all(8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.note, color: Colors.green),
+                        SizedBox(width: 8),
+                        Text(
+                          "Note:",
+                          style: TextStyle(
+                            color: Colors.green[900],
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Spacer(),
+                        Row(
+                          children: [
+                            Icon(Icons.calendar_today,
+                                size: 14, color: Colors.white),
+                            SizedBox(width: 5),
+                            Text(
+                              DateFormatter.formatDateString(
+                                  widget.studentNote.createdAt.toString()),
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      widget.studentNote.noteTitle ?? "",
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      widget.studentNote.noteContent ?? "",
+                      style: TextStyle(fontSize: 14, color: Colors.black),
+                    ),
+                  ],
+                ),
+              ),
               Expanded(
                 child: chatController.isloadingForChats
                     ? Center(
