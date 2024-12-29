@@ -104,4 +104,12 @@ class NoteServices {
         await ApiServices.get("/getLatestMessageByParentNoteId/$parentNoteId");
     return response;
   }
+
+  // **********Get count of unviewed messages***************
+  Future<Response> getCountUnviewedMessage(
+      {required int parentNoteId, required int studentId}) async {
+    final response = await ApiServices.get(
+        "/countUnviewedMessagesByParentNoteldAndStudentld/$parentNoteId/$studentId");
+    return response;
+  }
 }

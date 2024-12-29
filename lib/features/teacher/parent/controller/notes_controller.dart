@@ -254,38 +254,66 @@ class NotesController extends ChangeNotifier {
   }
 
   // ******************Parent Note Chat******************
-  Future<void> sendParentNoteChatTeacher(
-      {required int parentNoteId,
-      // required bool isTeacher,
-      required int receiverId,
-      required String message,
-      required String senderRole}) async {
+  Future<void> sendParentNoteChatTeacher({
+    required int parentNoteId,
+    required int receiverId,
+    required String message,
+    required String senderRole,
+  }) async {
     _isloadingTwo = true;
     notifyListeners();
     try {
+      // Retrieve the senderId from secure storage
       final senderId = await SecureStorageService.getChatId();
+
+      // Log senderId for debugging purposes
+      log('SenderId: $senderId');
+
+      // Check if senderId is valid
+      if (senderId == null || senderId == 0) {
+        log('Invalid senderId: $senderId');
+        return; // Exit early if senderId is invalid
+      }
+
+      // Log parameters for debugging
+      log('Sending message with senderId: $senderId, receiverId: $receiverId, parentNoteId: $parentNoteId, message: $message, senderRole: $senderRole');
+
+      // Make the API call to send the message
       final response = await NoteServices().parentNoteChat(
-          parentNoteId: parentNoteId,
-          senderId: senderId ?? 0,
-          receiverId: receiverId,
-          message: message,
-          senderRole: senderRole);
+        parentNoteId: parentNoteId,
+        senderId: senderId,
+        receiverId: receiverId,
+        message: message,
+        senderRole: senderRole,
+      );
+
+      // Check response status and log the result
       if (response.statusCode == 201 || response.statusCode == 200) {
-        log(("Parent Note Chat response: ${response.data.toString()}"));
+        log('Message sent successfully: ${response.data}');
+
+        // Fetch all parent chats after the message is sent
         await getAllParentChats(
-            parentNoteId: parentNoteId,
-            forTeacherScreen: true,
-            studentIdforChat: receiverId,
-            forChatScreen: true);
+          parentNoteId: parentNoteId,
+          forTeacherScreen: true,
+          studentIdforChat: receiverId,
+          forChatScreen: true,
+        );
+
+        // Fetch the latest parent chats to update the UI
         await getLatestParentChats(parentNoteId: parentNoteId);
+      } else {
+        log('Failed to send message. Status code: ${response.statusCode}, Response: ${response.data}');
       }
     } catch (e) {
-      log(e.toString());
+      // Log error if the try block fails
+      log('Error while sending message: $e');
     } finally {
+      // Reset loading state and notify listeners
       _isloadingTwo = false;
       notifyListeners();
     }
   }
+
   // ************Get parent note chat***************
 
   Future<void> getAllParentNoteChat(
@@ -390,6 +418,38 @@ class NotesController extends ChangeNotifier {
     } finally {
       _isloadingForChats = false;
       notifyListeners();
+    }
+  }
+
+  // **********Get count of unviewed messages***************
+  int _unviewedMessagesCount = 0;
+  int get unviewedMessagesCount => _unviewedMessagesCount;
+
+  Future<void> getUnviewedMessagesCount({
+    required int parentNoteId,
+    required int studentId,
+  }) async {
+    _isloading = true;
+    notifyListeners(); // Notify UI to show loading indicator
+
+    try {
+      final response = await NoteServices().getCountUnviewedMessage(
+        parentNoteId: parentNoteId,
+        studentId: studentId,
+      );
+
+      if (response.statusCode == 200 && response.data["status"] == "success") {
+        _unviewedMessagesCount = response.data["unviewed_count"] ?? 0;
+        log("Unviewed messages count: $_unviewedMessagesCount");
+      } else {
+        _unviewedMessagesCount = 0; // Default to 0 in case of an error
+      }
+    } catch (e) {
+      _unviewedMessagesCount = 0;
+      debugPrint("Error fetching unviewed messages count: $e");
+    } finally {
+      _isloading = false;
+      notifyListeners(); // Notify UI to stop loading
     }
   }
 }

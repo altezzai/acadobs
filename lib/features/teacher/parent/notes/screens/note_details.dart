@@ -179,61 +179,10 @@ class _NoteChatDetailPageState extends State<NoteChatDetailPage> {
                               });
                     }),
                     Spacer(),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintText: "Add a comment...",
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                                borderSide: BorderSide.none,
-                              ),
-                              filled: true,
-                              fillColor: Colors.grey[200],
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        CircleAvatar(
-                          backgroundColor: Colors.black,
-                          child: IconButton(
-                            icon: Icon(Icons.send, color: Colors.white),
-                            onPressed: () {
-                              // Handle send comment
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
                   ],
                 ),
               );
       }),
-    );
-  }
-
-  Widget _buildReply(String name, String message, String imageUrl) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        children: [
-          CircleAvatar(
-            backgroundImage: AssetImage(imageUrl),
-            radius: 20,
-          ),
-          SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(name, style: TextStyle(fontWeight: FontWeight.bold)),
-                Text(message, style: TextStyle(color: Colors.grey[700])),
-              ],
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

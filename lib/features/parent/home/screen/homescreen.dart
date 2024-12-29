@@ -182,6 +182,9 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
+                SizedBox(
+                  width: Responsive.width * 2,
+                )
               ],
             ),
             background: Stack(
