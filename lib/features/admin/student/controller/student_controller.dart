@@ -176,9 +176,9 @@ class StudentController extends ChangeNotifier {
       required String parentEmail,
        required String fatherContactNumber,
       required String motherContactNumber,
-      String? studentPhoto,
+      required String studentPhoto,
       String? aadharPhoto,
-      String? fatherMotherPhoto}) async {
+      required String fatherMotherPhoto}) async {
     _isloading = true;
     
     try {

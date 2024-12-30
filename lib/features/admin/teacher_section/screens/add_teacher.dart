@@ -22,6 +22,7 @@ class AddTeacher extends StatefulWidget {
 }
 
 class _AddTeacherState extends State<AddTeacher> {
+  final _formKey = GlobalKey<FormState>();
   String? selectedGender;
 
   // textediting controllers
@@ -63,132 +64,172 @@ class _AddTeacherState extends State<AddTeacher> {
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(Responsive.width * 4),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomAppbar(
-                title: "Add Teacher",
-                isProfileIcon: false,
-                onTap: () {
-                  context.pushNamed(AppRouteConst.AdminteacherRouteName);
-                },
-              ),
-              Text(
-                'Teacher Details',
-                style: TextStyle(
-                  fontSize: 16,
-                ),
-              ),
-              SizedBox(
-                height: Responsive.height * 2,
-              ),
-              CustomTextfield(
-                controller: _nameController,
-                hintText: 'Name',
-                iconData: Icon(Icons.person),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Name is required';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(
-                height: Responsive.height * 1,
-              ),
-              CustomDatePicker(
-                label: "Date of Birth",
-                dateController: _dateOfBirthController,
-                onDateSelected: (selectedDate) {
-                  print("End Date selected: $selectedDate");
-                },
-              ),
-              SizedBox(
-                height: Responsive.height * 1,
-              ),
-              CustomDropdown(
-                dropdownKey: 'gender',
-                label: 'Gender',
-                icon: Icons.person_2_outlined,
-                items: ['Male', 'Female', 'Other'],
-              ),
-              SizedBox(
-                height: Responsive.height * 1,
-              ),
-              CustomTextfield(
-                controller: _addressController, //Add controller
-                hintText: 'Address',
-                iconData: Icon(Icons.location_on),
-                keyBoardtype: TextInputType.streetAddress,
-              ),
-              SizedBox(
-                height: Responsive.height * 1,
-              ),
-              CustomTextfield(
-                controller: _phoneController, //Add controller
-                hintText: 'Phone Number',
-                iconData: Icon(Icons.phone),
-                keyBoardtype: TextInputType.phone,
-              ),
-              SizedBox(
-                height: Responsive.height * 1,
-              ),
-              CustomTextfield(
-                controller: _emailController, //Add controller
-                hintText: 'Email',
-                iconData: Icon(Icons.email),
-              ),
-              SizedBox(
-                height: Responsive.height * 1,
-              ),
-              CustomFilePicker(
-                label: 'Teacher Photo',
-                fieldName: 'profile photo',
-              ),
-              SizedBox(
-                height: Responsive.height * 30,
-              ),
-
-              Consumer<TeacherController>(builder: (context, value, child) {
-                return CommonButton(
-                  onPressed: () {
-                    final selectedGender = context
-                        .read<DropdownProvider>()
-                        .getSelectedItem('gender');
-                    final profilePhoto = context
-                        .read<FilePickerProvider>()
-                        .getFile('profile photo');
-                    final profilePhotoPath = profilePhoto?.path;
-                    context.read<TeacherController>().addNewTeacher(context,
-                        fullName: _nameController.text,
-                        dateOfBirth: _dateOfBirthController.text,
-                        gender: selectedGender,
-                        address: _addressController.text,
-                        contactNumber: _phoneController.text,
-                        emailAddress: _emailController.text,
-                        profilePhoto: profilePhotoPath);
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomAppbar(
+                  title: "Add Teacher",
+                  isProfileIcon: false,
+                  onTap: () {
+                    context.pushNamed(AppRouteConst.AdminteacherRouteName);
                   },
-                  widget: value.isloading ? ButtonLoading() : Text('Submit'),
-                );
-              }),
-              SizedBox(
-                height: Responsive.height * 10,
-              ),
-              // CustomButton(
-              //     text: 'Submit',
-              //     onPressed: () {
-              //       final selectedGender = context
-              //           .read<DropdownProvider>()
-              //           .getSelectedItem('gender');
-              //       context.read<TeacherController>().addNewTeacher(context,
-              //           fullName: _nameController.text,
-              //           dateOfBirth: _dateOfBirthController.text,
-              //           gender: selectedGender,
-              //           address: _addressController.text,
-              //           contactNumber: _phoneController.text,
-              //           emailAddress: _emailController.text);
-              //     }),
-            ],
+                ),
+                Text(
+                  'Teacher Details',
+                  style: TextStyle(
+                    fontSize: 16,
+                  ),
+                ),
+                SizedBox(
+                  height: Responsive.height * 2,
+                ),
+                CustomTextfield(
+                  controller: _nameController,
+                  hintText: 'Name',
+                  iconData: Icon(Icons.person),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Name is required';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(
+                  height: Responsive.height * 1,
+                ),
+                CustomDatePicker(
+                  label: "Date of Birth",
+                  dateController: _dateOfBirthController,
+                  onDateSelected: (selectedDate) {
+                    print("End Date selected: $selectedDate");
+                  },
+                ),
+                SizedBox(
+                  height: Responsive.height * 1,
+                ),
+                CustomDropdown(
+                  dropdownKey: 'gender',
+                  label: 'Gender',
+                  icon: Icons.person_2_outlined,
+                  items: ['Male', 'Female', 'Other'],
+                ),
+                SizedBox(
+                  height: Responsive.height * 1,
+                ),
+                CustomTextfield(
+                  controller: _addressController, //Add controller
+                  hintText: 'Address',
+                  iconData: Icon(Icons.location_on),
+                  keyBoardtype: TextInputType.streetAddress,
+                ),
+                SizedBox(
+                  height: Responsive.height * 1,
+                ),
+                CustomTextfield(
+                  controller: _phoneController, //Add controller
+                  hintText: 'Phone Number',
+                  iconData: Icon(Icons.phone),
+                  keyBoardtype: TextInputType.phone,
+                ),
+                SizedBox(
+                  height: Responsive.height * 1,
+                ),
+                CustomTextfield(
+                  controller: _emailController, //Add controller
+                  hintText: 'Email',
+                  iconData: Icon(Icons.email),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'This field is required';
+                    }
+                    // Enhanced email validation regex
+                    final emailRegex = RegExp(
+                        r'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,}$');
+                    if (!emailRegex.hasMatch(value)) {
+                      return 'Please enter a valid email address';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(
+                  height: Responsive.height * 1,
+                ),
+                CustomFilePicker(
+                  label: 'Teacher Photo',
+                  fieldName: 'profile photo',
+                ),
+                SizedBox(
+                  height: Responsive.height * 30,
+                ),
+
+                Consumer<TeacherController>(builder: (context, value, child) {
+                  return CommonButton(
+                    onPressed: () {
+                      if (_formKey.currentState?.validate() ?? false) {
+                        try {
+                          final selectedGender = context
+                              .read<DropdownProvider>()
+                              .getSelectedItem('gender');
+                          final profilePhoto = context
+                              .read<FilePickerProvider>()
+                              .getFile('profile photo');
+                          final profilePhotoPath = profilePhoto?.path;
+                          context.read<TeacherController>().addNewTeacher(
+                              context,
+                              fullName: _nameController.text,
+                              dateOfBirth: _dateOfBirthController.text,
+                              gender: selectedGender,
+                              address: _addressController.text,
+                              contactNumber: _phoneController.text,
+                              emailAddress: _emailController.text,
+                              profilePhoto: profilePhotoPath);
+                        } catch (e) {
+                          // Handle any errors and show an error message
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                  'Failed to add student. Please try again.'),
+                              backgroundColor: Colors.red,
+                              duration: Duration(seconds: 3),
+                            ),
+                          );
+                        }
+                      } else {
+                        // Highlight missing fields if the form is invalid
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content:
+                                Text('Please complete all required fields.'),
+                            backgroundColor: Colors.orange,
+                            duration: Duration(seconds: 3),
+                          ),
+                        );
+                      }
+                    },
+                    widget: value.isloading ? ButtonLoading() : Text('Submit'),
+                  );
+                }),
+                SizedBox(
+                  height: Responsive.height * 10,
+                ),
+                // CustomButton(
+                //     text: 'Submit',
+                //     onPressed: () {
+                //       final selectedGender = context
+                //           .read<DropdownProvider>()
+                //           .getSelectedItem('gender');
+                //       context.read<TeacherController>().addNewTeacher(context,
+                //           fullName: _nameController.text,
+                //           dateOfBirth: _dateOfBirthController.text,
+                //           gender: selectedGender,
+                //           address: _addressController.text,
+                //           contactNumber: _phoneController.text,
+                //           emailAddress: _emailController.text);
+                //     }),
+              ],
+            ),
           ),
         ),
       ),
