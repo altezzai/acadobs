@@ -105,6 +105,12 @@ class _AddTeacherState extends State<AddTeacher> {
                   onDateSelected: (selectedDate) {
                     print("End Date selected: $selectedDate");
                   },
+                   validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: Responsive.height * 1,
@@ -114,6 +120,12 @@ class _AddTeacherState extends State<AddTeacher> {
                   label: 'Gender',
                   icon: Icons.person_2_outlined,
                   items: ['Male', 'Female', 'Other'],
+                   validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: Responsive.height * 1,
@@ -123,6 +135,12 @@ class _AddTeacherState extends State<AddTeacher> {
                   hintText: 'Address',
                   iconData: Icon(Icons.location_on),
                   keyBoardtype: TextInputType.streetAddress,
+                   validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: Responsive.height * 1,
@@ -132,6 +150,12 @@ class _AddTeacherState extends State<AddTeacher> {
                   hintText: 'Phone Number',
                   iconData: Icon(Icons.phone),
                   keyBoardtype: TextInputType.phone,
+                   validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: Responsive.height * 1,
@@ -159,6 +183,12 @@ class _AddTeacherState extends State<AddTeacher> {
                 CustomFilePicker(
                   label: 'Teacher Photo',
                   fieldName: 'profile photo',
+                   validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: Responsive.height * 30,
@@ -184,7 +214,7 @@ class _AddTeacherState extends State<AddTeacher> {
                               address: _addressController.text,
                               contactNumber: _phoneController.text,
                               emailAddress: _emailController.text,
-                              profilePhoto: profilePhotoPath);
+                              profilePhoto: profilePhotoPath!);
                         } catch (e) {
                           // Handle any errors and show an error message
                           ScaffoldMessenger.of(context).showSnackBar(

@@ -42,7 +42,7 @@ class TeacherController extends ChangeNotifier {
       required String address,
       required String contactNumber,
       required String emailAddress,
-      String? profilePhoto}) async {
+      required String profilePhoto}) async {
     _isloading = true;
     try {
       //  _isloading = false;
