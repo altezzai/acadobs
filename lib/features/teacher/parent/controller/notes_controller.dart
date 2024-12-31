@@ -402,13 +402,14 @@ class NotesController extends ChangeNotifier {
     _latestChats.clear();
     notifyListeners();
     try {
+      log("start");
       final response =
           await NoteServices().getLatestParentChats(parentNoteId: parentNoteId);
       _latestChats.clear();
-      log("parent note id: $parentNoteId, teacher id : $teacherChatId");
+      log("parent note id: $parentNoteId");
       if (response.statusCode == 200) {
         // _parentChat.clear();
-        _latestChats = (response.data as List<dynamic>)
+        _latestChats = (response.data['data'] as List<dynamic>)
             .map((result) => LatestChat.fromJson(result))
             .toList();
         log("Parent Chats:${_latestChats.toString()}");
