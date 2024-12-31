@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/utils/button_loading.dart';
+import 'package:school_app/base/utils/form_validators.dart';
+import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/controller/file_picker_provider.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
@@ -28,8 +31,8 @@ class _AddStudentPageState extends State<AddStudentPage> {
   String? selectedAadharPhoto;
   String? selectedTransferCertificate;
 
-  final TextEditingController _dateOfJoiningController =
-      TextEditingController();
+  final TextEditingController _dateOfJoiningController = TextEditingController(
+      text: DateFormat('yyyy-MM-dd').format(DateTime.now()));
   final TextEditingController _dateOfBirthController = TextEditingController();
   final TextEditingController _fullNameController = TextEditingController();
 
@@ -129,27 +132,23 @@ class _AddStudentPageState extends State<AddStudentPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 20),
+                SizedBox(height: Responsive.height * 2),
                 _sectionTitle('Student Details'),
                 SizedBox(height: 10),
 
                 // Name Input
                 CustomTextfield(
-                  hintText: 'Name',
-                  controller: _fullNameController,
-                  iconData: Icon(Icons.person),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'This field is required';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 20),
+                    hintText: 'Student Name',
+                    controller: _fullNameController,
+                    iconData: Icon(Icons.person),
+                    validator: (value) => FormValidator.validateNotEmpty(value,
+                        fieldName: "Name")),
+                SizedBox(height: Responsive.height * 2),
 
                 // Roll Number Input
                 CustomTextfield(
                   hintText: 'Roll Number',
+                  keyBoardtype: TextInputType.number,
                   controller: _rollNumberController,
                   iconData: Icon(Icons.badge),
                   validator: (value) {
@@ -159,7 +158,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                     return null;
                   },
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: Responsive.height * 2),
 
                 CustomDropdown(
                   dropdownKey: 'gender',
@@ -173,7 +172,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                     return null;
                   },
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: Responsive.height * 2),
                 // Class and Division dropdowns
                 Row(
                   children: [
@@ -212,10 +211,12 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   ],
                 ),
 
-                SizedBox(height: 20),
+                SizedBox(height: Responsive.height * 2),
 
                 // Date of Joining Input
                 CustomDatePicker(
+                  lastDate: DateTime.now(),
+                  firstDate: DateTime(2022),
                   label: "Date of Joining",
                   dateController:
                       _dateOfJoiningController, // Unique controller for end date
@@ -230,11 +231,14 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   },
                 ),
 
-                SizedBox(height: 20),
+                SizedBox(height: Responsive.height * 2),
 
                 // Date of Birth Input
                 CustomDatePicker(
                   label: "Date of Birth",
+                  firstDate: DateTime(1995),
+                  lastDate: DateTime(2020),
+                  initialDate: DateTime(2010),
                   dateController:
                       _dateOfBirthController, // Unique controller for end date
                   onDateSelected: (selectedDate) {
@@ -247,7 +251,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                     return null;
                   },
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: Responsive.height * 2),
 
                 // Address Input
                 CustomTextfield(
@@ -262,7 +266,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                     return null;
                   },
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: Responsive.height * 2),
 
                 // Admission Number and Aadhar Number Input
                 CustomTextfield(
@@ -276,10 +280,11 @@ class _AddStudentPageState extends State<AddStudentPage> {
                     return null;
                   },
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: Responsive.height * 2),
                 CustomTextfield(
                   hintText: 'Aadhar Number',
                   controller: _aadhaarNumberController,
+                  keyBoardtype: TextInputType.number,
                   iconData: Icon(Icons.account_box_outlined),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -288,7 +293,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                     return null;
                   },
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: Responsive.height * 2),
 
                 // Blood Group, Email, Previous School Inputs
                 CustomDropdown(
@@ -303,44 +308,29 @@ class _AddStudentPageState extends State<AddStudentPage> {
                     return null;
                   },
                 ),
-                // CustomTextfield(
-                //   hintText: 'Blood Group',
-                //   controller: _bloodgroupController,
-                //   iconData: Icon(Icons.bloodtype),
-                //    validator: (value) {
-                //     if (value == null || value.isEmpty) {
-                //       return 'This field is required';
-                //     }
-                //     return null;
-                //   },
-                // ),
-                SizedBox(height: 20),
+                SizedBox(height: Responsive.height * 2),
+                // ******EMAIL VALIDATION************//
                 CustomTextfield(
-                  hintText: 'Email',
-                  controller: _emailController,
-                  iconData: Icon(Icons.email),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'This field is required';
-                    }
-                    // Enhanced email validation regex
-                    final emailRegex = RegExp(
-                        r'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,}$');
-                    if (!emailRegex.hasMatch(value)) {
-                      return 'Please enter a valid email address';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 20),
+                    hintText: 'Email',
+                    controller: _emailController,
+                    iconData: Icon(Icons.email),
+                    validator: (value) => FormValidator.validateEmail(value)),
+                SizedBox(height: Responsive.height * 2),
                 CustomTextfield(
                   hintText: 'Previous School',
                   iconData: Icon(Icons.school_rounded),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: Responsive.height * 2),
 
                 _sectionTitle('Parent Details'),
                 SizedBox(height: 10),
+                CustomTextfield(
+                  controller: parentEmailController,
+                  hintText: 'Parent Email',
+                  iconData: Icon(Icons.email),
+                  validator: (value) => FormValidator.validateEmail(value),
+                ),
+                SizedBox(height: Responsive.height * 2),
 
                 // Parent Details
                 CustomTextfield(
@@ -354,20 +344,16 @@ class _AddStudentPageState extends State<AddStudentPage> {
                     return null;
                   },
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: Responsive.height * 2),
+                // **********PHONE NUMBER VALIDATION************//
                 CustomTextfield(
                   hintText: 'Father\'s Phone Number',
                   controller: _fatherContactNumberController,
                   iconData: Icon(Icons.phone),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Father\'s Phone Number is required';
-                    }
-                    return null;
-                  },
+                  validator: (value) => FormValidator.validatePassword(value),
                   keyBoardtype: TextInputType.phone,
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: Responsive.height * 2),
                 CustomTextfield(
                   hintText: 'Mother\'s Name',
                   controller: _motherFullNameController,
@@ -379,7 +365,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                     return null;
                   },
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: Responsive.height * 2),
                 CustomTextfield(
                   hintText: 'Mother\'s Phone Number',
                   iconData: Icon(Icons.phone),
@@ -392,7 +378,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   },
                   keyBoardtype: TextInputType.phone,
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: Responsive.height * 2),
 
                 // Guardian, Parent Email, Occupation Inputs
                 CustomTextfield(
@@ -406,41 +392,25 @@ class _AddStudentPageState extends State<AddStudentPage> {
                     return null;
                   },
                 ),
-                SizedBox(height: 20),
-                CustomTextfield(
-                  controller: parentEmailController,
-                  hintText: 'Parent Email',
-                  iconData: Icon(Icons.email),
-                  validator: (value) {
-                    if (value != null && value.isNotEmpty) {
-                      // Enhanced email validation regex
-                      final emailRegex = RegExp(
-                          r'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,}$');
-                      if (!emailRegex.hasMatch(value)) {
-                        return 'Please enter a valid email address';
-                      }
-                    }
-                    return null; // No validation error if empty
-                  },
-                ),
-                SizedBox(height: 20),
+                SizedBox(height: Responsive.height * 2),
+
                 CustomTextfield(
                   hintText: 'Occupation',
                   iconData: Icon(Icons.work),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: Responsive.height * 2),
 
-                // Father's and Mother's Aadhar Number
-                CustomTextfield(
-                  hintText: 'Father\'s Aadhar Number',
-                  iconData: Icon(Icons.account_box),
-                ),
-                SizedBox(height: 20),
-                CustomTextfield(
-                  hintText: 'Mother\'s Aadhar Number',
-                  iconData: Icon(Icons.account_box),
-                ),
-                SizedBox(height: 20),
+                // // Father's and Mother's Aadhar Number
+                // CustomTextfield(
+                //   hintText: 'Father\'s Aadhar Number',
+                //   iconData: Icon(Icons.account_box),
+                // ),
+                // SizedBox(height: Responsive.height*2),
+                // CustomTextfield(
+                //   hintText: 'Mother\'s Aadhar Number',
+                //   iconData: Icon(Icons.account_box),
+                // ),
+                // SizedBox(height: Responsive.height*2),
 
                 _sectionTitle('Previous School Details'),
                 SizedBox(height: 10),
@@ -450,15 +420,15 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   items: ['private', 'Public'],
                   icon: Icons.category,
                 ),
-               
-                SizedBox(height: 20),
+
+                SizedBox(height: Responsive.height * 2),
 
                 CustomTextfield(
                   hintText: 'Siblings Name',
                   iconData: Icon(Icons.group),
                 ),
 
-                SizedBox(height: 20),
+                SizedBox(height: Responsive.height * 2),
                 CustomDropdown(
                   dropdownKey: 'transportation',
                   label: 'Transportation Required',
@@ -466,7 +436,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   icon: Icons.car_crash_rounded,
                 ),
 
-                SizedBox(height: 20),
+                SizedBox(height: Responsive.height * 2),
                 CustomDropdown(
                   dropdownKey: 'hostel',
                   label: 'Hostel Required',
@@ -474,7 +444,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   icon: Icons.house_rounded,
                 ),
 
-                SizedBox(height: 20),
+                SizedBox(height: Responsive.height * 2),
 
                 _sectionTitle('Documents'),
                 SizedBox(height: 10),
@@ -490,22 +460,24 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   },
                 ),
 
-                SizedBox(height: 20),
+                SizedBox(height: Responsive.height * 2),
                 CustomFilePicker(
                   label: 'Aadhar Photo',
                   fieldName: 'aadhar photo',
                 ),
 
-                SizedBox(height: 20),
+                SizedBox(height: Responsive.height * 2),
 
                 CustomFilePicker(
-                    label: 'Parent Photo', fieldName: 'parent photo',
+                  label: 'Parent Photo',
+                  fieldName: 'parent photo',
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'This field is required';
                     }
                     return null;
-                  },),
+                  },
+                ),
 
                 SizedBox(height: 40),
 

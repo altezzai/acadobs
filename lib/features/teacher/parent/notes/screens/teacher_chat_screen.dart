@@ -49,7 +49,8 @@ class _TeacherChatScreenState extends State<TeacherChatScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.latestChat.parentName,
+          "",
+          // widget.latestChat.parentName,
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.black,
@@ -129,12 +130,12 @@ class _TeacherChatScreenState extends State<TeacherChatScreen> {
                     //   return;
                     // }
 
-                    notesController.sendParentNoteChatTeacher(
-                      parentNoteId: widget.latestChat.parentNoteId,
-                      receiverId: receiverId,
-                      message: message,
-                      senderRole: "teacher",
-                    );
+                    // notesController.sendParentNoteChatTeacher(
+                    //   parentNoteId: widget.latestChat.parentNoteId,
+                    //   receiverId: receiverId,
+                    //   message: message,
+                    //   senderRole: "teacher",
+                    // );
                     _chatController.clear();
                     _scrollToBottom();
                   },

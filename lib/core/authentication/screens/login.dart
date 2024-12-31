@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/controller/student_id_controller.dart';
+import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/core/authentication/controller/auth_controller.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
@@ -79,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                     // },
                     onTap: null, // No tap event required for username input
                   ),
-                  const SizedBox(height: 20),
+                 SizedBox(height: Responsive.height * 2),
                   CustomTextfield(
                     hintText: "Password",
                     iconData: Icon(Icons.lock_outline),
@@ -92,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                     // },
                     onTap: null, // No tap event required for password input
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: Responsive.height * 2),
                   // CustomButton(
                   //   onPressed: () {
                   //     context.read<AuthController>().login(
@@ -113,7 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                       widget: value.isloading ? Loading() : Text('Login'),
                     );
                   }),
-                  SizedBox(height: 20),
+                  SizedBox(height: Responsive.height * 2),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

@@ -68,12 +68,14 @@ class NoteServices {
       {required int parentNoteId,
       required int senderId,
       required int receiverId,
+      required int studentId,
       required String message,
       required String senderRole}) async {
     final response = await ApiServices.post("/parentNoteChats", {
       "parent_note_id": parentNoteId,
       "sender_id": senderId,
       "receiver_id": receiverId,
+      "student_id": studentId,
       "message": message,
       "sender_role": senderRole
     });

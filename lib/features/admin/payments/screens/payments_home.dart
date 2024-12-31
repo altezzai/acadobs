@@ -80,7 +80,7 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
                             ),
                           ],
                         ),
-                        //SizedBox(height: 20),
+                        //SizedBox(height: Responsive.height*2),
                       ]))),
               SliverOverlapAbsorber(
                 handle:

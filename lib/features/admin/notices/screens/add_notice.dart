@@ -70,7 +70,7 @@ class _AddNoticePageState extends State<AddNoticePage> {
                 fontSize: 16,
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: Responsive.height * 2),
             // Target Audience Dropdown
             CustomDropdown(
               dropdownKey: 'targetAudience',
@@ -164,7 +164,10 @@ class _AddNoticePageState extends State<AddNoticePage> {
             ),
 
             SizedBox(height: 16),
-           CustomFilePicker(label: "Add Receipt", fieldName: 'notice file',),
+            CustomFilePicker(
+              label: "Add Receipt",
+              fieldName: 'notice file',
+            ),
             SizedBox(height: 40),
             Consumer<NoticeController>(builder: (context, value, child) {
               return CommonButton(

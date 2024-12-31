@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:school_app/base/utils/responsive.dart';
 
 class ActivityTab extends StatelessWidget {
   @override
@@ -11,7 +12,7 @@ class ActivityTab extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 20),
+            SizedBox(height: Responsive.height * 2),
             Text(
               'Today',
               style: TextStyle(
@@ -26,7 +27,7 @@ class ActivityTab extends StatelessWidget {
                 time: "09:00 am"),
             ActivityCard(
                 title: "Teacher's Meeting", date: "14-06-24", time: "11:00 am"),
-            SizedBox(height: 20),
+            SizedBox(height: Responsive.height * 2),
             Text(
               'Yesterday',
               style: TextStyle(

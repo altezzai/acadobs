@@ -6,6 +6,7 @@ import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 // import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
+import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 // import 'package:school_app/core/navbar/screen/bottom_nav.dart';
@@ -119,7 +120,7 @@ class _EventsPageState extends State<EventsPage> {
                         },
                       )
                     : const Text("No upcoming events available."),
-                const SizedBox(height: 20),
+               SizedBox(height: Responsive.height*2),
 
                 // Latest Events Section
                 const Text(
@@ -158,7 +159,7 @@ class _EventsPageState extends State<EventsPage> {
                         },
                       )
                     : const Text("No latest events available."),
-                const SizedBox(height: 20),
+               SizedBox(height: Responsive.height*2),
 
                 // Previous Events Section
                 const Text(
