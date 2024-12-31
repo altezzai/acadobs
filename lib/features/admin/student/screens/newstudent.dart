@@ -499,7 +499,13 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 SizedBox(height: 20),
 
                 CustomFilePicker(
-                    label: 'Parent Photo', fieldName: 'parent photo'),
+                    label: 'Parent Photo', fieldName: 'parent photo',
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'This field is required';
+                    }
+                    return null;
+                  },),
 
                 SizedBox(height: 40),
 
