@@ -25,9 +25,9 @@ class _TeacherChatScreenState extends State<TeacherChatScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       notesController = context.read<NotesController>();
       notesController.getAllParentChats(
-        parentNoteId: widget.latestChat.parentNoteId ?? 0,
+        parentNoteId: widget.latestChat.parentNoteId,
         forTeacherScreen: true,
-        studentIdforChat: widget.latestChat.senderId ?? 0,
+        studentIdforChat: widget.latestChat.senderId,
       );
     });
   }
@@ -49,7 +49,7 @@ class _TeacherChatScreenState extends State<TeacherChatScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Chat",
+          widget.latestChat.parentName,
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.black,
@@ -77,9 +77,7 @@ class _TeacherChatScreenState extends State<TeacherChatScreen> {
                     final parentChat = chatController.parentChat[index];
                     final isYourChat = parentChat.senderRole == "teacher";
                     return _buildChatBubble(
-                      name: parentChat.senderRole == "student"
-                          ? "Student"
-                          : "You",
+                      name: parentChat.senderRole == "student" ? "" : "You",
                       message: parentChat.message ?? "",
                       isYourChat: isYourChat,
                       timestamp: DateFormatter.formatDateString(
@@ -93,7 +91,7 @@ class _TeacherChatScreenState extends State<TeacherChatScreen> {
 
           // Message Input Section
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Row(
               children: [
                 Expanded(
@@ -124,15 +122,15 @@ class _TeacherChatScreenState extends State<TeacherChatScreen> {
                     }
 
                     final receiverId = notesController.latestChats[0].senderId;
-                    if (receiverId == null) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Receiver ID not found')),
-                      );
-                      return;
-                    }
+                    // if (receiverId == null) {
+                    //   ScaffoldMessenger.of(context).showSnackBar(
+                    //     SnackBar(content: Text('Receiver ID not found')),
+                    //   );
+                    //   return;
+                    // }
 
                     notesController.sendParentNoteChatTeacher(
-                      parentNoteId: widget.latestChat.parentNoteId ?? 0,
+                      parentNoteId: widget.latestChat.parentNoteId,
                       receiverId: receiverId,
                       message: message,
                       senderRole: "teacher",
@@ -161,7 +159,7 @@ class _TeacherChatScreenState extends State<TeacherChatScreen> {
       alignment: isYourChat ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 8),
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.only(left: 12, right: 12, bottom: 5),
         constraints:
             BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
         decoration: BoxDecoration(
