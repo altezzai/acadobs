@@ -8,13 +8,10 @@ import 'package:school_app/features/teacher/parent/model/parent_note_student_mod
 
 class ChatDetailPage extends StatefulWidget {
   final NoteData studentNote;
-  // final int teacherId;
+  final int studentId;
 
-  ChatDetailPage({
-    super.key,
-    required this.studentNote,
-    //  required this.teacherId
-  });
+  ChatDetailPage(
+      {super.key, required this.studentNote, required this.studentId});
 
   @override
   State<ChatDetailPage> createState() => _ChatDetailPageState();
@@ -205,6 +202,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                                   isTeacher: false,
                                   parentNoteId: widget.studentNote.id,
                                   receiverId: teacherReceiverId,
+                                  studentId: widget.studentId,
                                   message: message,
                                   senderRole: "student",
                                 );

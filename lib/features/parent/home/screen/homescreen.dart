@@ -273,7 +273,7 @@ class _HomePageState extends State<HomePage> {
                             //     );
                             //   }),
                             // ),
-                            // const SizedBox(height: 20),
+                            // const SizedBox(height: Responsive.height*2),
 
                             const Text(
                               "My Children",
@@ -347,7 +347,7 @@ class _HomePageState extends State<HomePage> {
                             //   className: "XIII",
                             //   imageProvider: AssetImage('assets/child2.png'),
                             // ),
-                            const SizedBox(height: 20),
+                           SizedBox(height: Responsive.height*2),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -416,7 +416,7 @@ class _HomePageState extends State<HomePage> {
                             //   date: "15 - 06 - 24",
                             //   time: "09:00 am",
                             // ),
-                            const SizedBox(height: 20),
+                           SizedBox(height: Responsive.height*2),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [

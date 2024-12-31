@@ -6,6 +6,7 @@ import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 // import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
+import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 // import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
@@ -119,7 +120,7 @@ class _NoticePageState extends State<NoticePage> {
                         },
                       )
                     : const Text("No upcoming notices available."),
-                const SizedBox(height: 20),
+               SizedBox(height: Responsive.height*2),
 
                 // Latest Notices Section
                 const Text(
@@ -157,7 +158,7 @@ class _NoticePageState extends State<NoticePage> {
                         },
                       )
                     : const Text("No latest notices available."),
-                const SizedBox(height: 20),
+               SizedBox(height: Responsive.height*2),
 
                 // Previous Notices Section
                 const Text(

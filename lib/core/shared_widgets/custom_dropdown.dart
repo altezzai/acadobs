@@ -29,7 +29,7 @@ class CustomDropdown extends StatelessWidget {
           decoration: InputDecoration(
             labelText: label,
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(30),
               borderSide: const BorderSide(color: Colors.grey),
             ),
             prefixIcon: Padding(

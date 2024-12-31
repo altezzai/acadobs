@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
@@ -18,14 +19,17 @@ class ParentNoteScreen extends StatefulWidget {
 }
 
 class _ParentNoteScreenState extends State<ParentNoteScreen> {
+  late NotesController notesController;
   @override
   void initState() {
-    super.initState();
+    
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context
-          .read<NotesController>()
-          .getNotesByStudentId(studentId: widget.studentId);
+     notesController =context
+          .read<NotesController>();
+         notesController.getNotesByStudentId(studentId: widget.studentId);
+        //  notesController.getLatestParentChats(parentNoteId: parentNoteId)
     });
+    super.initState();
   }
 
   @override
@@ -106,7 +110,8 @@ class _ParentNoteScreenState extends State<ParentNoteScreen> {
             );
 
             context.pushNamed(AppRouteConst.parentNoteDetailRouteName,
-                extra: teacherNote);
+                extra: ParentChatDetailArguments(
+                    studentNote: teacherNote, studentId: widget.studentId));
           },
         );
       },

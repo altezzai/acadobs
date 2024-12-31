@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:school_app/base/utils/responsive.dart';
 
 void main() {
   runApp(MyApp());
@@ -99,7 +100,7 @@ class _DutyPageState extends State<DutyPage> {
                       ),
                     ),
 
-                    SizedBox(height: 20),
+                    SizedBox(height: Responsive.height * 2),
                     // Registration Information
                     Text(
                       '12th class New student Registration of 2024',
@@ -111,7 +112,7 @@ class _DutyPageState extends State<DutyPage> {
                       'You have to complete the registration of 12th class students before 2022',
                       style: TextStyle(color: Colors.black54),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: Responsive.height * 2),
                     // Date Information
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -146,7 +147,7 @@ class _DutyPageState extends State<DutyPage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: Responsive.height * 2),
                     // Feedback Section
                     Container(
                       padding: EdgeInsets.all(
@@ -224,7 +225,7 @@ class _DutyPageState extends State<DutyPage> {
                       ),
                     ),
 
-                    SizedBox(height: 20),
+                    SizedBox(height: Responsive.height * 2),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 8),
                       decoration: BoxDecoration(

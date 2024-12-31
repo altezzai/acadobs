@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/features/teacher/parent/controller/notes_controller.dart';
 
@@ -102,7 +103,7 @@ class _NoteChatDetailPageState extends State<NoteChatDetailPage> {
                           ],
                         ),
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: Responsive.height * 2),
 
                       // Replies Section
                       Text(

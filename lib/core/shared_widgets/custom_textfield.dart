@@ -82,11 +82,11 @@ class CustomTextfield extends StatelessWidget {
                     fontSize: 12.0, // Smaller font size for error messages
                     color: Colors.red, // Optional: change color if needed
                   ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(
-                    borderRadius), // Use the borderRadius parameter
-                borderSide: const BorderSide(color: Colors.grey),
-              ),
+              // border: OutlineInputBorder(
+              //   borderRadius: BorderRadius.circular(
+              //       borderRadius), // Use the borderRadius parameter
+              //   borderSide: const BorderSide(color: Colors.grey),
+              // ),
               suffixIcon: isPasswordField
                   ? Padding(
                       padding: const EdgeInsets.only(right: 8),

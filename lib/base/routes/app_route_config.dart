@@ -678,21 +678,21 @@ class Approuter {
         name: AppRouteConst.parentNoteDetailRouteName,
         path: '/parentNoteDetailScreen',
         pageBuilder: (context, state) {
-          final studentNote = state.extra as NoteData;
+          final args = state.extra as ParentChatDetailArguments;
           return MaterialPage(
               child: ChatDetailPage(
-            studentNote: studentNote,
+            studentNote: args.studentNote,
+            studentId: args.studentId,
             // teacherId: args.teacherChatId,
           ));
         },
       ),
-       GoRoute(
+      GoRoute(
         name: AppRouteConst.teacherChatRouteName,
         path: '/teacherChatScreen',
         pageBuilder: (context, state) {
           final latestChat = state.extra as LatestChat;
-          return MaterialPage(
-              child: TeacherChatScreen(latestChat: latestChat));
+          return MaterialPage(child: TeacherChatScreen(latestChat: latestChat));
         },
       ),
     ],
@@ -739,4 +739,11 @@ class ChatDetailArguments {
   NoteData studentNote;
   int teacherChatId;
   ChatDetailArguments({required this.studentNote, required this.teacherChatId});
+}
+
+class ParentChatDetailArguments {
+  NoteData studentNote;
+  int studentId;
+  ParentChatDetailArguments(
+      {required this.studentNote, required this.studentId});
 }

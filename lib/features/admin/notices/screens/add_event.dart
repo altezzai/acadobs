@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
@@ -52,7 +53,7 @@ class _AddEventPageState extends State<AddEventPage> {
                       extra: UserType.admin);
                 },
               ),
-              SizedBox(height: 20),
+              SizedBox(height: Responsive.height * 2),
 
               // Event Details Heading
               Text(
@@ -143,7 +144,7 @@ class _AddEventPageState extends State<AddEventPage> {
                 ),
               ),
 
-              SizedBox(height: 20),
+              SizedBox(height: Responsive.height * 2),
 
               // Title Input (styled similar to Add Notice)
               CustomTextfield(

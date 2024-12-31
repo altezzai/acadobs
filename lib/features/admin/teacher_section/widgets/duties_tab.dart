@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
+import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/features/admin/duties/controller/duty_controller.dart';
 import 'package:school_app/features/teacher/homework/widgets/work_container.dart';
@@ -141,7 +142,7 @@ class _DutiesTabState extends State<DutiesTab> {
                         );
                       },
                     ),
-                    const SizedBox(height: 20),
+                   SizedBox(height: Responsive.height*2),
                   ],
                 );
               }).toList(),
