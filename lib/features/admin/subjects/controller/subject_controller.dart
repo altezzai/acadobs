@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/features/admin/subjects/model/subject_model.dart';
 import 'package:school_app/features/admin/subjects/services/subject_services.dart';
 
@@ -48,12 +49,9 @@ class SubjectController extends ChangeNotifier {
 
     if (subjectExists) {
       // Show error message for duplicate subject
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Subject already exists. Please try a different name.'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      CustomSnackbar.show(context,
+          message: 'Subject already exists. Please try a different name.',
+          type: SnackbarType.info);
       _isloadingTwo = false;
       notifyListeners();
       return;
@@ -79,23 +77,16 @@ class SubjectController extends ChangeNotifier {
         ));
 
         // Show success message
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Subject added successfully!'),
-            backgroundColor: Colors.green,
-          ),
-        );
+        CustomSnackbar.show(context,
+            message: 'Subject added successfully!', type: SnackbarType.info);
 
         // Navigate to the subjects page
         context.pushNamed(AppRouteConst.SubjectsPageRouteName);
       } else {
         // Handle failure response
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to add subject. Please try again.'),
-            backgroundColor: Colors.red,
-          ),
-        );
+        CustomSnackbar.show(context,
+            message: 'Failed to add subject. Please try again.',
+            type: SnackbarType.info);
       }
     } catch (e) {
       log('Error adding subject: $e');
@@ -124,24 +115,17 @@ class SubjectController extends ChangeNotifier {
       if (response.statusCode == 200) {
         log(">>>>>>>>>>>>>Subject Edited}");
         // Show success message using Snackbar
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Subject edited successfully!'),
-            backgroundColor: Colors.green, // Set color for success
-          ),
-        );
+        CustomSnackbar.show(context,
+            message: 'Subject edited successfully!', type: SnackbarType.info);
         // Navigate to the desired route
         context.pushNamed(
           AppRouteConst.SubjectsPageRouteName,
         );
       } else {
         // Handle failure case here if needed
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to add subject. Please try again.'),
-            backgroundColor: Colors.red, // Set color for error
-          ),
-        );
+        CustomSnackbar.show(context,
+            message: 'Failed to add subject. Please try again.',
+            type: SnackbarType.info);
       }
     } catch (e) {
       log(e.toString());
