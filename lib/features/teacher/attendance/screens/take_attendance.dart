@@ -211,7 +211,7 @@ class TakeAttendance extends StatelessWidget {
                                           students: attendanceStatusList,
                                           subject: attendanceData.subject);
                                 },
-                                widget: value.isloading
+                                widget: value.isloadingTwo
                                     ? ButtonLoading()
                                     : Text('Submit'),
                               );

@@ -238,7 +238,7 @@ class _AddTeacherState extends State<AddTeacher> {
                         );
                       }
                     },
-                    widget: value.isloading ? ButtonLoading() : Text('Submit'),
+                    widget: value.isloadingTwo ? ButtonLoading() : Text('Submit'),
                   );
                 }),
                 SizedBox(

@@ -81,7 +81,7 @@ class _AddSubjectState extends State<AddSubject> {
                             description: _subjectDescriptionController.text,
                           );
                     },
-                    widget: value.isloading ? Loading() : Text('Add'),
+                    widget: value.isloadingTwo ? Loading() : Text('Add'),
                   );
                 })
                 //  CustomButton(text: 'Add', onPressed: (){

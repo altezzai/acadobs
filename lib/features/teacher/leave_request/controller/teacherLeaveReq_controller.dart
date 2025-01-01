@@ -11,6 +11,8 @@ import 'package:school_app/features/teacher/leave_request/services/teacherLeaveR
 class TeacherLeaveRequestController extends ChangeNotifier {
   bool _isloading = false;
   bool get isloading => _isloading;
+  bool _isloadingTwo = false;
+  bool get isloadingTwo => _isloadingTwo;
   List<TeacherLeaveRequest> _teachersLeaveRequest = [];
   List<TeacherLeaveRequest> get teachersLeaveRequest => _teachersLeaveRequest;
 
@@ -94,7 +96,7 @@ class TeacherLeaveRequestController extends ChangeNotifier {
     required String endDate,
     required String reasonForLeave,
   }) async {
-    _isloading = true;
+    _isloadingTwo = true;
     try {
       //  _isloading = false;
       final teacherId = await SecureStorageService.getUserId();
@@ -131,7 +133,7 @@ class TeacherLeaveRequestController extends ChangeNotifier {
     } catch (e) {
       log(e.toString());
     } finally {
-      _isloading = false;
+      _isloadingTwo = false;
       notifyListeners();
     }
   }
