@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-//import 'package:school_app/base/providers/providers.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
-import 'package:school_app/base/utils/show_loading.dart';
+import 'package:school_app/base/utils/form_validators.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
@@ -18,17 +18,15 @@ class AddSubject extends StatefulWidget {
 }
 
 class _AddSubjectState extends State<AddSubject> {
+  final _formKey = GlobalKey<FormState>(); // Key for form validation
   final TextEditingController _subjectNameController = TextEditingController();
   final TextEditingController _subjectDescriptionController =
       TextEditingController();
 
   @override
   void dispose() {
-    // Clean up the controller when the widget is disposed.
     _subjectNameController.dispose();
-
     _subjectDescriptionController.dispose();
-
     super.dispose();
   }
 
@@ -39,60 +37,63 @@ class _AddSubjectState extends State<AddSubject> {
         padding: EdgeInsets.symmetric(
           horizontal: Responsive.width * 4,
         ), // Responsive padding
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CustomAppbar(
-              title: 'Add Subject',
-              isProfileIcon: false,
-              onTap: () {
-                context.pushNamed(AppRouteConst.SubjectsPageRouteName);
-              },
-            ),
-            SizedBox(
-              height: Responsive.height * 2,
-            ),
-            CustomTextfield(
-              iconData: Icon(Icons.title),
-              hintText: 'Subject Name',
-              controller: _subjectNameController,
-            ),
-            SizedBox(
-              height: Responsive.height * 2,
-            ),
-            CustomTextfield(
-              iconData: Icon(Icons.title),
-              hintText: 'Description',
-              controller: _subjectDescriptionController,
-            ),
-            SizedBox(
-              height: Responsive.height * 2,
-            ),
-            //Add button
-            Padding(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomAppbar(
+                title: 'Add Subject',
+                isProfileIcon: false,
+                onTap: () {
+                  context.pushNamed(AppRouteConst.SubjectsPageRouteName);
+                },
+              ),
+              SizedBox(height: Responsive.height * 2),
+              CustomTextfield(
+                iconData: Icon(Icons.title),
+                hintText: 'Subject Name',
+                controller: _subjectNameController,
+                validator: (value) =>
+                    FormValidator.validateNotEmpty(value, fieldName: "Name"),
+              ),
+              SizedBox(height: Responsive.height * 2),
+              CustomTextfield(
+                iconData: Icon(Icons.title),
+                hintText: 'Description',
+                controller: _subjectDescriptionController,
+              ),
+              SizedBox(height: Responsive.height * 2),
+              // Add button
+              Padding(
                 padding: EdgeInsets.only(bottom: Responsive.height * 4),
                 child: Consumer<SubjectController>(
-                    builder: (context, value, child) {
-                  return CommonButton(
-                    onPressed: () {
-                      context.read<SubjectController>().addNewSubjects(
-                            context,
-                            subject: _subjectNameController.text,
-                            description: _subjectDescriptionController.text,
-                          );
-                    },
-                    widget: value.isloadingTwo ? Loading() : Text('Add'),
-                  );
-                })
-                //  CustomButton(text: 'Add', onPressed: (){
-                //   context.read<SubjectController>().addNewSubjects(
-                //     context,
-                //     subject: _subjectNameController.text,
-                //     description: _subjectDescriptionController.text, );
-
-                // }),
-                )
-          ],
+                  builder: (context, value, child) {
+                    return CommonButton(
+                      onPressed: () {
+                        if (_formKey.currentState?.validate() ?? false) {
+                          context.read<SubjectController>().addNewSubjects(
+                                context,
+                                subject: _subjectNameController.text,
+                                description: _subjectDescriptionController.text,
+                              );
+                        }
+                        // else {
+                        //   ScaffoldMessenger.of(context).showSnackBar(
+                        //     SnackBar(
+                        //       content:
+                        //           Text('Please fill in all required fields.'),
+                        //     ),
+                        //   );
+                        // }
+                      },
+                      widget: value.isloadingTwo ? Loading() : Text('Add'),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

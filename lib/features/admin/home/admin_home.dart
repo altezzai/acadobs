@@ -53,7 +53,7 @@ class AdminHomeScreen extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: Responsive.height * 2,
+              height: Responsive.height * 4,
             ),
             _customContainer(
                 color: Colors.red,
