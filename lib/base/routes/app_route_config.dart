@@ -81,6 +81,8 @@ import 'package:school_app/features/teacher/parent/notes/screens/student_note_se
 import 'package:school_app/features/teacher/parent/notes/screens/teacher_chat_screen.dart';
 import 'package:school_app/features/teacher/parent/screens/parents.dart';
 
+import '../../features/admin/student/screens/update_student.dart';
+
 class Approuter {
   GoRouter router = GoRouter(
     routes: [
@@ -318,6 +320,18 @@ class Approuter {
           return MaterialPage(child: AddStudentPage());
         },
       ),
+
+      GoRoute(
+        name: AppRouteConst.UpdateStudentRountName,
+        path: '/updatestudent',
+        pageBuilder: (context, state) {
+          final studentId = state.extra as int;
+          return MaterialPage(child: UpdateStudentPage(
+            studentId: studentId,
+          ));
+        },
+      ),
+
       GoRoute(
         name: AppRouteConst.AdminteacherdetailsRouteName,
         path: '/adminteacherdetails',
@@ -686,13 +700,12 @@ class Approuter {
           ));
         },
       ),
-       GoRoute(
+      GoRoute(
         name: AppRouteConst.teacherChatRouteName,
         path: '/teacherChatScreen',
         pageBuilder: (context, state) {
           final latestChat = state.extra as LatestChat;
-          return MaterialPage(
-              child: TeacherChatScreen(latestChat: latestChat));
+          return MaterialPage(child: TeacherChatScreen(latestChat: latestChat));
         },
       ),
     ],

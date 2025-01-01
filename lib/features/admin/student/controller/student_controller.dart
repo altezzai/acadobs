@@ -55,14 +55,14 @@ class StudentController extends ChangeNotifier {
 // **************single child details***************
   Student? _individualStudent;
   Student? get individualStudent => _individualStudent;
-  Future<void> getIndividualStudentDetails() async {
+  Future<void> getIndividualStudentDetails({required int studentId}) async {
     _isloading = true;
     notifyListeners(); // Notify before starting the operation
 
     try {
       log("Fetching individual student details...");
 
-      final studentId = await SecureStorageService.getUserId();
+      // final studentId = await SecureStorageService.getUserId();
       log("Retrieved Student ID: $studentId");
 
       final response = await StudentServices()
@@ -220,6 +220,85 @@ class StudentController extends ChangeNotifier {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Failed to add student. Please try again.'),
+            backgroundColor: Colors.red, // Set color for error
+          ),
+        );
+      }
+    } catch (e) {
+      log(e.toString());
+    } finally {
+      _isloading = false;
+      notifyListeners();
+    }
+  }
+
+  //update student details
+
+    Future<void> updateStudent(BuildContext context,
+      {required int studentId,
+      required String fullName,
+      required String dateOfBirth,
+      required String gender,
+      required String studentClass,
+      required String section,
+      required String rollNumber,
+      // required String admissionNumber,
+      required String aadhaarNumber,
+      required String residentialAddress,
+      required String contactNumber,
+      required String email,
+      required String fatherFullName,
+      required String motherFullName,
+      required String guardianFullName,
+      // required String bloodGroup,
+      required String parentEmail,
+      //  required String fatherContactNumber,
+      // required String motherContactNumber,
+      // required String studentPhoto,
+      // String? aadharPhoto,
+      required String fatherMotherPhoto}) async {
+    _isloading = true;
+    
+    try {
+      final response = await StudentServices().updateStudent(
+          studentId: studentId,
+          fullName: fullName,
+          dateOfBirth: dateOfBirth,
+          gender: gender,
+          studentClass: studentClass,
+          section: section,
+          rollNumber: rollNumber,
+          // admissionNumber: admissionNumber,
+          aadhaarNumber: aadhaarNumber,
+          residentialAddress: residentialAddress,
+          contactNumber: contactNumber,
+          email: email,
+          fatherFullName: fatherFullName,
+          motherFullName: motherFullName,
+          guardianFullName: guardianFullName,
+          parentEmail: parentEmail,
+          // bloodGroup: bloodGroup,
+          // fatherContactNumber: fatherContactNumber,
+          // motherContactNumber: motherContactNumber,
+          // studentPhotoPath: studentPhoto,
+          // aadhaarCard: aadharPhoto,
+          fatherMotherPhoto: fatherMotherPhoto);
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        log(">>>>>>>>>>>>>Student Details updated}");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Student Updated successfully!'),
+            backgroundColor: Colors.green, // Set color for success
+          ),
+        );
+        // Navigate to the desired route
+
+        Navigator.pop(context);
+      } else {
+        // Handle failure case here if needed
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to update student. Please try again.'),
             backgroundColor: Colors.red, // Set color for error
           ),
         );

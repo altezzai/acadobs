@@ -23,6 +23,7 @@ class AppRouteConst {
   static const String AchivementDetailRouteName = 'achivementdetail';
   static const String AdminhomeworkDetailRouteName = 'adminhomeworkdetail';
   static const String AddStudentRouteName = 'addstudent';
+  static const String UpdateStudentRountName = 'updatestudent';
   static const String AdminteacherdetailsRouteName = 'adminteacherdetails';
   static const String AdminAddDutyRouteName = 'adminaddduty';
   static const String AdminViewDutyRouteName = 'adminviewduty';
@@ -45,7 +46,7 @@ class AppRouteConst {
   static const String NotesRouteName = 'notes';
   static const String AddNoteRouteName = 'addnotes';
   static const String NoteDetailsRouteName = 'notedetails';
-   static const String StudentNoteSelectionRouteName = 'studentnoteselection';
+  static const String StudentNoteSelectionRouteName = 'studentnoteselection';
 
   static const String StudentLeaveRequestViewRouteName =
       'studentleaverequestview';

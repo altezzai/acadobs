@@ -181,10 +181,12 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                                       ),
                                     );
                                   })
-                                : SizedBox(
-                                    height: 50,
-                                    width: 20,
-                                  ),
+                                : IconButton(
+                                    onPressed: () {
+                                      context.pushNamed(
+                                          AppRouteConst.UpdateStudentRountName, extra: widget.student.id);
+                                    },
+                                    icon: Icon(Icons.edit)),
                           ],
                         ),
                         SizedBox(
