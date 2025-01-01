@@ -16,6 +16,8 @@ enum AttendanceStatus { present, late, absent, none }
 class AttendanceController extends ChangeNotifier {
   bool _isloading = false;
   bool get isloading => _isloading;
+    bool _isloadingTwo = false;
+  bool get isloadingTwo => _isloadingTwo;
   final Map<int, AttendanceStatus> _attendanceStatus = {};
 
   bool isAllPresent = false;
@@ -191,7 +193,7 @@ class AttendanceController extends ChangeNotifier {
       required int subject,
       // required int recordedBy,
       required List<Map<String, dynamic>> students}) async {
-    _isloading = true;
+    _isloadingTwo = true;
     notifyListeners(); // Notify listeners when loading starts
     final teacherId = await SecureStorageService.getUserId();
     final attendanceData = {
@@ -218,7 +220,7 @@ class AttendanceController extends ChangeNotifier {
       print(e);
     }
 
-    _isloading = false;
+    _isloadingTwo = false;
     notifyListeners(); // Notify listeners when loading ends
     clearAttendanceStatus();
   }

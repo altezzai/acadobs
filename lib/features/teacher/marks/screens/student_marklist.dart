@@ -145,7 +145,7 @@ class _StudentMarklistState extends State<StudentMarklist> {
                           students: studentMarksList,
                         );
                   },
-                  widget: value.isloading ? ButtonLoading() : Text('Submit'),
+                  widget: value.isloadingTwo ? ButtonLoading() : Text('Submit'),
                 );
               }),
               // CustomButton(
