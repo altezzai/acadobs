@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/button_loading.dart';
+import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/controller/file_picker_provider.dart';
@@ -217,25 +218,13 @@ class _AddTeacherState extends State<AddTeacher> {
                               profilePhoto: profilePhotoPath!);
                         } catch (e) {
                           // Handle any errors and show an error message
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                  'Failed to add student. Please try again.'),
-                              backgroundColor: Colors.red,
-                              duration: Duration(seconds: 3),
-                            ),
-                          );
+                          CustomSnackbar.show(context,
+            message: "Failed to add teacher.Please try again", type: SnackbarType.failure);
                         }
                       } else {
                         // Highlight missing fields if the form is invalid
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content:
-                                Text('Please complete all required fields.'),
-                            backgroundColor: Colors.orange,
-                            duration: Duration(seconds: 3),
-                          ),
-                        );
+                        CustomSnackbar.show(context,
+            message: "Please complete all required fields", type: SnackbarType.warning);
                       }
                     },
                     widget: value.isloadingTwo ? ButtonLoading() : Text('Submit'),
