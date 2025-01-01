@@ -171,7 +171,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                       fontSize: 16,
                     ),
                   ),
-                  const SizedBox(height: 20),
+                 SizedBox(height: Responsive.height*2),
                   Container(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 4),

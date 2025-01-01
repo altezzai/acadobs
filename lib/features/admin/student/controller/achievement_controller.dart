@@ -8,6 +8,8 @@ class AchievementController extends ChangeNotifier {
   // get achievements
   bool _isloading = false;
   bool get isloading => _isloading;
+   bool _isloadingTwo = false;
+  bool get isloadingTwo => _isloadingTwo;
   List<Achievement> _achievements = [];
   List<Achievement> get achievements => _achievements;
 
@@ -53,7 +55,7 @@ class AchievementController extends ChangeNotifier {
     required String awarding_body,
     required String date_of_achievement,
   }) async {
-    _isloading = true;
+    _isloadingTwo = true;
     try {
       final response = await AchievementService().addAchievement(
         studentId: studentId,
@@ -72,7 +74,7 @@ class AchievementController extends ChangeNotifier {
     } catch (e) {
       log(e.toString());
     } finally {
-      _isloading = false;
+      _isloadingTwo = false;
       notifyListeners();
     }
   }

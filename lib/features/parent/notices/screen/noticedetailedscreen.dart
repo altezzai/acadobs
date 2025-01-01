@@ -6,6 +6,7 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
 import 'package:school_app/features/admin/notices/models/notice_model.dart';
@@ -137,7 +138,7 @@ class NoticeDetailPage extends StatelessWidget {
                   child: Image.asset('assets/class12.png'),
                 ),
               ),
-              const SizedBox(height: 20),
+             SizedBox(height: Responsive.height*2),
               Text(
                 notice.title ?? "",
                 style: const TextStyle(
@@ -153,7 +154,7 @@ class NoticeDetailPage extends StatelessWidget {
                   color: Colors.grey,
                 ),
               ),
-              const SizedBox(height: 20),
+             SizedBox(height: Responsive.height*2),
               GestureDetector(
                 onTap: () => _downloadFile(context, notice.fileUpload ?? ""),
                 child: Container(

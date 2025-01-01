@@ -9,6 +9,8 @@ import 'package:school_app/features/admin/subjects/services/subject_services.dar
 class SubjectController extends ChangeNotifier {
   bool _isloading = false;
   bool get isloading => _isloading;
+  bool _isloadingTwo= false;
+  bool get isloadingTwo => _isloadingTwo;
   List<Subject> _subjects = [];
   List<Subject> get subjects => _subjects;
 
@@ -39,7 +41,7 @@ class SubjectController extends ChangeNotifier {
     // final loadingProvider =
     //     Provider.of<LoadingProvider>(context, listen: false); //loading provider
     // loadingProvider.setLoading(true); //start loader
-    _isloading = true;
+    _isloadingTwo = true;
     try {
       final response = await SubjectServices().addNewSubject(
         subject: subject,
@@ -71,7 +73,7 @@ class SubjectController extends ChangeNotifier {
       log(e.toString());
     } finally {
       // loadingProvider.setLoading(false); // End loader
-      _isloading = false;
+      _isloadingTwo = false;
       notifyListeners();
     }
   }

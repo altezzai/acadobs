@@ -258,7 +258,7 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
                         awarding_body: _awardController.text,
                         date_of_achievement: _dateController.text);
                   },
-                  widget: value.isloading ? ButtonLoading() : Text('Submit'),
+                  widget: value.isloadingTwo ? ButtonLoading() : Text('Submit'),
                 );
               }),
             ),

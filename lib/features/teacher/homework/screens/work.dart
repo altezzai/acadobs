@@ -112,7 +112,7 @@ class _HomeWorkState extends State<HomeWork> {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              SizedBox(height: Responsive.height * 2),
               Text("Selected students:"),
               SizedBox(height: 10),
               // Select Staffs

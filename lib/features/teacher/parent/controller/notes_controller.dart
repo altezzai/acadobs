@@ -81,6 +81,7 @@ class NotesController extends ChangeNotifier {
 
   Future<void> getNotesByTeacherId() async {
     _isloading = true;
+    _notesByTeacher.clear();
     notifyListeners(); // Notify the UI about the loading state
     try {
       final teacherId = await SecureStorageService.getUserId();
@@ -226,6 +227,7 @@ class NotesController extends ChangeNotifier {
       {required int parentNoteId,
       required bool isTeacher,
       required int receiverId,
+      required int studentId,
       required String message,
       required String senderRole}) async {
     _isloadingTwo = true;
@@ -236,6 +238,7 @@ class NotesController extends ChangeNotifier {
           parentNoteId: parentNoteId,
           senderId: senderId ?? 0,
           receiverId: receiverId,
+          studentId: studentId,
           message: message,
           senderRole: senderRole);
       if (response.statusCode == 201 || response.statusCode == 200) {
@@ -257,6 +260,7 @@ class NotesController extends ChangeNotifier {
   Future<void> sendParentNoteChatTeacher({
     required int parentNoteId,
     required int receiverId,
+    required int studentId,
     required String message,
     required String senderRole,
   }) async {
@@ -283,6 +287,7 @@ class NotesController extends ChangeNotifier {
         parentNoteId: parentNoteId,
         senderId: senderId,
         receiverId: receiverId,
+        studentId: studentId,
         message: message,
         senderRole: senderRole,
       );
@@ -402,13 +407,14 @@ class NotesController extends ChangeNotifier {
     _latestChats.clear();
     notifyListeners();
     try {
+      log("start");
       final response =
           await NoteServices().getLatestParentChats(parentNoteId: parentNoteId);
       _latestChats.clear();
-      log("parent note id: $parentNoteId, teacher id : $teacherChatId");
+      log("parent note id: $parentNoteId");
       if (response.statusCode == 200) {
         // _parentChat.clear();
-        _latestChats = (response.data as List<dynamic>)
+        _latestChats = (response.data['data'] as List<dynamic>)
             .map((result) => LatestChat.fromJson(result))
             .toList();
         log("Parent Chats:${_latestChats.toString()}");

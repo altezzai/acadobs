@@ -41,41 +41,46 @@ class AchievementsList extends StatelessWidget {
                 DateTime.parse(achievement.dateOfAchievement.toString()),
           );
 
-          return value.achievements.isEmpty ? Center(child: Text("No Achievements Found!"),) : ListView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-            itemCount: groupedAchievements.length,
-            itemBuilder: (context, index) {
-              final entry = groupedAchievements.entries.elementAt(index);
-              final dateGroup = entry.key;
-              final achievements = entry.value;
+          return value.achievements.isEmpty
+              ? Center(
+                  child: Text("No Achievements Found!"),
+                )
+              : ListView.builder(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+                  itemCount: groupedAchievements.length,
+                  itemBuilder: (context, index) {
+                    final entry = groupedAchievements.entries.elementAt(index);
+                    final dateGroup = entry.key;
+                    final achievements = entry.value;
 
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: Responsive.height * 3),
-                  Text(
-                    dateGroup,
-                    style: textThemeData.bodyMedium,
-                  ),
-                  const SizedBox(height: 10),
-                  ...achievements.map((achievement) => WorkContainer(
-                        sub: achievement.category ?? "",
-                        work: achievement.achievementTitle ?? "",
-                        icon: Icons.military_tech,
-                        icolor: Colors.green,
-                        bcolor: Colors.green.withOpacity(0.2),
-                        onTap: () {
-                          context.pushNamed(
-                            AppRouteConst.AchivementDetailRouteName,
-                            extra: achievement,
-                          );
-                        },
-                      )),
-                  const SizedBox(height: 20),
-                ],
-              );
-            },
-          );
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: Responsive.height * 3),
+                        Text(
+                          dateGroup,
+                          style: textThemeData.bodyMedium,
+                        ),
+                        const SizedBox(height: 10),
+                        ...achievements.map((achievement) => WorkContainer(
+                              sub: achievement.category ?? "",
+                              work: achievement.achievementTitle ?? "",
+                              icon: Icons.military_tech,
+                              icolor: Colors.green,
+                              bcolor: Colors.green.withOpacity(0.2),
+                              onTap: () {
+                                context.pushNamed(
+                                  AppRouteConst.AchivementDetailRouteName,
+                                  extra: achievement,
+                                );
+                              },
+                            )),
+                        SizedBox(height: Responsive.height * 2),
+                      ],
+                    );
+                  },
+                );
         },
       ),
     );

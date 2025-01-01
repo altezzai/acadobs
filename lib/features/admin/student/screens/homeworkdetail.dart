@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 
 class HomeworkDetails extends StatelessWidget {
@@ -33,7 +34,7 @@ class HomeworkDetails extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildHomeworkCard(),
-            const SizedBox(height: 20),
+             SizedBox(height: Responsive.height * 2),
             _buildResultSection(),
             const Spacer(),
             _buildReplySection(),

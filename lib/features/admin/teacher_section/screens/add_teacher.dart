@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/button_loading.dart';
+import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/controller/file_picker_provider.dart';
@@ -105,6 +106,12 @@ class _AddTeacherState extends State<AddTeacher> {
                   onDateSelected: (selectedDate) {
                     print("End Date selected: $selectedDate");
                   },
+                   validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: Responsive.height * 1,
@@ -114,6 +121,12 @@ class _AddTeacherState extends State<AddTeacher> {
                   label: 'Gender',
                   icon: Icons.person_2_outlined,
                   items: ['Male', 'Female', 'Other'],
+                   validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: Responsive.height * 1,
@@ -123,6 +136,12 @@ class _AddTeacherState extends State<AddTeacher> {
                   hintText: 'Address',
                   iconData: Icon(Icons.location_on),
                   keyBoardtype: TextInputType.streetAddress,
+                   validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: Responsive.height * 1,
@@ -132,6 +151,12 @@ class _AddTeacherState extends State<AddTeacher> {
                   hintText: 'Phone Number',
                   iconData: Icon(Icons.phone),
                   keyBoardtype: TextInputType.phone,
+                   validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: Responsive.height * 1,
@@ -159,6 +184,12 @@ class _AddTeacherState extends State<AddTeacher> {
                 CustomFilePicker(
                   label: 'Teacher Photo',
                   fieldName: 'profile photo',
+                   validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: Responsive.height * 30,
@@ -184,31 +215,19 @@ class _AddTeacherState extends State<AddTeacher> {
                               address: _addressController.text,
                               contactNumber: _phoneController.text,
                               emailAddress: _emailController.text,
-                              profilePhoto: profilePhotoPath);
+                              profilePhoto: profilePhotoPath!);
                         } catch (e) {
                           // Handle any errors and show an error message
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                  'Failed to add student. Please try again.'),
-                              backgroundColor: Colors.red,
-                              duration: Duration(seconds: 3),
-                            ),
-                          );
+                          CustomSnackbar.show(context,
+            message: "Failed to add teacher.Please try again", type: SnackbarType.failure);
                         }
                       } else {
                         // Highlight missing fields if the form is invalid
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content:
-                                Text('Please complete all required fields.'),
-                            backgroundColor: Colors.orange,
-                            duration: Duration(seconds: 3),
-                          ),
-                        );
+                        CustomSnackbar.show(context,
+            message: "Please complete all required fields", type: SnackbarType.warning);
                       }
                     },
-                    widget: value.isloading ? ButtonLoading() : Text('Submit'),
+                    widget: value.isloadingTwo ? ButtonLoading() : Text('Submit'),
                   );
                 }),
                 SizedBox(

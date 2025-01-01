@@ -72,7 +72,7 @@ class _StudentPaymentScreenState extends State<StudentPaymentScreen>
             //     ),
             //   ],
             // ),
-            SizedBox(height: 20),
+            SizedBox(height: Responsive.height * 2),
             TabBar(
               controller: _tabController,
               indicatorColor: Colors.black,

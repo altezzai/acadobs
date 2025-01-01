@@ -6,26 +6,38 @@ class CustomDatePicker extends StatelessWidget {
   final Function(DateTime) onDateSelected;
   final String? hintText;
   final String label;
-  final validator;
+  final String? Function(String?)? validator;
+  final DateTime firstDate;
+  final DateTime lastDate;
+  final DateTime? initialDate; // Add customizable initial date
 
-  CustomDatePicker(
-      {required this.dateController,
-      required this.onDateSelected,
-      required this.label,
-      this.hintText,
-      this.validator});
+  CustomDatePicker({
+    required this.dateController,
+    required this.onDateSelected,
+    required this.label,
+    this.hintText,
+    this.validator,
+    DateTime? firstDate,
+    DateTime? lastDate,
+    this.initialDate, // Optional initial date
+  })  : firstDate = firstDate ?? DateTime(2000), // Default firstDate
+        lastDate = lastDate ?? DateTime.now(); // Default lastDate
 
   Future<void> _selectDate(BuildContext context) async {
+    // Parse the current text in dateController or fallback to DateTime.now()
+    final DateTime currentSelectedDate = dateController.text.isNotEmpty
+        ? DateFormat('yyyy-MM-dd').parse(dateController.text)
+        : DateTime.now();
+
     final DateTime? pickedDate = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
+      initialDate: currentSelectedDate, // Use the last selected date or today
+      firstDate: firstDate,
+      lastDate: lastDate,
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: Theme.of(context).copyWith(
             textTheme: TextTheme(
-              // Adjust the font size for the calendar picker
               bodyMedium: TextStyle(fontSize: 14), // Smaller font for dates
             ),
           ),
@@ -33,6 +45,7 @@ class CustomDatePicker extends StatelessWidget {
         );
       },
     );
+
     if (pickedDate != null) {
       onDateSelected(pickedDate); // Trigger callback
       dateController.text =
@@ -67,7 +80,6 @@ class CustomDatePicker extends StatelessWidget {
           ),
           onPressed: () => _selectDate(context),
         ),
-        border: OutlineInputBorder(),
       ),
     );
   }

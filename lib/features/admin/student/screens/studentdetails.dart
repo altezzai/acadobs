@@ -63,6 +63,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
       examController.getExamMarks(studentId: widget.student.id ?? 0);
       noteController.fetchUnviewedNotesCountByStudentId(
           studentId: widget.student.id ?? 0);
+      noteController.getNotesByStudentId(studentId: widget.student.id ?? 0);
     });
     super.initState();
   }
@@ -147,8 +148,10 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                                       child: Stack(
                                         alignment: Alignment.topRight,
                                         children: [
-                                          Icon(Icons.draw_sharp,
-                                              size: 30), // Base icon
+                                          Image.asset(
+                                            "assets/icons/add_note.png",
+                                            height: 32,
+                                          ),
                                           if (noteController
                                                   .unviewedNotesCount >
                                               0) // Show badge only if count > 0

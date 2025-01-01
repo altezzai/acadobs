@@ -8,6 +8,8 @@ import 'package:school_app/features/admin/teacher_section/services/teacher_servi
 class TeacherController extends ChangeNotifier {
   bool _isloading = false;
   bool get isloading => _isloading;
+  bool _isloadingTwo = false;
+  bool get isloadingTwo => _isloadingTwo;
   List<Teacher> _teachers = [];
   List<Teacher> get teachers => _teachers;
 
@@ -42,8 +44,8 @@ class TeacherController extends ChangeNotifier {
       required String address,
       required String contactNumber,
       required String emailAddress,
-      String? profilePhoto}) async {
-    _isloading = true;
+      required String profilePhoto}) async {
+    _isloadingTwo = true;
     try {
       //  _isloading = false;
       final response = await TeacherServices().addNewTeacher(
@@ -62,7 +64,7 @@ class TeacherController extends ChangeNotifier {
     } catch (e) {
       log(e.toString());
     } finally {
-      _isloading = false;
+      _isloadingTwo = false;
       notifyListeners();
     }
   }

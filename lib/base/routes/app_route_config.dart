@@ -692,10 +692,11 @@ class Approuter {
         name: AppRouteConst.parentNoteDetailRouteName,
         path: '/parentNoteDetailScreen',
         pageBuilder: (context, state) {
-          final studentNote = state.extra as NoteData;
+          final args = state.extra as ParentChatDetailArguments;
           return MaterialPage(
               child: ChatDetailPage(
-            studentNote: studentNote,
+            studentNote: args.studentNote,
+            studentId: args.studentId,
             // teacherId: args.teacherChatId,
           ));
         },
@@ -752,4 +753,11 @@ class ChatDetailArguments {
   NoteData studentNote;
   int teacherChatId;
   ChatDetailArguments({required this.studentNote, required this.teacherChatId});
+}
+
+class ParentChatDetailArguments {
+  NoteData studentNote;
+  int studentId;
+  ParentChatDetailArguments(
+      {required this.studentNote, required this.studentId});
 }
