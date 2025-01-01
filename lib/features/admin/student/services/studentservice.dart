@@ -32,7 +32,7 @@ class StudentServices {
     return response;
   }
 
-// GET homework
+  // GET homework
   Future<Response> getStudentHomework({required int studentId}) async {
     final Response response =
         await ApiServices.get("/getStudentHomeworks/$studentId");
@@ -40,29 +40,29 @@ class StudentServices {
   }
 
   // Add student
-  Future<Response> addNewStudent(
-      {required String fullName,
-      required String dateOfBirth,
-      required String gender,
-      required String studentClass,
-      required String section,
-      required String rollNumber,
-      required String admissionNumber,
-      required String aadhaarNumber,
-      required String residentialAddress,
-      required String contactNumber,
-      required String email,
-      required String fatherFullName,
-      required String motherFullName,
-      required String guardianFullName,
-      required String bloodGroup,
-      required String parentEmail,
-      required String fatherContactNumber,
-      required String motherContactNumber,
-      
-      required String studentPhotoPath,
-      String? aadhaarCard,
-      required String fatherMotherPhoto,}) async {
+  Future<Response> addNewStudent({
+    required String fullName,
+    required String dateOfBirth,
+    required String gender,
+    required String studentClass,
+    required String section,
+    required String rollNumber,
+    required String admissionNumber,
+    required String aadhaarNumber,
+    required String residentialAddress,
+    required String contactNumber,
+    required String email,
+    required String fatherFullName,
+    required String motherFullName,
+    required String guardianFullName,
+    required String bloodGroup,
+    required String parentEmail,
+    required String fatherContactNumber,
+    required String motherContactNumber,
+    required String studentPhotoPath,
+    String? aadhaarCard,
+    required String fatherMotherPhoto,
+  }) async {
     // Create the form data to pass to the API
     final formData = {
       "full_name": fullName,
@@ -81,19 +81,21 @@ class StudentServices {
       "guardian_full_name": guardianFullName,
       "blood_group": bloodGroup,
       "parent_email": parentEmail,
-      "father_contact_number":fatherContactNumber,
-      "mother_contact_number":motherContactNumber,
+      "father_contact_number": fatherContactNumber,
+      "mother_contact_number": motherContactNumber,
       // Only include if the photo is provided
       "student_photo": await MultipartFile.fromFile(studentPhotoPath,
           filename: studentPhotoPath.split('/').last),
-      if (aadhaarCard!= null)"aadhaar_card": await MultipartFile.fromFile(aadhaarCard,
-          filename: aadhaarCard.split('/').last),
-      "father_mother_photo":await MultipartFile.fromFile(fatherMotherPhoto,filename:fatherMotherPhoto.split('/').last )
+      if (aadhaarCard != null)
+        "aadhaar_card": await MultipartFile.fromFile(aadhaarCard,
+            filename: aadhaarCard.split('/').last),
+      "father_mother_photo": await MultipartFile.fromFile(fatherMotherPhoto,
+          filename: fatherMotherPhoto.split('/').last)
     };
 
     // Call the ApiServices post method with formData and isFormData: true
     final Response response =
-        await ApiServices.post("/students", formData, isFormData: true);
+        await ApiServices.post("/students/", formData, isFormData: true);
 
     return response;
   }
@@ -137,6 +139,69 @@ class StudentServices {
       {required String studentId, required String date}) async {
     final Response response = await ApiServices.get(
         "/getStudentAttendanceADay/?student_id=$studentId&date=$date");
+    return response;
+  }
+
+  // Update student
+  Future<Response> updateStudent({
+    required int studentId,
+    required String fullName,
+    required String dateOfBirth,
+    required String gender,
+    required String studentClass,
+    required String section,
+    required String rollNumber,
+    // required String admissionNumber,
+    required String aadhaarNumber,
+    required String residentialAddress,
+    required String contactNumber,
+    required String email,
+    required String fatherFullName,
+    required String motherFullName,
+    required String guardianFullName,
+    // required String bloodGroup,
+    required String parentEmail,
+    // required String fatherContactNumber,
+    // required String motherContactNumber,
+
+    // required String studentPhotoPath,
+    // String? aadhaarCard,
+    required String fatherMotherPhoto,
+  }) async {
+    // Create the form data to pass to the API
+    final formData = {
+      "full_name": fullName,
+      "date_of_birth": dateOfBirth,
+      "gender": gender,
+      "class": studentClass,
+      "section": section,
+      "roll_number": rollNumber,
+      // "admission_number": admissionNumber,
+      "aadhaar_number": aadhaarNumber,
+      "residential_address": residentialAddress,
+      "contact_number": contactNumber,
+      "email": email,
+      "father_full_name": fatherFullName,
+      "mother_full_name": motherFullName,
+      "guardian_full_name": guardianFullName,
+      // "blood_group": bloodGroup,
+      "parent_email": parentEmail,
+      // "father_contact_number":fatherContactNumber,
+      // "mother_contact_number":motherContactNumber,
+      // // Only include if the photo is provided
+      // "student_photo": await MultipartFile.fromFile(studentPhotoPath,
+      //     filename: studentPhotoPath.split('/').last),
+      // if (aadhaarCard!= null)"aadhaar_card": await MultipartFile.fromFile(aadhaarCard,
+      //     filename: aadhaarCard.split('/').last),
+      "father_mother_photo": await MultipartFile.fromFile(fatherMotherPhoto,
+          filename: fatherMotherPhoto.split('/').last)
+    };
+
+    // Call the ApiServices post method with formData and isFormData: true
+    final Response response = await ApiServices.put(
+        "/students/$studentId", formData,
+        isFormData: true);
+
     return response;
   }
 }
