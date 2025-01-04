@@ -82,7 +82,8 @@ class PaymentServices {
       'payment_method': payment_method,
       'transaction_id': transaction_id,
       'payment_status': payment_status,
-      'file_upload': await MultipartFile.fromFile(fileUploadPath!,
+      if (fileUploadPath != null)
+      'file_upload': await MultipartFile.fromFile(fileUploadPath,
           filename: fileUploadPath.split('/').last),
       // 'file_upload':
       //     await MultipartFile.fromFile(fileProvider.selectedFile!.path!)
@@ -122,7 +123,8 @@ class PaymentServices {
       'donation_type': donation_type,
       'payment_method': payment_method,
       'transaction_id': transaction_id,
-      'receipt_upload': await MultipartFile.fromFile(receiptUploadPath!,
+       if (receiptUploadPath != null)
+      'receipt_upload': await MultipartFile.fromFile(receiptUploadPath,
           filename: receiptUploadPath.split('/').last),
     });
 
