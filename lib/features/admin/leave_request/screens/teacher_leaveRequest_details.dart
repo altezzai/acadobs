@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:school_app/base/utils/button_loading.dart';
-import 'package:school_app/core/shared_widgets/common_button.dart';
-
 import 'package:school_app/features/teacher/leave_request/model/teacherLeaveReq_model.dart';
 import 'package:school_app/features/teacher/leave_request/controller/teacherLeaveReq_controller.dart';
 import 'package:go_router/go_router.dart';
@@ -128,10 +126,11 @@ class _StudentLeaveRequestDetailsPageState
                     onPressed: () {
                       final leaveRequestId = widget.teacherleaverequests
                           .id; // Replace with actual ID field
-                      context
-                          .read<TeacherLeaveRequestController>()
-                          .rejectLeaveRequest(context,
-                              leaveRequestId!); // This will navigate back to the previous screen
+                      if (status != 'Rejected')
+                        context
+                            .read<TeacherLeaveRequestController>()
+                            .rejectLeaveRequest(context,
+                                leaveRequestId!); // This will navigate back to the previous screen
                     },
                     style: OutlinedButton.styleFrom(
                       foregroundColor: Colors.black, // Text color
@@ -144,10 +143,12 @@ class _StudentLeaveRequestDetailsPageState
                     child: value.isloading
                         ? ButtonLoading()
                         : Text(
-                            'Cancel',
+                            (status == 'Rejected') ? 'Rejected' : 'Reject',
                             style:
                                 Theme.of(context).textTheme.bodySmall!.copyWith(
-                                      color: Colors.black,
+                                      color: (status == 'Rejected')
+                                          ? Colors.red
+                                          : Colors.black,
                                       fontWeight: FontWeight.w500,
                                       fontSize: 16,
                                     ),
@@ -161,16 +162,24 @@ class _StudentLeaveRequestDetailsPageState
 
               Consumer<TeacherLeaveRequestController>(
                   builder: (context, value, child) {
-                return CommonButton(
+                return ElevatedButton(
                   onPressed: () {
-                    final leaveRequestId = widget.teacherleaverequests
-                        .id; // Replace with actual ID field
-                    context
-                        .read<TeacherLeaveRequestController>()
-                        .approveLeaveRequest(context,
-                            leaveRequestId!); // Your onPressed function here
+                    final leaveRequestId = widget.teacherleaverequests.id;
+                    if (status != 'Approved')
+                      // Replace with actual ID field
+                      context
+                          .read<TeacherLeaveRequestController>()
+                          .approveLeaveRequest(context,
+                              leaveRequestId!); // Your onPressed function here
                   },
-                  widget: value.isloading ? ButtonLoading() : Text('Approve'),
+                  child: value.isloading
+                      ? ButtonLoading()
+                      : Text(
+                          (status == 'Approved') ? 'Approved' : 'Approve',
+                        ),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          (status == 'Approved') ? Colors.green : Colors.black),
                 );
               })
 // CustomButton(
