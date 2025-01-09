@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/services/secure_storage_services.dart';
+import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/teacher/leave_request/model/teacherLeaveReq_model.dart';
 import 'package:school_app/features/teacher/leave_request/services/teacherLeaveReq_services.dart';
@@ -146,29 +147,15 @@ class TeacherLeaveRequestController extends ChangeNotifier {
       if (response.statusCode == 200) {
         log("Leave request approved successfully!");
         // Show success message
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Leave request approved successfully!'),
-            backgroundColor: Colors.green,
-          ),
-        );
-      } else {
-        // Handle failure
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to approve leave request.'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
+         CustomSnackbar.show(context,
+            message: "Leave request approved successfully", type: SnackbarType.success);
+        Navigator.pop(context);
+       
+      } 
     } catch (e) {
       log(e.toString());
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('An error occurred while approving leave request.'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      CustomSnackbar.show(context,
+            message: "Failed to approve leave request", type: SnackbarType.failure);
     }
   }
 
@@ -180,29 +167,16 @@ class TeacherLeaveRequestController extends ChangeNotifier {
       if (response.statusCode == 200) {
         log("Leave request rejected successfully!");
         // Show success message
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Leave request rejected successfully!'),
-            backgroundColor: Colors.green,
-          ),
-        );
-      } else {
-        // Handle failure
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to reject leave request.'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
+         CustomSnackbar.show(context,
+            message: "Leave request rejected successfully", type: SnackbarType.success);
+        Navigator.pop(context);
+        
+      } 
     } catch (e) {
       log(e.toString());
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('An error occurred while rejecting leave request.'),
-          backgroundColor: Colors.red,
-        ),
-      );
+       CustomSnackbar.show(context,
+            message: "Failed to reject leave request", type: SnackbarType.failure);
+     
     }
   }
 }
