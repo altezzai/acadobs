@@ -4,17 +4,16 @@ import 'package:school_app/base/interceptor/custom_interceptor.dart';
 class ApiServices {
   static const String baseUrl = "https://schoolmanagement.altezzai.com/api";
 
-  static final Dio _dio = Dio(
-    BaseOptions(
-      baseUrl: baseUrl,
-      connectTimeout: const Duration(seconds: 30),
-      receiveTimeout: const Duration(seconds: 30),
-      followRedirects: true, // Follow redirects automatically
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    )
-  ) ..interceptors.addAll([
+  static final Dio _dio = Dio(BaseOptions(
+    baseUrl: baseUrl,
+    connectTimeout: const Duration(seconds: 30),
+    receiveTimeout: const Duration(seconds: 30),
+    followRedirects: true, // Follow redirects automatically
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  ))
+    ..interceptors.addAll([
       CustomInterceptor(),
       LogInterceptor(
           error: true,
@@ -47,6 +46,31 @@ class ApiServices {
       return response;
     } on DioException catch (e) {
       throw Exception('Failed to post data: $e');
+    }
+  }
+
+// update formdata
+  static Future<Response> updateFormdata(
+    String endpoint,
+    dynamic data, {
+    String method = 'PUT',
+    bool isFormData = false,
+  }) async {
+    try {
+      dynamic requestData = isFormData && data is Map<String, dynamic>
+          ? FormData.fromMap(data)
+          : data;
+
+      final Options options = Options(method: method);
+
+      final Response response = await _dio.request(
+        endpoint,
+        data: requestData,
+        options: options,
+      );
+      return response;
+    } on DioException catch (e) {
+      throw Exception('Failed to $method data: $e');
     }
   }
 

@@ -7,6 +7,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:school_app/base/services/secure_storage_services.dart';
+import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/features/admin/student/model/day_attendance_status.dart';
 import 'package:school_app/features/admin/student/model/student_data.dart';
 import 'package:school_app/features/admin/student/model/student_homework.dart';
@@ -174,13 +175,13 @@ class StudentController extends ChangeNotifier {
       required String guardianFullName,
       required String bloodGroup,
       required String parentEmail,
-       required String fatherContactNumber,
+      required String fatherContactNumber,
       required String motherContactNumber,
       required String studentPhoto,
       String? aadharPhoto,
       required String fatherMotherPhoto}) async {
     _isloading = true;
-    
+
     try {
       final response = await StudentServices().addNewStudent(
           fullName: fullName,
@@ -234,74 +235,49 @@ class StudentController extends ChangeNotifier {
 
   //update student details
 
-    Future<void> updateStudent(BuildContext context,
-      {required int studentId,
-      required String fullName,
-      required String dateOfBirth,
-      required String gender,
-      required String studentClass,
-      required String section,
-      required String rollNumber,
-      // required String admissionNumber,
-      required String aadhaarNumber,
-      required String residentialAddress,
-      required String contactNumber,
-      required String email,
-      required String fatherFullName,
-      required String motherFullName,
-      required String guardianFullName,
-      // required String bloodGroup,
-      required String parentEmail,
-      //  required String fatherContactNumber,
-      // required String motherContactNumber,
-      // required String studentPhoto,
-      // String? aadharPhoto,
-      required String fatherMotherPhoto}) async {
+  Future<void> updateStudent(
+    BuildContext context, {
+    required int studentId,
+    required String fullName,
+    required String studentClass,
+    required String section,
+    required String contactNumber,
+    required String email,
+    // required String parentEmail,
+    required String fatherContactNumber,
+    required String motherContactNumber,
+    required String studentPhoto,
+    required String fatherMotherPhoto,
+  }) async {
     _isloading = true;
-    
+
     try {
       final response = await StudentServices().updateStudent(
-          studentId: studentId,
-          fullName: fullName,
-          dateOfBirth: dateOfBirth,
-          gender: gender,
-          studentClass: studentClass,
-          section: section,
-          rollNumber: rollNumber,
-          // admissionNumber: admissionNumber,
-          aadhaarNumber: aadhaarNumber,
-          residentialAddress: residentialAddress,
-          contactNumber: contactNumber,
-          email: email,
-          fatherFullName: fatherFullName,
-          motherFullName: motherFullName,
-          guardianFullName: guardianFullName,
-          parentEmail: parentEmail,
-          // bloodGroup: bloodGroup,
-          // fatherContactNumber: fatherContactNumber,
-          // motherContactNumber: motherContactNumber,
-          // studentPhotoPath: studentPhoto,
-          // aadhaarCard: aadharPhoto,
-          fatherMotherPhoto: fatherMotherPhoto);
+        studentId: studentId,
+        fullName: fullName,
+        studentClass: studentClass,
+        section: section,
+        contactNumber: contactNumber,
+        email: email,
+        // parentEmail: parentEmail,
+        fatherContactNumber: fatherContactNumber,
+        motherContactNumber: motherContactNumber,
+        studentPhotoPath: studentPhoto,
+        fatherMotherPhoto: fatherMotherPhoto,
+      );
       if (response.statusCode == 201 || response.statusCode == 200) {
+        await getIndividualStudentDetails(studentId: studentId);
         log(">>>>>>>>>>>>>Student Details updated}");
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Student Updated successfully!'),
-            backgroundColor: Colors.green, // Set color for success
-          ),
-        );
+        log('Response: ${response.data}');
+        CustomSnackbar.show(context,
+            message: 'Student Updated successfully!', type: SnackbarType.info);
         // Navigate to the desired route
-
         Navigator.pop(context);
       } else {
         // Handle failure case here if needed
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to update student. Please try again.'),
-            backgroundColor: Colors.red, // Set color for error
-          ),
-        );
+        CustomSnackbar.show(context,
+            message: 'Failed to update student. Please try again.',
+            type: SnackbarType.info);
       }
     } catch (e) {
       log(e.toString());
