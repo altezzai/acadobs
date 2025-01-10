@@ -325,9 +325,10 @@ class Approuter {
         name: AppRouteConst.UpdateStudentRountName,
         path: '/updatestudent',
         pageBuilder: (context, state) {
-          final studentId = state.extra as int;
-          return MaterialPage(child: UpdateStudentPage(
-            studentId: studentId,
+          final student = state.extra as Student;
+          return MaterialPage(
+              child: EditStudentScreen(
+            student: student,
           ));
         },
       ),

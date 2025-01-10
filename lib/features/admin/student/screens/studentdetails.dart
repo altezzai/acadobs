@@ -187,7 +187,8 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                                 : IconButton(
                                     onPressed: () {
                                       context.pushNamed(
-                                          AppRouteConst.UpdateStudentRountName, extra: widget.student.id);
+                                          AppRouteConst.UpdateStudentRountName,
+                                          extra: widget.student);
                                     },
                                     icon: Icon(Icons.edit)),
                           ],
@@ -461,21 +462,6 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                       ),
                     )),
                 const SizedBox(height: 12),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     const Text("Total Score",
-                //         style: TextStyle(
-                //             fontWeight: FontWeight.bold, fontSize: 14)),
-                //     Text(
-                //       "${subjects.fold(0, (sum, subject) => sum + int.parse(subject["mark"]!))}/${subjects.fold(0, (sum, subject) => sum + int.parse(subject["total"]!))}",
-                //       style: TextStyle(
-                //           fontWeight: FontWeight.bold,
-                //           fontSize: 14,
-                //           color: Colors.blue[700]),
-                //     ),
-                //   ],
-                // ),
               ],
             ),
           ),
@@ -483,55 +469,4 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
       ),
     );
   }
-
-//   Widget _buildExamContent() {
-//     return Consumer<ExamController>(
-//       builder: (context, value, child) {
-//         if (value.isloading) {
-//           return const Center(
-//               child: Loading(
-//             color: Colors.grey,
-//           ));
-//         }
-
-//         final groupedExams = groupItemsByDate(
-//           value.exam,
-//           (exam) => DateTime.parse(exam.date.toString()),
-//         );
-
-//         return value.exam.isEmpty ? Center(child: Text("No Exams Found!"),) : ListView.builder(
-//           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-//           itemCount: groupedExams.length,
-//           itemBuilder: (context, index) {
-//             final entry = groupedExams.entries.elementAt(index);
-//             final dateGroup = entry.key;
-//             final exams = entry.value;
-
-//             return Column(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 SizedBox(height: Responsive.height * 2),
-//                 Text(
-//                   dateGroup,
-//                   style: textThemeData.bodyMedium,
-//                 ),
-//                 const SizedBox(height: 10),
-//                 ...exams.map((exam) => WorkContainer(
-//                       sub: exam.subject ?? "",
-//                       work: exam.title ?? "",
-//                       icon: Icons.workspace_premium_outlined,
-//                       icolor: Colors.green,
-//                       bcolor: Colors.green.withOpacity(0.2),
-//                       prefixText:
-//                           '${exam.marks.toString()} / ${exam.totalMarks}',
-//                     )),
-//                 const SizedBox(height: 10),
-//               ],
-//             );
-//           },
-//         );
-//       },
-//     );
-//   }
-// }
 }
