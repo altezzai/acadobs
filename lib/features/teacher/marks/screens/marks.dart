@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/button_loading.dart';
+import 'package:school_app/base/utils/custom_snackbar.dart';
+import 'package:school_app/base/utils/form_validators.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
@@ -16,7 +18,7 @@ import 'package:school_app/features/teacher/marks/models/marks_upload_model.dart
 // ignore: must_be_immutable
 class ProgressReport extends StatelessWidget {
   ProgressReport({super.key});
-
+    final _formKey = GlobalKey<FormState>();
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _totalMarkController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
@@ -26,136 +28,133 @@ class ProgressReport extends StatelessWidget {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          children: [
-            CustomAppbar(
-              title: "Progress Report",
-              isBackButton: false,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: CustomDropdown(
-                    dropdownKey: 'class',
-                    icon: Icons.school_outlined,
-                    label: "Select Class",
-                    items: ["6", "7", "8", "9", "10"],
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please select a class";
-                      }
-                      return null;
-                    },
+        child: Form(
+         key: _formKey,
+          child: Column(
+            children: [
+              CustomAppbar(
+                title: "Progress Report",
+                isBackButton: false,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: CustomDropdown(
+                      dropdownKey: 'class',
+                      icon: Icons.school_outlined,
+                      label: "Select Class",
+                      items: ["6", "7", "8", "9", "10"],
+                      validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Class"),
+                    ),
                   ),
-                ),
-                SizedBox(width: Responsive.width * 1),
-                Expanded(
-                  child: CustomDropdown(
-                    dropdownKey: 'division',
-                    icon: Icons.access_time,
-                    label: "Select Division",
-                    items: ["A", "B", "C", "D", "E"],
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please select a division";
-                      }
-                      return null;
-                    },
+                  SizedBox(width: Responsive.width * 1),
+                  Expanded(
+                    child: CustomDropdown(
+                      dropdownKey: 'division',
+                      icon: Icons.access_time,
+                      label: "Select Division",
+                      items: ["A", "B", "C", "D", "E"],
+                      validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Division"),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: Responsive.height * 1),
-            CustomTextfield(
-              controller: _titleController,
-              hintText: "Exam",
-              iconData: Icon(Icons.text_fields),
-            ),
-            SizedBox(height: Responsive.height * 1),
-            CustomDropdown(
-              dropdownKey: 'subject',
-              icon: Icons.access_time,
-              label: "Select Subject",
-              items: ["Physics", "Chemistry", "Mathematics"],
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "Please select a subject";
-                }
-                return null;
-              },
-            ),
-            SizedBox(height: Responsive.height * 1),
-            CustomDatePicker(
-              label: "Date",
-              dateController: _dateController,
-              onDateSelected: (selectedDate) {
-                print("Date selected: $selectedDate");
-              },
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "Please select a date";
-                }
-                return null;
-              },
-            ),
-            SizedBox(height: Responsive.height * 1),
-            CustomTextfield(
-              controller: _totalMarkController,
-              hintText: "Total Mark",
-              iconData: Icon(Icons.book),
-            ),
-            SizedBox(height: Responsive.height * 3),
-            Consumer<MarksController>(builder: (context, value, child) {
-              return CommonButton(
-                onPressed: () {
-                  final selectedClass =
-                      context.read<DropdownProvider>().getSelectedItem('class');
-                  final selectedDivision = context
-                      .read<DropdownProvider>()
-                      .getSelectedItem('division');
-                  final selectedSubject = context
-                      .read<DropdownProvider>()
-                      .getSelectedItem('subject');
-
-                  // adding to model
-                  final marksModel = MarksUploadModel(
-                      classGrade: selectedClass,
-                      section: selectedDivision,
-                      title: _titleController.text,
-                      date: _dateController.text,
-                      subject: selectedSubject,
-                      totalMarks: int.parse(_totalMarkController.text));
-                  context.pushNamed(AppRouteConst.marksRouteName,
-                      extra: marksModel);
+                ],
+              ),
+              SizedBox(height: Responsive.height * 1),
+              CustomTextfield(
+                controller: _titleController,
+                hintText: "Exam",
+                iconData: Icon(Icons.text_fields),
+                 validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Title"),
+              ),
+              SizedBox(height: Responsive.height * 1),
+              CustomDropdown(
+                dropdownKey: 'subject',
+                icon: Icons.access_time,
+                label: "Select Subject",
+                items: ["Physics", "Chemistry", "Mathematics"],
+                validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Subject"),
+              ),
+              SizedBox(height: Responsive.height * 1),
+              CustomDatePicker(
+                label: "Date",
+                dateController: _dateController,
+                onDateSelected: (selectedDate) {
+                  print("Date selected: $selectedDate");
                 },
-                widget: value.isloading ? ButtonLoading() : Text('Enter Marks'),
-              );
-            }),
-            // CustomButton(
-            //     text: "Enter Marks",
-            //     onPressed: () {
-            //       final selectedClass =
-            //           context.read<DropdownProvider>().getSelectedItem('class');
-            //       final selectedDivision = context
-            //           .read<DropdownProvider>()
-            //           .getSelectedItem('division');
-            //       final selectedSubject = context
-            //           .read<DropdownProvider>()
-            //           .getSelectedItem('subject');
-
-            //       // adding to model
-            //       final marksModel = MarksUploadModel(
-            //           classGrade: selectedClass,
-            //           section: selectedDivision,
-            //           title: _titleController.text,
-            //           date: _dateController.text,
-            //           subject: selectedSubject,
-            //           totalMarks: int.parse(_totalMarkController.text));
-            //       context.pushNamed(AppRouteConst.marksRouteName,
-            //           extra: marksModel);
-            //     })
-          ],
+                validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Date"),
+              ),
+              SizedBox(height: Responsive.height * 1),
+              CustomTextfield(
+                controller: _totalMarkController,
+                hintText: "Total Mark",
+                iconData: Icon(Icons.book),
+                validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Total Mark"),
+              ),
+              SizedBox(height: Responsive.height * 3),
+              Consumer<MarksController>(builder: (context, value, child) {
+                return CommonButton(
+                  onPressed: () {
+                     if (_formKey.currentState?.validate() ?? false) {
+                          try {
+                    final selectedClass =
+                        context.read<DropdownProvider>().getSelectedItem('class');
+                    final selectedDivision = context
+                        .read<DropdownProvider>()
+                        .getSelectedItem('division');
+                    final selectedSubject = context
+                        .read<DropdownProvider>()
+                        .getSelectedItem('subject');
+          
+                    // adding to model
+                    final marksModel = MarksUploadModel(
+                        classGrade: selectedClass,
+                        section: selectedDivision,
+                        title: _titleController.text,
+                        date: _dateController.text,
+                        subject: selectedSubject,
+                        totalMarks: int.parse(_totalMarkController.text));
+                    context.pushNamed(AppRouteConst.marksRouteName,
+                        extra: marksModel);
+                   } catch (e) {
+                          // Handle any errors and show an error message
+                          CustomSnackbar.show(context,
+            message: "Failed to Enter marks.Please try again", type: SnackbarType.failure);
+                        }
+                      } else {
+                        // Highlight missing fields if the form is invalid
+                       CustomSnackbar.show(context,
+            message: "Please complete all required fields", type: SnackbarType.warning);
+                      }
+                    },
+                  widget: value.isloading ? ButtonLoading() : Text('Enter Marks'),
+                );
+              }),
+              // CustomButton(
+              //     text: "Enter Marks",
+              //     onPressed: () {
+              //       final selectedClass =
+              //           context.read<DropdownProvider>().getSelectedItem('class');
+              //       final selectedDivision = context
+              //           .read<DropdownProvider>()
+              //           .getSelectedItem('division');
+              //       final selectedSubject = context
+              //           .read<DropdownProvider>()
+              //           .getSelectedItem('subject');
+          
+              //       // adding to model
+              //       final marksModel = MarksUploadModel(
+              //           classGrade: selectedClass,
+              //           section: selectedDivision,
+              //           title: _titleController.text,
+              //           date: _dateController.text,
+              //           subject: selectedSubject,
+              //           totalMarks: int.parse(_totalMarkController.text));
+              //       context.pushNamed(AppRouteConst.marksRouteName,
+              //           extra: marksModel);
+              //     })
+            ],
+          ),
         ),
       ),
     );
