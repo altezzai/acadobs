@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/services/api_services.dart';
 import 'package:school_app/base/services/secure_storage_services.dart';
+import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/core/authentication/services/auth_services.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 
@@ -46,6 +47,9 @@ class AuthController extends ChangeNotifier {
       }
     } catch (e) {
       log(e.toString());
+     CustomSnackbar.show(context,
+            message: "Failed to Login.Please try again", type: SnackbarType.failure);
+                        
     } finally {
       _isloading = false;
       notifyListeners();
