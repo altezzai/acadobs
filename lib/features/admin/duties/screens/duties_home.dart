@@ -138,12 +138,16 @@ class _DutiesHomeScreenState extends State<DutiesHomeScreen> {
       final itemDate = getDate(item);
       String formattedDate;
 
-      if (itemDate.isAtSameMomentAs(today)) {
+      // Strip the time components to focus on date comparisons
+      final itemDateOnly =
+          DateTime(itemDate.year, itemDate.month, itemDate.day);
+
+      if (itemDateOnly.isAtSameMomentAs(today)) {
         formattedDate = "Today";
-      } else if (itemDate.isAtSameMomentAs(tomorrow)) {
+      } else if (itemDateOnly.isAtSameMomentAs(tomorrow)) {
         formattedDate = "Tomorrow";
-      } else if (itemDate.isAfter(tomorrow) &&
-          itemDate.isBefore(upcomingThreshold)) {
+      } else if (itemDateOnly.isAfter(tomorrow) &&
+          itemDateOnly.isBefore(upcomingThreshold)) {
         formattedDate = "Upcoming";
       } else {
         formattedDate = "Previous";
@@ -170,12 +174,13 @@ class _DutiesHomeScreenState extends State<DutiesHomeScreen> {
       groupedItems.remove("Upcoming");
     }
 
+    // Sort the remaining entries (Previous) by date
     sortedEntries.addAll(
       groupedItems.entries.toList()
         ..sort((a, b) {
           final dateA = dateKeys[a.key]!;
           final dateB = dateKeys[b.key]!;
-          return dateB.compareTo(dateA);
+          return dateB.compareTo(dateA); // Sort descending (latest first)
         }),
     );
 
