@@ -120,15 +120,13 @@ class DutyController extends ChangeNotifier {
   }
 
 // ******** Add Duty *******
-  Future<void> addDuty(
-    BuildContext context, {
-    required String duty_title,
-    required String description,
-    required String status,
-    required String remark,
-    required List<int> teachers,
-    String? fileattachment
-  }) async {
+  Future<void> addDuty(BuildContext context,
+      {required String duty_title,
+      required String description,
+      required String status,
+      required String remark,
+      required List<int> teachers,
+      String? fileattachment}) async {
     // final loadingProvider =
     //     Provider.of<LoadingProvider>(context, listen: false); //loading provider
     // loadingProvider.setLoading(true); //start loader
@@ -136,13 +134,12 @@ class DutyController extends ChangeNotifier {
     notifyListeners();
     try {
       final response = await DutyServices().addDuty(
-        duty_title: duty_title,
-        description: description,
-        status: status,
-        remark: remark,
-        teachers: teachers,
-        fileAttachment: fileattachment
-      );
+          duty_title: duty_title,
+          description: description,
+          status: status,
+          remark: remark,
+          teachers: teachers,
+          fileAttachment: fileattachment);
       if (response.statusCode == 201 || response.statusCode == 200) {
         log(">>>>>>${response.statusMessage}");
         context.pushNamed(AppRouteConst.bottomNavRouteName,

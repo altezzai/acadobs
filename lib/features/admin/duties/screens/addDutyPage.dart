@@ -17,7 +17,6 @@ import 'package:school_app/core/shared_widgets/custom_filepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/admin/duties/controller/duty_controller.dart';
 import 'package:school_app/features/admin/teacher_section/controller/teacher_controller.dart';
-
 import '../../../../base/utils/form_validators.dart';
 
 class AddDutyPage extends StatefulWidget {
@@ -36,12 +35,6 @@ class _AddDutyPageState extends State<AddDutyPage> {
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
 
-  // Future<void> pickFile() async {
-  //   FilePickerResult? result = await FilePicker.platform.pickFiles(
-  //     type: FileType.any,
-  //   );
-  // }
-
   late TeacherController teacherController;
   late DropdownProvider dropdownProvider;
   late FilePickerProvider filePickerProvider;
@@ -49,7 +42,6 @@ class _AddDutyPageState extends State<AddDutyPage> {
   @override
   void initState() {
     super.initState();
-
     teacherController = Provider.of<TeacherController>(context, listen: false);
     dropdownProvider = context.read<DropdownProvider>();
     filePickerProvider = context.read<FilePickerProvider>();
@@ -57,7 +49,6 @@ class _AddDutyPageState extends State<AddDutyPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       dropdownProvider.clearAllDropdowns();
       filePickerProvider.clearFile('duty file');
-
       if (teacherController.selectedTeacherIds.isNotEmpty) {
         teacherController.clearSelection();
       }
@@ -136,6 +127,10 @@ class _AddDutyPageState extends State<AddDutyPage> {
                           child: CustomDatePicker(
                             label: "Start Date",
                             dateController: _startDateController,
+                            firstDate: DateTime.now(), // Earliest date is today
+                            lastDate: DateTime(
+                                2100), // Extend to a reasonable future date
+                            initialDate: DateTime.now(),
                             onDateSelected: (selectedDate) {
                               print("Start Date selected: $selectedDate");
                             },
@@ -151,6 +146,12 @@ class _AddDutyPageState extends State<AddDutyPage> {
                           child: CustomDatePicker(
                             label: "End Date",
                             dateController: _endDateController,
+                            firstDate:
+                                DateTime.now(), // Ensure it's today or later
+                            lastDate: DateTime(
+                                2100), // Extend to a reasonable future date
+                            initialDate: DateTime.now()
+                                .add(Duration(days: 1)), // Default to tomorrow
                             onDateSelected: (selectedDate) {
                               print("End Date selected: $selectedDate");
                             },
@@ -175,11 +176,17 @@ class _AddDutyPageState extends State<AddDutyPage> {
                     ),
                     SizedBox(height: Responsive.height * 2),
 
-                    CustomFilePicker(label: 'Document', fieldName: 'duty file'),
+                    CustomFilePicker(
+                      label: 'Document',
+                      fieldName: 'duty file',
+                      validator: (value) => FormValidator.validateNotEmpty(
+                          value,
+                          fieldName: "Document"),
+                    ),
                     SizedBox(height: Responsive.height * 2),
 
                     // Selected Teachers
-                    Text("Selected Teachers:",
+                    Text("Selected Teachers: ",
                         style: TextStyle(fontSize: Responsive.text * 2)),
                     SizedBox(height: Responsive.height * 1),
 
@@ -189,26 +196,25 @@ class _AddDutyPageState extends State<AddDutyPage> {
                             .pushNamed(AppRouteConst.teacherSelectionRouteName);
                       },
                       child: Consumer<TeacherController>(
-                        builder: (context, value, child) {
-                          String selectedTeacherNames = value.selectedTeacherIds
-                              .map((id) => value.teachers
-                                  .firstWhere((teacher) => teacher.id == id)
-                                  .fullName)
-                              .join(", ");
+                          builder: (context, value, child) {
+                        String selectedTeacherNames = value.selectedTeacherIds
+                            .map((id) => value.teachers
+                                .firstWhere((teacher) => teacher.id == id)
+                                .fullName)
+                            .join(", ");
 
-                          return TextFormField(
-                            decoration: InputDecoration(
-                              hintText: value.selectedTeacherIds.isEmpty
-                                  ? "Select Staffs"
-                                  : capitalizeEachWord(selectedTeacherNames),
-                              enabled: false,
-                            ),
-                            validator: (value) =>
-                                FormValidator.validateNotEmpty(value,
-                                    fieldName: "Staff selection"),
-                          );
-                        },
-                      ),
+                        return TextFormField(
+                          decoration: InputDecoration(
+                            hintText: value.selectedTeacherIds.isEmpty
+                                ? "Select Staffs"
+                                : capitalizeEachWord(selectedTeacherNames),
+                            enabled: false,
+                          ),
+                          // validator: (value) => FormValidator.validateNotEmpty(
+                          //     value,
+                          //     fieldName: "Staff selection"),
+                        );
+                      }),
                     ),
                     SizedBox(height: Responsive.height * 2),
 
@@ -225,33 +231,73 @@ class _AddDutyPageState extends State<AddDutyPage> {
                     // Submit Button
                     Center(
                       child: Consumer2<TeacherController, DutyController>(
-                          builder: (context, value1, value2, child) {
-                        return CommonButton(
-                          onPressed: () async {
-                            log("List of teacher ids selected: ==== ${value1.selectedTeacherIds.toString()}");
-                            final status = context
-                                .read<DropdownProvider>()
-                                .getSelectedItem('status');
-                            final dutyfile = context
-                                .read<FilePickerProvider>()
-                                .getFile('duty file');
-                            final dutyfilepath = dutyfile?.path;
-                            context.read<DutyController>().addDuty(context,
-                                duty_title: _titleController.text,
-                                description: _descriptionController.text,
-                                status: status,
-                                remark: _remarkController.text,
-                                teachers: value1.selectedTeacherIds,
-                                fileattachment: dutyfilepath);
-                          },
-                          widget: value2.isloadingTwo
-                              ? ButtonLoading()
-                              : Text('Submit',
-                                  style:
-                                      TextStyle(fontSize: Responsive.text * 2)),
-                        );
-                      }),
+                        builder: (context, value1, value2, child) {
+                          return CommonButton(
+                            onPressed: () async {
+                              // First, validate the form
+                              if (_formKey.currentState?.validate() ?? false) {
+                                // Check that start date is before end date
+                                DateTime? startDate = DateTime.tryParse(
+                                    _startDateController.text);
+                                DateTime? endDate =
+                                    DateTime.tryParse(_endDateController.text);
+
+                                if (startDate != null &&
+                                    endDate != null &&
+                                    endDate.isBefore(startDate)) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                          'End date must be after start date.'),
+                                    ),
+                                  );
+                                  return;
+                                }
+
+                                // Log selected teacher ids
+                                log("List of teacher ids selected: ==== ${value1.selectedTeacherIds.toString()}");
+
+                                // Retrieve selected status and duty file
+                                final status = context
+                                    .read<DropdownProvider>()
+                                    .getSelectedItem('status');
+                                final dutyfile = context
+                                    .read<FilePickerProvider>()
+                                    .getFile('duty file');
+                                final dutyfilepath = dutyfile?.path;
+
+                                // Proceed with adding the duty
+                                context.read<DutyController>().addDuty(
+                                      context,
+                                      duty_title: _titleController.text,
+                                      description: _descriptionController.text,
+                                      status: status,
+                                      remark: _remarkController.text,
+                                      teachers: value1.selectedTeacherIds,
+                                      fileattachment: dutyfilepath,
+                                    );
+                              } else {
+                                // If form is invalid, show a message
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                        'Please fix the errors in the form.'),
+                                  ),
+                                );
+                              }
+                            },
+                            widget: value2.isloadingTwo
+                                ? ButtonLoading()
+                                : Text(
+                                    'Submit',
+                                    style: TextStyle(
+                                        fontSize: Responsive.text * 2),
+                                  ),
+                          );
+                        },
+                      ),
                     ),
+                    // SizedBox(height: Responsive.height * 2),
                   ],
                 ),
               ),
