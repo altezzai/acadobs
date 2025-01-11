@@ -159,7 +159,7 @@ class _AddStudentLeaveRequestState extends State<AddStudentLeaveRequest> {
                        CustomSnackbar.show(context,
             message: "Please complete all required fields", type: SnackbarType.warning);
                       }
-                    }, widget: value.isloading ? ButtonLoading() : Text('Submit'),);})
+                    }, widget: value.isloadingTwo ? ButtonLoading() : Text('Submit'),);})
                 ),
               ],
             ),
