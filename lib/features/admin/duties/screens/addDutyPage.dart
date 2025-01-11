@@ -18,12 +18,15 @@ import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/admin/duties/controller/duty_controller.dart';
 import 'package:school_app/features/admin/teacher_section/controller/teacher_controller.dart';
 
+import '../../../../base/utils/form_validators.dart';
+
 class AddDutyPage extends StatefulWidget {
   @override
   _AddDutyPageState createState() => _AddDutyPageState();
 }
 
 class _AddDutyPageState extends State<AddDutyPage> {
+  final _formKey = GlobalKey<FormState>();
   String? selectedStaff;
   String? selectedFile;
   List<String> selectedStaffs = [];
@@ -49,7 +52,7 @@ class _AddDutyPageState extends State<AddDutyPage> {
 
     teacherController = Provider.of<TeacherController>(context, listen: false);
     dropdownProvider = context.read<DropdownProvider>();
-    filePickerProvider=context.read<FilePickerProvider>();
+    filePickerProvider = context.read<FilePickerProvider>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       dropdownProvider.clearAllDropdowns();
@@ -72,161 +75,185 @@ class _AddDutyPageState extends State<AddDutyPage> {
           body: Padding(
             padding: EdgeInsets.symmetric(horizontal: Responsive.width * 4),
             child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomAppbar(
-                    title: "Add Duty",
-                    isProfileIcon: false,
-                    onTap: () {
-                      context.pushNamed(AppRouteConst.bottomNavRouteName,
-                          extra: UserType.admin);
-                    },
-                  ),
-                  SizedBox(height: Responsive.height * 2),
-
-                  // Title Input
-                  CustomTextfield(
-                    hintText: 'Title',
-                    controller: _titleController,
-                    iconData: Icon(Icons.title),
-                    hintStyle: TextStyle(fontSize: Responsive.text * 1.8),
-                  ),
-                  SizedBox(height: Responsive.height * 2),
-
-                  // Description Input
-                  CustomTextfield(
-                    hintText: 'Description',
-                    controller: _descriptionController,
-                    iconData: Icon(Icons.description),
-                    keyBoardtype: TextInputType.multiline,
-                    hintStyle: TextStyle(fontSize: Responsive.text * 1.8),
-                  ),
-                  SizedBox(height: Responsive.height * 2),
-
-                  // Remark Input
-                  CustomTextfield(
-                    hintText: 'Remark',
-                    controller: _remarkController,
-                    iconData: Icon(Icons.description),
-                    keyBoardtype: TextInputType.multiline,
-                    hintStyle: TextStyle(fontSize: Responsive.text * 1.8),
-                  ),
-                  SizedBox(height: Responsive.height * 2),
-
-                  // Date Inputs (Start and End Date) with DatePicker
-                  Row(
-                    children: [
-                      // Start Date Field
-                      Expanded(
-                        child: CustomDatePicker(
-                          label: "Start Date",
-                          dateController: _startDateController,
-                          onDateSelected: (selectedDate) {
-                            print("Start Date selected: $selectedDate");
-                          },
-                        ),
-                      ),
-                      SizedBox(width: Responsive.width * 2),
-
-                      // End Date Field
-                      Expanded(
-                        child: CustomDatePicker(
-                          label: "End Date",
-                          dateController: _endDateController,
-                          onDateSelected: (selectedDate) {
-                            print("End Date selected: $selectedDate");
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: Responsive.height * 2),
-
-                  // Status Dropdown
-                  CustomDropdown(
-                    dropdownKey: 'status',
-                    label: 'Status',
-                    items: ['Pending', 'In Progress', 'Completed'],
-                    icon: Icons.pending_actions,
-                  ),
-                  SizedBox(height: Responsive.height * 2),
-
-                   CustomFilePicker(label: 'Document', fieldName: 'duty file'),
-                  SizedBox(height:Responsive.height*2),
-
-
-                  // Selected Teachers
-                  Text("Selected Teachers:",
-                      style: TextStyle(fontSize: Responsive.text * 2)),
-                  SizedBox(height: Responsive.height * 1),
-
-                 
-                  InkWell(
-                    onTap: () {
-                      context
-                          .pushNamed(AppRouteConst.teacherSelectionRouteName);
-                    },
-                    child: Consumer<TeacherController>(
-                      builder: (context, value, child) {
-                        String selectedTeacherNames = value.selectedTeacherIds
-                            .map((id) => value.teachers
-                                .firstWhere((teacher) => teacher.id == id)
-                                .fullName)
-                            .join(", ");
-
-                        return TextFormField(
-                          decoration: InputDecoration(
-                            hintText: value.selectedTeacherIds.isEmpty
-                                ? "Select Staffs"
-                                : capitalizeEachWord(selectedTeacherNames),
-                            enabled: false,
-                          ),
-                        );
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomAppbar(
+                      title: "Add Duty",
+                      isProfileIcon: false,
+                      onTap: () {
+                        context.pushNamed(AppRouteConst.bottomNavRouteName,
+                            extra: UserType.admin);
                       },
                     ),
-                  ),
-                  SizedBox(height: Responsive.height * 2),
+                    SizedBox(height: Responsive.height * 2),
 
-                  // Selected Staffs Display
-                  Wrap(
-                    spacing: Responsive.width * 2,
-                    runSpacing: Responsive.height * 1,
-                    children: selectedStaffs.map((staff) {
-                      return _buildStaffChip(staff);
-                    }).toList(),
-                  ),
-                  SizedBox(height: Responsive.height * 4),
+                    // Title Input
+                    CustomTextfield(
+                      hintText: 'Title',
+                      controller: _titleController,
+                      iconData: Icon(Icons.title),
+                      hintStyle: TextStyle(fontSize: Responsive.text * 1.8),
+                      validator: (value) => FormValidator.validateNotEmpty(
+                          value,
+                          fieldName: "Title"),
+                    ),
+                    SizedBox(height: Responsive.height * 2),
 
-                  // Submit Button
-                  Center(
-                    child: Consumer2<TeacherController, DutyController>(
-                        builder: (context, value1, value2, child) {
-                      return CommonButton(
-                        onPressed: () async {
-                          log("List of teacher ids selected: ==== ${value1.selectedTeacherIds.toString()}");
-                          final status = context
-                              .read<DropdownProvider>()
-                              .getSelectedItem('status');
-                          final dutyfile=context.read<FilePickerProvider>().getFile('duty file');
-                          final dutyfilepath=dutyfile?.path;
-                          context.read<DutyController>().addDuty(context,
-                              duty_title: _titleController.text,
-                              description: _descriptionController.text,
-                              status: status,
-                              remark: _remarkController.text,
-                              teachers: value1.selectedTeacherIds,
-                              fileattachment: dutyfilepath);
+                    // Description Input
+                    CustomTextfield(
+                      hintText: 'Description',
+                      controller: _descriptionController,
+                      iconData: Icon(Icons.description),
+                      keyBoardtype: TextInputType.multiline,
+                      hintStyle: TextStyle(fontSize: Responsive.text * 1.8),
+                      validator: (value) => FormValidator.validateNotEmpty(
+                          value,
+                          fieldName: "Description"),
+                    ),
+                    SizedBox(height: Responsive.height * 2),
+
+                    // Remark Input
+                    CustomTextfield(
+                      hintText: 'Remark',
+                      controller: _remarkController,
+                      iconData: Icon(Icons.description),
+                      keyBoardtype: TextInputType.multiline,
+                      hintStyle: TextStyle(fontSize: Responsive.text * 1.8),
+                      validator: (value) => FormValidator.validateNotEmpty(
+                          value,
+                          fieldName: "Remark"),
+                    ),
+                    SizedBox(height: Responsive.height * 2),
+
+                    // Date Inputs (Start and End Date) with DatePicker
+                    Row(
+                      children: [
+                        // Start Date Field
+                        Expanded(
+                          child: CustomDatePicker(
+                            label: "Start Date",
+                            dateController: _startDateController,
+                            onDateSelected: (selectedDate) {
+                              print("Start Date selected: $selectedDate");
+                            },
+                            validator: (value) =>
+                                FormValidator.validateNotEmpty(value,
+                                    fieldName: "Start Date"),
+                          ),
+                        ),
+                        SizedBox(width: Responsive.width * 2),
+
+                        // End Date Field
+                        Expanded(
+                          child: CustomDatePicker(
+                            label: "End Date",
+                            dateController: _endDateController,
+                            onDateSelected: (selectedDate) {
+                              print("End Date selected: $selectedDate");
+                            },
+                            validator: (value) =>
+                                FormValidator.validateNotEmpty(value,
+                                    fieldName: "End Date"),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: Responsive.height * 2),
+
+                    // Status Dropdown
+                    CustomDropdown(
+                      dropdownKey: 'status',
+                      label: 'Status',
+                      items: ['Pending', 'In Progress', 'Completed'],
+                      icon: Icons.pending_actions,
+                      validator: (value) => FormValidator.validateNotEmpty(
+                          value,
+                          fieldName: "Status"),
+                    ),
+                    SizedBox(height: Responsive.height * 2),
+
+                    CustomFilePicker(label: 'Document', fieldName: 'duty file'),
+                    SizedBox(height: Responsive.height * 2),
+
+                    // Selected Teachers
+                    Text("Selected Teachers:",
+                        style: TextStyle(fontSize: Responsive.text * 2)),
+                    SizedBox(height: Responsive.height * 1),
+
+                    InkWell(
+                      onTap: () {
+                        context
+                            .pushNamed(AppRouteConst.teacherSelectionRouteName);
+                      },
+                      child: Consumer<TeacherController>(
+                        builder: (context, value, child) {
+                          String selectedTeacherNames = value.selectedTeacherIds
+                              .map((id) => value.teachers
+                                  .firstWhere((teacher) => teacher.id == id)
+                                  .fullName)
+                              .join(", ");
+
+                          return TextFormField(
+                            decoration: InputDecoration(
+                              hintText: value.selectedTeacherIds.isEmpty
+                                  ? "Select Staffs"
+                                  : capitalizeEachWord(selectedTeacherNames),
+                              enabled: false,
+                            ),
+                            validator: (value) =>
+                                FormValidator.validateNotEmpty(value,
+                                    fieldName: "Staff selection"),
+                          );
                         },
-                        widget: value2.isloadingTwo
-                            ? ButtonLoading()
-                            : Text('Submit',
-                                style:
-                                    TextStyle(fontSize: Responsive.text * 2)),
-                      );
-                    }),
-                  ),
-                ],
+                      ),
+                    ),
+                    SizedBox(height: Responsive.height * 2),
+
+                    // Selected Staffs Display
+                    Wrap(
+                      spacing: Responsive.width * 2,
+                      runSpacing: Responsive.height * 1,
+                      children: selectedStaffs.map((staff) {
+                        return _buildStaffChip(staff);
+                      }).toList(),
+                    ),
+                    SizedBox(height: Responsive.height * 4),
+
+                    // Submit Button
+                    Center(
+                      child: Consumer2<TeacherController, DutyController>(
+                          builder: (context, value1, value2, child) {
+                        return CommonButton(
+                          onPressed: () async {
+                            log("List of teacher ids selected: ==== ${value1.selectedTeacherIds.toString()}");
+                            final status = context
+                                .read<DropdownProvider>()
+                                .getSelectedItem('status');
+                            final dutyfile = context
+                                .read<FilePickerProvider>()
+                                .getFile('duty file');
+                            final dutyfilepath = dutyfile?.path;
+                            context.read<DutyController>().addDuty(context,
+                                duty_title: _titleController.text,
+                                description: _descriptionController.text,
+                                status: status,
+                                remark: _remarkController.text,
+                                teachers: value1.selectedTeacherIds,
+                                fileattachment: dutyfilepath);
+                          },
+                          widget: value2.isloadingTwo
+                              ? ButtonLoading()
+                              : Text('Submit',
+                                  style:
+                                      TextStyle(fontSize: Responsive.text * 2)),
+                        );
+                      }),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
