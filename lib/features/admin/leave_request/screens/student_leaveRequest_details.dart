@@ -142,7 +142,7 @@ class _StudentLeaveRequestDetailsPageState
                             BorderRadius.circular(25.0), // Rounded corners
                       ),
                     ),
-                    child: value.isloading
+                    child: value.isloadingTwo
                         ? ButtonLoading()
                         : Text(
                             (status == 'Rejected') ? 'Rejected' : 'Reject',
@@ -173,7 +173,7 @@ class _StudentLeaveRequestDetailsPageState
                           .approveLeaveRequest(context,
                               leaveRequestId!); // Your onPressed function here
                   },
-                  child: value.isloading
+                  child: value.isloadingTwo
                       ? ButtonLoading()
                       : Text(
                           (status == 'Approved') ? 'Approved' : 'Approve',
