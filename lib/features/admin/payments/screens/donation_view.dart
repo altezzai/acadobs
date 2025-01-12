@@ -3,6 +3,7 @@ import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/admin/payments/model/donation_model.dart';
 
@@ -32,7 +33,7 @@ class _DonationViewState extends State<DonationView> {
             SizedBox(height: Responsive.height * 2),
             CircleAvatar(
               backgroundImage: widget.donation.studentPhoto != null
-                  ? NetworkImage(widget.donation.studentPhoto)
+                  ? NetworkImage("${baseUrl}${Urls.studentPhotos}${widget.donation.studentPhoto}")
                   : AssetImage('assets/child1.png') as ImageProvider,
               radius: 25,
             ),

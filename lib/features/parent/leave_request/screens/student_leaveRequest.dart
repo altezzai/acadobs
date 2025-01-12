@@ -127,8 +127,8 @@ class _StudentLeaveRequestScreenState extends State<StudentLeaveRequestScreen> {
                                           ? Colors.green.withOpacity(.1)
                                           : (leaveRequest.approvalStatus ==
                                                   "Pending"
-                                              ? Colors.red.withOpacity(.1)
-                                              : Colors.blue.withOpacity(.1)),
+                                              ? Colors.orange.withOpacity(.1)
+                                              : Colors.red.withOpacity(.1)),
                                 ),
                                 child: Icon(
                                   Icons.assignment_add,
@@ -137,8 +137,8 @@ class _StudentLeaveRequestScreenState extends State<StudentLeaveRequestScreen> {
                                           ? Colors.green
                                           : (leaveRequest.approvalStatus ==
                                                   "Pending"
-                                              ? Colors.red
-                                              : Colors.blue),
+                                              ? Colors.orangeAccent
+                                              : Colors.red),
                                 ),
                               ),
                               title: Text(
@@ -163,7 +163,7 @@ class _StudentLeaveRequestScreenState extends State<StudentLeaveRequestScreen> {
                                         ? Colors.green.withOpacity(.1)
                                         : (leaveRequest.approvalStatus ==
                                                 "Pending"
-                                            ? Colors.red.withOpacity(.1)
+                                            ? Colors.orange.withOpacity(.1)
                                             : Colors.blue.withOpacity(.1)),
                                   ),
                                   child: Text(
@@ -174,8 +174,8 @@ class _StudentLeaveRequestScreenState extends State<StudentLeaveRequestScreen> {
                                           ? Colors.green
                                           : (leaveRequest.approvalStatus ==
                                                   "Pending"
-                                              ? Colors.red
-                                              : Colors.blue),
+                                              ? Colors.orangeAccent
+                                              : Colors.red),
                                     ),
                                   ),
                                 ),
