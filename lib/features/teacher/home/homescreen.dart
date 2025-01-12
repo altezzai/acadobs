@@ -98,7 +98,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                 ],
               ),
               SizedBox(
-                height: Responsive.height * 20,
+                height: Responsive.height * 15,
               ),
               _customContainer(
                 color: Colors.green,

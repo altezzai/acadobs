@@ -1,12 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/teacher/mark_work/widgets/star_container.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/responsive.dart';
 
@@ -57,7 +55,7 @@ class _MarkStarState extends State<MarkStar> {
             CustomAppbar(
               title: 'Hindi Imposition',
               onTap: () {
-                context.pushNamed(AppRouteConst.workviewRouteName);
+                Navigator.pop(context);
               },
             ),
             Center(

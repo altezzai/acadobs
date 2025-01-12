@@ -463,14 +463,21 @@ class Approuter {
         name: AppRouteConst.teacherLeaveRequestDetailsRouteName,
         path: '/teacherleaverequestdetails',
         pageBuilder: (context, state) {
+          final Map<String, dynamic> extra =
+              state.extra as Map<String, dynamic>;
           final TeacherLeaveRequest teacherleaverequests =
-              state.extra as TeacherLeaveRequest;
+              extra['teacherLeaveRequest'] as TeacherLeaveRequest;
+          final String userType = extra['userType'] as String;
+
           return MaterialPage(
-              child: TeacherLeaveRequestDetailsPage(
-            teacherleaverequests: teacherleaverequests,
-          ));
+            child: TeacherLeaveRequestDetailsPage(
+              teacherleaverequests: teacherleaverequests,
+              userType: userType,
+            ),
+          );
         },
       ),
+
       GoRoute(
         name: AppRouteConst.TeacherLeaveRequestScreenRouteName,
         path: '/teacherleaverequestscreen',
