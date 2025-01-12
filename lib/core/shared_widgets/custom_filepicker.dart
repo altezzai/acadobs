@@ -5,12 +5,12 @@ import 'package:school_app/core/controller/file_picker_provider.dart';
 class CustomFilePicker extends StatelessWidget {
   final String label;
   final String fieldName;
-  final String? Function(String?)? validator;  // Added validator parameter
+  final String? Function(String?)? validator; // Added validator parameter
 
   CustomFilePicker({
     required this.label,
     required this.fieldName,
-    this.validator,  // Accept validator in the constructor
+    this.validator, // Accept validator in the constructor
   });
 
   @override
@@ -19,7 +19,7 @@ class CustomFilePicker extends StatelessWidget {
     //final selectedFile = fileProvider.getFile(fieldName)?.path;
 
     return FormField<String>(
-      validator: validator,  // Use the passed validator here
+      validator: validator, // Use the passed validator here
       builder: (FormFieldState<String> state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,7 +35,8 @@ class CustomFilePicker extends StatelessWidget {
                 state.didChange(fileProvider.getFile(fieldName)?.path);
               },
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(25),
@@ -45,9 +46,11 @@ class CustomFilePicker extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        fileProvider.getFile(fieldName)?.name ?? 'No file selected',
+                        fileProvider.getFile(fieldName)?.name ??
+                            'No file selected',
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontSize: 14, color: Colors.black54),
+                        style: const TextStyle(
+                            fontSize: 14, color: Colors.black54),
                       ),
                     ),
                     const Icon(Icons.upload_file, color: Colors.grey),
@@ -55,7 +58,7 @@ class CustomFilePicker extends StatelessWidget {
                 ),
               ),
             ),
-            if (state.hasError) 
+            if (state.hasError)
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
                 child: Text(

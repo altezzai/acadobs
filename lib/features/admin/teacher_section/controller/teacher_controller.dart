@@ -8,22 +8,23 @@ import 'package:school_app/features/admin/teacher_section/services/teacher_servi
 class TeacherController extends ChangeNotifier {
   bool _isloading = false;
   bool get isloading => _isloading;
+
   bool _isloadingTwo = false;
   bool get isloadingTwo => _isloadingTwo;
+
   List<Teacher> _teachers = [];
   List<Teacher> get teachers => _teachers;
 
-  // List to store selected teacher IDs
+  // Selected teacher IDs
   List<int> _selectedTeacherIds = [];
   List<int> get selectedTeacherIds => _selectedTeacherIds;
 
-// **********Get all teachers*****************
+  // Fetch teacher details and clear selections
   Future<void> getTeacherDetails() async {
     _isloading = true;
+    _selectedTeacherIds.clear();
     try {
       final response = await TeacherServices().getTeacher();
-      print("***********${response.statusCode}");
-      print(response.toString());
       if (response.statusCode == 200) {
         _teachers = (response.data as List<dynamic>)
             .map((result) => Teacher.fromJson(result))
@@ -31,34 +32,36 @@ class TeacherController extends ChangeNotifier {
       }
     } catch (e) {
       print(e);
+    } finally {
+      _isloading = false;
+      notifyListeners();
     }
-    _isloading = false;
-    notifyListeners();
   }
 
-  // ********Add New Teacher************
-  Future<void> addNewTeacher(BuildContext context,
-      {required String fullName,
-      required String dateOfBirth,
-      required String gender,
-      required String address,
-      required String contactNumber,
-      required String emailAddress,
-      required String profilePhoto}) async {
+  // Add a new teacher
+  Future<void> addNewTeacher(
+    BuildContext context, {
+    required String fullName,
+    required String dateOfBirth,
+    required String gender,
+    required String address,
+    required String contactNumber,
+    required String emailAddress,
+    required String profilePhoto,
+  }) async {
     _isloadingTwo = true;
     try {
-      //  _isloading = false;
       final response = await TeacherServices().addNewTeacher(
-          fullName: fullName,
-          dateOfBirth: dateOfBirth,
-          gender: gender,
-          address: address,
-          contactNumber: contactNumber,
-          emailAddress: emailAddress,
-          profilePhoto:profilePhoto);
-          
+        fullName: fullName,
+        dateOfBirth: dateOfBirth,
+        gender: gender,
+        address: address,
+        contactNumber: contactNumber,
+        emailAddress: emailAddress,
+        profilePhoto: profilePhoto,
+      );
       if (response.statusCode == 201) {
-        log(">>>>>>>>>>>>>Teacher Added}");
+        log("Teacher added successfully");
         context.pushNamed(AppRouteConst.AdminteacherRouteName);
       }
     } catch (e) {
@@ -69,7 +72,6 @@ class TeacherController extends ChangeNotifier {
     }
   }
 
-  // ***********Select teacher for duties*****
   // Toggle teacher selection
   void toggleTeacherSelection(int teacherId) {
     if (_selectedTeacherIds.contains(teacherId)) {
@@ -85,9 +87,16 @@ class TeacherController extends ChangeNotifier {
     return _selectedTeacherIds.contains(teacherId);
   }
 
-  // Clear the selection
+  // Clear selections
   void clearSelection() {
     _selectedTeacherIds.clear();
     notifyListeners();
+  }
+
+  // Get selected teachers' details
+  List<Teacher> getSelectedTeachers() {
+    return _teachers
+        .where((teacher) => _selectedTeacherIds.contains(teacher.id))
+        .toList();
   }
 }

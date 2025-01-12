@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/services/secure_storage_services.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/authentication/controller/auth_controller.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 
@@ -19,6 +21,44 @@ class LogoutScreen extends StatefulWidget {
 }
 
 class _LogoutScreenState extends State<LogoutScreen> {
+  String? _teacherName;
+  String? _parentName;
+  String? _profilePhoto;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserData();
+  }
+
+  Future<void> _fetchUserData() async {
+    if (widget.userType == UserType.teacher) {
+      await _fetchTeacherData();
+    } else if (widget.userType == UserType.parent) {
+      await _fetchStudentData();
+    }
+  }
+
+  Future<void> _fetchTeacherData() async {
+    final name = await SecureStorageService.getTeacherName();
+    final photo = await SecureStorageService.getTeacherProfilePhoto();
+    setState(() {
+      _teacherName = name ?? 'Teacher'; // Default to "Teacher"
+      _profilePhoto =
+          photo != null ? '$baseUrl${Urls.teacherPhotos}$photo' : null;
+    });
+  }
+
+  Future<void> _fetchStudentData() async {
+    final name = await SecureStorageService.getParentName();
+    final photo = await SecureStorageService.getParentProfilePhoto();
+    setState(() {
+      _parentName = name ?? 'Parent'; // Default to "Parent"
+      _profilePhoto =
+          photo != null ? '$baseUrl${Urls.parentPhotos}$photo' : null;
+    });
+  }
+
   File? _imageFile;
 
   Future<void> _pickImage() async {
@@ -32,8 +72,6 @@ class _LogoutScreenState extends State<LogoutScreen> {
         setState(() {
           _imageFile = File(result.files.first.path!);
         });
-        // Here you can add your image upload logic
-        // For example: await uploadImageToServer(_imageFile);
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -74,31 +112,25 @@ class _LogoutScreenState extends State<LogoutScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final userName =
+        widget.userType == UserType.teacher ? _teacherName : _parentName;
+
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        title: Text(
+        title: const Text(
           'Profile',
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: Theme.of(context).textTheme.headlineMedium?.fontSize,
-          ),
+          style: TextStyle(fontWeight: FontWeight.w600),
         ),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            // if (widget.userType == UserType.parent) {
-            //   context.pushReplacementNamed(
-            //     AppRouteConst.ParentHomeRouteName,
-            //   );
-            // } else {
             context.goNamed(
               AppRouteConst.bottomNavRouteName,
               extra: widget.userType,
             );
-            // }
           },
         ),
         elevation: 0,
@@ -107,9 +139,7 @@ class _LogoutScreenState extends State<LogoutScreen> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            SizedBox(
-              height: Responsive.height * 2,
-            ),
+            SizedBox(height: Responsive.height * 2),
             // Profile Picture and Name
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -120,15 +150,10 @@ class _LogoutScreenState extends State<LogoutScreen> {
                       radius: 80,
                       backgroundImage: _imageFile != null
                           ? FileImage(_imageFile!)
-                          : const AssetImage('assets/admin.png')
+                          : (_profilePhoto != null
+                                  ? NetworkImage(_profilePhoto!)
+                                  : const AssetImage('assets/icons/avatar.png'))
                               as ImageProvider,
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: _pickImage,
-                          child: Container(),
-                        ),
-                      ),
                     ),
                     Positioned(
                       bottom: 0,
@@ -164,7 +189,7 @@ class _LogoutScreenState extends State<LogoutScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Vincent',
+                      userName ?? '',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ],
