@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:school_app/base/services/secure_storage_services.dart';
 import 'package:school_app/features/admin/student/model/day_attendance_status.dart';
+import 'package:school_app/features/admin/student/model/parent_email_check.dart';
 import 'package:school_app/features/admin/student/model/student_data.dart';
 import 'package:school_app/features/admin/student/model/student_homework.dart';
 import 'package:school_app/features/admin/student/services/studentservice.dart';
@@ -174,13 +175,13 @@ class StudentController extends ChangeNotifier {
       required String guardianFullName,
       required String bloodGroup,
       required String parentEmail,
-       required String fatherContactNumber,
+      required String fatherContactNumber,
       required String motherContactNumber,
       required String studentPhoto,
       String? aadharPhoto,
       required String fatherMotherPhoto}) async {
     _isloading = true;
-    
+
     try {
       final response = await StudentServices().addNewStudent(
           fullName: fullName,
@@ -234,7 +235,7 @@ class StudentController extends ChangeNotifier {
 
   //update student details
 
-    Future<void> updateStudent(BuildContext context,
+  Future<void> updateStudent(BuildContext context,
       {required int studentId,
       required String fullName,
       required String dateOfBirth,
@@ -258,7 +259,7 @@ class StudentController extends ChangeNotifier {
       // String? aadharPhoto,
       required String fatherMotherPhoto}) async {
     _isloading = true;
-    
+
     try {
       final response = await StudentServices().updateStudent(
           studentId: studentId,
@@ -505,4 +506,38 @@ class StudentController extends ChangeNotifier {
     }
   }
   // ***********END OF DAILY ATTENDANCE STATUS********************//
+
+// **********Parent Email Check*************
+  ParentEmailCheck? parentEmailCheckData;
+
+  Future<void> checkParentEmailUsage({required String email}) async {
+    _isLoadingTwo = true;
+    parentEmailCheckData = null; // Clear the previous response
+    notifyListeners();
+
+    try {
+      final response =
+          await StudentServices().checkParentEmailUsage(email: email);
+
+      if (response.statusCode == 200) {
+        // Directly parse the response data
+        parentEmailCheckData = ParentEmailCheck.fromJson(response.data);
+
+        log("Parent Email Check Data: ${parentEmailCheckData?.status}");
+      } else {
+        log("Error: ${response.statusCode} - ${response.data}");
+      }
+    } catch (e) {
+      log("Error fetching parent email data: $e");
+    } finally {
+      _isLoadingTwo = false;
+      notifyListeners();
+    }
+  }
+
+  void resetParentEmailCheckData() {
+  parentEmailCheckData = null;
+  notifyListeners();
+}
+// **********END OF PARENT EMAIL CHECK*************
 }

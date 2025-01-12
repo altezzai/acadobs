@@ -60,13 +60,16 @@ class _AddStudentPageState extends State<AddStudentPage> {
   late DropdownProvider dropdownProvider;
 
   late FilePickerProvider filePickerProvider;
+  late StudentController studentController;
   @override
   void initState() {
     super.initState();
     filePickerProvider = context.read<FilePickerProvider>();
     dropdownProvider = context.read<DropdownProvider>();
+    // studentController = context.read<StudentController>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      // studentController.checkParentEmailUsage(email: "parents1@example.com");
       filePickerProvider.clearFile('student photo');
       filePickerProvider.clearFile('parent photo');
 
@@ -76,6 +79,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
       dropdownProvider.clearSelectedItem('blood-group');
       dropdownProvider.clearSelectedItem('transportation');
       dropdownProvider.clearSelectedItem('hostel');
+      context.read<StudentController>().resetParentEmailCheckData();
     });
   }
 
@@ -236,10 +240,11 @@ class _AddStudentPageState extends State<AddStudentPage> {
 
                 // Date of Birth Input
                 CustomDatePicker(
+                  // hintText: "Date of Birth",
                   label: "Date of Birth",
                   firstDate: DateTime(1995),
                   lastDate: DateTime(2020),
-                  initialDate: DateTime(2010),
+                  // initialDate: DateTime.now(),
                   dateController:
                       _dateOfBirthController, // Unique controller for end date
                   onDateSelected: (selectedDate) {
@@ -322,7 +327,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   iconData: Icon(Icons.school_rounded),
                 ),
                 SizedBox(height: Responsive.height * 2),
-
+                // Parent Details
                 _sectionTitle('Parent Details'),
                 SizedBox(height: 10),
                 CustomTextfield(
@@ -331,9 +336,57 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   iconData: Icon(Icons.email),
                   validator: (value) => FormValidator.validateEmail(value),
                 ),
-                SizedBox(height: Responsive.height * 2),
+                SizedBox(height: 10),
+                Consumer<StudentController>(
+                  builder: (context, emailCheckController, child) {
+                    return Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            if (parentEmailController.text.isNotEmpty) {
+                              context
+                                  .read<StudentController>()
+                                  .checkParentEmailUsage(
+                                      email: parentEmailController.text);
+                            }
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Text(
+                              "Check Email",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            parentEmailController.text.isEmpty
+                                ? "Please enter a valid email"
+                                : (emailCheckController
+                                        .parentEmailCheckData?.message ??
+                                    ""),
+                            style: TextStyle(
+                              color: parentEmailController.text.isEmpty
+                                  ? Colors.red
+                                  : Colors.black,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
 
-                // Parent Details
+                SizedBox(height: Responsive.height * 2),
                 CustomTextfield(
                   hintText: 'Father\'s Name',
                   controller: _fatherFullNameController,
@@ -400,19 +453,6 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   iconData: Icon(Icons.work),
                 ),
                 SizedBox(height: Responsive.height * 2),
-
-                // // Father's and Mother's Aadhar Number
-                // CustomTextfield(
-                //   hintText: 'Father\'s Aadhar Number',
-                //   iconData: Icon(Icons.account_box),
-                // ),
-                // SizedBox(height: Responsive.height*2),
-                // CustomTextfield(
-                //   hintText: 'Mother\'s Aadhar Number',
-                //   iconData: Icon(Icons.account_box),
-                // ),
-                // SizedBox(height: Responsive.height*2),
-
                 _sectionTitle('Previous School Details'),
                 SizedBox(height: 10),
                 CustomDropdown(
@@ -483,21 +523,15 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 SizedBox(height: 40),
 
                 Center(child: Consumer<StudentController>(
-                        builder: (context, value, child) {
+                    builder: (context, value, child) {
                   return CommonButton(
                     onPressed: () {
                       _submitForm(context);
                     },
-                    widget: value.isloading ? ButtonLoading() : Text('Submit'),
+                    widget:
+                        value.isLoadingTwo ? ButtonLoading() : Text('Submit'),
                   );
-                })
-                    //  CustomButton(
-                    //   text: 'Submit',
-                    //   onPressed: () {
-                    //     _submitForm(context);
-                    //   },
-                    // ),
-                    ),
+                })),
                 SizedBox(height: 30),
               ],
             ),
@@ -561,12 +595,14 @@ class _AddStudentPageState extends State<AddStudentPage> {
       } catch (e) {
         // Handle any errors and show an error message
         CustomSnackbar.show(context,
-            message: "Failed to add student.Please try again", type: SnackbarType.failure);
+            message: "Failed to add student.Please try again",
+            type: SnackbarType.failure);
       }
     } else {
       // Highlight missing fields if the form is invalid
-       CustomSnackbar.show(context,
-            message: "Please complete all required fields", type: SnackbarType.warning);
+      CustomSnackbar.show(context,
+          message: "Please complete all required fields",
+          type: SnackbarType.warning);
     }
   }
 

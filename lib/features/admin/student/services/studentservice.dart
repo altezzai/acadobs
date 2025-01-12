@@ -204,4 +204,11 @@ class StudentServices {
 
     return response;
   }
+
+  // *****Check Parent Email Usage************
+  Future<Response> checkParentEmailUsage({required String email}) async {
+    final response =
+        await ApiServices.get("/checkParentEmailUsage?parent_email=$email");
+    return response;
+  }
 }
