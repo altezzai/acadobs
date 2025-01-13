@@ -167,7 +167,10 @@ class _TeacherLeaverequestScreenState extends State<TeacherLeaverequestScreen> {
                                 context.pushNamed(
                                   AppRouteConst
                                       .teacherLeaveRequestDetailsRouteName,
-                                  extra: teacherLeaveRequest,
+                                  extra: {
+                                    'teacherLeaveRequest': teacherLeaveRequest,
+                                    'userType': 'teacher'
+                                  },
                                 );
                               },
                             ));

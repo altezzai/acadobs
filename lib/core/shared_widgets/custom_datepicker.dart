@@ -24,14 +24,20 @@ class CustomDatePicker extends StatelessWidget {
         lastDate = lastDate ?? DateTime.now(); // Default lastDate
 
   Future<void> _selectDate(BuildContext context) async {
-    // Parse the current text in dateController or fallback to DateTime.now()
-    final DateTime currentSelectedDate = dateController.text.isNotEmpty
+    // Determine the effective initial date
+    final DateTime effectiveInitialDate = dateController.text.isNotEmpty
         ? DateFormat('yyyy-MM-dd').parse(dateController.text)
-        : DateTime.now();
+        : (initialDate ?? DateTime.now());
+
+    final DateTime clampedInitialDate = effectiveInitialDate.isBefore(firstDate)
+        ? firstDate
+        : (effectiveInitialDate.isAfter(lastDate)
+            ? lastDate
+            : effectiveInitialDate);
 
     final DateTime? pickedDate = await showDatePicker(
       context: context,
-      initialDate: currentSelectedDate, // Use the last selected date or today
+      initialDate: clampedInitialDate, // Updated logic
       firstDate: firstDate,
       lastDate: lastDate,
       builder: (BuildContext context, Widget? child) {

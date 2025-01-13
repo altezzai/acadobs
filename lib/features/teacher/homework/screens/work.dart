@@ -29,7 +29,7 @@ class HomeWork extends StatefulWidget {
 }
 
 class _HomeWorkState extends State<HomeWork> {
-    final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
   final TextEditingController _subjectController = TextEditingController();
@@ -94,7 +94,9 @@ class _HomeWorkState extends State<HomeWork> {
                                   className: selectedClass,
                                   section: selectedDivision);
                         },
-                         validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Class"),
+                        validator: (value) => FormValidator.validateNotEmpty(
+                            value,
+                            fieldName: "Class"),
                       ),
                     ),
                     const SizedBox(width: 16),
@@ -114,7 +116,9 @@ class _HomeWorkState extends State<HomeWork> {
                                   className: selectedClass,
                                   section: selectedDivision);
                         },
-                         validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Division"),
+                        validator: (value) => FormValidator.validateNotEmpty(
+                            value,
+                            fieldName: "Division"),
                       ),
                     ),
                   ],
@@ -143,7 +147,7 @@ class _HomeWorkState extends State<HomeWork> {
                       //     .map((id) => value.students
                       //         .firstWhere((student) => student['id'] == id))
                       //     .join(", "); // Concatenate names with a comma
-            
+
                       return TextFormField(
                         decoration: InputDecoration(
                           hintText: "Select Students",
@@ -151,12 +155,12 @@ class _HomeWorkState extends State<HomeWork> {
                           //     selectedStudentNames), // Display selected names or placeholder
                           enabled: false,
                         ),
-                         validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Students"),
+                        //  validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Students"),
                       );
                     },
                   ),
                 ),
-            
+
                 SizedBox(height: Responsive.height * 2),
                 Row(
                   children: [
@@ -165,22 +169,33 @@ class _HomeWorkState extends State<HomeWork> {
                       child: CustomDatePicker(
                         label: "Start Date",
                         dateController: _startDateController,
+                        lastDate: DateTime(
+                            2100), // Extend to a reasonable future date
+                        initialDate: DateTime.now(),
                         onDateSelected: (selectedDate) {
                           print("Start Date selected: $selectedDate");
                         },
+                        validator: (value) => FormValidator.validateNotEmpty(
+                            value,
+                            fieldName: "Start Date"),
                       ),
                     ),
                     SizedBox(width: 10),
-            
+
                     // End Date Field
                     Expanded(
                       child: CustomDatePicker(
                         label: "End Date",
                         dateController: _endDateController,
+                        lastDate: DateTime(
+                            2100), // Extend to a reasonable future date
+                        initialDate: DateTime.now(),
                         onDateSelected: (selectedDate) {
                           print("End Date selected: $selectedDate");
                         },
-                         validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "End Date"),
+                        validator: (value) => FormValidator.validateNotEmpty(
+                            value,
+                            fieldName: "End Date"),
                       ),
                     ),
                   ],
@@ -207,7 +222,9 @@ class _HomeWorkState extends State<HomeWork> {
                         ),
                         enabled:
                             false, // Prevent editing as it's controlled by selection
-                             validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Subject"),
+                        // validator: (value) => FormValidator.validateNotEmpty(
+                        //     value,
+                        //     fieldName: "Subject"),
                       ),
                     );
                   },
@@ -217,7 +234,8 @@ class _HomeWorkState extends State<HomeWork> {
                   hintText: "Total Mark",
                   controller: _markController,
                   iconData: const Icon(Icons.book),
-                   validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Total Mark"),
+                  validator: (value) => FormValidator.validateNotEmpty(value,
+                      fieldName: "Total Mark"),
                 ),
                 SizedBox(
                   height: Responsive.height * 2,
@@ -233,7 +251,8 @@ class _HomeWorkState extends State<HomeWork> {
                   hintText: "Title",
                   controller: _titleController,
                   iconData: const Icon(Icons.text_fields),
-                   validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Title"),
+                  validator: (value) =>
+                      FormValidator.validateNotEmpty(value, fieldName: "Title"),
                 ),
                 SizedBox(
                   height: Responsive.height * 1,
@@ -242,9 +261,9 @@ class _HomeWorkState extends State<HomeWork> {
                   controller: _descriptionController,
                   decoration: const InputDecoration(
                     hintText: "Description",
-                    
                   ),
-                   validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Description"),
+                  validator: (value) => FormValidator.validateNotEmpty(value,
+                      fieldName: "Description"),
                   cursorHeight: 25.0, // Sets the cursor height
                   style: const TextStyle(fontSize: 16),
                   minLines: 4,
@@ -258,7 +277,8 @@ class _HomeWorkState extends State<HomeWork> {
                   label: 'Submission Type',
                   items: ['Online', 'In-Class', 'Physical Copy'],
                   icon: Icons.offline_pin_outlined,
-                   validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Submission Type"),
+                  validator: (value) => FormValidator.validateNotEmpty(value,
+                      fieldName: "Submission Type"),
                 ),
                 SizedBox(
                   height: Responsive.height * 1,
@@ -268,7 +288,8 @@ class _HomeWorkState extends State<HomeWork> {
                   label: 'Status',
                   items: ['Pending', 'Submitted', 'Graded'],
                   icon: Icons.checklist,
-                   validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Status"),
+                  validator: (value) => FormValidator.validateNotEmpty(value,
+                      fieldName: "Status"),
                 ),
                 SizedBox(
                   height: Responsive.height * 10,
@@ -276,47 +297,52 @@ class _HomeWorkState extends State<HomeWork> {
                 Consumer<StudentIdController>(builder: (context, value, child) {
                   return CommonButton(
                     onPressed: () {
-                       if (_formKey.currentState?.validate() ?? false) {
-                          try {
-                      final classGrade = context
-                          .read<DropdownProvider>()
-                          .getSelectedItem('classGrade');
-                      final division = context
-                          .read<DropdownProvider>()
-                          .getSelectedItem('division');
-                      final submissionType = context
-                          .read<DropdownProvider>()
-                          .getSelectedItem('submissionType');
-                      final status = context
-                          .read<DropdownProvider>()
-                          .getSelectedItem('status');
-                      final studentIds = value.selectedStudentIds;
-                      final selectedSubjectId =
-                          Provider.of<SubjectController>(context, listen: false)
-                              .selectedSubjectId;
-            
-                      log(">>>>>>>>>>>>${studentIds.toString()}");
-                      context.read<HomeworkController>().addHomework(context,
-                          class_grade: classGrade,
-                          section: division,
-                          subjectId: selectedSubjectId ?? 0,
-                          assignment_title: _titleController.text,
-                          description: _descriptionController.text,
-                          assigned_date: _startDateController.text,
-                          due_date: _endDateController.text,
-                          submission_type: submissionType,
-                          total_marks: _markController.text,
-                          status: status,
-                          studentsId: studentIds);
-                     } catch (e) {
+                      if (_formKey.currentState?.validate() ?? false) {
+                        try {
+                          final classGrade = context
+                              .read<DropdownProvider>()
+                              .getSelectedItem('classGrade');
+                          final division = context
+                              .read<DropdownProvider>()
+                              .getSelectedItem('division');
+                          final submissionType = context
+                              .read<DropdownProvider>()
+                              .getSelectedItem('submissionType');
+                          final status = context
+                              .read<DropdownProvider>()
+                              .getSelectedItem('status');
+                          final studentIds = value.selectedStudentIds;
+                          final selectedSubjectId =
+                              Provider.of<SubjectController>(context,
+                                      listen: false)
+                                  .selectedSubjectId;
+
+                          log(">>>>>>>>>>>>${studentIds.toString()}");
+                          context.read<HomeworkController>().addHomework(
+                              context,
+                              class_grade: classGrade,
+                              section: division,
+                              subjectId: selectedSubjectId ?? 0,
+                              assignment_title: _titleController.text,
+                              description: _descriptionController.text,
+                              assigned_date: _startDateController.text,
+                              due_date: _endDateController.text,
+                              submission_type: submissionType,
+                              total_marks: _markController.text,
+                              status: status,
+                              studentsId: studentIds);
+                        } catch (e) {
                           // Handle any errors and show an error message
                           CustomSnackbar.show(context,
-            message: "Failed to add Homework.Please try again", type: SnackbarType.failure);
+                              message:
+                                  "Failed to add Homework.Please try again",
+                              type: SnackbarType.failure);
                         }
                       } else {
                         // Highlight missing fields if the form is invalid
-                       CustomSnackbar.show(context,
-            message: "Please complete all required fields", type: SnackbarType.warning);
+                        CustomSnackbar.show(context,
+                            message: "Please complete all required fields",
+                            type: SnackbarType.warning);
                       }
                     },
                     widget: value.isloading ? ButtonLoading() : Text('Submit'),
@@ -337,7 +363,7 @@ class _HomeWorkState extends State<HomeWork> {
                   //           .read<DropdownProvider>()
                   //           .getSelectedItem('status');
                   //       final studentIds = value.selectedStudentIds;
-            
+
                   //       log(">>>>>>>>>>>>${studentIds.toString()}");
                   //       context.read<HomeworkController>().addHomework(context,
                   //           class_grade: classGrade,

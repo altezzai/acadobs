@@ -64,6 +64,8 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
       noteController.fetchUnviewedNotesCountByStudentId(
           studentId: widget.student.id ?? 0);
       noteController.getNotesByStudentId(studentId: widget.student.id ?? 0);
+      studentController.getIndividualStudentDetails(
+          studentId: widget.student.id ?? 0);
     });
     super.initState();
   }
@@ -97,175 +99,187 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
       length: 5, // Number of tabs
       child: Scaffold(
         body: Consumer<StudentController>(builder: (context, value, child) {
-          return NestedScrollView(
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
-              return [
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Column(
-                      children: [
-                        SizedBox(height: Responsive.height * 5),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child: const CircleAvatar(
-                                radius: 16,
-                                backgroundColor: Color(0xFFD9D9D9),
-                                child: Icon(
-                                  Icons.arrow_back_ios_new,
-                                  size: 18,
-                                ),
+          final studentDetail = value.individualStudent;
+          return value.isloading
+              ? Loading()
+              : NestedScrollView(
+                  headerSliverBuilder:
+                      (BuildContext context, bool innerBoxIsScrolled) {
+                    return [
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Column(
+                            children: [
+                              SizedBox(height: Responsive.height * 5),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const CircleAvatar(
+                                      radius: 16,
+                                      backgroundColor: Color(0xFFD9D9D9),
+                                      child: Icon(
+                                        Icons.arrow_back_ios_new,
+                                        size: 18,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    textAlign: TextAlign.center,
+                                    "Student",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge!
+                                        .copyWith(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 18,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                  ),
+                                  widget.userType == UserType.parent
+                                      ? Consumer<NotesController>(builder:
+                                          (context, noteController, child) {
+                                          return GestureDetector(
+                                            onTap: () {
+                                              context.pushNamed(
+                                                AppRouteConst
+                                                    .parentNoteRouteName,
+                                                extra: studentDetail.id,
+                                              );
+                                            },
+                                            child: Stack(
+                                              alignment: Alignment.topRight,
+                                              children: [
+                                                Image.asset(
+                                                  "assets/icons/add_note.png",
+                                                  height: 32,
+                                                ),
+                                                if (noteController
+                                                        .unviewedNotesCount >
+                                                    0) // Show badge only if count > 0
+                                                  Positioned(
+                                                    right: 0,
+                                                    top: 0,
+                                                    child: Container(
+                                                      padding:
+                                                          EdgeInsets.all(4),
+                                                      decoration: BoxDecoration(
+                                                        color: Colors
+                                                            .red, // Badge background color
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                      constraints:
+                                                          BoxConstraints(
+                                                        minWidth: 16,
+                                                        minHeight: 16,
+                                                      ),
+                                                      child: Text(
+                                                        '${noteController.unviewedNotesCount}',
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 10,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    ),
+                                                  ),
+                                              ],
+                                            ),
+                                          );
+                                        })
+                                      : IconButton(
+                                          onPressed: () {
+                                            context.pushNamed(
+                                                AppRouteConst
+                                                    .UpdateStudentRountName,
+                                                extra: studentDetail);
+                                          },
+                                          icon: Icon(Icons.edit)),
+                                ],
+                              ),
+                              SizedBox(
+                                height: Responsive.height * 3,
+                              ),
+                              ProfileContainer(
+                                imagePath:
+                                    "${baseUrl}${Urls.studentPhotos}${studentDetail.studentPhoto}",
+                                name: capitalizeFirstLetter(
+                                    studentDetail.fullName ?? ""),
+                                description:
+                                    "${studentDetail.studentClass} ${studentDetail.section}",
+                                present: "25",
+                                absent: "2",
+                                late: "3",
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SliverOverlapAbsorber(
+                          handle:
+                              NestedScrollView.sliverOverlapAbsorberHandleFor(
+                                  context),
+                          sliver: SliverAppBar(
+                            pinned: true,
+                            backgroundColor: Colors.grey.shade200,
+                            bottom: PreferredSize(
+                              preferredSize: const Size.fromHeight(0),
+                              child: TabBar(
+                                tabAlignment: TabAlignment.start,
+                                isScrollable: true,
+                                labelColor: Colors.black,
+                                unselectedLabelColor: Colors.grey,
+                                indicatorColor: Colors.black,
+                                labelPadding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0),
+                                tabs: const [
+                                  Tab(text: "Dashboard"),
+                                  Tab(text: "Achievements"),
+                                  Tab(text: "Exam"),
+                                  Tab(text: "Homework"),
+                                  Tab(text: "Leave Request"),
+                                ],
                               ),
                             ),
-                            Text(
-                              textAlign: TextAlign.center,
-                              "Student",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge!
-                                  .copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 18,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                            ),
-                            widget.userType == UserType.parent
-                                ? Consumer<NotesController>(
-                                    builder: (context, noteController, child) {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        context.pushNamed(
-                                          AppRouteConst.parentNoteRouteName,
-                                          extra: widget.student.id,
-                                        );
-                                      },
-                                      child: Stack(
-                                        alignment: Alignment.topRight,
-                                        children: [
-                                          Image.asset(
-                                            "assets/icons/add_note.png",
-                                            height: 32,
-                                          ),
-                                          if (noteController
-                                                  .unviewedNotesCount >
-                                              0) // Show badge only if count > 0
-                                            Positioned(
-                                              right: 0,
-                                              top: 0,
-                                              child: Container(
-                                                padding: EdgeInsets.all(4),
-                                                decoration: BoxDecoration(
-                                                  color: Colors
-                                                      .red, // Badge background color
-                                                  shape: BoxShape.circle,
-                                                ),
-                                                constraints: BoxConstraints(
-                                                  minWidth: 16,
-                                                  minHeight: 16,
-                                                ),
-                                                child: Text(
-                                                  '${noteController.unviewedNotesCount}',
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 10,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ),
-                                            ),
-                                        ],
-                                      ),
-                                    );
-                                  })
-                                : IconButton(
-                                    onPressed: () {
-                                      context.pushNamed(
-                                          AppRouteConst.UpdateStudentRountName,
-                                          extra: widget.student);
-                                    },
-                                    icon: Icon(Icons.edit)),
-                          ],
+                          )),
+                    ];
+                  },
+                  body: Padding(
+                    padding: const EdgeInsets.only(top: 40),
+                    child: TabBarView(
+                      children: [
+                        _buildDashboardContent(),
+                        AchievementsList(
+                          userType: widget.userType,
+                          onPressed: () {
+                            context.pushNamed(
+                                AppRouteConst.AddAchivementsRouteName,
+                                extra: studentDetail!.id);
+                          },
                         ),
-                        SizedBox(
-                          height: Responsive.height * 3,
-                        ),
-                        ProfileContainer(
-                          imagePath:
-                              "${baseUrl}${Urls.studentPhotos}${widget.student.studentPhoto}",
-                          name: capitalizeFirstLetter(
-                              widget.student.fullName ?? ""),
-                          description:
-                              "${widget.student.studentClass} ${widget.student.section}",
-                          present: "25",
-                          absent: "2",
-                          late: "3",
-                        ),
+                        _buildExamContent(),
+                        HomeworkList(),
+                        StudentLeaveRequestScreen(
+                          studentId: studentDetail!.id ?? 0,
+                          userType: widget.userType,
+                          onPressed: () {
+                            context.pushNamed(
+                                AppRouteConst.AddStudentLeaveRequestRouteName,
+                                extra: studentDetail.id ?? 0);
+                          },
+                        )
                       ],
                     ),
                   ),
-                ),
-                SliverOverlapAbsorber(
-                    handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
-                        context),
-                    sliver: SliverAppBar(
-                      pinned: true,
-                      backgroundColor: Colors.grey.shade200,
-                      bottom: PreferredSize(
-                        preferredSize: const Size.fromHeight(0),
-                        child: TabBar(
-                          tabAlignment: TabAlignment.start,
-                          isScrollable: true,
-                          labelColor: Colors.black,
-                          unselectedLabelColor: Colors.grey,
-                          indicatorColor: Colors.black,
-                          labelPadding:
-                              const EdgeInsets.symmetric(horizontal: 16.0),
-                          tabs: const [
-                            Tab(text: "Dashboard"),
-                            Tab(text: "Achievements"),
-                            Tab(text: "Exam"),
-                            Tab(text: "Homework"),
-                            Tab(text: "Leave Request"),
-                          ],
-                        ),
-                      ),
-                    )),
-              ];
-            },
-            body: Padding(
-              padding: const EdgeInsets.only(top: 40),
-              child: TabBarView(
-                children: [
-                  _buildDashboardContent(),
-                  AchievementsList(
-                    userType: widget.userType,
-                    onPressed: () {
-                      context.pushNamed(AppRouteConst.AddAchivementsRouteName,
-                          extra: widget.student.id);
-                    },
-                  ),
-                  _buildExamContent(),
-                  HomeworkList(),
-                  StudentLeaveRequestScreen(
-                    studentId: widget.student.id ?? 0,
-                    userType: widget.userType,
-                    onPressed: () {
-                      context.pushNamed(
-                          AppRouteConst.AddStudentLeaveRequestRouteName,
-                          extra: widget.student.id);
-                    },
-                  )
-                ],
-              ),
-            ),
-          );
+                );
         }),
       ),
     );

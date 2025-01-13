@@ -14,18 +14,20 @@ import 'package:school_app/features/admin/leave_request/widgets/leaveRequest_car
 
 class TeacherLeaveRequestDetailsPage extends StatefulWidget {
   final TeacherLeaveRequest teacherleaverequests;
+  final String userType;
 
   const TeacherLeaveRequestDetailsPage({
     super.key,
     required this.teacherleaverequests,
+    required this.userType,
   });
 
   @override
   State<TeacherLeaveRequestDetailsPage> createState() =>
-      _StudentLeaveRequestDetailsPageState();
+      _TeacherLeaveRequestDetailsPageState();
 }
 
-class _StudentLeaveRequestDetailsPageState
+class _TeacherLeaveRequestDetailsPageState
     extends State<TeacherLeaveRequestDetailsPage> {
   @override
   void initState() {
@@ -50,14 +52,14 @@ class _StudentLeaveRequestDetailsPageState
               ),
               CustomAppbar(
                 title:
-                    '  Leave request for ${DateFormatter.formatDateString(widget.teacherleaverequests.startDate.toString())}',
+                    'Leave request for ${DateFormatter.formatDateString(widget.teacherleaverequests.startDate.toString())}',
                 isProfileIcon: false,
                 onTap: () {
                   context.pop();
                 },
               ),
               SizedBox(
-                height: Responsive.height * .09,
+                height: Responsive.height * 0.09,
               ),
               ViewContainer(
                 bcolor:
@@ -98,7 +100,7 @@ class _StudentLeaveRequestDetailsPageState
                 height: Responsive.height * 1,
               ),
               Text(
-                'Start Date:${DateFormatter.formatDateString(widget.teacherleaverequests.startDate.toString())}',
+                'Start Date: ${DateFormatter.formatDateString(widget.teacherleaverequests.startDate.toString())}',
                 style: textThemeData.bodySmall!.copyWith(
                   fontSize: 14,
                 ),
@@ -115,80 +117,84 @@ class _StudentLeaveRequestDetailsPageState
               SizedBox(
                 height: Responsive.height * 3,
               ),
-              SizedBox(
-                height: Responsive.height * 3,
-              ),
-              SizedBox(
-                width: double.infinity,
-                child: Consumer<TeacherLeaveRequestController>(
+              if (widget.userType == 'admin') ...[
+                SizedBox(
+                  width: double.infinity,
+                  child: Consumer<TeacherLeaveRequestController>(
                     builder: (context, value, child) {
-                  return OutlinedButton(
-                    onPressed: () {
-                      final leaveRequestId = widget.teacherleaverequests
-                          .id; // Replace with actual ID field
-                      if (status != 'Rejected')
-                        context
-                            .read<TeacherLeaveRequestController>()
-                            .rejectLeaveRequest(context,
-                                leaveRequestId!); // This will navigate back to the previous screen
-                    },
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.black, // Text color
-                      side: BorderSide(color: Colors.black), // Black border
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(25.0), // Rounded corners
-                      ),
-                    ),
-                    child: value.isloadingTwo
-                        ? ButtonLoading()
-                        : Text(
-                            (status == 'Rejected') ? 'Rejected' : 'Reject',
-                            style:
-                                Theme.of(context).textTheme.bodySmall!.copyWith(
+                      return OutlinedButton(
+                        onPressed: () {
+                          final leaveRequestId = widget.teacherleaverequests.id;
+                          if (status != 'Rejected') {
+                            context
+                                .read<TeacherLeaveRequestController>()
+                                .rejectLeaveRequest(context, leaveRequestId!);
+                          }
+                        },
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.black,
+                          side: BorderSide(color: Colors.black),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                          ),
+                        ),
+                        child: value.isloadingTwo
+                            ? ButtonLoading()
+                            : Text(
+                                (status == 'Rejected') ? 'Rejected' : 'Reject',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall!
+                                    .copyWith(
                                       color: (status == 'Rejected')
                                           ? Colors.red
                                           : Colors.black,
                                       fontWeight: FontWeight.w500,
                                       fontSize: 16,
                                     ),
-                          ),
-                  );
-                }),
-              ),
-              SizedBox(
-                height: Responsive.height * 3,
-              ),
-
-              Consumer<TeacherLeaveRequestController>(
-                  builder: (context, value, child) {
-                return ElevatedButton(
-                  onPressed: () {
-                    final leaveRequestId = widget.teacherleaverequests.id;
-                    if (status != 'Approved')
-                      // Replace with actual ID field
-                      context
-                          .read<TeacherLeaveRequestController>()
-                          .approveLeaveRequest(context,
-                              leaveRequestId!); // Your onPressed function here
-                  },
-                  child: value.isloadingTwo 
-                      ? ButtonLoading()
-                      : Text(
-                          (status == 'Approved') ? 'Approved' : 'Approve',
+                              ),
+                      );
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: Responsive.height * 3,
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  child: Consumer<TeacherLeaveRequestController>(
+                    builder: (context, value, child) {
+                      return ElevatedButton(
+                        onPressed: () {
+                          final leaveRequestId = widget.teacherleaverequests.id;
+                          if (status != 'Approved') {
+                            context
+                                .read<TeacherLeaveRequestController>()
+                                .approveLeaveRequest(context, leaveRequestId!);
+                          }
+                        },
+                        child: value.isloadingTwo
+                            ? ButtonLoading()
+                            : Text(
+                                (status == 'Approved') ? 'Approved' : 'Approve',
+                              ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: (status == 'Approved')
+                              ? Colors.green
+                              : Colors.black,
                         ),
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          (status == 'Approved') ? Colors.green : Colors.black),
-                );
-              })
-// CustomButton(
-//     text: 'Approve',
-//     onPressed: () {
-//        final leaveRequestId = widget.teacherleaverequests.id; // Replace with actual ID field
-//     context.read<TeacherLeaveRequestController>().approveLeaveRequest(context, leaveRequestId!);// Your onPressed function here
-//     },
-//   ),
+                      );
+                    },
+                  ),
+                ),
+              ] else ...[
+                Center(
+                  child: Text(
+                    'Current Status: $status',
+                    style: textThemeData.bodyMedium,
+                  ),
+                ),
+              ],
             ],
           ),
         ),

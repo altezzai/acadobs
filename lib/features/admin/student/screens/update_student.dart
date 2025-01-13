@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/controller/file_picker_provider.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
@@ -23,6 +24,7 @@ class EditStudentScreen extends StatefulWidget {
 
 class _EditStudentScreenState extends State<EditStudentScreen> {
   late FilePickerProvider filePickerProvider;
+  late StudentController studentController;
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _classController = TextEditingController();
@@ -54,6 +56,9 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       filePickerProvider.clearFile('student photo');
       filePickerProvider.clearFile('parent photo');
+      studentController = context.read<StudentController>();
+      studentController.getIndividualStudentDetails(
+          studentId: widget.student.id ?? 0);
     });
   }
 
@@ -165,33 +170,48 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
                   },
                 ),
                 SizedBox(height: Responsive.height * 2),
-                CommonButton(
-                  onPressed: () {
-                    context.read<StudentController>().updateStudent(
-                          context,
-                          studentId: widget.student.id ?? 0,
-                          fullName: _nameController.text.trim(),
-                          studentClass: _classController.text.trim(),
-                          section: _sectionController.text.trim(),
-                          contactNumber: _phoneController.text.trim(),
-                          email: _emailController.text.trim(),
-                          // parentEmail: _parentEmailController.text.trim(),
-                          fatherContactNumber:
-                              _fatherContactController.text.trim(),
-                          motherContactNumber:
-                              _motherContactController.text.trim(),
-                          studentPhoto: filePickerProvider
-                                  .getFile('student photo')
-                                  ?.path ??
-                              '',
-                          fatherMotherPhoto: filePickerProvider
-                                  .getFile('parent photo')
-                                  ?.path ??
-                              '',
-                        );
+                Consumer<StudentController>(
+                  builder: (context, loadingController, child) {
+                    return CommonButton(
+                      onPressed: () {
+                        // Retrieve selected files
+                        final selectedStudentPhoto = context
+                            .read<FilePickerProvider>()
+                            .getFile('student photo');
+
+                        final parentPhoto = context
+                            .read<FilePickerProvider>()
+                            .getFile('parent photo');
+
+                        // Extract paths, handling null values
+                        final studentPhotoPath = selectedStudentPhoto?.path;
+                        final parentPhotoPath = parentPhoto?.path;
+
+                        // Call updateStudent with conditional handling for photo paths
+                        context.read<StudentController>().updateStudent(
+                              context,
+                              studentId: widget.student.id ?? 0,
+                              fullName: _nameController.text.trim(),
+                              studentClass: _classController.text.trim(),
+                              section: _sectionController.text.trim(),
+                              contactNumber: _phoneController.text.trim(),
+                              email: _emailController.text.trim(),
+                              fatherContactNumber:
+                                  _fatherContactController.text.trim(),
+                              motherContactNumber:
+                                  _motherContactController.text.trim(),
+                              studentPhoto: studentPhotoPath ??
+                                  "", // Pass null if not selected
+                              fatherMotherPhoto: parentPhotoPath ??
+                                  "", // Pass null if not selected
+                            );
+                      },
+                      widget: loadingController.isLoadingTwo
+                          ? ButtonLoading()
+                          : Text('Update'),
+                    );
                   },
-                  widget: Text('Update'),
-                ),
+                )
               ],
             ),
           ),

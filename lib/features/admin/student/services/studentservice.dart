@@ -150,7 +150,6 @@ class StudentServices {
     required String section,
     required String contactNumber,
     required String email,
-    // required String parentEmail,
     required String fatherContactNumber,
     required String motherContactNumber,
     required String studentPhotoPath,
@@ -167,13 +166,11 @@ class StudentServices {
       "father_contact_number": fatherContactNumber,
       "mother_contact_number": motherContactNumber,
       "_method": "put",
-      // Conditionally include student_photo
       if (studentPhotoPath.isNotEmpty)
         "student_photo": await MultipartFile.fromFile(
           studentPhotoPath,
           filename: studentPhotoPath.split('/').last,
         ),
-      // Conditionally include father_mother_photo
       if (fatherMotherPhoto.isNotEmpty)
         "father_mother_photo": await MultipartFile.fromFile(
           fatherMotherPhoto,
@@ -191,5 +188,12 @@ class StudentServices {
     } catch (e) {
       throw Exception('Failed to edit student: $e');
     }
+  }
+
+  // *****Check Parent Email Usage************
+  Future<Response> checkParentEmailUsage({required String email}) async {
+    final response =
+        await ApiServices.get("/checkParentEmailUsage?parent_email=$email");
+    return response;
   }
 }

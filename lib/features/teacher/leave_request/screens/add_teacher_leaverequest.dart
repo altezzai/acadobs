@@ -24,7 +24,7 @@ class AddTeacherLeaveRequest extends StatefulWidget {
 }
 
 class _AddTeacherLeaveRequestState extends State<AddTeacherLeaveRequest> {
-    final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   String? selectedLeaveType;
   final teacherId = SecureStorageService.getUserId();
   // textediting controllers
@@ -91,7 +91,8 @@ class _AddTeacherLeaveRequestState extends State<AddTeacherLeaveRequest> {
                   label: 'Leave Type',
                   icon: Icons.person_2_outlined,
                   items: ['Sick Leave', 'Casual Leave', 'Other'],
-                   validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Leave Type"),
+                  validator: (value) => FormValidator.validateNotEmpty(value,
+                      fieldName: "Leave Type"),
                 ),
                 SizedBox(
                   height: Responsive.height * 1,
@@ -102,7 +103,12 @@ class _AddTeacherLeaveRequestState extends State<AddTeacherLeaveRequest> {
                   onDateSelected: (selectedDate) {
                     print("Start Date selected: $selectedDate");
                   },
-                   validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Start Date"),
+                  firstDate: DateTime.now(), // Earliest date is today
+                  lastDate:
+                      DateTime(2100), // Extend to a reasonable future date
+                  initialDate: DateTime.now(),
+                  validator: (value) => FormValidator.validateNotEmpty(value,
+                      fieldName: "Start Date"),
                 ),
                 SizedBox(
                   height: Responsive.height * 1,
@@ -113,7 +119,12 @@ class _AddTeacherLeaveRequestState extends State<AddTeacherLeaveRequest> {
                   onDateSelected: (selectedDate) {
                     print("End Date selected: $selectedDate");
                   },
-                   validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "End Date"),
+                  firstDate: DateTime.now(), // Earliest date is today
+                  lastDate:
+                      DateTime(2100), // Extend to a reasonable future date
+                  initialDate: DateTime.now(),
+                  validator: (value) => FormValidator.validateNotEmpty(value,
+                      fieldName: "End Date"),
                 ),
                 SizedBox(
                   height: Responsive.height * 1,
@@ -122,7 +133,8 @@ class _AddTeacherLeaveRequestState extends State<AddTeacherLeaveRequest> {
                   controller: _reasonForLeaveController, //Add controller
                   hintText: 'Reason For Leave',
                   iconData: Icon(Icons.question_mark_rounded),
-                   validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Reason "),
+                  validator: (value) => FormValidator.validateNotEmpty(value,
+                      fieldName: "Reason "),
                 ),
                 SizedBox(
                   height: Responsive.height * 1,
@@ -131,35 +143,39 @@ class _AddTeacherLeaveRequestState extends State<AddTeacherLeaveRequest> {
                     builder: (context, value, child) {
                   return CommonButton(
                     onPressed: () {
-                       if (_formKey.currentState?.validate() ?? false) {
-                          try {
-                      final selectedLeaveType = context
-                          .read<DropdownProvider>()
-                          .getSelectedItem('leaveType');
-                      // final int? teacherId = int.tryParse(_teacherIdController.text);
-            
-                      context
-                          .read<TeacherLeaveRequestController>()
-                          .addNewTeacherLeaveRequest(
-                            context,
-                            // teacherId: _teacherIdController.text,
-                            leaveType: selectedLeaveType,
-                            startDate: _startDateController.text,
-                            endDate: _endDateController.text,
-                            reasonForLeave: _reasonForLeaveController.text,
-                          );
-                    } catch (e) {
+                      if (_formKey.currentState?.validate() ?? false) {
+                        try {
+                          final selectedLeaveType = context
+                              .read<DropdownProvider>()
+                              .getSelectedItem('leaveType');
+                          // final int? teacherId = int.tryParse(_teacherIdController.text);
+
+                          context
+                              .read<TeacherLeaveRequestController>()
+                              .addNewTeacherLeaveRequest(
+                                context,
+                                // teacherId: _teacherIdController.text,
+                                leaveType: selectedLeaveType,
+                                startDate: _startDateController.text,
+                                endDate: _endDateController.text,
+                                reasonForLeave: _reasonForLeaveController.text,
+                              );
+                        } catch (e) {
                           // Handle any errors and show an error message
                           CustomSnackbar.show(context,
-            message: "Failed to add leave request.Please try again", type: SnackbarType.failure);
+                              message:
+                                  "Failed to add leave request.Please try again",
+                              type: SnackbarType.failure);
                         }
                       } else {
                         // Highlight missing fields if the form is invalid
-                       CustomSnackbar.show(context,
-            message: "Please complete all required fields", type: SnackbarType.warning);
+                        CustomSnackbar.show(context,
+                            message: "Please complete all required fields",
+                            type: SnackbarType.warning);
                       }
                     },
-                    widget: value.isloadingTwo ? ButtonLoading() : Text('Submit'),
+                    widget:
+                        value.isloadingTwo ? ButtonLoading() : Text('Submit'),
                   );
                 }),
                 // CustomButton(
@@ -169,7 +185,7 @@ class _AddTeacherLeaveRequestState extends State<AddTeacherLeaveRequest> {
                 //           .read<DropdownProvider>()
                 //           .getSelectedItem('leaveType');
                 //       // final int? teacherId = int.tryParse(_teacherIdController.text);
-            
+
                 //       context
                 //           .read<TeacherLeaveRequestController>()
                 //           .addNewTeacherLeaveRequest(

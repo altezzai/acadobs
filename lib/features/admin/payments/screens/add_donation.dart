@@ -1,11 +1,12 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/controller/student_id_controller.dart';
+
 import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+
 import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
@@ -13,7 +14,6 @@ import 'package:school_app/base/utils/form_validators.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/controller/file_picker_provider.dart';
-import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
@@ -31,7 +31,7 @@ class AddDonationPage extends StatefulWidget {
 }
 
 class _AddDonationPageState extends State<AddDonationPage> {
-   final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   String? selectedClass;
   // final _formKey = GlobalKey<FormState>();
   // String? selectedDivision;
@@ -74,7 +74,7 @@ class _AddDonationPageState extends State<AddDonationPage> {
           padding: const EdgeInsets.all(
               16.0), // Add padding around the entire content
           child: Form(
-            key: _formKey ,
+            key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -82,11 +82,12 @@ class _AddDonationPageState extends State<AddDonationPage> {
                   title: "Add Donation",
                   isProfileIcon: false,
                   onTap: () {
-                    context.pushNamed(
-                      AppRouteConst.bottomNavRouteName,
-                      extra:
-                          UserType.admin, // Pass the userType to the next screen
-                    );
+                    Navigator.pop(context);
+                    // context.pushNamed(
+                    //   AppRouteConst.bottomNavRouteName,
+                    //   extra:
+                    //       UserType.admin, // Pass the userType to the next screen
+                    // );
                   },
                 ),
                 Row(
@@ -212,7 +213,11 @@ return TextFormField(
                       hintText: 'Title',
                       controller: _purposeController,
                       iconData: const Icon(Icons.title),
-                      validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Title"),
+
+                      validator: (value) => FormValidator.validateNotEmpty(
+                          value,
+                          fieldName: "Title"),
+
                     ),
                     const SizedBox(height: 16),
                     CustomTextfield(
@@ -220,18 +225,23 @@ return TextFormField(
                       controller: _amountController,
                       iconData: const Icon(Icons.currency_rupee),
                       keyBoardtype: TextInputType.number,
-                       validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Amount"),
+                      validator: (value) => FormValidator.validateNotEmpty(
+                          value,
+                          fieldName: "Amount"),
                     ),
                     const SizedBox(height: 16),
                     CustomDatePicker(
-                        dateController: _dateController,
-                        onDateSelected: (selectedDate) {
-                          print(
-                            "End Date selected: $selectedDate",
-                          );
-                        },
-                        label: 'Donation Date',
-                         validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Donation Date"),),
+                      dateController: _dateController,
+                      onDateSelected: (selectedDate) {
+                        print(
+                          "End Date selected: $selectedDate",
+                        );
+                      },
+                      label: 'Donation Date',
+                      validator: (value) => FormValidator.validateNotEmpty(
+                          value,
+                          fieldName: "Donation Date"),
+                    ),
                     const SizedBox(height: 16),
                     CustomDropdown(
                       dropdownKey: 'donationType',
@@ -251,19 +261,26 @@ return TextFormField(
                         'UPI'
                       ],
                       icon: Icons.currency_rupee,
-                       validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Payment Method"),
+                      validator: (value) => FormValidator.validateNotEmpty(
+                          value,
+                          fieldName: "Payment Method"),
                     ),
                     const SizedBox(height: 16),
                     CustomTextfield(
                       hintText: 'Transaction Id',
                       controller: _transactionController,
                       iconData: const Icon(Icons.currency_rupee),
-                       validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Transaction Id"),
+                      validator: (value) => FormValidator.validateNotEmpty(
+                          value,
+                          fieldName: "Transaction Id"),
                     ),
                   ],
                 ),
                 const SizedBox(height: 16),
-                CustomFilePicker(label: "Add Receipt", fieldName: 'donation receipt',),
+                CustomFilePicker(
+                  label: "Add Receipt",
+                  fieldName: 'donation receipt',
+                ),
                 Padding(
                     padding: const EdgeInsets.only(top: 45),
                     child: Consumer<PaymentController>(
@@ -271,41 +288,45 @@ return TextFormField(
                       return CommonButton(
                         onPressed: () {
                           if (_formKey.currentState?.validate() ?? false) {
-                          try {
-                          final donationType = context
-                              .read<DropdownProvider>()
-                              .getSelectedItem('donationType');
-                          final paymentMethod = context
-                              .read<DropdownProvider>()
-                              .getSelectedItem('paymentMethod');
-                          final studentId = context
-                              .read<StudentIdController>()
-                              .getSelectedStudentId();
-            
-                          log(">>>>>>>>>>>>${studentId}");
-                          context.read<PaymentController>().addDonation(
-                                context,
-                                userId: studentId ?? 0,
-                                amount_donated: _amountController.text,
-                                donation_date: _dateController.text,
-                                purpose: _purposeController.text,
-                                donation_type: donationType,
-                                payment_method: paymentMethod,
-                                transaction_id: _transactionController.text,
-                              );
-                        } catch (e) {
-                          // Handle any errors and show an error message
-                          CustomSnackbar.show(context,
-            message: "Failed to add notice.Please try again", type: SnackbarType.failure);
-                        }
-                      } else {
-                        // Highlight missing fields if the form is invalid
-                       CustomSnackbar.show(context,
-            message: "Please complete all required fields", type: SnackbarType.warning);
-                      }
-                    },
-                        widget:
-                            value.isloadingTwo ? ButtonLoading() : Text('Submit'),
+                            try {
+                              final donationType = context
+                                  .read<DropdownProvider>()
+                                  .getSelectedItem('donationType');
+                              final paymentMethod = context
+                                  .read<DropdownProvider>()
+                                  .getSelectedItem('paymentMethod');
+                              final studentId = context
+                                  .read<StudentIdController>()
+                                  .getSelectedStudentId();
+
+                              log(">>>>>>>>>>>>${studentId}");
+                              context.read<PaymentController>().addDonation(
+                                    context,
+                                    userId: studentId ?? 0,
+                                    amount_donated: _amountController.text,
+                                    donation_date: _dateController.text,
+                                    purpose: _purposeController.text,
+                                    donation_type: donationType,
+                                    payment_method: paymentMethod,
+                                    transaction_id: _transactionController.text,
+                                  );
+                            } catch (e) {
+                              // Handle any errors and show an error message
+                              CustomSnackbar.show(context,
+                                  message:
+                                      "Failed to add notice.Please try again",
+                                  type: SnackbarType.failure);
+                            }
+                          } else {
+                            // Highlight missing fields if the form is invalid
+                            CustomSnackbar.show(context,
+                                message: "Please complete all required fields",
+                                type: SnackbarType.warning);
+                          }
+                        },
+                        widget: value.isloadingTwo
+                            ? ButtonLoading()
+                            : Text('Submit'),
                       );
                     })
                     // CustomButton(
@@ -320,7 +341,7 @@ return TextFormField(
                     //     final studentId = context
                     //         .read<StudentIdController>()
                     //         .getSelectedStudentId();
-            
+
                     //     log(">>>>>>>>>>>>${studentId}");
                     //     context.read<PaymentController>().addDonation(
                     //           context,

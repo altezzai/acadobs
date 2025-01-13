@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:school_app/base/services/secure_storage_services.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/features/admin/student/model/day_attendance_status.dart';
+import 'package:school_app/features/admin/student/model/parent_email_check.dart';
 import 'package:school_app/features/admin/student/model/student_data.dart';
 import 'package:school_app/features/admin/student/model/student_homework.dart';
 import 'package:school_app/features/admin/student/services/studentservice.dart';
@@ -235,6 +236,7 @@ class StudentController extends ChangeNotifier {
 
   //update student details
 
+
   Future<void> updateStudent(
     BuildContext context, {
     required int studentId,
@@ -249,7 +251,8 @@ class StudentController extends ChangeNotifier {
     required String studentPhoto,
     required String fatherMotherPhoto,
   }) async {
-    _isloading = true;
+
+    _isLoadingTwo = true;
 
     try {
       final response = await StudentServices().updateStudent(
@@ -282,7 +285,7 @@ class StudentController extends ChangeNotifier {
     } catch (e) {
       log(e.toString());
     } finally {
-      _isloading = false;
+      _isLoadingTwo = false;
       notifyListeners();
     }
   }
@@ -481,4 +484,38 @@ class StudentController extends ChangeNotifier {
     }
   }
   // ***********END OF DAILY ATTENDANCE STATUS********************//
+
+// **********Parent Email Check*************
+  ParentEmailCheck? parentEmailCheckData;
+
+  Future<void> checkParentEmailUsage({required String email}) async {
+    _isLoadingTwo = true;
+    parentEmailCheckData = null; // Clear the previous response
+    notifyListeners();
+
+    try {
+      final response =
+          await StudentServices().checkParentEmailUsage(email: email);
+
+      if (response.statusCode == 200) {
+        // Directly parse the response data
+        parentEmailCheckData = ParentEmailCheck.fromJson(response.data);
+
+        log("Parent Email Check Data: ${parentEmailCheckData?.status}");
+      } else {
+        log("Error: ${response.statusCode} - ${response.data}");
+      }
+    } catch (e) {
+      log("Error fetching parent email data: $e");
+    } finally {
+      _isLoadingTwo = false;
+      notifyListeners();
+    }
+  }
+
+  void resetParentEmailCheckData() {
+  parentEmailCheckData = null;
+  notifyListeners();
+}
+// **********END OF PARENT EMAIL CHECK*************
 }
