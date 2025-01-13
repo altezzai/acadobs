@@ -23,6 +23,7 @@ import 'package:school_app/features/admin/payments/screens/add_donation.dart';
 import 'package:school_app/features/admin/payments/screens/add_payment.dart';
 import 'package:school_app/features/admin/payments/screens/donation_view.dart';
 import 'package:school_app/features/admin/payments/screens/payment_view.dart';
+import 'package:school_app/features/admin/payments/screens/single_student_selection_page.dart';
 import 'package:school_app/features/admin/reports/screens/payment.dart';
 import 'package:school_app/features/admin/reports/screens/student_report.dart';
 import 'package:school_app/features/admin/reports/screens/teacher_report.dart';
@@ -628,6 +629,18 @@ class Approuter {
               state.extra as ClassAndDivision;
           return MaterialPage(
               child: StudentSelectionScreen(
+            classAndDivision: classAndDivision,
+          ));
+        },
+      ),
+       GoRoute(
+        name: AppRouteConst.singlestudentselectionRouteName,
+        path: '/singlestudentSelection',
+        pageBuilder: (context, state) {
+          final ClassAndDivision classAndDivision =
+              state.extra as ClassAndDivision;
+          return MaterialPage(
+              child: SingleStudentSelectionScreen(
             classAndDivision: classAndDivision,
           ));
         },
