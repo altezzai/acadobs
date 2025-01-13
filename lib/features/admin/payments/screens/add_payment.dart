@@ -141,7 +141,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                       .getSelectedItem('division');
                   final classAndDivision = ClassAndDivision(
                       className: classGrade, section: division);
-                  context.pushNamed(AppRouteConst.singleStudentSelectionRouteName,
+                  context.pushNamed(AppRouteConst.singlestudentselectionRouteName,
                       extra: classAndDivision);
                 },
                 child: Consumer<StudentIdController>(

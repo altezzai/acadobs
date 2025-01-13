@@ -146,7 +146,7 @@ class _AddDonationPageState extends State<AddDonationPage> {
                       .getSelectedItem('division');
                   final classAndDivision = ClassAndDivision(
                       className: classGrade, section: division);
-                  context.pushNamed(AppRouteConst.singleStudentSelectionRouteName,
+                  context.pushNamed(AppRouteConst.singlestudentselectionRouteName,
                       extra: classAndDivision);
                 },
                 child: Consumer<StudentIdController>(
