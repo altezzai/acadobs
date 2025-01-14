@@ -30,7 +30,16 @@ class NoticeDetailPage extends StatelessWidget {
 
         final http.Response response = await http.get(Uri.parse(fileUrl));
         if (response.statusCode == 200) {
-          Directory? downloadsDirectory = await getExternalStorageDirectory();
+          Directory? downloadsDirectory ;
+
+           if (Platform.isAndroid || Platform.isIOS) {
+          downloadsDirectory = await getExternalStorageDirectory();
+        } else if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+          downloadsDirectory = await getDownloadsDirectory();
+        } else {
+          downloadsDirectory = await getTemporaryDirectory();
+        }
+
           String filePath = '${downloadsDirectory!.path}/$fileName';
           File file = File(filePath);
 
