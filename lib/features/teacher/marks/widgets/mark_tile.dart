@@ -30,8 +30,7 @@ class _MarkTileState extends State<MarkTile> {
   @override
   void initState() {
     super.initState();
-    attendanceStatus =
-        widget.attendanceStatus ?? 'Present'; // Default to "Present" if null
+    attendanceStatus = widget.attendanceStatus; // Default to "Present" if null
   }
 
   @override
@@ -84,12 +83,12 @@ class _MarkTileState extends State<MarkTile> {
             child: _markField(controller: widget.markController, hintText: "0"),
           ),
 
-          // Editable Grade Field
-          SizedBox(
-            width: 60,
-            child:
-                _markField(controller: widget.gradeController, hintText: "A"),
-          ),
+          // // Editable Grade Field
+          // SizedBox(
+          //   width: 60,
+          //   child:
+          //       _markField(controller: widget.gradeController, hintText: "A"),
+          // ),
 
           // Dropdown for Attendance Status
           SizedBox(
