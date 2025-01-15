@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 //import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
@@ -19,7 +20,6 @@ import 'package:school_app/features/admin/student/screens/achievements_list.dart
 import 'package:school_app/features/admin/student/screens/homework_list.dart';
 import 'package:school_app/features/admin/student/widgets/daily_attendance_container.dart';
 import 'package:school_app/features/admin/student/widgets/daily_attendance_shimmer.dart';
-import 'package:school_app/features/admin/student/widgets/date_group_function.dart';
 import 'package:school_app/features/parent/leave_request/screens/student_leaveRequest.dart';
 import 'package:school_app/features/teacher/parent/controller/notes_controller.dart';
 // import 'package:school_app/features/teacher/homework/widgets/work_container.dart';
@@ -311,21 +311,17 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
     return Consumer<ExamController>(
       builder: (context, value, child) {
         if (value.isloading) {
-          return const Center(
-              child: Loading(
-            color: Colors.grey,
-          ));
+          return const Center(child: Loading(color: Colors.grey));
         }
 
+        // Group exams by date using the provided groupItemsByDate function
         final groupedExams = groupItemsByDate(
           value.exam,
           (exam) => DateTime.parse(exam.date.toString()),
         );
 
         return value.exam.isEmpty
-            ? const Center(
-                child: Text("No Exams Found!"),
-              )
+            ? const Center(child: Text("No Exams Found!"))
             : ListView.builder(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
@@ -339,25 +335,26 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: Responsive.height * 2),
-                      Text(
-                        dateGroup,
-                        style: textThemeData.bodyMedium,
-                      ),
+                      Text(dateGroup, style: textThemeData.bodyMedium),
                       const SizedBox(height: 10),
-                      _buildExamCard(
-                        exams.isNotEmpty
-                            ? exams.first.classGrade ?? "N/A"
-                            : "N/A",
-                        exams.isNotEmpty ? exams.first.section ?? "N/A" : "N/A",
-                        exams.isNotEmpty ? exams.first.title ?? "N/A" : "N/A",
-                        exams.map((exam) {
-                          return {
-                            "subject": exam.subject ?? "",
-                            "mark": exam.marks?.toString() ?? "0",
-                            "total": exam.totalMarks?.toString() ?? "0",
-                          };
-                        }).toList(),
-                      ),
+                      // Create cards for each exam in the same date group
+                      ...exams.map((exam) {
+                        return _buildExamCard(
+                          exam.classGrade ?? "N/A",
+                          exam.section ?? "N/A",
+                          exam.title ?? "N/A",
+                          exam.attendanceStatus ?? "N/A",
+                          [
+                            {
+                              "subject": exam.subject ?? "",
+                              "mark": exam.marks?.toString() ?? "0",
+                              "total": exam.totalMarks?.toString() ?? "0",
+                              "attendance_status":
+                                  exam.attendanceStatus ?? "N/A",
+                            }
+                          ],
+                        );
+                      }).toList(),
                       const SizedBox(height: 10),
                     ],
                   );
@@ -367,14 +364,20 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
     );
   }
 
-  Widget _buildExamCard(String grade, String division, String examName,
-      List<Map<String, String>> subjects) {
+  Widget _buildExamCard(
+    String grade,
+    String division,
+    String examName,
+    String attendanceStatus,
+    List<Map<String, String>> subjects,
+  ) {
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Exam Header
           Container(
             padding: const EdgeInsets.all(12),
             decoration: const BoxDecoration(
@@ -400,9 +403,10 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                       Text(
                         examName,
                         style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16),
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
                       ),
                     ],
                   ),
@@ -411,6 +415,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
               ],
             ),
           ),
+          // Exam Subjects and Details
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(
@@ -437,6 +442,15 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                     Expanded(
                       flex: 1,
                       child: Text("Total",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                              color: Colors.grey[600]),
+                          textAlign: TextAlign.center),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Text("Attendance",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 12,
@@ -472,6 +486,13 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                                     fontSize: 16, fontWeight: FontWeight.bold),
                                 textAlign: TextAlign.center),
                           ),
+                          Expanded(
+                            flex: 1,
+                            child: Text(subject["attendance_status"]!,
+                                style: const TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center),
+                          ),
                         ],
                       ),
                     )),
@@ -482,5 +503,60 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
         ],
       ),
     );
+  }
+
+  Map<String, List<T>> groupItemsByDate<T>(
+    List<T> items,
+    DateTime Function(T) getDate,
+  ) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final yesterday = today.subtract(const Duration(days: 1));
+
+    Map<String, List<T>> groupedItems = {};
+    Map<String, DateTime> dateKeys = {}; // To store actual dates for sorting
+
+    for (var item in items) {
+      final itemDate =
+          DateTime(getDate(item).year, getDate(item).month, getDate(item).day);
+      String formattedDate;
+
+      if (itemDate == today) {
+        formattedDate = "Today";
+      } else if (itemDate == yesterday) {
+        formattedDate = "Yesterday";
+      } else {
+        formattedDate = DateFormat.yMMMMd().format(itemDate);
+      }
+
+      if (!groupedItems.containsKey(formattedDate)) {
+        groupedItems[formattedDate] = [];
+        dateKeys[formattedDate] = itemDate; // Save the actual date for sorting
+      }
+      groupedItems[formattedDate]!.add(item);
+    }
+
+    // Sort categories, with "Today" and "Yesterday" on top
+    List<MapEntry<String, List<T>>> sortedEntries = [];
+    if (groupedItems.containsKey("Today")) {
+      sortedEntries.add(MapEntry("Today", groupedItems["Today"]!));
+      groupedItems.remove("Today");
+    }
+    if (groupedItems.containsKey("Yesterday")) {
+      sortedEntries.add(MapEntry("Yesterday", groupedItems["Yesterday"]!));
+      groupedItems.remove("Yesterday");
+    }
+
+    // Sort remaining entries by their actual dates (descending order)
+    sortedEntries.addAll(
+      groupedItems.entries.toList()
+        ..sort((a, b) {
+          final dateA = dateKeys[a.key]!;
+          final dateB = dateKeys[b.key]!;
+          return dateB.compareTo(dateA); // Sort by date descending
+        }),
+    );
+
+    return Map.fromEntries(sortedEntries);
   }
 }
