@@ -7,25 +7,30 @@ class CustomDropdown extends StatelessWidget {
   final String label;
   final IconData icon;
   final List<String> items;
-  final onChanged;
-  final validator;
+  final Function(String)? onChanged; // Callback for value changes
+  final String? Function(String?)? validator; // Validator for the dropdown
 
-  const CustomDropdown(
-      {Key? key,
-      required this.dropdownKey, // Unique key
-      required this.label,
-      required this.icon,
-      required this.items,
-      this.onChanged, // Add onChanged callback parameter
-      this.validator})
-      : super(key: key);
+  const CustomDropdown({
+    Key? key,
+    required this.dropdownKey, // Unique key
+    required this.label,
+    required this.icon,
+    required this.items,
+    this.onChanged,
+    this.validator,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Consumer<DropdownProvider>(
       builder: (context, dropdownProvider, child) {
+        final selectedValue =
+            dropdownProvider.getSelectedItem(dropdownKey).isNotEmpty
+                ? dropdownProvider.getSelectedItem(dropdownKey)
+                : null;
+
         return DropdownButtonFormField<String>(
-          validator: validator,
+          value: selectedValue,
           decoration: InputDecoration(
             labelText: label,
             border: OutlineInputBorder(
@@ -38,9 +43,6 @@ class CustomDropdown extends StatelessWidget {
             ),
           ),
           icon: const Icon(Icons.arrow_drop_down),
-          value: dropdownProvider.getSelectedItem(dropdownKey).isNotEmpty
-              ? dropdownProvider.getSelectedItem(dropdownKey)
-              : null,
           items: items.map((String value) {
             return DropdownMenuItem<String>(
               value: value,
@@ -50,9 +52,12 @@ class CustomDropdown extends StatelessWidget {
           onChanged: (String? newValue) {
             if (newValue != null) {
               dropdownProvider.setSelectedItem(dropdownKey, newValue);
-              onChanged?.call(newValue); // Invoke the callback if provided
+              if (onChanged != null) {
+                onChanged!(newValue); // Trigger the external callback
+              }
             }
           },
+          validator: validator,
           dropdownColor: Colors.white,
           style: const TextStyle(color: Colors.black),
           menuMaxHeight: 200,
