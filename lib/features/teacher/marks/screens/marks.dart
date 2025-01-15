@@ -143,13 +143,12 @@ class ProgressReport extends StatelessWidget {
                             .read<DropdownProvider>()
                             .clearSelectedItem('subject');
                       } catch (e) {
-                        // Handle any errors and show an error message
+                        // Handle any errors
                         CustomSnackbar.show(context,
-                            message: "Failed to enter marks. Please try again",
+                            message: "Failed to upload marks. Please try again",
                             type: SnackbarType.failure);
                       }
                     } else {
-                      // Highlight missing fields if the form is invalid
                       CustomSnackbar.show(context,
                           message: "Please complete all required fields",
                           type: SnackbarType.warning);

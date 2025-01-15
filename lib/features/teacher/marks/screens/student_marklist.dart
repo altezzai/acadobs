@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/controller/student_id_controller.dart';
@@ -13,10 +12,10 @@ import 'package:school_app/features/teacher/marks/controller/marks_controller.da
 import 'package:school_app/features/teacher/marks/models/marks_upload_model.dart';
 import 'package:school_app/features/teacher/marks/widgets/mark_tile.dart';
 
-// ignore: must_be_immutable
 class StudentMarklist extends StatefulWidget {
   final MarksUploadModel marksUploadModel;
-  StudentMarklist({
+
+  const StudentMarklist({
     super.key,
     required this.marksUploadModel,
   });
@@ -26,41 +25,49 @@ class StudentMarklist extends StatefulWidget {
 }
 
 class _StudentMarklistState extends State<StudentMarklist> {
-// Maps to hold controllers for each student
   final Map<int, TextEditingController> markControllers = {};
   final Map<int, TextEditingController> gradeControllers = {};
 
-  // List to store final data
   final List<Map<String, dynamic>> studentMarksList = [];
 
   late StudentIdController studentIdController;
+
   @override
   void initState() {
     super.initState();
     studentIdController = context.read<StudentIdController>();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       studentIdController.getStudentsFromClassAndDivision(
-          className: widget.marksUploadModel.classGrade ?? "",
-          section: widget.marksUploadModel.section ?? "");
+        className: widget.marksUploadModel.classGrade ?? "",
+        section: widget.marksUploadModel.section ?? "",
+      );
     });
   }
 
-  void collectStudentData() {
-    studentMarksList.clear(); // Clear previous data
+  // Collects all the student data with marks and attendance
+  void collectStudentData(BuildContext context) {
+    studentMarksList.clear();
 
     for (int index = 0; index < studentIdController.students.length; index++) {
       final student = studentIdController.students[index];
-      final marks = markControllers[index]?.text ?? "";
+      final marks = int.tryParse(markControllers[index]?.text ?? "0") ?? 0;
 
-      if (marks.isEmpty) {
+      // Find the updated studentMark using the correct studentId
+      final studentMark = widget.marksUploadModel.students?.firstWhere(
+          (element) => element.studentId == student['id'],
+          orElse: () => StudentMark(
+              studentId: student['id'], attendanceStatus: 'Present'));
+
+      if (marks == 0) {
         log("Error: Marks not entered for student ${student['id']}");
         continue;
       }
 
+      // Add the student data to the list, ensuring attendance status is correct
       studentMarksList.add({
         "student_id": student['id'],
         "marks": marks,
-        "attendance_status": "Present", // Example hardcoded value
+        "attendance_status": studentMark?.attendanceStatus ?? 'Present',
       });
     }
 
@@ -112,59 +119,76 @@ class _StudentMarklistState extends State<StudentMarklist> {
                     padding: EdgeInsets.zero,
                     itemBuilder: (context, index) {
                       final student = value.students[index];
-                      // Initialize controllers
                       markControllers.putIfAbsent(
                           index, () => TextEditingController());
                       gradeControllers.putIfAbsent(
                           index, () => TextEditingController());
+
+                      // Find the attendance status from MarksUploadModel
+                      final studentMark = widget.marksUploadModel.students
+                          ?.firstWhere(
+                              (element) => element.studentId == student['id'],
+                              orElse: () => StudentMark(
+                                  studentId: student['id'],
+                                  attendanceStatus: 'Present'));
+
+                      final attendanceStatus =
+                          studentMark?.attendanceStatus ?? 'Present';
+
                       return MarkTile(
                         studentName:
                             capitalizeFirstLetter(student['full_name']),
                         studentNumber: (index + 1).toString(),
                         markController: markControllers[index]!,
                         gradeController: gradeControllers[index]!,
+                        attendanceStatus: attendanceStatus,
+                        onAttendanceChanged: (status) {
+                          // Update the attendance status directly in the list
+                          setState(() {
+                            final studentIndex = widget
+                                .marksUploadModel.students
+                                ?.indexWhere((element) =>
+                                    element.studentId == student['id']);
+                            if (studentIndex != null && studentIndex >= 0) {
+                              widget.marksUploadModel.students![studentIndex] =
+                                  StudentMark(
+                                studentId: student['id'],
+                                attendanceStatus: status ?? 'Present',
+                              );
+                            }
+                          });
+                        },
                       );
                     },
                   );
                 },
               ),
               SizedBox(height: Responsive.height * 2),
-              Consumer<MarksController>(builder: (context, value, child) {
+              Consumer<MarksController>(builder: (context, marksController, _) {
                 return CommonButton(
                   onPressed: () {
-                    collectStudentData();
-                    log(studentMarksList.toString());
-                    context.read<MarksController>().addMarks(
-                          context: context,
-                          date: widget.marksUploadModel.date ?? "",
-                          title: widget.marksUploadModel.title ?? "",
-                          className: widget.marksUploadModel.classGrade ?? "",
-                          subject: widget.marksUploadModel.subject ?? "",
-                          section: widget.marksUploadModel.section ?? "",
-                          totalMarks: widget.marksUploadModel.totalMarks ?? 0,
-                          students: studentMarksList,
-                        );
+                    collectStudentData(context); // Prepare the data
+
+                    if (studentMarksList.isNotEmpty) {
+                      marksController.addMarks(
+                        context: context,
+                        date: widget.marksUploadModel.date ?? "",
+                        title: widget.marksUploadModel.title ?? "",
+                        className: widget.marksUploadModel.classGrade ?? "",
+                        subject: widget.marksUploadModel.subject ?? "",
+                        section: widget.marksUploadModel.section ?? "",
+                        totalMarks: widget.marksUploadModel.totalMarks ?? 0,
+                        students: studentMarksList, // Pass the list here
+                      );
+                    } else {
+                      log("No valid student data to submit.");
+                    }
                   },
-                  widget: value.isloadingTwo ? ButtonLoading() : Text('Submit'),
+                  widget: marksController.isloadingTwo
+                      ? ButtonLoading()
+                      : Text('Submit'),
                 );
               }),
-              // CustomButton(
-              //   text: "Submit",
-              //   onPressed: () {
-              //     collectStudentData();
-              //     log(studentMarksList.toString());
-              //     context.read<MarksController>().addMarks(
-              //           context: context,
-              //           date: widget.marksUploadModel.date ?? "",
-              //           title: widget.marksUploadModel.title ?? "",
-              //           className: widget.marksUploadModel.classGrade ?? "",
-              //           subject: widget.marksUploadModel.subject ?? "",
-              //           section: widget.marksUploadModel.section ?? "",
-              //           totalMarks: widget.marksUploadModel.totalMarks ?? 0,
-              //           students: studentMarksList,
-              //         );
-              //   },
-              // ),
               SizedBox(height: Responsive.height * 2),
             ],
           ),
