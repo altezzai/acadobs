@@ -23,14 +23,15 @@ class NoticeDetailPage extends StatelessWidget {
 
   Future<void> _downloadFile(BuildContext context, String fileName) async {
     try {
-      if (await Permission.storage.request().isGranted) {
+      // Check and request storage permission
+      if (await _requestPermission()) {
         final String baseUrl =
             'https://schoolmanagement.altezzai.com/admin/notices/';
         final String fileUrl = '$baseUrl$fileName';
 
-        final http.Response response = await http.get(Uri.parse(fileUrl));
+        final response = await http.get(Uri.parse(fileUrl));
         if (response.statusCode == 200) {
-          Directory? downloadsDirectory = await getExternalStorageDirectory();
+          Directory? downloadsDirectory = await getDownloadsDirectory();
           String filePath = '${downloadsDirectory!.path}/$fileName';
           File file = File(filePath);
 
@@ -70,6 +71,38 @@ class NoticeDetailPage extends StatelessWidget {
     }
   }
 
+  Future<bool> _requestPermission() async {
+    if (await Permission.storage.isGranted) {
+      return true;
+    }
+
+    if (await Permission.manageExternalStorage.isGranted) {
+      return true;
+    }
+
+    if (await Permission.manageExternalStorage.request().isGranted ||
+        await Permission.storage.request().isGranted) {
+      return true;
+    }
+
+    return false;
+  }
+
+Future<Directory?> getDownloadDirectory() async {
+  if (Platform.isAndroid) {
+    Directory? directory = await getExternalStorageDirectory();
+    String path = directory!.path.split("Android")[0] + "Download";
+    directory = Directory(path);
+
+    if (!await directory.exists()) {
+      await directory.create(recursive: true);
+    }
+    return directory;
+  } else if (Platform.isIOS) {
+    return await getApplicationDocumentsDirectory();
+  }
+  return null;
+}
   // Future<void> _deleteNotice(BuildContext context) async {
   //   // Implement delete logic
   //   ScaffoldMessenger.of(context).showSnackBar(
@@ -138,7 +171,7 @@ class NoticeDetailPage extends StatelessWidget {
                   child: Image.asset('assets/class12.png'),
                 ),
               ),
-             SizedBox(height: Responsive.height*2),
+              SizedBox(height: Responsive.height * 2),
               Text(
                 notice.title ?? "",
                 style: const TextStyle(
@@ -154,43 +187,46 @@ class NoticeDetailPage extends StatelessWidget {
                   color: Colors.grey,
                 ),
               ),
-             SizedBox(height: Responsive.height*2),
-              GestureDetector(
-                onTap: () => _downloadFile(context, notice.fileUpload ?? ""),
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
-                    vertical: 12.0,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.file_copy_outlined,
+              SizedBox(height: Responsive.height * 2),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 12.0,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.file_copy_outlined,
+                          color: Colors.black,
+                        ),
+                        const SizedBox(width: 10),
+                        Text(
+                          (notice.fileUpload?.length ?? 0) > 10
+                              ? '${notice.fileUpload!.substring(notice.fileUpload!.length - 10)}' // Last 10 characters
+                              : notice.fileUpload ?? "",
+                          style: const TextStyle(
                             color: Colors.black,
+                            fontSize: 10,
                           ),
-                          const SizedBox(width: 10),
-                          Text(
-                            notice.fileUpload ?? "",
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 10,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const Icon(
+                        ),
+                      ],
+                    ),
+                    GestureDetector(
+                      onTap: () =>
+                          _downloadFile(context, notice.fileUpload ?? ""),
+                      child: const Icon(
                         Icons.download,
                         color: Colors.black,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ],
