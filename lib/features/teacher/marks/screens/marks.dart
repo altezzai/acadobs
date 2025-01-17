@@ -35,6 +35,7 @@ class ProgressReport extends StatelessWidget {
               CustomAppbar(
                 title: "Progress Report",
                 isBackButton: false,
+                isProfileIcon: false,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

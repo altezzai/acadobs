@@ -82,6 +82,7 @@ class _DutiesScreenState extends State<DutiesScreen> {
             const CustomAppbar(
               title: "Duties",
               isBackButton: false,
+              isProfileIcon: false,
             ),
             Consumer<DutyController>(
               builder: (context, value, child) {
