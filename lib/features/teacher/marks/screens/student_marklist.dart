@@ -86,7 +86,7 @@ class _StudentMarklistState extends State<StudentMarklist> {
               CustomAppbar(
                 title:
                     "${widget.marksUploadModel.classGrade}th ${widget.marksUploadModel.section}",
-                isBackButton: true,
+                isProfileIcon: false,
                 onTap: () => Navigator.pop(context),
               ),
               Row(

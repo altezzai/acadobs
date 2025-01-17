@@ -41,6 +41,7 @@ class _TeacherPaymentScreenState extends State<TeacherPaymentScreen>
             CustomAppbar(
               title: "Payments",
               isBackButton: false,
+              isProfileIcon: false,
             ),
             Row(
               children: [

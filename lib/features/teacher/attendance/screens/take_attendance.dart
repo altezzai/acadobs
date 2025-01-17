@@ -35,6 +35,7 @@ class TakeAttendance extends StatelessWidget {
             return Column(
               children: [
                 CustomAppbar(
+                  isProfileIcon: false,
                   verticalPadding: 3,
                   title:
                       "${attendanceData.selectedClass}th ${attendanceData.selectedDivision}",
