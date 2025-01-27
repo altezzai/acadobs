@@ -6,23 +6,24 @@ class MarksUploadModel {
   final String? title;
   final int? totalMarks;
   final int? recordedBy;
-  final StudentMark? students;
+  final List<StudentMark>? students; // Ensure this is a List<StudentMark>
 
-  MarksUploadModel(
-      {this.date,
-      this.classGrade,
-      this.subject,
-      this.section,
-      this.title,
-      this.totalMarks,
-      this.recordedBy,
-      this.students});
+  MarksUploadModel({
+    this.date,
+    this.classGrade,
+    this.subject,
+    this.section,
+    this.title,
+    this.totalMarks,
+    this.recordedBy,
+    this.students,
+  });
 }
 
 class StudentMark {
   final int? studentId;
   final int? mark;
-  final String? attendanceStatus;
+  String? attendanceStatus;
 
   StudentMark({
     this.studentId,

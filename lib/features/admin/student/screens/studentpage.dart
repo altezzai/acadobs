@@ -40,7 +40,6 @@ class _StudentsPageState extends State<StudentsPage> {
       // super.dispose();
 
       context.read<StudentController>().getStudentDetails();
-
     });
 
     super.initState();
@@ -58,6 +57,7 @@ class _StudentsPageState extends State<StudentsPage> {
             ),
             CustomAppbar(
               title: 'Students',
+              isProfileIcon: false,
               onTap: () {
                 widget.userType == UserType.admin
                     ? context.pushNamed(
@@ -152,71 +152,77 @@ class _StudentsPageState extends State<StudentsPage> {
                         color: Colors.grey,
                       ),
                     );
-                  }  else if (!value.isFiltered) {
-                // Show image before filtering
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'assets/empty.png',
-                        height: Responsive.height * 45,
+                  } else if (!value.isFiltered) {
+                    // Show image before filtering
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/empty.png',
+                            height: Responsive.height * 45,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            'No filter applied. Please select a class and division.',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 16),
-                      Text(
-                        'No filter applied. Please select a class and division.',
-                        style: TextStyle(fontSize: 16),
+                    );
+                  } else if (value.isFiltered &&
+                      value.filteredstudents.isEmpty) {
+                    // Show message after filtering with no results
+                    return Center(
+                      child: Text(
+                        'No Students Found',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       ),
-                    ],
-                  ),
-                );
-              }else  if (value.isFiltered&&value.filteredstudents.isEmpty) {
-                // Show message after filtering with no results
-                return Center(
-                  child: Text(
-                    'No Students Found',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                );
-              }else{
-                  return SingleChildScrollView(
-                    padding: EdgeInsets.zero, // Removes any default padding
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          padding: EdgeInsets
-                              .zero, // Removes any extra padding at the top
-                          itemCount: value.filteredstudents.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 4),
-                              child: ProfileTile(
-                                imageUrl:
-                                    "${baseUrl}${Urls.studentPhotos}${value.filteredstudents[index].studentPhoto}",
-                                name: capitalizeFirstLetter(
-                                    value.filteredstudents[index].fullName ??
-                                        ""),
-                                description:
-                                    "${value.filteredstudents[index].studentClass} ${value.filteredstudents[index].section}",
-                                onPressed: () {
-                                  context.pushNamed(
-                                      AppRouteConst
-                                          .AdminstudentdetailsRouteName,
-                                      extra: StudentDetailArguments(student: value.filteredstudents[index], userType: widget.userType));
-                                },
-                              ),
-                            );
-                          },
-                        ),
-                        SizedBox(
-                          height: Responsive.height * 7.5,
-                        ),
-                      ],
-                    ),
-                  );}
+                    );
+                  } else {
+                    return SingleChildScrollView(
+                      padding: EdgeInsets.zero, // Removes any default padding
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            padding: EdgeInsets
+                                .zero, // Removes any extra padding at the top
+                            itemCount: value.filteredstudents.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 4),
+                                child: ProfileTile(
+                                  imageUrl:
+                                      "${baseUrl}${Urls.studentPhotos}${value.filteredstudents[index].studentPhoto}",
+                                  name: capitalizeFirstLetter(
+                                      value.filteredstudents[index].fullName ??
+                                          ""),
+                                  description:
+                                      "${value.filteredstudents[index].studentClass} ${value.filteredstudents[index].section}",
+                                  onPressed: () {
+                                    context.pushNamed(
+                                        AppRouteConst
+                                            .AdminstudentdetailsRouteName,
+                                        extra: StudentDetailArguments(
+                                            student:
+                                                value.filteredstudents[index],
+                                            userType: widget.userType));
+                                  },
+                                ),
+                              );
+                            },
+                          ),
+                          SizedBox(
+                            height: Responsive.height * 7.5,
+                          ),
+                        ],
+                      ),
+                    );
+                  }
                 },
               ),
             ),

@@ -500,6 +500,7 @@ class StudentController extends ChangeNotifier {
       if (response.statusCode == 200) {
         // Directly parse the response data
         parentEmailCheckData = ParentEmailCheck.fromJson(response.data);
+        
 
         log("Parent Email Check Data: ${parentEmailCheckData?.status}");
       } else {

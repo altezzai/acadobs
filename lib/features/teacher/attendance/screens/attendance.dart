@@ -59,6 +59,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                 const CustomAppbar(
                   title: "Attendance",
                   isBackButton: false,
+                  isProfileIcon: false,
                 ),
                 Expanded(
                   child: SingleChildScrollView(
@@ -72,30 +73,33 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                             _buildDateAndPeriodRow(),
                             SizedBox(height: Responsive.height * 2),
                             Consumer<SubjectController>(
-                builder: (context, subjectProvider, child) {
-                  return InkWell(
-                    onTap: () {
-                      context.pushNamed(
-                        AppRouteConst.subjectSelectionRouteName,
-                        extra: _subjectController,
-                      );
-                    },
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        hintText: subjectProvider.selectedSubjectId != null
-                            ? subjectProvider.subjects
-                                .firstWhere((subject) =>
-                                    subject.id ==
-                                    subjectProvider.selectedSubjectId)
-                                .subject // Fetch the selected subject name
-                            : "Select Subject", // Default hint text when no subject is selected
-                      ),
-                      enabled:
-                          false, // Prevent editing as it's controlled by selection
-                    ),
-                  );
-                },
-              ),
+                              builder: (context, subjectProvider, child) {
+                                return InkWell(
+                                  onTap: () {
+                                    context.pushNamed(
+                                      AppRouteConst.subjectSelectionRouteName,
+                                      extra: _subjectController,
+                                    );
+                                  },
+                                  child: TextFormField(
+                                    decoration: InputDecoration(
+                                      hintText: subjectProvider
+                                                  .selectedSubjectId !=
+                                              null
+                                          ? subjectProvider.subjects
+                                              .firstWhere((subject) =>
+                                                  subject.id ==
+                                                  subjectProvider
+                                                      .selectedSubjectId)
+                                              .subject // Fetch the selected subject name
+                                          : "Select Subject", // Default hint text when no subject is selected
+                                    ),
+                                    enabled:
+                                        false, // Prevent editing as it's controlled by selection
+                                  ),
+                                );
+                              },
+                            ),
                           ],
                         ),
 
@@ -252,15 +256,15 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
         context.read<DropdownProvider>().getSelectedItem('division');
     String selectedDate = _dateController.text;
     final selectedSubjectId =
-                        Provider.of<SubjectController>(context, listen: false)
-                            .selectedSubjectId;
+        Provider.of<SubjectController>(context, listen: false)
+            .selectedSubjectId;
 
     final attendanceData = AttendanceData(
         selectedClass: selectedClass,
         selectedPeriod: selectedPeriod,
         selectedDivision: selectedDivision,
         selectedDate: selectedDate,
-        subject: selectedSubjectId??0,
+        subject: selectedSubjectId ?? 0,
         action: action);
 
     context.read<AttendanceController>().takeAttendance(
