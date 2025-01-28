@@ -4,8 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
-import 'package:school_app/core/shared_widgets/common_button.dart';
+
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/admin/duties/controller/duty_controller.dart';
 import 'package:school_app/features/admin/duties/model/duty_model.dart';
@@ -108,9 +109,8 @@ class _DutyViewState extends State<DutyView> {
                             //         value.assignedteachers[index].profilePhoto!)
                             //     : AssetImage('assets/student5.png')
                             //         as ImageProvider,
-                            backgroundImage: NetworkImage(
-                                value.assignedteachers[index].profilePhoto ??
-                                    'assets/student5.png'),
+                            backgroundImage: NetworkImage("${baseUrl}${Urls.teacherPhotos}${value.assignedteachers[index].profilePhoto}"
+                           ),
                           ),
                           title: Text(
                               value.assignedteachers[index].fullName ?? "",
@@ -122,7 +122,7 @@ class _DutyViewState extends State<DutyView> {
                                   "",
                               style: TextStyle(
                                   fontWeight: FontWeight.normal, fontSize: 15)),
-                          // trailing: Text(value.assignedteachers[index].classGradeHandling?? "")
+                           trailing: Text(value.assignedteachers[index].dutyStatus?? "")
                         ),
                       );
                     });
@@ -130,13 +130,7 @@ class _DutyViewState extends State<DutyView> {
               SizedBox(
                 height: Responsive.height * 3,
               ),
-              CommonButton(
-                onPressed: () {},
-                widget: Text('Mark as Completed'),
-              ),
-              SizedBox(
-                height: Responsive.height * 3,
-              ),
+             
             ],
           ),
         ),
