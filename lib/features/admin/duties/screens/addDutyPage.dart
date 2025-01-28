@@ -12,7 +12,7 @@ import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
-import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
+
 import 'package:school_app/core/shared_widgets/custom_filepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/admin/duties/controller/duty_controller.dart';
@@ -165,16 +165,16 @@ class _AddDutyPageState extends State<AddDutyPage> {
                     SizedBox(height: Responsive.height * 2),
 
                     // Status Dropdown
-                    CustomDropdown(
-                      dropdownKey: 'status',
-                      label: 'Status',
-                      items: ['Pending', 'In Progress', 'Completed'],
-                      icon: Icons.pending_actions,
-                      validator: (value) => FormValidator.validateNotEmpty(
-                          value,
-                          fieldName: "Status"),
-                    ),
-                    SizedBox(height: Responsive.height * 2),
+                    // CustomDropdown(
+                    //   dropdownKey: 'status',
+                    //   label: 'Status',
+                    //   items: ['Pending', 'In Progress', 'Completed'],
+                    //   icon: Icons.pending_actions,
+                    //   validator: (value) => FormValidator.validateNotEmpty(
+                    //       value,
+                    //       fieldName: "Status"),
+                    // ),
+                    // SizedBox(height: Responsive.height * 2),
 
                     CustomFilePicker(
                       label: 'Document',
