@@ -31,7 +31,7 @@ class AdminHomeScreen extends StatelessWidget {
                           .copyWith(fontSize: 48),
                     ),
                     Text(
-                      'Vincent',
+                      'Admin',
                       style: Theme.of(context)
                           .textTheme
                           .headlineLarge!
@@ -47,7 +47,7 @@ class AdminHomeScreen extends StatelessWidget {
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 30),
-                    child: Image.asset('assets/admin.png'),
+                    child: Image.asset('assets/dori.png'),
                   ),
                 ),
               ],

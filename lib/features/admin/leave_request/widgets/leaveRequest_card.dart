@@ -6,99 +6,120 @@ class LeaveRequestCard extends StatelessWidget {
   final String time;
   final String status;
   final void Function() onTap;
+  final double bottomRadius;
+  final double topRadius;
 
-  const LeaveRequestCard({
-    required this.title,
-    required this.time,
-    required this.status,
-    required this.onTap,
-  });
+  const LeaveRequestCard(
+      {required this.title,
+      required this.time,
+      required this.status,
+      required this.onTap,
+      this.bottomRadius = 10,
+      this.topRadius = 10});
 
   static getStatusColor(String? status) {
     switch (status) {
       case 'Pending':
-        return Colors.orange;
+        return Color(0xFFA86637);
       case 'Approved':
-        return Colors.green;
+        return Color(0xFF44A837);
       case 'Rejected':
-        return Colors.red;
+        return Color(0xFFA83737);
       default:
         return Colors.grey;
     }
   }
 
+  static getStatusIcon(String? status) {
+    switch (status) {
+      case 'Pending':
+        return "assets/icons/pending_leave.png";
+      case 'Approved':
+        return "assets/icons/approved_leave.png";
+      case 'Rejected':
+        return "assets/icons/declined_leave.png";
+      default:
+        return "assets/icons/pending_leave.png";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-
     return InkWell(
       onTap: onTap,
       child: Container(
         padding: EdgeInsets.all(12),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.shade300,
-              blurRadius: 10,
-              spreadRadius: 3,
-            ),
-          ],
+          borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(bottomRadius),
+              bottomRight: Radius.circular(bottomRadius),
+              topLeft: Radius.circular(topRadius),
+              topRight: Radius.circular(topRadius)),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: [
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                  decoration: BoxDecoration(
+            Container(
+                height: 40,
+                width: 40,
+                padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
                     color: getStatusColor(status).withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(30),
+                    // borderRadius: BorderRadius.circular(30),
+                    shape: BoxShape.circle),
+                child: Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: Image.asset(
+                    getStatusIcon(status),
+                    height: 22,
+                    width: 20,
                   ),
-                  child: Icon(
-                    Icons.assignment_add,
-                    color: getStatusColor(status),
-                    size: 30,
-                  ),
-                ),
-                SizedBox(width: 10),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: screenWidth * 0.04,
-                      ),
+                )),
+            SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
                     ),
-                    SizedBox(height: 4),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: getStatusColor(status).withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Text(
-                        status,
-                        style: TextStyle(
-                          color: getStatusColor(status),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 10,
+                  ),
+                  SizedBox(height: 4),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: getStatusColor(status).withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Text(
+                          status,
+                          style: TextStyle(
+                            color: getStatusColor(status),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 10,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            Text(
-              time,
-              style: TextStyle(
-                fontWeight: FontWeight.normal,
-                fontSize: screenWidth * 0.03,
+                      Padding(
+                        padding: const EdgeInsets.only(right: 0),
+                        child: Text(
+                          time,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 10,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ],

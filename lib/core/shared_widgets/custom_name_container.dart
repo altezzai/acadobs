@@ -6,12 +6,12 @@ class CustomNameContainer extends StatelessWidget {
   final VoidCallback onPressed;
   final double horizontalWidth;
 
-  const CustomNameContainer({
-    Key? key,
-    required this.text,
-    required this.onPressed,
-    this.horizontalWidth = 13.5
-  }) : super(key: key);
+  const CustomNameContainer(
+      {Key? key,
+      required this.text,
+      required this.onPressed,
+      this.horizontalWidth = 13})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

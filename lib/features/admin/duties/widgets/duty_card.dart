@@ -101,7 +101,7 @@ class DutyCard extends StatelessWidget {
               child: Text(
                 time,
                 style: TextStyle(
-                  fontSize: 11,
+                  fontSize: 10,
                   fontWeight: FontWeight.bold,
                 ),
               ),
