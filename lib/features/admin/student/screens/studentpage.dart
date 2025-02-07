@@ -140,9 +140,9 @@ class _StudentsPageState extends State<StudentsPage> {
                 ),
               ],
             ),
-            SizedBox(
-              height: Responsive.height * 2,
-            ),
+            // SizedBox(
+            //   height: Responsive.height * 2,
+            // ),
             Expanded(
               child: Consumer<StudentController>(
                 builder: (context, value, child) {
@@ -162,10 +162,11 @@ class _StudentsPageState extends State<StudentsPage> {
                             'assets/empty.png',
                             height: Responsive.height * 45,
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: 10),
                           Text(
                             'No filter applied. Please select a class and division.',
                             style: TextStyle(fontSize: 16),
+                            textAlign: TextAlign.center,
                           ),
                         ],
                       ),
@@ -226,18 +227,39 @@ class _StudentsPageState extends State<StudentsPage> {
                 },
               ),
             ),
+            // CustomButton(
+            //     text: 'Add New Student',
+            //     onPressed: () {
+            //       context.pushNamed(AppRouteConst.AddStudentRouteName);
+            //     }),
+            // SizedBox(
+            //   height: Responsive.height * 2,
+            // ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          context.pushNamed(AppRouteConst.AddStudentRouteName);
-        },
-        label: Text('Add New Student'),
-        icon: Icon(Icons.add),
-        backgroundColor: Colors.black,
-        foregroundColor: Colors.white,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 20), // Adjust height from bottom
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(30),
+          child: SizedBox(
+            width: 340,
+            height: 60,
+            child: FloatingActionButton.extended(
+              onPressed: () {
+                context.pushNamed(AppRouteConst.AddStudentRouteName);
+              },
+              label: Text(
+                'Add New Student',
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ),
+              backgroundColor: Colors.black,
+              elevation: 6,
+            ),
+          ),
+        ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
