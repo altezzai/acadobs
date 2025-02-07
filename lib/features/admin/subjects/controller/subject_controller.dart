@@ -34,6 +34,12 @@ class SubjectController extends ChangeNotifier {
     notifyListeners();
   }
 
+  //Clear subjects
+  void clearSubjects() {
+    _subjects = [];
+    notifyListeners();
+  }
+
   // Add a new subject
   Future<void> addNewSubjects(
     BuildContext context, {
@@ -141,6 +147,11 @@ class SubjectController extends ChangeNotifier {
   int? get selectedSubjectId => _selectedSubjectId;
   void selectSubject(int subjectId) {
     _selectedSubjectId = subjectId;
+    notifyListeners();
+  }
+
+  void clearSelection(){
+    _selectedSubjectId = null;
     notifyListeners();
   }
 }

@@ -188,6 +188,7 @@ class _AddEventPageState extends State<AddEventPage> {
                 // Date Picker (styled similar to Add Notice)
                 CustomDatePicker(
                   label: "dd-mm-yyyy",
+                  lastDate: DateTime(2026),
                   dateController: _dateController,
                   onDateSelected: (selectedDate) {
                     print("Event Date selected: $selectedDate");

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/features/admin/subjects/controller/subject_controller.dart';
 import 'package:school_app/features/teacher/homework/widgets/subject_selection_card.dart';
@@ -19,9 +21,12 @@ class _SubjectSelectionPageState extends State<SubjectSelectionPage> {
 
   @override
   void initState() {
-    subjectController = context.read<SubjectController>();
-    subjectController.getSubjects();
-    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      subjectController = context.read<SubjectController>();
+      subjectController.getSubjects();
+      // subjectController.clearSelection();
+      super.initState();
+    });
   }
 
   @override
@@ -38,27 +43,37 @@ class _SubjectSelectionPageState extends State<SubjectSelectionPage> {
               ),
               Consumer<SubjectController>(
                   builder: (context, subjectProvider, child) {
-                return ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: subjectProvider.subjects.length,
-                  itemBuilder: (context, index) {
-                    final subject = subjectProvider.subjects[index];
-                    return SubjectSelectionCard(
-                      subjectName: subject.subject ?? "",
-                      subjectId: subject.id ?? 0,
-                      isSelected:
-                          subjectProvider.selectedSubjectId == subject.id,
-                      onSelect: (bool? selected) {
-                        if (selected == true) {
-                          subjectProvider.selectSubject(subject.id ?? 0);
-                          widget.subjectTextEditingController.text =
-                              subject.subject ?? "";
-                        }
-                      },
-                    );
-                  },
-                );
+                return subjectProvider.isloading
+                    ? Column(
+                        children: [
+                          SizedBox(
+                            height: Responsive.height * 35,
+                          ),
+                          Loading(),
+                        ],
+                      )
+                    : ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: subjectProvider.subjects.length,
+                        itemBuilder: (context, index) {
+                          final subject = subjectProvider.subjects[index];
+                          return SubjectSelectionCard(
+                            subjectName:
+                                capitalizeEachWord(subject.subject ?? ""),
+                            subjectId: subject.id ?? 0,
+                            isSelected:
+                                subjectProvider.selectedSubjectId == subject.id,
+                            onSelect: (bool? selected) {
+                              if (selected == true) {
+                                subjectProvider.selectSubject(subject.id ?? 0);
+                                widget.subjectTextEditingController.text =
+                                    subject.subject ?? "";
+                              }
+                            },
+                          );
+                        },
+                      );
               }),
             ],
           ),
