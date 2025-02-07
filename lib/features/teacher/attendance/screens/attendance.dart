@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/shared_widgets/add_button.dart';
@@ -31,6 +32,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _subjectController = TextEditingController();
+  late SubjectController subjectController;
 
   @override
   void initState() {
@@ -39,10 +41,12 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     // Use post-frame callback to clear dropdowns after widget is mounted
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final dropdownProvider = context.read<DropdownProvider>();
+      subjectController = context.read<SubjectController>();
       dropdownProvider.clearSelectedItem('class');
       dropdownProvider.clearSelectedItem('division');
       dropdownProvider.clearSelectedItem('period');
       dropdownProvider.clearSelectedItem('subject');
+      subjectController.clearSubjects();
     });
   }
 
@@ -84,14 +88,15 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                                   child: TextFormField(
                                     decoration: InputDecoration(
                                       hintText: subjectProvider
-                                                  .selectedSubjectId !=
-                                              null
-                                          ? subjectProvider.subjects
-                                              .firstWhere((subject) =>
-                                                  subject.id ==
-                                                  subjectProvider
-                                                      .selectedSubjectId)
-                                              .subject // Fetch the selected subject name
+                                              .subjects.isNotEmpty
+                                          ? capitalizeEachWord(subjectProvider
+                                                  .subjects
+                                                  .firstWhere((subject) =>
+                                                      subject.id ==
+                                                      subjectProvider
+                                                          .selectedSubjectId)
+                                                  .subject ??
+                                              "") // Fetch the selected subject name
                                           : "Select Subject", // Default hint text when no subject is selected
                                     ),
                                     enabled:

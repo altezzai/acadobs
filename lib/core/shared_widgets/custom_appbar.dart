@@ -49,7 +49,7 @@ class CustomAppbar extends StatelessWidget {
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   fontWeight: FontWeight.w600,
-                  fontSize: 18,
+                  fontSize: 22,
                   overflow: TextOverflow.ellipsis,
                 ),
           ),

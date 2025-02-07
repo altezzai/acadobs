@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:school_app/base/theme/button_theme.dart';
 import 'package:school_app/base/theme/input_decoration.dart';
 import 'package:school_app/base/theme/theme_data.dart';
@@ -9,7 +10,7 @@ class AppTheme {
   static ThemeData lightTheme(BuildContext context) {
     return ThemeData(
       brightness: Brightness.light,
-      fontFamily: "Inter",
+      fontFamily: GoogleFonts.poppins().fontFamily,
       primarySwatch: primaryMaterialColor,
       primaryColor: blackColor,
       scaffoldBackgroundColor: Colors.grey.shade200,
@@ -28,7 +29,7 @@ class AppTheme {
   static ThemeData darkTheme(BuildContext context) {
     return ThemeData(
       brightness: Brightness.dark,
-      fontFamily: "Plus Jakarta",
+      fontFamily: GoogleFonts.poppins().fontFamily,
       primarySwatch: primaryMaterialColor,
       primaryColor: primaryColor,
       scaffoldBackgroundColor: Colors.black,
