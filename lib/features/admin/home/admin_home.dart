@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/constants.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_name_container.dart';
@@ -69,7 +70,7 @@ class AdminHomeScreen extends StatelessWidget {
             _customContainer(
                 color: Colors.black,
                 text: 'Subjects',
-                icon: Icons.assignment_add,
+                iconPath: "assets/icons/subject.png",
                 ontap: () {
                   context.pushNamed(AppRouteConst.SubjectsPageRouteName);
                 }),
@@ -104,7 +105,9 @@ class AdminHomeScreen extends StatelessWidget {
   Widget _customContainer({
     required Color color,
     required String text,
-    IconData icon = Icons.dashboard_customize_outlined,
+    IconData? icon,
+    String? iconPath,
+    double iconSize=35,
     required VoidCallback ontap,
   }) {
     return InkWell(
@@ -117,13 +120,21 @@ class AdminHomeScreen extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: Responsive.width * 3),
-              child: Icon(
-                icon,
-                color: Colors.white,
-              ),
-            ),
+           Padding(
+            padding: EdgeInsets.symmetric(horizontal: Responsive.width * 3),
+            child: iconPath == null
+                ? Icon( // Show Material icon if iconPath is null
+                    icon ?? Icons.dashboard_customize_outlined, // Default icon
+                    color: Colors.white,
+                    size: iconSize,
+                  )
+                : Image.asset( // Show image if iconPath is provided
+                    iconPath,
+                    height: iconSize,
+                    width: iconSize,
+                    color: Colors.white,
+                  ),
+          ),
             Text(
               text,
               style: const TextStyle(color: Colors.white, fontSize: 18),
