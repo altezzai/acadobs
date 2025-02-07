@@ -86,6 +86,7 @@ class AppRouteConst {
   static const String parentNoteRouteName = 'parentNoteScreen';
   static const String parentNoteDetailRouteName = 'parentNoteDetailScreen';
   static const String teacherChatRouteName = 'teacherChatScreen';
-  static const String singlestudentselectionRouteName = 'singlestudentselection';
-
+  static const String singlestudentselectionRouteName =
+      'singlestudentselection';
+  static const String progressreportRouteName = 'progressReport';
 }

@@ -15,7 +15,7 @@ import 'package:school_app/features/parent/payment/screen/payment_selection.dart
 import 'package:school_app/features/teacher/attendance/screens/attendance.dart';
 import 'package:school_app/features/teacher/duties/duties.dart';
 import 'package:school_app/features/teacher/home/homescreen.dart';
-import 'package:school_app/features/teacher/marks/screens/marks.dart';
+import 'package:school_app/features/teacher/marks/screens/teacher_marks_list.dart';
 import 'package:school_app/features/teacher/payment/teacher_payment.dart';
 
 class BottomNavScreen extends StatefulWidget {
@@ -43,7 +43,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
       return [
         TeacherScreen(),
         AttendanceScreen(),
-        ProgressReport(),
+        TeacherMarksList(),
         const DutiesScreen(),
         TeacherPaymentScreen(),
       ];

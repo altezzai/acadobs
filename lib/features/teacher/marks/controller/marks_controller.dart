@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/widgets.dart';
+import 'package:school_app/base/services/secure_storage_services.dart';
+import 'package:school_app/features/teacher/marks/models/teacher_added_marks.dart';
 import 'package:school_app/features/teacher/marks/services/mark_services.dart';
 
 class MarksController extends ChangeNotifier {
@@ -39,6 +41,38 @@ class MarksController extends ChangeNotifier {
     } finally {
       _isloadingTwo = false;
       notifyListeners();
+    }
+  }
+
+  // ******Get Teacher added marks*********
+  List<TeacherAddedMarks> _teacheraddedmarks = [];
+  List<TeacherAddedMarks> get teacheraddedmarks => _teacheraddedmarks;
+  Future<void> getTeacherMarks() async {
+    _isloading = true;
+    notifyListeners(); // Ensures UI updates immediately to show the loader
+
+    try {
+      final teacherId = await SecureStorageService.getUserId();
+      final response =
+          await MarkServices().getTeacherMarks(teacherId: teacherId);
+
+      print("Response Status Code: ${response.statusCode}");
+      print("Response Data: ${response.data}");
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        _teacheraddedmarks = List.from(
+          (response.data as List<dynamic>)
+              .map((result) => TeacherAddedMarks.fromJson(result)),
+        );
+      } else {
+        _teacheraddedmarks = []; // Ensure an empty list if response is invalid
+      }
+    } catch (e) {
+      print("Error fetching marks: $e");
+      _teacheraddedmarks = []; // Prevent stale data if an error occurs
+    } finally {
+      _isloading = false;
+      notifyListeners(); // Ensures the UI updates after data is fetched
     }
   }
 }
