@@ -9,6 +9,7 @@ import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/admin/subjects/controller/subject_controller.dart';
+import 'package:school_app/features/admin/subjects/widgets/subject_tile.dart';
 
 class SubjectsScreen extends StatefulWidget {
   @override
@@ -18,11 +19,21 @@ class SubjectsScreen extends StatefulWidget {
 class _SubjectsScreenState extends State<SubjectsScreen> {
   @override
   Widget build(BuildContext context) {
+    return LayoutBuilder(builder: (context, constraints) {
+      Orientation orientation = MediaQuery.of(context).orientation;
+      Responsive().init(constraints, orientation);
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-        body: Padding(
-      padding: EdgeInsets.symmetric(horizontal: Responsive.width * 3),
+        body: NestedScrollView(
+           headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              SliverToBoxAdapter(
+                child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+      
       child: Column(
         children: [
+          SizedBox(height: Responsive.height * 2),
           CustomAppbar(
             title: 'Subjects',
             isProfileIcon: false,
@@ -31,8 +42,18 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
                   extra: UserType.admin);
             },
           ),
+          SizedBox(height: Responsive.height * 2)]))),];
+          },
           // Wrap ListView.builder in Expanded to constrain its height
-          Expanded(child: _buildSubjects()),
+          body: Padding(
+            padding: EdgeInsets.symmetric(
+                          horizontal: Responsive.width * 4),
+            child: Column(children: [
+              
+                  
+           Expanded( // Wrap with Expanded to avoid constraint issues
+          child: _buildSubjects(),
+        ),
           Padding(
             padding: EdgeInsets.only(bottom: Responsive.height * 4),
             child:
@@ -47,10 +68,12 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
             // CustomButton(text: 'Add Subjects', onPressed: (){
             //    context.pushNamed(AppRouteConst.AddSubjectPageRouteName);
             // })
-          ),
-        ],
-      ),
-    ));
+          ),]),
+            
+       ),
+        ),
+      );
+    });
   }
 
   Widget _buildSubjects() {
@@ -64,32 +87,57 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
             ),
           );
         }
-        return ListView.builder(
+        List<Color> subjectColors = [
+  Colors.green,
+  Colors.blue,
+  Colors.red,
+  Colors.orange,
+  Colors.purple,
+  Colors.teal,
+  Colors.pink,
+];
+        return  ListView.builder(
           padding: EdgeInsets.zero,
           itemCount: value.subjects.length,
           itemBuilder: (context, index) {
+            final isFirst = index == 0;
+        final isLast = index == value.subjects.length - 1;
+        
+final topRadius = isFirst ? 16 : 0;
+        final bottomRadius = isLast ? 16 : 0;
             final subject = value.subjects[index];
-            return Card(
-              margin: EdgeInsets.symmetric(
-                  horizontal: Responsive.width * 4,
-                  vertical: Responsive.height * 1),
-              child: ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: Colors.blue,
-                  child: Icon(Icons.book_sharp, color: Colors.white),
-                ),
-                title: Text(capitalizeEachWord(subject.subject ?? ""),
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                subtitle: Text(subject.description ?? ""),
-                trailing: TextButton(
-                  onPressed: () {
+              final color = subjectColors[index % subjectColors.length]; // Assign color dynamically
+            return SubjectTile(
+              bottomRadius: bottomRadius.toDouble(),
+              topRadius: topRadius.toDouble(),
+              subjectName: subject.subject ?? "",
+              description: subject.description ?? "",
+              iconPath:('assets/icons/subject_tile_icon.png') ,
+              iconColor: color,
+              onEdit: () {
                     context.pushNamed(AppRouteConst.EditSubjectPageRouteName,
                         extra: subject);
                   },
-                  child: Text('Edit', style: TextStyle(color: Colors.blue)),
-                ),
-              ),
+              // margin: EdgeInsets.symmetric(
+              //     horizontal: Responsive.width * 4,
+              //     vertical: Responsive.height * 1),
+              // child: ListTile(
+              //   leading: CircleAvatar(
+              //     backgroundColor: Colors.blue,
+              //     child: Icon(Icons.book, color: Colors.white),
+              //   ),
+              //   title: Text(capitalizeEachWord(subject.subject ?? ""),
+              //       style:
+              //           TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              //   subtitle: Text(subject.description ?? ""),
+              //   trailing: TextButton(
+              //     onPressed: () {
+              //       context.pushNamed(AppRouteConst.EditSubjectPageRouteName,
+              //           extra: subject);
+              //     },
+              //     child: Text('Edit', style: TextStyle(color: Colors.blue)),
+              //   ),
+              // ),
             );
           },
         );
