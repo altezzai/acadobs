@@ -26,4 +26,11 @@ class MarkServices {
     final Response response = await ApiServices.post("/internalmarks", data);
     return response;
   }
+
+  // GET Teacher added marks
+  Future<Response> getTeacherMarks({required int teacherId}) async {
+    final Response response =
+        await ApiServices.get("/getTeacherAddedMarks/$teacherId");
+    return response;
+  }
 }

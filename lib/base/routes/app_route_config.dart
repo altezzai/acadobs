@@ -72,6 +72,7 @@ import 'package:school_app/features/teacher/leave_request/screens/add_teacher_le
 import 'package:school_app/features/teacher/leave_request/screens/teacher_leaverequestpage.dart';
 import 'package:school_app/features/teacher/mark_work/screens/mark_star.dart';
 import 'package:school_app/features/teacher/marks/models/marks_upload_model.dart';
+import 'package:school_app/features/teacher/marks/screens/marks.dart';
 import 'package:school_app/features/teacher/marks/screens/student_marklist.dart';
 import 'package:school_app/features/teacher/parent/model/latest_chat_model.dart';
 import 'package:school_app/features/teacher/parent/model/parent_note_student_model.dart';
@@ -633,7 +634,7 @@ class Approuter {
           ));
         },
       ),
-       GoRoute(
+      GoRoute(
         name: AppRouteConst.singlestudentselectionRouteName,
         path: '/singlestudentSelection',
         pageBuilder: (context, state) {
@@ -728,6 +729,13 @@ class Approuter {
         pageBuilder: (context, state) {
           final latestChat = state.extra as LatestChat;
           return MaterialPage(child: TeacherChatScreen(latestChat: latestChat));
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.progressreportRouteName,
+        path: '/progressReport',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: ProgressReport());
         },
       ),
     ],

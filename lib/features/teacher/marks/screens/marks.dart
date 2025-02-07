@@ -34,7 +34,9 @@ class ProgressReport extends StatelessWidget {
             children: [
               CustomAppbar(
                 title: "Progress Report",
-                isBackButton: false,
+                onTap: () {
+                  Navigator.pop(context);
+                },
                 isProfileIcon: false,
               ),
               Row(
