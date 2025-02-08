@@ -106,7 +106,7 @@ class _AddTeacherState extends State<AddTeacher> {
                   onDateSelected: (selectedDate) {
                     print("End Date selected: $selectedDate");
                   },
-                   validator: (value) {
+                  validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'This field is required';
                     }
@@ -121,7 +121,7 @@ class _AddTeacherState extends State<AddTeacher> {
                   label: 'Gender',
                   icon: Icons.person_2_outlined,
                   items: ['Male', 'Female', 'Other'],
-                   validator: (value) {
+                  validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'This field is required';
                     }
@@ -136,7 +136,7 @@ class _AddTeacherState extends State<AddTeacher> {
                   hintText: 'Address',
                   iconData: Icon(Icons.location_on),
                   keyBoardtype: TextInputType.streetAddress,
-                   validator: (value) {
+                  validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'This field is required';
                     }
@@ -151,7 +151,7 @@ class _AddTeacherState extends State<AddTeacher> {
                   hintText: 'Phone Number',
                   iconData: Icon(Icons.phone),
                   keyBoardtype: TextInputType.phone,
-                   validator: (value) {
+                  validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'This field is required';
                     }
@@ -184,7 +184,7 @@ class _AddTeacherState extends State<AddTeacher> {
                 CustomFilePicker(
                   label: 'Teacher Photo',
                   fieldName: 'profile photo',
-                   validator: (value) {
+                  validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'This field is required';
                     }
@@ -192,9 +192,8 @@ class _AddTeacherState extends State<AddTeacher> {
                   },
                 ),
                 SizedBox(
-                  height: Responsive.height * 30,
+                  height: Responsive.height * 22,
                 ),
-
                 Consumer<TeacherController>(builder: (context, value, child) {
                   return CommonButton(
                     onPressed: () {
@@ -219,34 +218,20 @@ class _AddTeacherState extends State<AddTeacher> {
                         } catch (e) {
                           // Handle any errors and show an error message
                           CustomSnackbar.show(context,
-            message: "Failed to add teacher.Please try again", type: SnackbarType.failure);
+                              message: "Failed to add teacher.Please try again",
+                              type: SnackbarType.failure);
                         }
                       } else {
                         // Highlight missing fields if the form is invalid
                         CustomSnackbar.show(context,
-            message: "Please complete all required fields", type: SnackbarType.warning);
+                            message: "Please complete all required fields",
+                            type: SnackbarType.warning);
                       }
                     },
-                    widget: value.isloadingTwo ? ButtonLoading() : Text('Submit'),
+                    widget:
+                        value.isloadingTwo ? ButtonLoading() : Text('Submit'),
                   );
                 }),
-                SizedBox(
-                  height: Responsive.height * 10,
-                ),
-                // CustomButton(
-                //     text: 'Submit',
-                //     onPressed: () {
-                //       final selectedGender = context
-                //           .read<DropdownProvider>()
-                //           .getSelectedItem('gender');
-                //       context.read<TeacherController>().addNewTeacher(context,
-                //           fullName: _nameController.text,
-                //           dateOfBirth: _dateOfBirthController.text,
-                //           gender: selectedGender,
-                //           address: _addressController.text,
-                //           contactNumber: _phoneController.text,
-                //           emailAddress: _emailController.text);
-                //     }),
               ],
             ),
           ),
