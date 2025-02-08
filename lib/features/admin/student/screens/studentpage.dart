@@ -9,6 +9,7 @@ import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+import 'package:school_app/core/shared_widgets/common_floating_action_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/profile_tile.dart';
@@ -39,7 +40,7 @@ class _StudentsPageState extends State<StudentsPage> {
       context.read<StudentController>().resetFilter();
       // super.dispose();
 
-      context.read<StudentController>().getStudentDetails();
+      // context.read<StudentController>().getStudentDetails();
     });
 
     super.initState();
@@ -187,6 +188,9 @@ class _StudentsPageState extends State<StudentsPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          SizedBox(
+                            height: Responsive.height * 1.5,
+                          ),
                           ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
@@ -238,26 +242,12 @@ class _StudentsPageState extends State<StudentsPage> {
           ],
         ),
       ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 20), // Adjust height from bottom
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(30),
-          child: SizedBox(
-            width: 340,
-            height: 60,
-            child: FloatingActionButton.extended(
+      floatingActionButton: CommonFloatingActionButton(
               onPressed: () {
                 context.pushNamed(AppRouteConst.AddStudentRouteName);
               },
-              label: Text(
+              text: 
                 'Add New Student',
-                style: TextStyle(color: Colors.white, fontSize: 18),
-              ),
-              backgroundColor: Colors.black,
-              elevation: 6,
-            ),
-          ),
-        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
