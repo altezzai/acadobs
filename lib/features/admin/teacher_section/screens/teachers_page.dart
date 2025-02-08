@@ -17,51 +17,11 @@ class TeachersPage extends StatefulWidget {
 }
 
 class _TeachersPageState extends State<TeachersPage> {
-  final List<Map<String, String>> teachers = [
-    {"name": "Muhammad Rafasl", "class": "VI", "image": "student1.png"},
-    {"name": "Midlej O P", "class": "V", "image": "student2.png"},
-    {"name": "Saleem Riyaz", "class": "VIII", "image": "student3.png"},
-    {"name": "Abram Bator", "class": "IX", "image": "student4.png"},
-    {"name": "Allison Lipshulz", "class": "VII", "image": "student5.png"},
-    {"name": "Rayees Ibrahim", "class": "VII", "image": "student6.png"},
-    {"name": "Khalid Mustafa", "class": "XI", "image": "student7.png"},
-    {"name": "Bilal Rifad", "class": "X", "image": "student1.png"},
-    {"name": "Hamem Fahad", "class": "VI", "image": "student6.png"},
-    {"name": "Sajad K V", "class": "X", "image": "student5.png"},
-  ];
-
-  List<Map<String, String>> filteredTeachers = [];
-  String searchQuery = "";
-  String selectedClass = "All";
-
   @override
   void initState() {
     super.initState();
-    teachers.sort((a, b) => a['name']!.compareTo(b['name']!));
-    filteredTeachers = teachers;
+
     context.read<TeacherController>().getTeacherDetails();
-  }
-
-  void _filterTeachers(String query) {
-    setState(() {
-      searchQuery = query;
-      filteredTeachers = teachers.where((teacher) {
-        final matchesSearchQuery =
-            teacher['name']!.toLowerCase().contains(query.toLowerCase());
-        final matchesClass =
-            selectedClass == "All" || teacher['class'] == selectedClass;
-        return matchesSearchQuery && matchesClass;
-      }).toList();
-    });
-  }
-
-  void _filterByClass(String? newClass) {
-    if (newClass != null) {
-      setState(() {
-        selectedClass = newClass;
-        _filterTeachers(searchQuery);
-      });
-    }
   }
 
   @override
@@ -76,73 +36,13 @@ class _TeachersPageState extends State<TeachersPage> {
             ),
             CustomAppbar(
               title: 'Teachers',
+              isProfileIcon: false,
               onTap: () {
                 context.pushNamed(
                   AppRouteConst.bottomNavRouteName,
                   extra: UserType.admin,
                 );
               },
-            ),
-            Row(
-              children: [
-                Expanded(
-                  flex: 3,
-                  child: TextField(
-                    onChanged: _filterTeachers,
-                    decoration: InputDecoration(
-                      hintText: 'Search for Teachers',
-                      prefixIcon: Icon(Icons.search, color: Colors.grey),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        borderSide: BorderSide(color: Colors.grey.shade300),
-                      ),
-                      filled: true,
-                      fillColor: Colors.grey.shade100,
-                      contentPadding: EdgeInsets.symmetric(vertical: 12),
-                    ),
-                    style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
-                  ),
-                ),
-                SizedBox(width: 8),
-                Flexible(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade100,
-                      borderRadius: BorderRadius.circular(30),
-                      border: Border.all(color: Colors.grey.shade300),
-                    ),
-                    child: DropdownButton<String>(
-                      value: selectedClass,
-                      underline: SizedBox(),
-                      isExpanded: true,
-                      items: <String>[
-                        'All',
-                        'V',
-                        'VI',
-                        'VII',
-                        'VIII',
-                        'IX',
-                        'X',
-                      ].map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(
-                            value,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        );
-                      }).toList(),
-                      onChanged: (newValue) {
-                        if (newValue != null) {
-                          _filterByClass(newValue);
-                        }
-                      },
-                    ),
-                  ),
-                ),
-              ],
             ),
             SizedBox(
               height: Responsive.height * 2,
@@ -187,15 +87,28 @@ class _TeachersPageState extends State<TeachersPage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          context.pushNamed(AppRouteConst.AddTeacherRouteName);
-        },
-        label: Text('Add New Teacher'),
-        icon: Icon(Icons.add),
-        backgroundColor: Colors.black,
-        foregroundColor: Colors.white,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 20), // Adjust height from bottom
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(30),
+          child: SizedBox(
+            width: 340,
+            height: 60,
+            child: FloatingActionButton.extended(
+              onPressed: () {
+                context.pushNamed(AppRouteConst.AddTeacherRouteName);
+              },
+              label: Text(
+                'Add New Teacher',
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ),
+              backgroundColor: Colors.black,
+              elevation: 6,
+            ),
+          ),
+        ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
