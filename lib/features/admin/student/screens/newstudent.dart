@@ -8,6 +8,7 @@ import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/controller/file_picker_provider.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
+import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/custom_filepicker.dart';
@@ -57,13 +58,12 @@ class _AddStudentPageState extends State<AddStudentPage> {
       TextEditingController();
   final TextEditingController _motherContactNumberController =
       TextEditingController();
-   final TextEditingController _occupationController =
+  final TextEditingController _occupationController = TextEditingController();
+  final TextEditingController _motherAadharNumberController =
       TextEditingController();
-       final TextEditingController _motherAadharNumberController =
+  final TextEditingController _fatherAadharNumberController =
       TextEditingController();
-       final TextEditingController _fatherAadharNumberController =
-      TextEditingController();
-      final TextEditingController _alternateNumberController =
+  final TextEditingController _alternateNumberController =
       TextEditingController();
 
   late DropdownProvider dropdownProvider;
@@ -119,25 +119,6 @@ class _AddStudentPageState extends State<AddStudentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        centerTitle: true,
-        title: Text(
-          'Add Student',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 24,
-          ),
-        ),
-      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: SingleChildScrollView(
@@ -146,7 +127,14 @@ class _AddStudentPageState extends State<AddStudentPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: Responsive.height * 2),
+                CustomAppbar(
+                  title: 'Add Student',
+                  isProfileIcon: false,
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                // SizedBox(height: Responsive.height * 2),
                 _sectionTitle('Student Details'),
                 SizedBox(height: 10),
 
@@ -346,76 +334,91 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   validator: (value) => FormValidator.validateEmail(value),
                 ),
                 SizedBox(height: 10),
-               Consumer<StudentController>(
-  builder: (context, studentController, child) {
-    // Check if email check data is available
-    if (studentController.parentEmailCheckData != null &&
-        studentController.parentEmailCheckData!.previousStudentData != null &&
-        studentController.parentEmailCheckData!.previousStudentData!.isNotEmpty) {
-      
-      var studentParentData = studentController.parentEmailCheckData!.previousStudentData![0];
+                Consumer<StudentController>(
+                  builder: (context, studentController, child) {
+                    // Check if email check data is available
+                    if (studentController.parentEmailCheckData != null &&
+                        studentController
+                                .parentEmailCheckData!.previousStudentData !=
+                            null &&
+                        studentController.parentEmailCheckData!
+                            .previousStudentData!.isNotEmpty) {
+                      var studentParentData = studentController
+                          .parentEmailCheckData!.previousStudentData![0];
 
-      // Autofill fields with the data
-      _fullNameController.text = studentParentData.studentName ?? '';
-      _fatherFullNameController.text = studentParentData.fatherFullName ?? '';
-      _motherFullNameController.text = studentParentData.motherFullName ?? '';
-      _guardianNameController.text = studentParentData.guardianFullName ?? '';
-      _fatherContactNumberController.text = studentParentData.fatherContactNumber ?? '';
-      _motherContactNumberController.text = studentParentData.motherContactNumber ?? '';
-      parentEmailController.text = studentParentData.parentEmail ?? '';
-       _occupationController.text=studentParentData.occupation ?? '';
-       _motherAadharNumberController.text = studentParentData.motherAadhaarNumber ?? '';
-       _fatherAadharNumberController.text = studentParentData.fatherAadhaarNumber ?? '';
-       _alternateNumberController.text = studentParentData.alternateEmergencyContact ?? '';
-       
+                      // Autofill fields with the data
+                      _fullNameController.text =
+                          studentParentData.studentName ?? '';
+                      _fatherFullNameController.text =
+                          studentParentData.fatherFullName ?? '';
+                      _motherFullNameController.text =
+                          studentParentData.motherFullName ?? '';
+                      _guardianNameController.text =
+                          studentParentData.guardianFullName ?? '';
+                      _fatherContactNumberController.text =
+                          studentParentData.fatherContactNumber ?? '';
+                      _motherContactNumberController.text =
+                          studentParentData.motherContactNumber ?? '';
+                      parentEmailController.text =
+                          studentParentData.parentEmail ?? '';
+                      _occupationController.text =
+                          studentParentData.occupation ?? '';
+                      _motherAadharNumberController.text =
+                          studentParentData.motherAadhaarNumber ?? '';
+                      _fatherAadharNumberController.text =
+                          studentParentData.fatherAadhaarNumber ?? '';
+                      _alternateNumberController.text =
+                          studentParentData.alternateEmergencyContact ?? '';
 
-      // Other fields...
-    }
+                      // Other fields...
+                    }
 
-    return Row(
-      children: [
-        GestureDetector(
-          onTap: () {
-            if (parentEmailController.text.isNotEmpty) {
-              context
-                  .read<StudentController>()
-                  .checkParentEmailUsage(email: parentEmailController.text);
-            }
-          },
-          child: Container(
-            padding: EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.blue,
-              borderRadius: BorderRadius.circular(4),
-            ),
-            child: Text(
-              "Check Email",
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ),
-        SizedBox(width: 10),
-        Expanded(
-          child: Text(
-            parentEmailController.text.isEmpty
-                ? "Please enter a valid email"
-                : (studentController.parentEmailCheckData?.message ?? ""),
-            style: TextStyle(
-              color: parentEmailController.text.isEmpty
-                  ? Colors.red
-                  : Colors.black,
-            ),
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-      ],
-    );
-  },
-)
-,
+                    return Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            if (parentEmailController.text.isNotEmpty) {
+                              context
+                                  .read<StudentController>()
+                                  .checkParentEmailUsage(
+                                      email: parentEmailController.text);
+                            }
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Text(
+                              "Check Email",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            parentEmailController.text.isEmpty
+                                ? "Please enter a valid email"
+                                : (studentController
+                                        .parentEmailCheckData?.message ??
+                                    ""),
+                            style: TextStyle(
+                              color: parentEmailController.text.isEmpty
+                                  ? Colors.red
+                                  : Colors.black,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
 
                 SizedBox(height: Responsive.height * 2),
                 CustomTextfield(
