@@ -7,6 +7,7 @@ import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
+import 'package:school_app/core/shared_widgets/common_floating_action_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/admin/subjects/controller/subject_controller.dart';
 import 'package:school_app/features/admin/subjects/widgets/subject_tile.dart';
@@ -54,24 +55,35 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
            Expanded( // Wrap with Expanded to avoid constraint issues
           child: _buildSubjects(),
         ),
-          Padding(
-            padding: EdgeInsets.only(bottom: Responsive.height * 4),
-            child:
-                Consumer<SubjectController>(builder: (context, value, child) {
-              return CommonButton(
-                onPressed: () {
-                  context.pushNamed(AppRouteConst.AddSubjectPageRouteName);
-                },
-                widget: Text('Add Subjects'),
-              );
-            }),
-            // CustomButton(text: 'Add Subjects', onPressed: (){
-            //    context.pushNamed(AppRouteConst.AddSubjectPageRouteName);
-            // })
-          ),]),
+        
+          // Padding(
+          //   padding: EdgeInsets.only(bottom: Responsive.height * 4),
+          //   child:
+          //       Consumer<SubjectController>(builder: (context, value, child) {
+          //     return CommonButton(
+          //       onPressed: () {
+          //         context.pushNamed(AppRouteConst.AddSubjectPageRouteName);
+          //       },
+          //       widget: Text('Add Subjects'),
+          //     );
+          //   }),
+          //   // CustomButton(text: 'Add Subjects', onPressed: (){
+          //   //    context.pushNamed(AppRouteConst.AddSubjectPageRouteName);
+          //   // })
+          // ),
+          ]),
             
        ),
+       
         ),
+         floatingActionButton: CommonFloatingActionButton(
+              onPressed: () {
+                context.pushNamed(AppRouteConst.AddSubjectPageRouteName);
+              },
+              text: 
+                'Add Subjects',
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       );
     });
   }
@@ -147,6 +159,7 @@ final topRadius = isFirst ? 16 : 0;
           },
         );
       },
+      
     );
   }
 }
