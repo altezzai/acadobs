@@ -153,7 +153,11 @@ class _LeaverequestScreenState extends State<LeaverequestScreen>
             DateTime.tryParse(studentLeaveRequest.createdAt.toString()) ??
             DateTime.now(),
       );
-      return _buildGroupedList(groupedStudentLeaveRequests,
+      return value.studentsLeaveRequest.isEmpty
+                    ? Center(
+                        child: Text("No Achievements Found!"),
+                      )
+                    :  _buildGroupedList(groupedStudentLeaveRequests,
           (studentLeaveRequest, index, total) {
         final isFirst = index == 0;
         final isLast = index == total - 1;
@@ -199,7 +203,11 @@ class _LeaverequestScreenState extends State<LeaverequestScreen>
             DateTime.tryParse(teacherLeaveRequest.createdAt.toString()) ??
             DateTime.now(),
       );
-      return _buildGroupedList(groupedTeacherLeaveRequests,
+      return value.teachersLeaveRequest.isEmpty
+                    ? Center(
+                        child: Text("No Achievements Found!"),
+                      )
+                    : _buildGroupedList(groupedTeacherLeaveRequests,
           (teacherLeaveRequest, index, total) {
         final isFirst = index == 0;
         final isLast = index == total - 1;

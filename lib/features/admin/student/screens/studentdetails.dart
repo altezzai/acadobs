@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
+import 'package:school_app/base/utils/constants.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/base/utils/urls.dart';
@@ -373,7 +374,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
   ) {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -383,123 +384,115 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
             decoration: const BoxDecoration(
               color: Colors.black,
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(8),
-                topRight: Radius.circular(8),
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
               ),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "$grade $division",
-                        style: const TextStyle(
-                            color: Colors.white70, fontSize: 12),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        examName,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const Icon(Icons.assessment, color: Colors.white, size: 20),
-              ],
-            ),
-          ),
-          // Exam Subjects and Details
-          Padding(
-            padding: const EdgeInsets.all(12.0),
             child: Column(
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      "$grade $division",
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    //const SizedBox(height: 2),
+                    const SizedBox(
+                      width: 16,
+                      height: 10,
+                      child: Icon(
+                        Icons.arrow_forward_ios,
+                        size: 10,
+                        color: Colors.white,
+                      ),
+                    ),
+
+                    Text(
+                      examName,
+                      style: const TextStyle(
+                        color: Color(0xFFD4D4D4),
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 18),
+                // Exam Subjects and Details
+
                 Row(
                   children: [
                     Expanded(
                       flex: 2,
                       child: Text("Subject",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w600,
                               fontSize: 12,
-                              color: Colors.grey[600])),
+                              color: Colors.white)),
                     ),
                     Expanded(
                       flex: 1,
                       child: Text("Mark",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w600,
                               fontSize: 12,
-                              color: Colors.grey[600]),
+                              color: Colors.white),
                           textAlign: TextAlign.center),
                     ),
                     Expanded(
                       flex: 1,
                       child: Text("Total",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w600,
                               fontSize: 12,
-                              color: Colors.grey[600]),
-                          textAlign: TextAlign.center),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Text("Attendance",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                              color: Colors.grey[600]),
+                              color: Colors.white),
                           textAlign: TextAlign.center),
                     ),
                   ],
                 ),
-                const Divider(),
-                ...subjects.map((subject) => Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Text(subject["subject"]!,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w500, fontSize: 16)),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(subject["mark"]!,
-                                style: TextStyle(
-                                    color: Colors.green[700],
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(subject["total"]!,
-                                style: const TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(subject["attendance_status"]!,
-                                style: const TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center),
-                          ),
-                        ],
-                      ),
-                    )),
-                const SizedBox(height: 12),
               ],
             ),
           ),
+
+          ...subjects.map((subject) => Padding(
+                padding: const EdgeInsets.all(12),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Text(subject["subject"]!,
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600)),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Text(subject["mark"]!,
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600),
+                          textAlign: TextAlign.center),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Text(subject["total"]!,
+                          style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black),
+                          textAlign: TextAlign.center),
+                    ),
+                  ],
+                ),
+              )),
+          const SizedBox(height: 12),
         ],
       ),
     );
