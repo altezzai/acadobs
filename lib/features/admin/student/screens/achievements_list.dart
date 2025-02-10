@@ -60,9 +60,9 @@ class AchievementsList extends StatelessWidget {
                       )
                     :  _buildGroupedList(groupedAchievements,
                 (achievement, index, total) {
-                          final entry = groupedAchievements.entries.elementAt(index);
-                          final dateGroup = entry.key;
-                          final achievements = entry.value;
+                         // final entry = groupedAchievements.entries.elementAt(index);
+                          // final dateGroup = entry.key;
+                          // final achievements = entry.value;
             
                           final isFirst = index == 0;
               final isLast = index == total- 1;

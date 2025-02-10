@@ -6,7 +6,7 @@ import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
-import 'package:school_app/core/shared_widgets/common_button.dart';
+
 import 'package:school_app/core/shared_widgets/common_floating_action_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/admin/subjects/controller/subject_controller.dart';
@@ -23,67 +23,62 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
     return LayoutBuilder(builder: (context, constraints) {
       Orientation orientation = MediaQuery.of(context).orientation;
       Responsive().init(constraints, orientation);
-    
-    return Scaffold(
+
+      return Scaffold(
         body: NestedScrollView(
-           headerSliverBuilder: (context, innerBoxIsScrolled) {
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
               SliverToBoxAdapter(
-                child: Padding(
+                  child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
-      
-      child: Column(
-        children: [
-          SizedBox(height: Responsive.height * 2),
-          CustomAppbar(
-            title: 'Subjects',
-            isProfileIcon: false,
-            onTap: () {
-              context.pushNamed(AppRouteConst.bottomNavRouteName,
-                  extra: UserType.admin);
-            },
-          ),
-          SizedBox(height: Responsive.height * 2)]))),];
+                      child: Column(children: [
+                        SizedBox(height: Responsive.height * 2),
+                        CustomAppbar(
+                          title: 'Subjects',
+                          isProfileIcon: false,
+                          onTap: () {
+                            context.pushNamed(AppRouteConst.bottomNavRouteName,
+                                extra: UserType.admin);
+                          },
+                        ),
+                        SizedBox(height: Responsive.height * 2)
+                      ]))),
+            ];
           },
           // Wrap ListView.builder in Expanded to constrain its height
           body: Padding(
-            padding: EdgeInsets.symmetric(
-                          horizontal: Responsive.width * 4),
+            padding: EdgeInsets.symmetric(horizontal: Responsive.width * 4),
             child: Column(children: [
-              
-                  
-           Expanded( // Wrap with Expanded to avoid constraint issues
-          child: _buildSubjects(),
+              Expanded(
+                // Wrap with Expanded to avoid constraint issues
+                child: _buildSubjects(),
+              ),
+
+              // Padding(
+              //   padding: EdgeInsets.only(bottom: Responsive.height * 4),
+              //   child:
+              //       Consumer<SubjectController>(builder: (context, value, child) {
+              //     return CommonButton(
+              //       onPressed: () {
+              //         context.pushNamed(AppRouteConst.AddSubjectPageRouteName);
+              //       },
+              //       widget: Text('Add Subjects'),
+              //     );
+              //   }),
+              //   // CustomButton(text: 'Add Subjects', onPressed: (){
+              //   //    context.pushNamed(AppRouteConst.AddSubjectPageRouteName);
+              //   // })
+              // ),
+            ]),
+          ),
         ),
-        
-          // Padding(
-          //   padding: EdgeInsets.only(bottom: Responsive.height * 4),
-          //   child:
-          //       Consumer<SubjectController>(builder: (context, value, child) {
-          //     return CommonButton(
-          //       onPressed: () {
-          //         context.pushNamed(AppRouteConst.AddSubjectPageRouteName);
-          //       },
-          //       widget: Text('Add Subjects'),
-          //     );
-          //   }),
-          //   // CustomButton(text: 'Add Subjects', onPressed: (){
-          //   //    context.pushNamed(AppRouteConst.AddSubjectPageRouteName);
-          //   // })
-          // ),
-          ]),
-            
-       ),
-       
+        floatingActionButton: CommonFloatingActionButton(
+          onPressed: () {
+            context.pushNamed(AppRouteConst.AddSubjectPageRouteName);
+          },
+          text: 'Add Subjects',
         ),
-         floatingActionButton: CommonFloatingActionButton(
-              onPressed: () {
-                context.pushNamed(AppRouteConst.AddSubjectPageRouteName);
-              },
-              text: 
-                'Add Subjects',
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       );
     });
   }
@@ -100,40 +95,41 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
           );
         }
         List<Color> subjectColors = [
-  Colors.green,
-  Colors.blue,
-  Colors.red,
-  Colors.orange,
-  Colors.purple,
-  Colors.teal,
-  Colors.pink,
-];
-        return  ListView.builder(
+          Colors.green,
+          Colors.blue,
+          Colors.red,
+          Colors.orange,
+          Colors.purple,
+          Colors.teal,
+          Colors.pink,
+        ];
+        return ListView.builder(
           padding: EdgeInsets.zero,
           itemCount: value.subjects.length,
           itemBuilder: (context, index) {
             final isFirst = index == 0;
-        final isLast = index == value.subjects.length - 1;
-        
-final topRadius = isFirst ? 16 : 0;
-        final bottomRadius = isLast ? 16 : 0;
+            final isLast = index == value.subjects.length - 1;
+
+            final topRadius = isFirst ? 16 : 0;
+            final bottomRadius = isLast ? 16 : 0;
             final subject = value.subjects[index];
-              final color = subjectColors[index % subjectColors.length]; // Assign color dynamically
+            final color = subjectColors[
+                index % subjectColors.length]; // Assign color dynamically
             return Padding(
               padding: EdgeInsets.only(
-              bottom: 1.5,
-            ),
+                bottom: 1.5,
+              ),
               child: SubjectTile(
                 bottomRadius: bottomRadius.toDouble(),
                 topRadius: topRadius.toDouble(),
                 subjectName: subject.subject ?? "",
                 description: subject.description ?? "",
-                iconPath:('assets/icons/subject_tile_icon.png') ,
+                iconPath: ('assets/icons/subject_tile_icon.png'),
                 iconColor: color,
                 onEdit: () {
-                      context.pushNamed(AppRouteConst.EditSubjectPageRouteName,
-                          extra: subject);
-                    },
+                  context.pushNamed(AppRouteConst.EditSubjectPageRouteName,
+                      extra: subject);
+                },
                 // margin: EdgeInsets.symmetric(
                 //     horizontal: Responsive.width * 4,
                 //     vertical: Responsive.height * 1),
@@ -159,7 +155,6 @@ final topRadius = isFirst ? 16 : 0;
           },
         );
       },
-      
     );
   }
 }

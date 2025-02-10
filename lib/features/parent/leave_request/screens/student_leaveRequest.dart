@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:school_app/base/utils/date_formatter.dart';
-import 'package:school_app/base/utils/responsive.dart';
+
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/parent/leave_request/controller/studentLeaveReq_controller.dart';
 
@@ -60,140 +60,140 @@ class _StudentLeaveRequestScreenState extends State<StudentLeaveRequestScreen> {
       //         elevation: 0,
       //         iconTheme: const IconThemeData(color: Colors.black),
       //       ),
-      body: 
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // if (widget.userType !=
-              //     UserType.admin) // Show button only for non-admin
-              //   ElevatedButton(
-              //     onPressed: () {
-              //       context.pushNamed(
-              //         AppRouteConst.AddStudentLeaveRequestRouteName,
-              //       );
-              //     },
-              //     style: ElevatedButton.styleFrom(
-              //       backgroundColor: Colors.red,
-              //       padding: EdgeInsets.symmetric(
-              //         horizontal: MediaQuery.of(context).size.width * 0.25,
-              //         vertical: MediaQuery.of(context).size.height * 0.025,
-              //       ),
-              //       shape: RoundedRectangleBorder(
-              //         borderRadius: BorderRadius.circular(12),
-              //       ),
-              //     ),
-              //     child: const Text(
-              //       'Request for Leave',
-              //       style: TextStyle(fontSize: 18, color: Colors.white),
-              //     ),
-              //   ),
-              const SizedBox(height: 40),
-              Expanded(
-                child: Consumer<StudentLeaveRequestController>(
-                  builder: (context, value, child) {
-                    return value.studentsIndividualLeaveRequest.isEmpty
-                        ? Center(
-                    child: Text(
-                      "No Leave requests found",
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                    ),
-                  )
-                        : ListView.separated(
-                            separatorBuilder: (context, index) =>
-                                const SizedBox(height: 10),
-                            padding: EdgeInsets.zero,
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount:
-                                value.studentsIndividualLeaveRequest.length,
-                            itemBuilder: (context, index) {
-                              final leaveRequest =
-                                  value.studentsIndividualLeaveRequest[index];
-                              return ListTile(
-                                tileColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                leading: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8, vertical: 4),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    color:
-                                        leaveRequest.approvalStatus == "Approved"
-                                            ? Colors.green.withOpacity(.1)
-                                            : (leaveRequest.approvalStatus ==
-                                                    "Pending"
-                                                ? Colors.orange.withOpacity(.1)
-                                                : Colors.red.withOpacity(.1)),
-                                  ),
-                                  child: Icon(
-                                    Icons.assignment_add,
-                                    color:
-                                        leaveRequest.approvalStatus == "Approved"
-                                            ? Colors.green
-                                            : (leaveRequest.approvalStatus ==
-                                                    "Pending"
-                                                ? Colors.orangeAccent
-                                                : Colors.red),
-                                  ),
-                                ),
-                                title: Text(
-                                  leaveRequest.leaveType ?? "",
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize:
-                                        MediaQuery.of(context).size.width * 0.045,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                subtitle: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8, vertical: 4),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8),
-                                      color: leaveRequest.approvalStatus ==
-                                              "Approved"
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // if (widget.userType !=
+            //     UserType.admin) // Show button only for non-admin
+            //   ElevatedButton(
+            //     onPressed: () {
+            //       context.pushNamed(
+            //         AppRouteConst.AddStudentLeaveRequestRouteName,
+            //       );
+            //     },
+            //     style: ElevatedButton.styleFrom(
+            //       backgroundColor: Colors.red,
+            //       padding: EdgeInsets.symmetric(
+            //         horizontal: MediaQuery.of(context).size.width * 0.25,
+            //         vertical: MediaQuery.of(context).size.height * 0.025,
+            //       ),
+            //       shape: RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.circular(12),
+            //       ),
+            //     ),
+            //     child: const Text(
+            //       'Request for Leave',
+            //       style: TextStyle(fontSize: 18, color: Colors.white),
+            //     ),
+            //   ),
+            const SizedBox(height: 40),
+            Expanded(
+              child: Consumer<StudentLeaveRequestController>(
+                builder: (context, value, child) {
+                  return value.studentsIndividualLeaveRequest.isEmpty
+                      ? Center(
+                          child: Text(
+                            "No Leave requests found",
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w500),
+                          ),
+                        )
+                      : ListView.separated(
+                          separatorBuilder: (context, index) =>
+                              const SizedBox(height: 10),
+                          padding: EdgeInsets.zero,
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount:
+                              value.studentsIndividualLeaveRequest.length,
+                          itemBuilder: (context, index) {
+                            final leaveRequest =
+                                value.studentsIndividualLeaveRequest[index];
+                            return ListTile(
+                              tileColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              leading: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 4),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color:
+                                      leaveRequest.approvalStatus == "Approved"
                                           ? Colors.green.withOpacity(.1)
                                           : (leaveRequest.approvalStatus ==
                                                   "Pending"
                                               ? Colors.orange.withOpacity(.1)
-                                              : Colors.blue.withOpacity(.1)),
-                                    ),
-                                    child: Text(
-                                      leaveRequest.approvalStatus ?? "",
-                                      style: TextStyle(
-                                        color: leaveRequest.approvalStatus ==
-                                                "Approved"
-                                            ? Colors.green
-                                            : (leaveRequest.approvalStatus ==
-                                                    "Pending"
-                                                ? Colors.orangeAccent
-                                                : Colors.red),
-                                      ),
+                                              : Colors.red.withOpacity(.1)),
+                                ),
+                                child: Icon(
+                                  Icons.assignment_add,
+                                  color:
+                                      leaveRequest.approvalStatus == "Approved"
+                                          ? Colors.green
+                                          : (leaveRequest.approvalStatus ==
+                                                  "Pending"
+                                              ? Colors.orangeAccent
+                                              : Colors.red),
+                                ),
+                              ),
+                              title: Text(
+                                leaveRequest.leaveType ?? "",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize:
+                                      MediaQuery.of(context).size.width * 0.045,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              subtitle: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 4),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: leaveRequest.approvalStatus ==
+                                            "Approved"
+                                        ? Colors.green.withOpacity(.1)
+                                        : (leaveRequest.approvalStatus ==
+                                                "Pending"
+                                            ? Colors.orange.withOpacity(.1)
+                                            : Colors.blue.withOpacity(.1)),
+                                  ),
+                                  child: Text(
+                                    leaveRequest.approvalStatus ?? "",
+                                    style: TextStyle(
+                                      color: leaveRequest.approvalStatus ==
+                                              "Approved"
+                                          ? Colors.green
+                                          : (leaveRequest.approvalStatus ==
+                                                  "Pending"
+                                              ? Colors.orangeAccent
+                                              : Colors.red),
                                     ),
                                   ),
                                 ),
-                                trailing: Text(
-                                  DateFormatter.formatDateString(
-                                    leaveRequest.startDate.toString(),
-                                  ),
+                              ),
+                              trailing: Text(
+                                DateFormatter.formatDateString(
+                                  leaveRequest.startDate.toString(),
                                 ),
-                              );
-                            },
-                          );
-                  },
-                ),
+                              ),
+                            );
+                          },
+                        );
+                },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      
+      ),
+
       floatingActionButton: widget.userType == UserType.parent
           ? FloatingActionButton(
               onPressed: widget.onPressed,
