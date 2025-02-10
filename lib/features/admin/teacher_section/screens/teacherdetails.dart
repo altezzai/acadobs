@@ -40,7 +40,8 @@ class TeacherDetailsPage extends StatelessWidget {
               },
             ),
             ProfileContainer(
-              imagePath: "${baseUrl}${Urls.teacherPhotos}${teacher.profilePhoto}",
+              imagePath:
+                  "${baseUrl}${Urls.teacherPhotos}${teacher.profilePhoto}",
               name: capitalizeFirstLetter(teacher.fullName ?? ""),
               present: '27',
               absent: '7',
@@ -60,21 +61,4 @@ class TeacherDetailsPage extends StatelessWidget {
       ),
     );
   }
-
-  // AppBar _buildAppBar(BuildContext context, double screenWidth) {
-  //   return AppBar(
-  //     backgroundColor: Colors.transparent,
-  //     elevation: 0,
-  //     centerTitle: true,
-  //     title: Text(teacher.fullName ?? "",
-  //         style: TextStyle(
-  //             fontWeight: FontWeight.bold,
-  //             fontSize: screenWidth * 0.06,
-  //             color: Colors.black)),
-  //     leading: IconButton(
-  //         icon: Icon(Icons.arrow_back, color: Colors.black),
-  //         onPressed: () =>
-  //             context.pushNamed(AppRouteConst.AdminteacherRouteName)),
-  //   );
-  // }
 }

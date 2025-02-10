@@ -38,6 +38,40 @@ class TeacherController extends ChangeNotifier {
     }
   }
 
+  // **************individual teacher details***************
+  Teacher? _individualTeacher;
+  Teacher? get individualTeacher => _individualTeacher;
+  Future<void> getIndividualTeacherDetails({required int teacherId}) async {
+    _isloading = true;
+    notifyListeners(); // Notify before starting the operation
+
+    try {
+      log("Fetching individual teacher details...");
+
+      log("Retrieved Teacher ID: $teacherId");
+
+      final response = await TeacherServices()
+          .getIndividualTeacherDetails(teacherId: teacherId);
+
+      log("API Response Status Code: ${response.statusCode}");
+      log("API Response Data: ${response.data}");
+
+      if (response.statusCode == 200) {
+        // Assuming response.data contains the single teacher JSON object
+        _individualTeacher = Teacher.fromJson(response.data);
+        log("Teacher details successfully stored in _individualTeacher: ${_individualTeacher.toString()}");
+      } else {
+        log("Failed to fetch teacher details. Status Code: ${response.statusCode}");
+      }
+    } catch (e, stackTrace) {
+      log("Error fetching teacher details: $e",
+          error: e, stackTrace: stackTrace);
+    } finally {
+      _isloading = false;
+      notifyListeners(); // Notify after completing the operation
+    }
+  }
+
   // Add a new teacher
   Future<void> addNewTeacher(
     BuildContext context, {

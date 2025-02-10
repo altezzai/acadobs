@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:school_app/base/utils/button_loading.dart';
+import 'package:school_app/core/shared_widgets/profile_tile.dart';
+import 'package:school_app/features/admin/teacher_section/controller/teacher_controller.dart';
 import 'package:school_app/features/teacher/leave_request/model/teacherLeaveReq_model.dart';
 import 'package:school_app/features/teacher/leave_request/controller/teacherLeaveReq_controller.dart';
 import 'package:go_router/go_router.dart';
@@ -32,6 +34,8 @@ class _TeacherLeaveRequestDetailsPageState
   @override
   void initState() {
     context.read<TeacherLeaveRequestController>().getTeacherLeaverequests();
+    context.read<TeacherController>().getIndividualTeacherDetails(
+        teacherId: widget.teacherleaverequests.teacherId ?? 0);
     super.initState();
   }
 
@@ -79,25 +83,25 @@ class _TeacherLeaveRequestDetailsPageState
                 ),
               ),
               SizedBox(
-                height: Responsive.height * 1,
+                height: Responsive.height * 2,
               ),
               Text(
-                'Teacher ID: ${widget.teacherleaverequests.teacherId ?? ""}',
+                widget.teacherleaverequests.reasonForLeave ?? "",
                 style: textThemeData.bodySmall!.copyWith(
                   fontSize: 14,
                 ),
               ),
               SizedBox(
-                height: Responsive.height * 1,
+                height: Responsive.height * 2,
               ),
-              Text(
-                'Reason for leave: ${widget.teacherleaverequests.reasonForLeave ?? ""}',
-                style: textThemeData.bodySmall!.copyWith(
-                  fontSize: 14,
-                ),
-              ),
+              Consumer<TeacherController>(builder: (context, value, child) {
+                return ProfileTile(
+                    name: value.individualTeacher?.fullName ?? "",
+                    description:
+                        value.individualTeacher?.classGradeHandling ?? "");
+              }),
               SizedBox(
-                height: Responsive.height * 1,
+                height: Responsive.height * 2,
               ),
               Text(
                 'Start Date: ${DateFormatter.formatDateString(widget.teacherleaverequests.startDate.toString())}',

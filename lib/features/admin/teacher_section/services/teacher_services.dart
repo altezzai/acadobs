@@ -25,6 +25,16 @@ class TeacherServices {
     }
   }
 
+  // GET individual teacher details
+  Future<Response> getIndividualTeacherDetails({required int teacherId}) async {
+    try {
+      final Response response = await ApiServices.get('/teachers/$teacherId');
+      return response;
+    } on DioException catch (e) {
+      throw Exception('Failed to load data: $e');
+    }
+  }
+
   // // POST request for adding a teacher
   // Future<Response> addTeacher(String endPoint, FormData formData) async {
   //   try {
@@ -60,9 +70,10 @@ class TeacherServices {
       'address': address,
       'contact_number': contactNumber,
       'email': emailAddress,
-       // Only include if the photo is provided
-        "profile_photo": await MultipartFile.fromFile(profilePhoto,
-            filename: profilePhoto.split('/').last)// Make sure this date is a string
+      // Only include if the photo is provided
+      "profile_photo": await MultipartFile.fromFile(profilePhoto,
+          filename:
+              profilePhoto.split('/').last) // Make sure this date is a string
     };
 
     // Call the ApiServices post method with formData and isFormData: true

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:school_app/base/utils/button_loading.dart';
+import 'package:school_app/core/shared_widgets/profile_tile.dart';
+import 'package:school_app/features/admin/student/controller/student_controller.dart';
 
 import 'package:school_app/features/parent/leave_request/model/studentLeaveReq_model.dart';
 import 'package:school_app/features/parent/leave_request/controller/studentLeaveReq_controller.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
@@ -31,6 +31,8 @@ class _StudentLeaveRequestDetailsPageState
   @override
   void initState() {
     context.read<StudentLeaveRequestController>().getStudentLeaveRequests();
+    context.read<StudentController>().getIndividualStudentDetails(
+        studentId: widget.studentleaverequests.studentId ?? 0);
     super.initState();
   }
 
@@ -50,12 +52,10 @@ class _StudentLeaveRequestDetailsPageState
               ),
               CustomAppbar(
                 title:
-                    '      Leave request for ${DateFormatter.formatDateString(widget.studentleaverequests.startDate.toString())}',
+                    'Leave request for ${DateFormatter.formatDateString(widget.studentleaverequests.startDate.toString())}',
                 isProfileIcon: false,
                 onTap: () {
-                  context.goNamed(
-                    AppRouteConst.LeaveRequestScreenRouteName,
-                  );
+                  Navigator.pop(context);
                 },
               ),
               SizedBox(
@@ -79,25 +79,24 @@ class _StudentLeaveRequestDetailsPageState
                 ),
               ),
               SizedBox(
-                height: Responsive.height * 1,
+                height: Responsive.height * 2,
               ),
               Text(
-                'Student ID: ${widget.studentleaverequests.studentId ?? ""}',
+                widget.studentleaverequests.reasonForLeave ?? "",
                 style: textThemeData.bodySmall!.copyWith(
                   fontSize: 14,
                 ),
               ),
               SizedBox(
-                height: Responsive.height * 1,
+                height: Responsive.height * 2,
               ),
-              Text(
-                'Reason for leave: ${widget.studentleaverequests.reasonForLeave ?? ""}',
-                style: textThemeData.bodySmall!.copyWith(
-                  fontSize: 14,
-                ),
-              ),
+              Consumer<StudentController>(builder: (context, value, child) {
+                return ProfileTile(
+                    name: value.individualStudent?.fullName ?? "",
+                    description: value.individualStudent?.studentClass ?? "");
+              }),
               SizedBox(
-                height: Responsive.height * 1,
+                height: Responsive.height * 2,
               ),
               Text(
                 'Start Date:${DateFormatter.formatDateString(widget.studentleaverequests.startDate.toString())}',
