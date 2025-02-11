@@ -142,6 +142,9 @@ class DutyController extends ChangeNotifier {
           fileAttachment: fileattachment);
       if (response.statusCode == 201 || response.statusCode == 200) {
         log(">>>>>>${response.statusMessage}");
+         CustomSnackbar.show(context,
+            message: "Duty added successfully!", type: SnackbarType.success);
+       
         context.pushNamed(AppRouteConst.bottomNavRouteName,
             extra: UserType.admin);
       }
@@ -212,5 +215,27 @@ class DutyController extends ChangeNotifier {
     }
     _isloading = false;
     notifyListeners();
+  }
+  // delete 
+  Future<void> deleteDuties(BuildContext context,
+      {required int dutyId}) async {
+    _isloading = true;
+    try {
+      final response = await DutyServices().deleteDuties(dutyId: dutyId);
+      print("***********${response.statusCode}");
+      // print(response.toString());
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        log("duty deleted successfully.");
+        Navigator.pop(context);
+        CustomSnackbar.show(context,
+            message: 'Deleted successfully', type: SnackbarType.info);
+            await getDuties();
+      }
+    } catch (e) {
+      // print(e);
+    } finally {
+      _isloading = false;
+      notifyListeners();
+    }
   }
 }

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/add_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/admin/duties/controller/duty_controller.dart';
@@ -19,7 +21,9 @@ class DutiesHomeScreen extends StatefulWidget {
 class _DutiesHomeScreenState extends State<DutiesHomeScreen> {
   @override
   void initState() {
-    context.read<DutyController>().getDuties();
+    
+      context.read<DutyController>().getDuties();
+    
     super.initState();
   }
 
@@ -108,9 +112,11 @@ class _DutiesHomeScreenState extends State<DutiesHomeScreen> {
                               fileUpload: duty.fileAttachment ?? "",
                               onTap: () {
                                 context.pushNamed(
-                                  AppRouteConst.AdminViewDutyRouteName,
-                                  extra: duty,
-                                );
+                                    AppRouteConst.AdminViewDutyRouteName,
+                                    extra: AdminDutyDetailArguments(
+                                      duty: duty,
+                                      userType: UserType.admin,
+                                    ));
                               },
                             ),
                           );
