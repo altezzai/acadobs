@@ -122,7 +122,7 @@ class _TeacherChatScreenState extends State<TeacherChatScreen> {
                       return;
                     }
 
-                    final receiverId = notesController.latestChats[0].senderId;
+                    // final receiverId = notesController.latestChats[0].senderId;
                     // if (receiverId == null) {
                     //   ScaffoldMessenger.of(context).showSnackBar(
                     //     SnackBar(content: Text('Receiver ID not found')),

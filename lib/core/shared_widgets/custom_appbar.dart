@@ -6,15 +6,16 @@ class CustomAppbar extends StatelessWidget {
   final bool isProfileIcon;
   final String title;
   final double verticalPadding;
-  final VoidCallback? onTap; // Optional onTap callback for the back button
+  final VoidCallback? onTap;
 
-  const CustomAppbar(
-      {super.key,
-      this.isBackButton = true,
-      this.isProfileIcon = true,
-      required this.title, // Title for the app bar
-      this.onTap,
-      this.verticalPadding = 4});
+  const CustomAppbar({
+    super.key,
+    this.isBackButton = true,
+    this.isProfileIcon = true,
+    required this.title,
+    this.onTap,
+    this.verticalPadding = 4,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,46 +24,52 @@ class CustomAppbar extends StatelessWidget {
         vertical: Responsive.height * verticalPadding,
       ),
       child: Stack(
-        alignment: Alignment.center, // Center the title
+        alignment: Alignment.center,
         children: [
-          // Back button aligned to the left
-          Align(
-            alignment: Alignment.centerLeft,
-            child: isBackButton
-                ? GestureDetector(
-                    onTap: onTap,
-                    child: const CircleAvatar(
-                      radius: 16,
-                      backgroundColor: Color(0xFFD9D9D9),
-                      child: Icon(
-                        Icons.arrow_back_ios_new,
-                        size: 18,
-                      ),
-                    ),
-                  )
-                : const SizedBox(width: 48), // Placeholder to keep space
-          ),
-
-          // Title in the center
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 22,
-                  overflow: TextOverflow.ellipsis,
+          // Back button on the left
+          if (isBackButton)
+            Align(
+              alignment: Alignment.centerLeft,
+              child: GestureDetector(
+                onTap: onTap,
+                child: const CircleAvatar(
+                  radius: 16,
+                  backgroundColor: Color(0xFFD9D9D9),
+                  child: Icon(
+                    Icons.arrow_back_ios_new,
+                    size: 18,
+                  ),
                 ),
+              ),
+            ),
+
+          // Centered title with ellipsis
+          Center(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: Responsive.width * 54, // Adjust max width if needed
+              ),
+              child: Text(
+                title,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis, // Adds "..." for long text
+                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 22,
+                    ),
+              ),
+            ),
           ),
 
-          // Profile icon aligned to the right
-          Align(
-            alignment: Alignment.centerRight,
-            child: isProfileIcon
-                ? const CircleAvatar(
-                    backgroundImage: AssetImage('assets/admin.png'),
-                  )
-                : const SizedBox(width: 48), // Placeholder to keep space
-          ),
+          // Profile icon on the right
+          if (isProfileIcon)
+            Align(
+              alignment: Alignment.centerRight,
+              child: const CircleAvatar(
+                backgroundImage: AssetImage('assets/admin.png'),
+              ),
+            ),
         ],
       ),
     );
