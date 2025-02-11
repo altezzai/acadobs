@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:school_app/base/routes/app_route_config.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/button_loading.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/profile_tile.dart';
 import 'package:school_app/features/admin/student/controller/student_controller.dart';
 
@@ -15,10 +19,12 @@ import 'package:school_app/features/admin/leave_request/widgets/leaveRequest_car
 
 class StudentLeaveRequestDetailsPage extends StatefulWidget {
   final StudentLeaveRequest studentleaverequests;
+  final UserType userType;
 
   const StudentLeaveRequestDetailsPage({
     super.key,
     required this.studentleaverequests,
+    required this.userType,
   });
 
   @override
@@ -92,8 +98,16 @@ class _StudentLeaveRequestDetailsPageState
               ),
               Consumer<StudentController>(builder: (context, value, child) {
                 return ProfileTile(
-                    name: value.individualStudent?.fullName ?? "",
-                    description: value.individualStudent?.studentClass ?? "");
+                  name: value.individualStudent?.fullName ?? "",
+                  description: value.individualStudent?.studentClass ?? "",
+                  onPressed: () {
+                    context.pushNamed(
+                        AppRouteConst.AdminstudentdetailsRouteName,
+                        extra: StudentDetailArguments(
+                            student: value.individualStudent!,
+                            userType: widget.userType));
+                  },
+                );
               }),
               SizedBox(
                 height: Responsive.height * 2,

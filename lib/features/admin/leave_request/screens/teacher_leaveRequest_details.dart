@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/core/shared_widgets/profile_tile.dart';
 import 'package:school_app/features/admin/teacher_section/controller/teacher_controller.dart';
@@ -6,7 +7,6 @@ import 'package:school_app/features/teacher/leave_request/model/teacherLeaveReq_
 import 'package:school_app/features/teacher/leave_request/controller/teacherLeaveReq_controller.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
@@ -96,9 +96,15 @@ class _TeacherLeaveRequestDetailsPageState
               ),
               Consumer<TeacherController>(builder: (context, value, child) {
                 return ProfileTile(
-                    name: value.individualTeacher?.fullName ?? "",
-                    description:
-                        value.individualTeacher?.classGradeHandling ?? "");
+                  name: value.individualTeacher?.fullName ?? "",
+                  description:
+                      value.individualTeacher?.classGradeHandling ?? "",
+                  onPressed: () {
+                    context.pushNamed(
+                        AppRouteConst.AdminteacherdetailsRouteName,
+                        extra: value.individualTeacher!);
+                  },
+                );
               }),
               SizedBox(
                 height: Responsive.height * 2,

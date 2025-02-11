@@ -344,9 +344,6 @@ class Approuter {
           return MaterialPage(
             child: TeacherDetailsPage(
               teacher: teacher,
-              // name: teacher['name'],
-              // studentClass: teacher['class'],
-              // image: teacher['image'],
             ),
           );
         },
@@ -446,18 +443,23 @@ class Approuter {
         name: AppRouteConst.LeaveRequestScreenRouteName,
         path: '/leaverequestscreen',
         pageBuilder: (context, state) {
-          return MaterialPage(child: LeaverequestScreen());
+          final userType = state.extra as UserType;
+          return MaterialPage(
+              child: LeaverequestScreen(
+            userType: userType,
+          ));
         },
       ),
       GoRoute(
         name: AppRouteConst.studentLeaveRequestDetailsRouteName,
         path: '/studentleaverequestdetails',
         pageBuilder: (context, state) {
-          final StudentLeaveRequest studentleaverequests =
-              state.extra as StudentLeaveRequest;
+          final studentLeaveRequsetArgs =
+              state.extra as StudentLeaveRequestDetailArguments;
           return MaterialPage(
               child: StudentLeaveRequestDetailsPage(
-            studentleaverequests: studentleaverequests,
+            studentleaverequests: studentLeaveRequsetArgs.studentleaverequests,
+            userType: studentLeaveRequsetArgs.userType,
           ));
         },
       ),
@@ -758,6 +760,15 @@ class StudentDetailArguments {
   Student student;
   UserType userType;
   StudentDetailArguments({required this.student, required this.userType});
+}
+
+class StudentLeaveRequestDetailArguments {
+  StudentLeaveRequest studentleaverequests;
+  UserType userType;
+  StudentLeaveRequestDetailArguments({
+    required this.studentleaverequests,
+    required this.userType,
+  });
 }
 
 class NoticeDetailArguments {
