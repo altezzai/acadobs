@@ -78,142 +78,142 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: Responsive.width * 3),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomAppbar(
-                  title: 'Edit Student',
-                  isProfileIcon: false,
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                CustomTextfield(
-                  iconData: Icon(Icons.person),
-                  hintText: 'Enter Student Name',
-                  controller: _nameController,
-                ),
-                SizedBox(height: Responsive.height * 2),
-                Row(
-                  children: [
-                    Expanded(
-                      child: CustomTextfield(
-                        iconData: Icon(Icons.class_),
-                        hintText: 'Enter Class',
-                        controller: _classController,
-                      ),
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: Responsive.width * 3),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: Responsive.height * 1),
+              CustomAppbar(
+                title: 'Edit Student',
+                isProfileIcon: false,
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              CustomTextfield(
+                label: "Student Name",
+                iconData: Icon(Icons.person),
+                hintText: 'Enter Student Name',
+                controller: _nameController,
+              ),
+              SizedBox(height: Responsive.height * 2),
+              Row(
+                children: [
+                  Expanded(
+                    child: CustomTextfield(
+                      iconData: Icon(Icons.class_),
+                      hintText: 'Enter Class',
+                      controller: _classController,
                     ),
-                    SizedBox(width: Responsive.width * 2),
-                    Expanded(
-                      child: CustomTextfield(
-                        iconData: Icon(Icons.group),
-                        hintText: 'Enter Division',
-                        controller: _sectionController,
-                      ),
+                  ),
+                  SizedBox(width: Responsive.width * 2),
+                  Expanded(
+                    child: CustomTextfield(
+                      iconData: Icon(Icons.group),
+                      hintText: 'Enter Division',
+                      controller: _sectionController,
                     ),
-                  ],
-                ),
-                SizedBox(height: Responsive.height * 2),
-                CustomTextfield(
-                  iconData: Icon(Icons.phone),
-                  hintText: 'Enter Phone Number',
-                  controller: _phoneController,
-                ),
-                SizedBox(height: Responsive.height * 2),
-                CustomTextfield(
-                  iconData: Icon(Icons.email),
-                  hintText: 'Enter Email',
-                  controller: _emailController,
-                ),
-                // SizedBox(height: Responsive.height * 2),
-                // CustomTextfield(
-                //   iconData: Icon(Icons.email_outlined),
-                //   hintText: 'Enter Parent Email',
-                //   controller: _parentEmailController,
-                // ),
-                SizedBox(height: Responsive.height * 2),
-                CustomTextfield(
-                  iconData: Icon(Icons.phone_android),
-                  hintText: 'Enter Father\'s Contact Number',
-                  controller: _fatherContactController,
-                ),
-                SizedBox(height: Responsive.height * 2),
-                CustomTextfield(
-                  iconData: Icon(Icons.phone_android),
-                  hintText: 'Enter Mother\'s Contact Number',
-                  controller: _motherContactController,
-                ),
-                SizedBox(height: Responsive.height * 2),
-                CustomFilePicker(
-                  label: 'Student Photo',
-                  fieldName: 'student photo',
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'This field is required';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: Responsive.height * 2),
-                CustomFilePicker(
-                  label: 'Parent Photo',
-                  fieldName: 'parent photo',
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'This field is required';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: Responsive.height * 2),
-                Consumer<StudentController>(
-                  builder: (context, loadingController, child) {
-                    return CommonButton(
-                      onPressed: () {
-                        // Retrieve selected files
-                        final selectedStudentPhoto = context
-                            .read<FilePickerProvider>()
-                            .getFile('student photo');
+                  ),
+                ],
+              ),
+              SizedBox(height: Responsive.height * 2),
+              CustomTextfield(
+                iconData: Icon(Icons.phone),
+                hintText: 'Enter Phone Number',
+                controller: _phoneController,
+              ),
+              SizedBox(height: Responsive.height * 2),
+              CustomTextfield(
+                iconData: Icon(Icons.email),
+                hintText: 'Enter Email',
+                controller: _emailController,
+              ),
+              // SizedBox(height: Responsive.height * 2),
+              // CustomTextfield(
+              //   iconData: Icon(Icons.email_outlined),
+              //   hintText: 'Enter Parent Email',
+              //   controller: _parentEmailController,
+              // ),
+              SizedBox(height: Responsive.height * 2),
+              CustomTextfield(
+                iconData: Icon(Icons.phone_android),
+                hintText: 'Enter Father\'s Contact Number',
+                controller: _fatherContactController,
+              ),
+              SizedBox(height: Responsive.height * 2),
+              CustomTextfield(
+                iconData: Icon(Icons.phone_android),
+                hintText: 'Enter Mother\'s Contact Number',
+                controller: _motherContactController,
+              ),
+              SizedBox(height: Responsive.height * 2),
+              CustomFilePicker(
+                label: 'Student Photo',
+                fieldName: 'student photo',
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'This field is required';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: Responsive.height * 2),
+              CustomFilePicker(
+                label: 'Parent Photo',
+                fieldName: 'parent photo',
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'This field is required';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: Responsive.height * 2),
+              Consumer<StudentController>(
+                builder: (context, loadingController, child) {
+                  return CommonButton(
+                    onPressed: () {
+                      // Retrieve selected files
+                      final selectedStudentPhoto = context
+                          .read<FilePickerProvider>()
+                          .getFile('student photo');
 
-                        final parentPhoto = context
-                            .read<FilePickerProvider>()
-                            .getFile('parent photo');
+                      final parentPhoto = context
+                          .read<FilePickerProvider>()
+                          .getFile('parent photo');
 
-                        // Extract paths, handling null values
-                        final studentPhotoPath = selectedStudentPhoto?.path;
-                        final parentPhotoPath = parentPhoto?.path;
+                      // Extract paths, handling null values
+                      final studentPhotoPath = selectedStudentPhoto?.path;
+                      final parentPhotoPath = parentPhoto?.path;
 
-                        // Call updateStudent with conditional handling for photo paths
-                        context.read<StudentController>().updateStudent(
-                              context,
-                              studentId: widget.student.id ?? 0,
-                              fullName: _nameController.text.trim(),
-                              studentClass: _classController.text.trim(),
-                              section: _sectionController.text.trim(),
-                              contactNumber: _phoneController.text.trim(),
-                              email: _emailController.text.trim(),
-                              fatherContactNumber:
-                                  _fatherContactController.text.trim(),
-                              motherContactNumber:
-                                  _motherContactController.text.trim(),
-                              studentPhoto: studentPhotoPath ??
-                                  "", // Pass null if not selected
-                              fatherMotherPhoto: parentPhotoPath ??
-                                  "", // Pass null if not selected
-                            );
-                      },
-                      widget: loadingController.isLoadingTwo
-                          ? ButtonLoading()
-                          : Text('Update'),
-                    );
-                  },
-                )
-              ],
-            ),
+                      // Call updateStudent with conditional handling for photo paths
+                      context.read<StudentController>().updateStudent(
+                            context,
+                            studentId: widget.student.id ?? 0,
+                            fullName: _nameController.text.trim(),
+                            studentClass: _classController.text.trim(),
+                            section: _sectionController.text.trim(),
+                            contactNumber: _phoneController.text.trim(),
+                            email: _emailController.text.trim(),
+                            fatherContactNumber:
+                                _fatherContactController.text.trim(),
+                            motherContactNumber:
+                                _motherContactController.text.trim(),
+                            studentPhoto: studentPhotoPath ??
+                                "", // Pass null if not selected
+                            fatherMotherPhoto: parentPhotoPath ??
+                                "", // Pass null if not selected
+                          );
+                    },
+                    widget: loadingController.isLoadingTwo
+                        ? ButtonLoading()
+                        : Text('Update'),
+                  );
+                },
+              )
+            ],
           ),
         ),
       ),
