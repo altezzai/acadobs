@@ -60,6 +60,7 @@ class AchievementsList extends StatelessWidget {
                       )
                     :  _buildGroupedList(groupedAchievements,
                 (achievement, index, total) {
+                         // final entry = groupedAchievements.entries.elementAt(index);
                           // final entry = groupedAchievements.entries.elementAt(index);
                           // final dateGroup = entry.key;
                           // final achievements = entry.value;
