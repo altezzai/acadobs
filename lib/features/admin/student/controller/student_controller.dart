@@ -234,6 +234,42 @@ class StudentController extends ChangeNotifier {
     }
   }
 
+  // ********Add New Student************
+  Future<void> addNewStudentTesting(
+  ) async {
+    _isloading = true;
+
+    try {
+      final response = await StudentServices().addNewStudentTesting(
+        );
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        log(">>>>>>>>>>>>>Student Added}");
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   SnackBar(
+        //     content: Text('Student Added successfully!'),
+        //     backgroundColor: Colors.green, // Set color for success
+        //   ),
+        // );
+        // Navigate to the desired route
+
+        // Navigator.pop(context);
+      } else {
+        // Handle failure case here if needed
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   SnackBar(
+        //     content: Text('Failed to add student. Please try again.'),
+        //     backgroundColor: Colors.red, // Set color for error
+        //   ),
+        // );
+      }
+    } catch (e) {
+      log(e.toString());
+    } finally {
+      _isloading = false;
+      notifyListeners();
+    }
+  }
+
   //update student details
 
 
