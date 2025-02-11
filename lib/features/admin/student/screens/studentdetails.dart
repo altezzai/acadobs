@@ -137,7 +137,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                                         .bodyLarge!
                                         .copyWith(
                                           fontWeight: FontWeight.w600,
-                                          fontSize: 18,
+                                          fontSize: 22,
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                   ),

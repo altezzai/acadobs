@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
@@ -14,6 +15,9 @@ import 'package:school_app/features/parent/leave_request/controller/studentLeave
 import 'package:school_app/features/teacher/leave_request/controller/teacherLeaveReq_controller.dart';
 
 class LeaverequestScreen extends StatefulWidget {
+  final UserType userType;
+
+  const LeaverequestScreen({super.key, required this.userType});
   @override
   _LeaverequestScreenState createState() => _LeaverequestScreenState();
 }
@@ -154,35 +158,37 @@ class _LeaverequestScreenState extends State<LeaverequestScreen>
             DateTime.now(),
       );
       return value.studentsLeaveRequest.isEmpty
-                    ? Center(
-                        child: Text("No Achievements Found!"),
-                      )
-                    :  _buildGroupedList(groupedStudentLeaveRequests,
-          (studentLeaveRequest, index, total) {
-        final isFirst = index == 0;
-        final isLast = index == total - 1;
-        final topRadius = isFirst ? 16.0 : 0.0;
-        final bottomRadius = isLast ? 16.0 : 0.0;
-        return Padding(
-            padding: EdgeInsets.only(
-              bottom: 1.5,
-            ),
-            child: LeaveRequestCard(
-              topRadius: topRadius,
-              bottomRadius: bottomRadius,
-              title:
-                  'Leave request for ${DateFormatter.formatDateString(studentLeaveRequest.startDate.toString())}',
-              status: studentLeaveRequest.approvalStatus ?? "",
-              time: TimeFormatter.formatTimeFromString(
-                  studentLeaveRequest.createdAt.toString()),
-              onTap: () {
-                context.pushNamed(
-                  AppRouteConst.studentLeaveRequestDetailsRouteName,
-                  extra: studentLeaveRequest,
-                );
-              },
-            ));
-      });
+          ? Center(
+              child: Text("No Leave requests Found!"),
+            )
+          : _buildGroupedList(groupedStudentLeaveRequests,
+              (studentLeaveRequest, index, total) {
+              final isFirst = index == 0;
+              final isLast = index == total - 1;
+              final topRadius = isFirst ? 16.0 : 0.0;
+              final bottomRadius = isLast ? 16.0 : 0.0;
+              return Padding(
+                  padding: EdgeInsets.only(
+                    bottom: 1.5,
+                  ),
+                  child: LeaveRequestCard(
+                    topRadius: topRadius,
+                    bottomRadius: bottomRadius,
+                    title:
+                        'Leave request for ${DateFormatter.formatDateString(studentLeaveRequest.startDate.toString())}',
+                    status: studentLeaveRequest.approvalStatus ?? "",
+                    time: TimeFormatter.formatTimeFromString(
+                        studentLeaveRequest.createdAt.toString()),
+                    onTap: () {
+                      context.pushNamed(
+                          AppRouteConst.studentLeaveRequestDetailsRouteName,
+                          extra: StudentLeaveRequestDetailArguments(
+                              studentleaverequests:
+                                  value.studentsLeaveRequest[index],
+                              userType: widget.userType));
+                    },
+                  ));
+            });
     });
   }
 
@@ -204,39 +210,39 @@ class _LeaverequestScreenState extends State<LeaverequestScreen>
             DateTime.now(),
       );
       return value.teachersLeaveRequest.isEmpty
-                    ? Center(
-                        child: Text("No Achievements Found!"),
-                      )
-                    : _buildGroupedList(groupedTeacherLeaveRequests,
-          (teacherLeaveRequest, index, total) {
-        final isFirst = index == 0;
-        final isLast = index == total - 1;
-        final topRadius = isFirst ? 16.0 : 0.0;
-        final bottomRadius = isLast ? 16.0 : 0.0;
-        return Padding(
-          padding: const EdgeInsets.only(
-            bottom: 1.5,
-          ),
-          child: LeaveRequestCard(
-            topRadius: topRadius,
-            bottomRadius: bottomRadius,
-            title:
-                'Leave request for ${DateFormatter.formatDateString(teacherLeaveRequest.startDate.toString())}',
-            status: teacherLeaveRequest.approvalStatus ?? "",
-            time: TimeFormatter.formatTimeFromString(
-                teacherLeaveRequest.createdAt.toString()),
-            onTap: () {
-              context.pushNamed(
-                AppRouteConst.teacherLeaveRequestDetailsRouteName,
-                extra: {
-                  'teacherLeaveRequest': teacherLeaveRequest,
-                  'userType': 'admin'
-                },
+          ? Center(
+              child: Text("No Leave requests Found!"),
+            )
+          : _buildGroupedList(groupedTeacherLeaveRequests,
+              (teacherLeaveRequest, index, total) {
+              final isFirst = index == 0;
+              final isLast = index == total - 1;
+              final topRadius = isFirst ? 16.0 : 0.0;
+              final bottomRadius = isLast ? 16.0 : 0.0;
+              return Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 1.5,
+                ),
+                child: LeaveRequestCard(
+                  topRadius: topRadius,
+                  bottomRadius: bottomRadius,
+                  title:
+                      'Leave request for ${DateFormatter.formatDateString(teacherLeaveRequest.startDate.toString())}',
+                  status: teacherLeaveRequest.approvalStatus ?? "",
+                  time: TimeFormatter.formatTimeFromString(
+                      teacherLeaveRequest.createdAt.toString()),
+                  onTap: () {
+                    context.pushNamed(
+                      AppRouteConst.teacherLeaveRequestDetailsRouteName,
+                      extra: {
+                        'teacherLeaveRequest': teacherLeaveRequest,
+                        'userType': 'admin'
+                      },
+                    );
+                  },
+                ),
               );
-            },
-          ),
-        );
-      });
+            });
     });
   }
 

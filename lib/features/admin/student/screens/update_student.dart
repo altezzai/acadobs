@@ -103,6 +103,7 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
                 children: [
                   Expanded(
                     child: CustomTextfield(
+                      label: "Class",
                       iconData: Icon(Icons.class_),
                       hintText: 'Enter Class',
                       controller: _classController,
@@ -111,6 +112,7 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
                   SizedBox(width: Responsive.width * 2),
                   Expanded(
                     child: CustomTextfield(
+                      label: "Division",
                       iconData: Icon(Icons.group),
                       hintText: 'Enter Division',
                       controller: _sectionController,
@@ -120,12 +122,14 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
               ),
               SizedBox(height: Responsive.height * 2),
               CustomTextfield(
+                label: "Phone Number",
                 iconData: Icon(Icons.phone),
                 hintText: 'Enter Phone Number',
                 controller: _phoneController,
               ),
               SizedBox(height: Responsive.height * 2),
               CustomTextfield(
+                label: "Email",
                 iconData: Icon(Icons.email),
                 hintText: 'Enter Email',
                 controller: _emailController,
@@ -138,12 +142,14 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
               // ),
               SizedBox(height: Responsive.height * 2),
               CustomTextfield(
+                label: "Father's Contact Number",
                 iconData: Icon(Icons.phone_android),
                 hintText: 'Enter Father\'s Contact Number',
                 controller: _fatherContactController,
               ),
               SizedBox(height: Responsive.height * 2),
               CustomTextfield(
+                label: "Mother's Contact Number",
                 iconData: Icon(Icons.phone_android),
                 hintText: 'Enter Mother\'s Contact Number',
                 controller: _motherContactController,

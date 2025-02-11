@@ -61,7 +61,8 @@ class AdminHomeScreen extends StatelessWidget {
                 icon: Icons.assignment_add,
                 iconSize: 26,
                 ontap: () {
-                  context.pushNamed(AppRouteConst.LeaveRequestScreenRouteName);
+                  context.pushNamed(AppRouteConst.LeaveRequestScreenRouteName,
+                      extra: UserType.admin);
                 }),
             SizedBox(
               height: Responsive.height * 1,

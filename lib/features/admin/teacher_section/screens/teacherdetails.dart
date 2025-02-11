@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/urls.dart';
@@ -36,7 +34,7 @@ class TeacherDetailsPage extends StatelessWidget {
               title: 'Teachers',
               isProfileIcon: false,
               onTap: () {
-                context.pushNamed(AppRouteConst.AdminteacherRouteName);
+                Navigator.pop(context);
               },
             ),
             ProfileContainer(
