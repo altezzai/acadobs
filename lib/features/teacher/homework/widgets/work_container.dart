@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/constants.dart';
-import 'package:school_app/base/utils/responsive.dart';
 
 class WorkContainer extends StatelessWidget {
   final Color bcolor;
@@ -21,8 +19,8 @@ class WorkContainer extends StatelessWidget {
       {super.key,
       this.bcolor = const Color(0xffFFFCCE),
       this.icolor = const Color(0xffBCB54F),
-      this.iconPath ,
-      this.icon=Icons.invert_colors_on_sharp,
+      this.iconPath,
+      this.icon = Icons.invert_colors_on_sharp,
       required this.sub,
       required this.work,
       this.prefixText = "View",
@@ -56,7 +54,7 @@ class WorkContainer extends StatelessWidget {
 
         child: Row(
           children: [
-             Container(
+            Container(
                 height: 40,
                 width: 40,
                 padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
@@ -66,33 +64,37 @@ class WorkContainer extends StatelessWidget {
                     shape: BoxShape.circle),
                 child: Padding(
                   padding: const EdgeInsets.all(4),
-                  child:  iconPath != null
-                    ?Image.asset(
-                    iconPath??"",
-                    color: icolor,
-                    height: 22,
-                    width: 20,
-                  ):Icon(icon , size: 22, color: icolor),
+                  child: iconPath != null
+                      ? Image.asset(
+                          iconPath ?? "",
+                          color: icolor,
+                          height: 22,
+                          width: 20,
+                        )
+                      : Icon(icon, size: 22, color: icolor),
                 )),
-           
-           SizedBox(width: 10),
+
+            SizedBox(width: 10),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(capitalizeFirstLetter(work),
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
-                      )),
-                      SizedBox(height: 4),
+                  Text(
+                    capitalizeFirstLetter(work),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: 4),
                   Text(
                     capitalizeFirstLetter(sub),
-                   style: TextStyle(
-                            color: Colors.grey[600],
-                            fontWeight: FontWeight.bold,
-                            fontSize: 10,
-                          ),
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 10,
+                    ),
                   )
                 ],
               ),
@@ -100,7 +102,8 @@ class WorkContainer extends StatelessWidget {
             Spacer(),
             Text(
               prefixText,
-             style: TextStyle(fontWeight: FontWeight.w600,color: Colors.black),
+              style:
+                  TextStyle(fontWeight: FontWeight.w600, color: Colors.black),
             ),
             // SizedBox(
             //   width: Responsive.width * 4,

@@ -38,7 +38,7 @@ class AchievementsList extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: Responsive.height * 4),
+            SizedBox(height: Responsive.height * 5),
             Consumer<AchievementController>(
               builder: (context, value, child) {
                 if (value.isloading) {
@@ -61,6 +61,7 @@ class AchievementsList extends StatelessWidget {
                     :  _buildGroupedList(groupedAchievements,
                 (achievement, index, total) {
                          // final entry = groupedAchievements.entries.elementAt(index);
+                          // final entry = groupedAchievements.entries.elementAt(index);
                           // final dateGroup = entry.key;
                           // final achievements = entry.value;
             

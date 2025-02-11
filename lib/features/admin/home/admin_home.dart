@@ -59,7 +59,7 @@ class AdminHomeScreen extends StatelessWidget {
                 color: Colors.red,
                 text: 'Leave Requests',
                 icon: Icons.assignment_add,
-                iconSize: 30,
+                iconSize: 26,
                 ontap: () {
                   context.pushNamed(AppRouteConst.LeaveRequestScreenRouteName);
                 }),
@@ -71,7 +71,7 @@ class AdminHomeScreen extends StatelessWidget {
                 color: Colors.black,
                 text: 'Subjects',
                 iconPath: "assets/icons/subject.png",
-                iconSize: 30,
+                iconSize: 26,
                 ontap: () {
                   context.pushNamed(AppRouteConst.SubjectsPageRouteName);
                 }),

@@ -42,6 +42,7 @@ class _AddSubjectState extends State<AddSubject> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(height: Responsive.height * 1),
               CustomAppbar(
                 title: 'Add Subject',
                 isProfileIcon: false,

@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
-
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/base/utils/urls.dart';
@@ -323,43 +322,53 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
 
         return value.exam.isEmpty
             ? const Center(child: Text("No Exams Found!"))
-            : ListView.builder(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-                itemCount: groupedExams.length,
-                itemBuilder: (context, index) {
-                  final entry = groupedExams.entries.elementAt(index);
-                  final dateGroup = entry.key;
-                  final exams = entry.value;
+            : SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(height: Responsive.height * 5),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                      ),
+                      itemCount: groupedExams.length,
+                      itemBuilder: (context, index) {
+                        final entry = groupedExams.entries.elementAt(index);
+                        final dateGroup = entry.key;
+                        final exams = entry.value;
 
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: Responsive.height * 2),
-                      Text(dateGroup, style: textThemeData.bodyMedium),
-                      const SizedBox(height: 10),
-                      // Create cards for each exam in the same date group
-                      ...exams.map((exam) {
-                        return _buildExamCard(
-                          exam.classGrade ?? "N/A",
-                          exam.section ?? "N/A",
-                          exam.title ?? "N/A",
-                          exam.attendanceStatus ?? "N/A",
-                          [
-                            {
-                              "subject": exam.subject ?? "",
-                              "mark": exam.marks?.toString() ?? "0",
-                              "total": exam.totalMarks?.toString() ?? "0",
-                              "attendance_status":
-                                  exam.attendanceStatus ?? "N/A",
-                            }
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: Responsive.height * 2),
+                            Text(dateGroup, style: textThemeData.bodyMedium),
+                            const SizedBox(height: 10),
+                            // Create cards for each exam in the same date group
+                            ...exams.map((exam) {
+                              return _buildExamCard(
+                                exam.classGrade ?? "N/A",
+                                exam.section ?? "N/A",
+                                exam.title ?? "N/A",
+                                exam.attendanceStatus ?? "N/A",
+                                [
+                                  {
+                                    "subject": exam.subject ?? "",
+                                    "mark": exam.marks?.toString() ?? "0",
+                                    "total": exam.totalMarks?.toString() ?? "0",
+                                    "attendance_status":
+                                        exam.attendanceStatus ?? "N/A",
+                                  }
+                                ],
+                              );
+                            }).toList(),
+                            const SizedBox(height: 10),
                           ],
                         );
-                      }).toList(),
-                      const SizedBox(height: 10),
-                    ],
-                  );
-                },
+                      },
+                    ),
+                  ],
+                ),
               );
       },
     );
