@@ -127,6 +127,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(height: Responsive.height * 1),
                 CustomAppbar(
                   title: 'Add Student',
                   isProfileIcon: false,
@@ -561,7 +562,8 @@ class _AddStudentPageState extends State<AddStudentPage> {
                     builder: (context, value, child) {
                   return CommonButton(
                     onPressed: () {
-                      _submitForm(context);
+                      // _submitForm(context);
+                      // context.read<StudentController>().addNewStudentTesting();
                     },
                     widget:
                         value.isLoadingTwo ? ButtonLoading() : Text('Submit'),
@@ -626,7 +628,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
             );
 
         // Clear the form fields upon success
-        _clearFormFields();
+        // _clearFormFields();
       } catch (e) {
         // Handle any errors and show an error message
         CustomSnackbar.show(context,
