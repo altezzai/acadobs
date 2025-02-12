@@ -101,8 +101,13 @@ class _AddTeacherState extends State<AddTeacher> {
                   height: Responsive.height * 1,
                 ),
                 CustomDatePicker(
+                  // hintText: "Date of Birth",
                   label: "Date of Birth",
-                  dateController: _dateOfBirthController,
+                  firstDate: DateTime(1995),
+                  lastDate: DateTime(2010),
+                  // initialDate: DateTime.now(),
+                  dateController:
+                      _dateOfBirthController, // Unique controller for end date
                   onDateSelected: (selectedDate) {
                     print("End Date selected: $selectedDate");
                   },

@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/button_loading.dart';
+import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/profile_tile.dart';
 import 'package:school_app/features/admin/student/controller/student_controller.dart';
@@ -98,6 +99,8 @@ class _StudentLeaveRequestDetailsPageState
               ),
               Consumer<StudentController>(builder: (context, value, child) {
                 return ProfileTile(
+                  imageUrl:
+                      "${baseUrl}${Urls.studentPhotos}${value.individualStudent?.studentPhoto}",
                   name: value.individualStudent?.fullName ?? "",
                   description: value.individualStudent?.studentClass ?? "",
                   onPressed: () {
