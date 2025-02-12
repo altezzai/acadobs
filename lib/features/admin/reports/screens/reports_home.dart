@@ -15,6 +15,7 @@ class ReportsHomeScreen extends StatelessWidget {
             CustomAppbar(
               title: "Reports",
               isBackButton: false,
+              isProfileIcon: false,
             ),
             ReportCard(
               title: 'Payment Report',

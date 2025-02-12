@@ -21,9 +21,8 @@ class DutiesHomeScreen extends StatefulWidget {
 class _DutiesHomeScreenState extends State<DutiesHomeScreen> {
   @override
   void initState() {
-    
-      context.read<DutyController>().getDuties();
-    
+    context.read<DutyController>().getDuties();
+
     super.initState();
   }
 
@@ -47,8 +46,9 @@ class _DutiesHomeScreenState extends State<DutiesHomeScreen> {
                         CustomAppbar(
                           title: "Duties",
                           isBackButton: false,
+                          isProfileIcon: false,
                         ),
-                        SizedBox(height: Responsive.height * 2),
+                        SizedBox(height: Responsive.height * 1),
                         Row(
                           children: [
                             Expanded(
