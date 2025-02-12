@@ -38,7 +38,7 @@ class HomeworkList extends StatelessWidget {
                
                 // itemCount: groupedHomework.length,
                 
-                  final entry = groupedHomework.entries.elementAt(index);
+                  // final entry = groupedHomework.entries.elementAt(index);
                   // final dateGroup = entry.key;
                   // final homeworks = entry.value;
               final isFirst = index == 0;
