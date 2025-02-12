@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/button_loading.dart';
+import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/shared_widgets/profile_tile.dart';
 import 'package:school_app/features/admin/teacher_section/controller/teacher_controller.dart';
 import 'package:school_app/features/teacher/leave_request/model/teacherLeaveReq_model.dart';
@@ -96,6 +97,8 @@ class _TeacherLeaveRequestDetailsPageState
               ),
               Consumer<TeacherController>(builder: (context, value, child) {
                 return ProfileTile(
+                  imageUrl:
+                      "${baseUrl}${Urls.teacherPhotos}${value.individualTeacher?.profilePhoto}",
                   name: value.individualTeacher?.fullName ?? "",
                   description:
                       value.individualTeacher?.classGradeHandling ?? "",
