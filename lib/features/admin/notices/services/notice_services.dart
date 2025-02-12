@@ -43,10 +43,12 @@ class NoticeServices {
       'title': title,
       'description': description,
       'date': date,
-      'file_upload': await MultipartFile.fromFile(fileUploadPath!,
-          filename: fileUploadPath
-              .split('/')
-              .last), // Make sure this date is a string
+      
+       if (fileUploadPath != null && fileUploadPath.isNotEmpty)
+    'file_upload': await MultipartFile.fromFile(
+      fileUploadPath,
+      filename: fileUploadPath.split('/').last,
+    ), // Make sure this date is a string
       //'file_upload':
       //await MultipartFile.fromFile(fileProvider.selectedFile!.path!)
     });

@@ -57,7 +57,7 @@ class _AddNoticePageState extends State<AddNoticePage> {
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
-          key: _formKey ,
+          key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -82,7 +82,8 @@ class _AddNoticePageState extends State<AddNoticePage> {
                 label: 'Select Audience',
                 icon: Icons.school,
                 items: ['All', 'Specific Class'],
-                validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "TargetAudience"),
+                validator: (value) => FormValidator.validateNotEmpty(value,
+                    fieldName: "TargetAudience"),
               ),
               SizedBox(height: Responsive.height * 2),
               // Row for Class and Division Dropdowns
@@ -99,7 +100,6 @@ class _AddNoticePageState extends State<AddNoticePage> {
                               label: 'Select Class',
                               icon: Icons.school,
                               items: ['8', '9', '10'],
-                              
                             ),
                           ),
                           SizedBox(width: 16), // Space between the dropdowns
@@ -110,7 +110,6 @@ class _AddNoticePageState extends State<AddNoticePage> {
                               label: 'Select Division',
                               icon: Icons.group,
                               items: ['A', 'B', 'C'],
-                            
                             ),
                           ),
                         ],
@@ -120,11 +119,14 @@ class _AddNoticePageState extends State<AddNoticePage> {
               // Date Picker
               CustomDatePicker(
                 label: "dd-mm-yyyy",
-                dateController: _dateController, // Unique controller for end date
+                dateController:
+                    _dateController, // Unique controller for end date
+                lastDate: DateTime(2026),
                 onDateSelected: (selectedDate) {
                   print("End Date selected: $selectedDate");
                 },
-                validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Date"),
+                validator: (value) =>
+                    FormValidator.validateNotEmpty(value, fieldName: "Date"),
               ),
               SizedBox(height: Responsive.height * 3),
               Text(
@@ -134,17 +136,18 @@ class _AddNoticePageState extends State<AddNoticePage> {
                 ),
               ),
               SizedBox(height: 16),
-          
+
               // Title Input
               CustomTextfield(
                 controller: _titleController,
                 // hintText: 'Title',
                 label: 'Title',
                 iconData: Icon(Icons.title),
-                validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Title"),
+                validator: (value) =>
+                    FormValidator.validateNotEmpty(value, fieldName: "Title"),
               ),
               SizedBox(height: 16),
-          
+
               // Description Input
               TextFormField(
                 controller: _descriptionController,
@@ -165,47 +168,50 @@ class _AddNoticePageState extends State<AddNoticePage> {
                   ),
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                 ),
-                validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Description"),
+                validator: (value) => FormValidator.validateNotEmpty(value,
+                    fieldName: "Description"),
               ),
-          
+
               SizedBox(height: 16),
               CustomFilePicker(
                 label: "Add Receipt",
                 fieldName: 'notice file',
-          
               ),
               SizedBox(height: 40),
               Consumer<NoticeController>(builder: (context, value, child) {
                 return CommonButton(
                   onPressed: () {
-                     if (_formKey.currentState?.validate() ?? false) {
-                          try {
-                    final selected_Audience = context
-                        .read<DropdownProvider>()
-                        .getSelectedItem('targetAudience');
-                    String selectedClass =
-                        context.read<DropdownProvider>().getSelectedItem('class');
-                    String selectedDivision = context
-                        .read<DropdownProvider>()
-                        .getSelectedItem('division');
-                    context.read<NoticeController>().addNotice(context,
-                        className: selectedClass,
-                        division: selectedDivision,
-                        audience_type: selected_Audience,
-                        title: _titleController.text,
-                        description: _descriptionController.text,
-                        date: _dateController.text);
-                  } catch (e) {
-                          // Handle any errors and show an error message
-                          CustomSnackbar.show(context,
-            message: "Failed to add notice.Please try again", type: SnackbarType.failure);
-                        }
-                      } else {
-                        // Highlight missing fields if the form is invalid
-                       CustomSnackbar.show(context,
-            message: "Please complete all required fields", type: SnackbarType.warning);
+                    if (_formKey.currentState?.validate() ?? false) {
+                      try {
+                        final selected_Audience = context
+                            .read<DropdownProvider>()
+                            .getSelectedItem('targetAudience');
+                        String selectedClass = context
+                            .read<DropdownProvider>()
+                            .getSelectedItem('class');
+                        String selectedDivision = context
+                            .read<DropdownProvider>()
+                            .getSelectedItem('division');
+                        context.read<NoticeController>().addNotice(context,
+                            className: selectedClass,
+                            division: selectedDivision,
+                            audience_type: selected_Audience,
+                            title: _titleController.text,
+                            description: _descriptionController.text,
+                            date: _dateController.text);
+                      } catch (e) {
+                        // Handle any errors and show an error message
+                        CustomSnackbar.show(context,
+                            message: "Failed to add notice.Please try again",
+                            type: SnackbarType.failure);
                       }
-                    },
+                    } else {
+                      // Highlight missing fields if the form is invalid
+                      CustomSnackbar.show(context,
+                          message: "Please complete all required fields",
+                          type: SnackbarType.warning);
+                    }
+                  },
                   widget: value.isloadingTwo ? Loading() : Text('Submit'),
                 );
               }),

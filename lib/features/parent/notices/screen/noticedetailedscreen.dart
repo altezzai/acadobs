@@ -6,8 +6,10 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+import 'package:school_app/core/shared_widgets/common_appbar.dart';
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
 import 'package:school_app/features/admin/notices/models/notice_model.dart';
 
@@ -124,29 +126,18 @@ Future<Directory?> getDownloadDirectory() async {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.chevron_left, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(
-          notice.title ?? "",
-          style: const TextStyle(
-              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.grey[200],
-        elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black),
+      appBar:  CommonAppBar(
+        title: capitalizeEachWord(notice.title ?? ""),
+        isBackButton: true,
         actions: [
           if (userType == UserType.admin) // Show for admin only
             Consumer<NoticeController>(
-              builder: (context, noticeController, child) {
+              builder: (context,noticeController, child) {
                 return PopupMenuButton<String>(
                   onSelected: (String value) {
                     if (value == 'delete') {
                       noticeController.deleteNotices(context,
-                          noticeId: notice.id!); // Pass the notice ID
+                          noticeId: notice.id!); // Pass the duty ID
                       // Navigator.pop(
                       //     context); // Close the detailed screen after deletion
                     }
@@ -169,6 +160,7 @@ Future<Directory?> getDownloadDirectory() async {
             ),
         ],
       ),
+    
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),

@@ -87,8 +87,11 @@ class NoticeController extends ChangeNotifier {
           audience_type: audience_type);
       if (response.statusCode == 201) {
         log(">>>>>>${response.statusMessage}");
+       
         context.pushNamed(AppRouteConst.bottomNavRouteName,
             extra: UserType.admin);
+             CustomSnackbar.show(context,
+            message: 'Notice Added successfully', type: SnackbarType.success);
       }
     } catch (e) {
       log(e.toString());

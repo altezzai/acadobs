@@ -58,6 +58,8 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
                         CustomAppbar(
                           title: "Notices/Events",
                           isBackButton: false,
+                          isProfileIcon: false,
+
                         ),
                         SizedBox(
                             height: Responsive.height * 2), // 20px equivalent

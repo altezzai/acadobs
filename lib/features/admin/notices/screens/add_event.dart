@@ -71,6 +71,7 @@ class _AddEventPageState extends State<AddEventPage> {
             
                 // Add Cover Photo
                 GestureDetector(
+                  
                   onTap: () {
                     context.read<NoticeController>().pickMultipleImages();
                   },
@@ -84,6 +85,7 @@ class _AddEventPageState extends State<AddEventPage> {
                           border: Border.all(color: Colors.grey),
                           borderRadius: BorderRadius.circular(30),
                         ),
+                        
                         child: files != null && files.isNotEmpty
                             ? ListView.builder(
                                 scrollDirection:
@@ -126,8 +128,11 @@ class _AddEventPageState extends State<AddEventPage> {
                                             ),
                                           ),
                                         ),
+                                        
                                       ),
+                                      
                                     ],
+                                    
                                   );
                                 },
                               )
@@ -140,6 +145,7 @@ class _AddEventPageState extends State<AddEventPage> {
                                     Text(
                                       'Add Event images',
                                       style: TextStyle(fontSize: 16),
+                                      
                                     ),
                                   ],
                                 ),

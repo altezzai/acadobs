@@ -2,9 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+import 'package:school_app/core/shared_widgets/common_appbar.dart';
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
 import 'package:school_app/features/admin/notices/models/event_model.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -37,32 +39,20 @@ class _EventDetailPageState extends State<EventDetailPage> {
         [];
 
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.chevron_left, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: Text(
-          event.title ?? '',
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.grey[200],
-        iconTheme: const IconThemeData(color: Colors.black),
-        elevation: 0,
+      appBar:  CommonAppBar(
+        title: capitalizeEachWord(event.title ?? ""),
+        isBackButton: true,
         actions: [
-          if (widget.userType == UserType.admin)
+          if (widget.userType == UserType.admin) // Show for admin only
             Consumer<NoticeController>(
-              builder: (context, eventController, child) {
+              builder: (context, dutyController, child) {
                 return PopupMenuButton<String>(
                   onSelected: (String value) {
                     if (value == 'delete') {
-                      eventController.deleteEvents(context,
-                          eventId: event.eventId!);
+                      dutyController.deleteEvents(context,
+                          eventId: event.eventId!); // Pass the duty ID
                       // Navigator.pop(
-                      //     context); // Close the detail page after deletion
+                      //     context); // Close the detailed screen after deletion
                     }
                   },
                   itemBuilder: (BuildContext context) =>
@@ -83,6 +73,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
             ),
         ],
       ),
+      
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
