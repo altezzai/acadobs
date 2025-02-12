@@ -562,7 +562,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                     builder: (context, value, child) {
                   return CommonButton(
                     onPressed: () {
-                      // _submitForm(context);
+                      _submitForm(context);
                       // context.read<StudentController>().addNewStudentTesting();
                     },
                     widget:

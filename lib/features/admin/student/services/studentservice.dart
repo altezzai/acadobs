@@ -85,74 +85,13 @@ class StudentServices {
       "mother_contact_number": motherContactNumber,
 
       // Only include if the photo is provided
-      // "student_photo": await MultipartFile.fromFile(studentPhotoPath,
-      //     filename: studentPhotoPath.split('/').last),
-      // if (aadhaarCard != null)
-      //   "aadhaar_card": await MultipartFile.fromFile(aadhaarCard,
-      //       filename: aadhaarCard.split('/').last),
-      // "father_mother_photo": await MultipartFile.fromFile(fatherMotherPhoto,
-      //     filename: fatherMotherPhoto.split('/').last)
-    };
-
-    // Call the ApiServices post method with formData and isFormData: true
-    final Response response =
-        await ApiServices.post("/students/", formData, isFormData: true);
-
-    return response;
-  }
-
-  Future<Response> addNewStudentTesting(
-      // required String fullName,
-      // required String dateOfBirth,
-      // required String gender,
-      // required String studentClass,
-      // required String section,
-      // required String rollNumber,
-      // required String admissionNumber,
-      // required String aadhaarNumber,
-      // required String residentialAddress,
-      // required String contactNumber,
-      // required String email,
-      // required String fatherFullName,
-      // required String motherFullName,
-      // required String guardianFullName,
-      // required String bloodGroup,
-      // required String parentEmail,
-      // required String fatherContactNumber,
-      // required String motherContactNumber,
-      // required String studentPhotoPath,
-      // String? aadhaarCard,
-      // required String fatherMotherPhoto,
-      ) async {
-    // Create the form data to pass to the API
-    final formData = {
-      "full_name": "John Doe",
-      "date_of_birth": "2005-08-15",
-      "gender": "Male",
-      "class": "10",
-      "section": "A",
-      "roll_number": "25",
-      "admission_number": "ADM12345",
-      // "aadhaar_number": "1234-5678-9012",
-      "residential_address": "123, Main Street, City",
-      "contact_number": "9876543210",
-      // "email": "johndoe@example.com",
-      "father_full_name": "Robert Doe",
-      "mother_full_name": "Jane Doe",
-      "guardian_full_name": "Michael Doe",
-      // "blood_group": "O+",
-      "parent_email": "parentdoe@example.com",
-      // "father_contact_number": "9123456789",
-      // "mother_contact_number": "9234567890",
-
-      // Only include if the photo is provided
-      // "student_photo": await MultipartFile.fromFile(studentPhotoPath,
-      //     filename: studentPhotoPath.split('/').last),
-      // if (aadhaarCard != null)
-      //   "aadhaar_card": await MultipartFile.fromFile(aadhaarCard,
-      //       filename: aadhaarCard.split('/').last),
-      // "father_mother_photo": await MultipartFile.fromFile(fatherMotherPhoto,
-      //     filename: fatherMotherPhoto.split('/').last)
+      "student_photo": await MultipartFile.fromFile(studentPhotoPath,
+          filename: studentPhotoPath.split('/').last),
+      if (aadhaarCard != null)
+        "aadhaar_card": await MultipartFile.fromFile(aadhaarCard,
+            filename: aadhaarCard.split('/').last),
+      "father_mother_photo": await MultipartFile.fromFile(fatherMotherPhoto,
+          filename: fatherMotherPhoto.split('/').last)
     };
 
     // Call the ApiServices post method with formData and isFormData: true

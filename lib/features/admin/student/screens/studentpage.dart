@@ -106,15 +106,15 @@ class _StudentsPageState extends State<StudentsPage> {
                     icon: Icons.school,
                     onChanged: (selectedClass) {
                       // Automatically fetch students when division is selected
-                      // final selectedDivision = context
-                      //     .read<DropdownProvider>()
-                      //     .getSelectedItem(
-                      //         'division'); // Get the currently selected class
-                      // context
-                      //     .read<StudentController>()
-                      //     .getStudentsClassAndDivision(
-                      //         classname: selectedClass,
-                      //         section: selectedDivision);
+                      final selectedDivision = context
+                          .read<DropdownProvider>()
+                          .getSelectedItem(
+                              'division'); // Get the currently selected class
+                      context
+                          .read<StudentController>()
+                          .getStudentsClassAndDivision(
+                              classname: selectedClass,
+                              section: selectedDivision);
                     },
                   ),
                 ),
@@ -243,11 +243,10 @@ class _StudentsPageState extends State<StudentsPage> {
         ),
       ),
       floatingActionButton: CommonFloatingActionButton(
-              onPressed: () {
-                context.pushNamed(AppRouteConst.AddStudentRouteName);
-              },
-              text: 
-                'Add New Student',
+        onPressed: () {
+          context.pushNamed(AppRouteConst.AddStudentRouteName);
+        },
+        text: 'Add New Student',
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
