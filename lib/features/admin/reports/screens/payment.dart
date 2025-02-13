@@ -19,9 +19,9 @@ class PaymentReport extends StatefulWidget {
 }
 
 class _PaymentReportState extends State<PaymentReport> {
-late DropdownProvider dropdownprovider;
+  late DropdownProvider dropdownprovider;
 
-   @override
+  @override
   void initState() {
     dropdownprovider = context.read<DropdownProvider>();
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -33,11 +33,9 @@ late DropdownProvider dropdownprovider;
       // super.dispose();
     });
     super.initState();
-    
+
     context.read<PaymentController>().getPayments();
-    
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -76,18 +74,18 @@ late DropdownProvider dropdownprovider;
               child: CustomDropdown(
                 dropdownKey: 'class',
                 label: 'Class',
-                items: ['5', '6', '7','8','9','10'],
+                items: ['5', '6', '7', '8', '9', '10'],
                 icon: Icons.school,
                 onChanged: (selectedClass) {
-                  // final selectedDivision = context
-                  //     .read<DropdownProvider>()
-                  //     .getSelectedItem('division');
-                  // context
-                  //     .read<PaymentController>()
-                  //     .getPaymentsByClassAndDivision(
-                  //       className: selectedClass,
-                  //       section: selectedDivision,
-                  //     );
+                  final selectedDivision = context
+                      .read<DropdownProvider>()
+                      .getSelectedItem('division');
+                  context
+                      .read<PaymentController>()
+                      .getPaymentsByClassAndDivision(
+                        className: selectedClass,
+                        section: selectedDivision,
+                      );
                 },
               ),
             ),
@@ -120,7 +118,7 @@ late DropdownProvider dropdownprovider;
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
-              }  else if (!value.isFiltered) {
+              } else if (!value.isFiltered) {
                 // Show image before filtering
                 return Center(
                   child: Column(
@@ -138,7 +136,8 @@ late DropdownProvider dropdownprovider;
                     ],
                   ),
                 );
-              }  if (value.isFiltered&&value.filteredpayments.isEmpty) {
+              }
+              if (value.isFiltered && value.filteredpayments.isEmpty) {
                 // Show message after filtering with no results
                 return Center(
                   child: Text(
@@ -146,32 +145,35 @@ late DropdownProvider dropdownprovider;
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 );
-              } else{
+              } else {
                 return SingleChildScrollView(
-                    padding: EdgeInsets.zero, // Removes any default padding
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          padding: EdgeInsets
-                              .zero,
-                itemCount: value.filteredpayments.length,
-                itemBuilder: (context, index) {
-                  final payment = value.filteredpayments[index];
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4),
-                    child: PaymentItem(
-                      amount: payment.amountPaid ?? "",
-                      name: payment.fullName ?? "",
-                      time: TimeFormatter.formatTimeFromString(
-                          payment.createdAt.toString()),
-                      status: payment.paymentStatus ?? "",
-                    ),
-                  );
-                },
-              )],),);}
+                  padding: EdgeInsets.zero, // Removes any default padding
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        padding: EdgeInsets.zero,
+                        itemCount: value.filteredpayments.length,
+                        itemBuilder: (context, index) {
+                          final payment = value.filteredpayments[index];
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4),
+                            child: PaymentItem(
+                              amount: payment.amountPaid ?? "",
+                              name: payment.fullName ?? "",
+                              time: TimeFormatter.formatTimeFromString(
+                                  payment.createdAt.toString()),
+                              status: payment.paymentStatus ?? "",
+                            ),
+                          );
+                        },
+                      )
+                    ],
+                  ),
+                );
+              }
             },
           ),
         ),

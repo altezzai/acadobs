@@ -4,12 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
-
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/features/admin/reports/controller/student_report_controller.dart';
-
-import 'package:school_app/features/admin/reports/widgets/report_tile.dart';
 
 class StudentReport extends StatefulWidget {
   const StudentReport({Key? key}) : super(key: key);
@@ -69,15 +66,15 @@ class _StudentReportState extends State<StudentReport> {
                 items: ['5', '6', '7', '8', '9', '10'],
                 icon: Icons.school,
                 onChanged: (selectedClass) {
-                  // final selectedDivision = context
-                  //     .read<DropdownProvider>()
-                  //     .getSelectedItem('division');
-                  // context
-                  //     .read<StudentReportController>()
-                  //     .getStudentReportsByClassAndDivision(
-                  //       className: selectedClass,
-                  //       section: selectedDivision,
-                  //     );
+                  final selectedDivision = context
+                      .read<DropdownProvider>()
+                      .getSelectedItem('division');
+                  context
+                      .read<StudentReportController>()
+                      .getStudentReportsByClassAndDivision(
+                        className: selectedClass,
+                        section: selectedDivision,
+                      );
                 },
               ),
             ),
@@ -123,6 +120,7 @@ class _StudentReportState extends State<StudentReport> {
                       const SizedBox(height: 16),
                       Text(
                         'No filter applied. Please select a class and division.',
+                        textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 16),
                       ),
                     ],
@@ -138,33 +136,96 @@ class _StudentReportState extends State<StudentReport> {
                   ),
                 );
               } else {
-                return SingleChildScrollView(
-                  padding: EdgeInsets.zero, // Removes any default padding
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        padding: EdgeInsets.zero,
-                        itemCount: value.filteredstudentreports.length,
-                        itemBuilder: (context, index) {
-                          final studentreport =
-                              value.filteredstudentreports[index];
-                          return Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 4),
-                              child: ReportTile(
-                                icon: Icons.assignment,
-                                title: capitalizeFirstLetter(studentreport.fullName ?? "",),
-                                subtitle:
-                                    '${studentreport.studentReportClass ?? ""} ${studentreport.section ?? ""}',
-                                
-                                onTap: () {},
-                                
-                              ));
-                        },
-                      )
-                    ],
+                return Expanded(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: Responsive.height * 4,
+                          ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(
+                                20), // Apply rounded corners to the entire table
+                            child: DataTable(
+                              headingRowColor:
+                                  WidgetStatePropertyAll(Colors.grey.shade400),
+                              border: TableBorder(
+                                borderRadius: BorderRadius.circular(
+                                    20), // Still needed for bottom corners
+                              ),
+                              columns: [
+                                DataColumn(
+                                    label: Text("ID",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold))),
+                                DataColumn(
+                                    label: Text("Name",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold))),
+                                DataColumn(
+                                    label: Text("Class",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold))),
+                                DataColumn(
+                                    label: Text("Section",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold))),
+                                DataColumn(
+                                    label: Text("Attendance",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold))),
+                                DataColumn(
+                                    label: Text("Leaves",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold))),
+                                DataColumn(
+                                    label: Text("Avg Marks",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold))),
+                                DataColumn(
+                                    label: Text("Achievements",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold))),
+                              ],
+                              rows: value.filteredstudentreports.map((student) {
+                                return DataRow(
+                                  cells: [
+                                    DataCell(Center(
+                                        child: Text(
+                                            student.studentId.toString()))),
+                                    DataCell(Text(capitalizeFirstLetter(
+                                        student.fullName ?? ""))),
+                                    DataCell(Center(
+                                        child: Text(
+                                            student.studentReportClass ?? ""))),
+                                    DataCell(Center(
+                                        child: Text(student.section ?? ""))),
+                                    DataCell(Center(
+                                      child: Text(
+                                          student.attendancePercentage ?? ""),
+                                    )),
+                                    DataCell(Center(
+                                        child: Text(
+                                            student.leaveCount.toString()))),
+                                    DataCell(Center(
+                                        child:
+                                            Text(student.marksAverage ?? ""))),
+                                    DataCell(Center(
+                                      child: Text(
+                                          student.achievementsCount.toString()),
+                                    )),
+                                  ],
+                                );
+                              }).toList(),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                   ),
                 );
               }
