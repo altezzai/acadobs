@@ -100,6 +100,9 @@ class _AddNoticePageState extends State<AddNoticePage> {
                               label: 'Select Class',
                               icon: Icons.school,
                               items: ['8', '9', '10'],
+                              validator: (value) =>
+                                  FormValidator.validateNotEmpty(value,
+                                      fieldName: "Class"),
                             ),
                           ),
                           SizedBox(width: 16), // Space between the dropdowns
@@ -110,6 +113,9 @@ class _AddNoticePageState extends State<AddNoticePage> {
                               label: 'Select Division',
                               icon: Icons.group,
                               items: ['A', 'B', 'C'],
+                              validator: (value) =>
+                                  FormValidator.validateNotEmpty(value,
+                                      fieldName: "Division"),
                             ),
                           ),
                         ],
