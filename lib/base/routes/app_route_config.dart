@@ -359,10 +359,11 @@ class Approuter {
         name: AppRouteConst.AdminViewDutyRouteName,
         path: '/adminviewduty',
         pageBuilder: (context, state) {
-         final args = state.extra as AdminDutyDetailArguments;
+          final args = state.extra as AdminDutyDetailArguments;
           return MaterialPage(
               child: DutyView(
-            duty: args.duty, userType: args.userType,
+            duty: args.duty,
+            userType: args.userType,
           ));
         },
       ),
@@ -761,6 +762,7 @@ class AdminDutyDetailArguments {
   UserType userType;
   AdminDutyDetailArguments({required this.duty, required this.userType});
 }
+
 class StudentDetailArguments {
   Student student;
   UserType userType;
@@ -781,8 +783,6 @@ class NoticeDetailArguments {
   UserType userType;
   NoticeDetailArguments({required this.notice, required this.userType});
 }
-
-
 
 class EventDetailArguments {
   Event event;

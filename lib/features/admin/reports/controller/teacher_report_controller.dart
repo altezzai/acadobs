@@ -7,9 +7,9 @@ class TeacherReportController extends ChangeNotifier {
   bool _isloading = false;
   bool get isloading => _isloading;
 
-  bool _isFiltered = false;  // New flag to track filtering
-  bool get isFiltered => _isFiltered;  // Public getter to access the filter state
-
+  bool _isFiltered = false; // New flag to track filtering
+  bool get isFiltered =>
+      _isFiltered; // Public getter to access the filter state
 
   List<TeacherReport> _teacherreports = [];
   List<TeacherReport> get teacherreports => _teacherreports;
@@ -41,7 +41,7 @@ class TeacherReportController extends ChangeNotifier {
 
   /// Fetch reports by teacher name and date range
   Future<void> getTeacherReportsByNameAndDate({
-    required String teacherName,
+    // required String teacherName,
     required String startDate,
     required String endDate,
   }) async {
@@ -49,8 +49,9 @@ class TeacherReportController extends ChangeNotifier {
     _isFiltered = false;
     notifyListeners();
     try {
-      final response = await TeacherReportServices().getTeacherReportByNameAndDate(
-        teacherName: teacherName,
+      final response =
+          await TeacherReportServices().getTeacherReportByNameAndDate(
+        // teacherName: teacherName,
         startDate: startDate,
         endDate: endDate,
       );
@@ -76,10 +77,10 @@ class TeacherReportController extends ChangeNotifier {
     _filteredteacherreports.clear();
     notifyListeners();
   }
+
   void resetFilter() {
     _isFiltered = false;
     _filteredteacherreports = []; // Clear the list of filtered payments
     notifyListeners(); // Notify listeners to update the UI
   }
-
 }
