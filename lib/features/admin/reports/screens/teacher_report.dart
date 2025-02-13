@@ -6,9 +6,7 @@ import 'package:school_app/base/utils/responsive.dart';
 
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
-import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/admin/reports/controller/teacher_report_controller.dart';
-import 'package:school_app/features/admin/reports/widgets/report_tile.dart';
 
 class TeacherReport extends StatefulWidget {
   const TeacherReport({Key? key}) : super(key: key);
@@ -66,23 +64,21 @@ class _TeacherReportState extends State<TeacherReport> {
   }
 
   Widget _buildTeacherReportByNameAndDate({required BuildContext context}) {
-   
-
-    
-
     return Column(
       children: [
-        CustomTextfield(
-          iconData: const Icon(Icons.search),
-          label: 'Search Teacher Name',
-          controller: _teacherNameController,
-        ),
+        // CustomTextfield(
+        //   iconData: const Icon(Icons.search),
+        //   label: 'Search Teacher Name',
+        //   controller: _teacherNameController,
+        // ),
         const SizedBox(height: 8),
         Row(
           children: [
             Expanded(
               child: CustomDatePicker(
                 label: "Start Date",
+                lastDate: DateTime.now(),
+                initialDate: DateTime.now(),
                 dateController: _startDateController,
                 onDateSelected: (_) {},
               ),
@@ -91,6 +87,8 @@ class _TeacherReportState extends State<TeacherReport> {
             Expanded(
               child: CustomDatePicker(
                 label: "End Date",
+                lastDate: DateTime.now(),
+                initialDate: DateTime.now(),
                 dateController: _endDateController,
                 onDateSelected: (_) {},
               ),
@@ -100,12 +98,14 @@ class _TeacherReportState extends State<TeacherReport> {
         const SizedBox(height: 16),
         ElevatedButton(
           onPressed: () {
-            final selectedTeacherName = _teacherNameController.text.trim();
+            // final selectedTeacherName = _teacherNameController.text.trim();
             final selectedStartDate = _startDateController.text.trim();
             final selectedEndDate = _endDateController.text.trim();
 
-            context.read<TeacherReportController>().getTeacherReportsByNameAndDate(
-                  teacherName: selectedTeacherName,
+            context
+                .read<TeacherReportController>()
+                .getTeacherReportsByNameAndDate(
+                  // teacherName: selectedTeacherName,
                   startDate: selectedStartDate,
                   endDate: selectedEndDate,
                 );
@@ -120,7 +120,7 @@ class _TeacherReportState extends State<TeacherReport> {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
-              }  else if (!value.isFiltered) {
+              } else if (!value.isFiltered) {
                 // Show image before filtering
                 return Center(
                   child: Column(
@@ -138,7 +138,8 @@ class _TeacherReportState extends State<TeacherReport> {
                     ],
                   ),
                 );
-              }else  if (value.isFiltered&&value.filteredteacherreports.isEmpty) {
+              } else if (value.isFiltered &&
+                  value.filteredteacherreports.isEmpty) {
                 // Show message after filtering with no results
                 return Center(
                   child: Text(
@@ -146,34 +147,122 @@ class _TeacherReportState extends State<TeacherReport> {
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 );
-              }else{
+              } else {
                 return SingleChildScrollView(
-                    padding: EdgeInsets.zero, // Removes any default padding
+                  scrollDirection: Axis.horizontal,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          padding: EdgeInsets
-                              .zero,
-                itemCount: value.filteredteacherreports.length,
-                itemBuilder: (context, index) {
-                  final teacherreport = value.filteredteacherreports[index];
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4),
-                    child: ReportTile(
-                                icon: Icons.assignment,
-                                title: capitalizeFirstLetter(teacherreport.fullName ?? ""),
-                                // subtitle:
-                                //     '${teacherreport.studentReportClass ?? ""} ${teacherreport.section ?? ""}',
-                                
-                                onTap: () {},
-                                
-                              )
-                  );
-                },
-              )],),);}
+                        SizedBox(
+                          height: Responsive.height * 2,
+                        ),
+                        // ListView.builder(
+                        //   physics: const NeverScrollableScrollPhysics(),
+                        //   shrinkWrap: true,
+                        //   padding: EdgeInsets.zero,
+                        //   itemCount: value.filteredteacherreports.length,
+                        //   itemBuilder: (context, index) {
+                        //     final teacherreport =
+                        //         value.filteredteacherreports[index];
+                        //     return Padding(
+                        //         padding: const EdgeInsets.symmetric(vertical: 4),
+                        //         child: ReportTile(
+                        //           icon: Icons.assignment,
+                        //           title: capitalizeFirstLetter(
+                        //               teacherreport.fullName ?? ""),
+                        //           // subtitle:
+                        //           //     '${teacherreport.studentReportClass ?? ""} ${teacherreport.section ?? ""}',
+
+                        //           onTap: () {},
+                        //         ));
+                        //   },
+                        // )
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: DataTable(
+                              headingRowColor:
+                                  WidgetStatePropertyAll(Colors.grey.shade400),
+                              border: TableBorder(
+                                borderRadius: BorderRadius.circular(
+                                    20), // Still needed for bottom corners
+                              ),
+                              columnSpacing: 30,
+                              columns: [
+                                DataColumn(
+                                    label: Text("ID",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold))),
+                                DataColumn(
+                                    label: Text("Name",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold))),
+                                DataColumn(
+                                    label: Text("Attendance Recorded Count",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold))),
+                                DataColumn(
+                                    label: Text("Leave Pending Count",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold))),
+                                DataColumn(
+                                    label: Text("Leave Approved Count",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold))),
+                                DataColumn(
+                                    label: Text("Leave Rejected Count",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold))),
+                                DataColumn(
+                                    label: Text("Total Duties",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold))),
+                                DataColumn(
+                                    label: Text("Completed Duties",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold))),
+                              ],
+                              rows: value.filteredteacherreports.map((teacher) {
+                                return DataRow(
+                                  cells: [
+                                    DataCell(
+                                        Text(teacher.teacherId.toString())),
+                                    DataCell(Text(capitalizeFirstLetter(
+                                        teacher.fullName ?? ""))),
+                                    DataCell(Center(
+                                      child: Text(teacher
+                                          .attendanceRecordedCount
+                                          .toString()),
+                                    )),
+                                    DataCell(Center(
+                                      child: Text(
+                                          teacher.leavePendingCount.toString()),
+                                    )),
+                                    DataCell(Center(
+                                      child: Text(teacher.leaveApprovedCount
+                                          .toString()),
+                                    )),
+                                    DataCell(Center(
+                                      child: Text(teacher.leaveRejectedCount
+                                          .toString()),
+                                    )),
+                                    DataCell(Center(
+                                        child: Text(
+                                            teacher.totalDuties.toString()))),
+                                    DataCell(Center(
+                                      child: Text(
+                                          teacher.completedDuties.toString()),
+                                    )),
+                                  ],
+                                );
+                              }).toList()),
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              }
             },
           ),
         ),
