@@ -21,8 +21,9 @@ class AchievementsList extends StatelessWidget {
     return Scaffold(
       floatingActionButton: userType == UserType.parent
           ? SizedBox.shrink()
-          :  Padding(
-              padding: const EdgeInsets.only(bottom: 20, right: 16), // Improved padding
+          : Padding(
+              padding: const EdgeInsets.only(
+                  bottom: 20, right: 16), // Improved padding
               child: SizedBox(
                 width: 65, // Increased size
                 height: 65,
@@ -34,7 +35,7 @@ class AchievementsList extends StatelessWidget {
               ),
             ),
       body: Padding(
-         padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -47,56 +48,50 @@ class AchievementsList extends StatelessWidget {
                     color: Colors.grey,
                   ));
                 }
-            
+
                 final groupedAchievements = groupItemsByDate(
                   value.achievements,
                   (achievement) =>
                       DateTime.parse(achievement.dateOfAchievement.toString()),
                 );
-            
+
                 return value.achievements.isEmpty
                     ? Center(
                         child: Text("No Achievements Found!"),
                       )
-                    :  _buildGroupedList(groupedAchievements,
-                (achievement, index, total) {
-                         // final entry = groupedAchievements.entries.elementAt(index);
+                    : _buildGroupedList(
+                        groupedAchievements,
+                        (achievement, index, total) {
+                          // final entry = groupedAchievements.entries.elementAt(index);
                           // final entry = groupedAchievements.entries.elementAt(index);
                           // final dateGroup = entry.key;
                           // final achievements = entry.value;
-            
+
                           final isFirst = index == 0;
-              final isLast = index == total- 1;
-              final topRadius = isFirst ? 16.0 : 0.0;
-              final bottomRadius = isLast ? 16.0 : 0.0;
-            
-                          return 
-                            
-                              
-                              
-                               Padding(
-                                padding: const EdgeInsets.only(
-                  bottom: 1.5,
-                ),
-                                child: WorkContainer(
-                                   bottomRadius: bottomRadius.toDouble(),
-                                    topRadius: topRadius.toDouble(),
-                                      sub: achievement.category ?? "",
-                                      work: achievement.achievementTitle ?? "",
-                                      iconPath: 'assets/icons/achievement.png',
-                                      icolor: Colors.green,
-                                      bcolor: Colors.green.withOpacity(0.2),
-                                      onTap: () {
-                                        context.pushNamed(
-                                          AppRouteConst.AchivementDetailRouteName,
-                                          extra: achievement,
-                                        );
-                                      },
-                                    ),
-                              );
-                              
-                            
-                          
+                          final isLast = index == total - 1;
+                          final topRadius = isFirst ? 16.0 : 0.0;
+                          final bottomRadius = isLast ? 16.0 : 0.0;
+
+                          return Padding(
+                            padding: const EdgeInsets.only(
+                              bottom: 1.5,
+                            ),
+                            child: WorkContainer(
+                              bottomRadius: bottomRadius.toDouble(),
+                              topRadius: topRadius.toDouble(),
+                              sub: achievement.category ?? "",
+                              work: achievement.achievementTitle ?? "",
+                              iconPath: 'assets/icons/achievement.png',
+                              icolor: Colors.green,
+                              bcolor: Colors.green.withOpacity(0.2),
+                              onTap: () {
+                                context.pushNamed(
+                                  AppRouteConst.AchivementDetailRouteName,
+                                  extra: achievement,
+                                );
+                              },
+                            ),
+                          );
                         },
                       );
               },
@@ -106,6 +101,7 @@ class AchievementsList extends StatelessWidget {
       ),
     );
   }
+
   Widget _buildGroupedList<T>(Map<String, List<T>> groupedItems,
       Widget Function(T, int, int) buildItem) {
     return SingleChildScrollView(
@@ -133,6 +129,7 @@ class AchievementsList extends StatelessWidget {
       ),
     );
   }
+
   Widget _buildDateHeader(String date) {
     return Padding(
       padding: EdgeInsets.only(
