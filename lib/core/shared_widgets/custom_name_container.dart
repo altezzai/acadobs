@@ -26,7 +26,7 @@ class CustomNameContainer extends StatelessWidget {
       child: Text(
         text,
         style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-              color: const Color(0xff555555),
+              color: const Color(0xff555556),
               fontWeight: FontWeight.w700,
             ),
       ),
