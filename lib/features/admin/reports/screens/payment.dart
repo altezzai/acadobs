@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/responsive.dart';
@@ -7,9 +8,7 @@ import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart'; // Assuming CustomDropdown is imported from this path
-import 'package:provider/provider.dart';
 import 'package:school_app/features/admin/payments/controller/payment_controller.dart';
-import 'package:school_app/features/admin/payments/widgets/payment_item.dart'; // Assuming TimeFormatter is imported from this path
 
 class PaymentReport extends StatefulWidget {
   const PaymentReport({Key? key}) : super(key: key);
@@ -56,9 +55,8 @@ class _PaymentReportState extends State<PaymentReport> {
               },
             ),
             const SizedBox(height: 16),
-            Expanded(
-              child: _buildClassDivisionPayment(context: context),
-            ),
+            // Use Flexible instead of Expanded
+            _buildClassDivisionPayment(context: context),
           ],
         ),
       ),
@@ -66,60 +64,61 @@ class _PaymentReportState extends State<PaymentReport> {
   }
 
   Widget _buildClassDivisionPayment({required BuildContext context}) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            Expanded(
-              child: CustomDropdown(
-                dropdownKey: 'class',
-                label: 'Class',
-                items: ['5', '6', '7', '8', '9', '10'],
-                icon: Icons.school,
-                onChanged: (selectedClass) {
-                  final selectedDivision = context
-                      .read<DropdownProvider>()
-                      .getSelectedItem('division');
-                  context
-                      .read<PaymentController>()
-                      .getPaymentsByClassAndDivision(
-                        className: selectedClass,
-                        section: selectedDivision,
-                      );
-                },
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: CustomDropdown(
+                  dropdownKey: 'class',
+                  label: 'Class',
+                  items: ['5', '6', '7', '8', '9', '10'],
+                  icon: Icons.school,
+                  onChanged: (selectedClass) {
+                    final selectedDivision = context
+                        .read<DropdownProvider>()
+                        .getSelectedItem('division');
+                    context
+                        .read<PaymentController>()
+                        .getPaymentsByClassAndDivision(
+                          className: selectedClass,
+                          section: selectedDivision,
+                        );
+                  },
+                ),
               ),
-            ),
-            const SizedBox(width: 5),
-            Expanded(
-              child: CustomDropdown(
-                dropdownKey: 'division',
-                label: 'Division',
-                items: ['A', 'B', 'C'],
-                icon: Icons.group,
-                onChanged: (selectedDivision) {
-                  final selectedClass =
-                      context.read<DropdownProvider>().getSelectedItem('class');
-                  context
-                      .read<PaymentController>()
-                      .getPaymentsByClassAndDivision(
-                        className: selectedClass,
-                        section: selectedDivision,
-                      );
-                },
+              const SizedBox(width: 5),
+              Expanded(
+                child: CustomDropdown(
+                  dropdownKey: 'division',
+                  label: 'Division',
+                  items: ['A', 'B', 'C'],
+                  icon: Icons.group,
+                  onChanged: (selectedDivision) {
+                    final selectedClass = context
+                        .read<DropdownProvider>()
+                        .getSelectedItem('class');
+                    context
+                        .read<PaymentController>()
+                        .getPaymentsByClassAndDivision(
+                          className: selectedClass,
+                          section: selectedDivision,
+                        );
+                  },
+                ),
               ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 10),
-        Expanded(
-          child: Consumer<PaymentController>(
+            ],
+          ),
+          const SizedBox(height: 10),
+          // Use SizedBox instead of Expanded
+          Consumer<PaymentController>(
             builder: (context, value, child) {
               if (value.isloading) {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
               } else if (!value.isFiltered) {
-                // Show image before filtering
                 return Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -131,14 +130,13 @@ class _PaymentReportState extends State<PaymentReport> {
                       const SizedBox(height: 16),
                       Text(
                         'No filter applied. Please select a class and division.',
+                        textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 16),
                       ),
                     ],
                   ),
                 );
-              }
-              if (value.isFiltered && value.filteredpayments.isEmpty) {
-                // Show message after filtering with no results
+              } else if (value.isFiltered && value.filteredpayments.isEmpty) {
                 return Center(
                   child: Text(
                     'No Reports Found',
@@ -147,37 +145,67 @@ class _PaymentReportState extends State<PaymentReport> {
                 );
               } else {
                 return SingleChildScrollView(
-                  padding: EdgeInsets.zero, // Removes any default padding
+                  scrollDirection: Axis.horizontal,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        padding: EdgeInsets.zero,
-                        itemCount: value.filteredpayments.length,
-                        itemBuilder: (context, index) {
-                          final payment = value.filteredpayments[index];
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 4),
-                            child: PaymentItem(
-                              amount: payment.amountPaid ?? "",
-                              name: payment.fullName ?? "",
-                              time: TimeFormatter.formatTimeFromString(
-                                  payment.createdAt.toString()),
-                              status: payment.paymentStatus ?? "",
-                            ),
-                          );
-                        },
-                      )
+                      SizedBox(height: Responsive.height * 4),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: DataTable(
+                          headingRowColor:
+                              WidgetStatePropertyAll(Colors.grey.shade400),
+                          border: TableBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          columns: [
+                            DataColumn(
+                                label: Text("ID",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold))),
+                            DataColumn(
+                                label: Text("Name",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold))),
+                            DataColumn(
+                                label: Text("Amount Paid",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold))),
+                            DataColumn(
+                                label: Text("Payment Status",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold))),
+                            DataColumn(
+                                label: Text("Date",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold))),
+                          ],
+                          rows: value.filteredpayments.map((payment) {
+                            return DataRow(
+                              cells: [
+                                DataCell(
+                                    Center(child: Text(payment.id.toString()))),
+                                DataCell(Text(payment.fullName ?? "")),
+                                DataCell(Center(
+                                    child: Text(payment.amountPaid ?? ""))),
+                                DataCell(Center(
+                                    child: Text(payment.paymentStatus ?? ""))),
+                                DataCell(Center(
+                                    child: Text(DateFormatter.formatDateString(
+                                        payment.createdAt.toString())))),
+                              ],
+                            );
+                          }).toList(),
+                        ),
+                      ),
                     ],
                   ),
                 );
               }
             },
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

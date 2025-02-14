@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:school_app/base/controller/student_id_controller.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/base/utils/form_validators.dart';
 import 'package:school_app/base/utils/responsive.dart';
@@ -19,34 +18,11 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   @override
   void initState() {
-    context
-        .read<StudentIdController>()
-        .getStudentsFromClassAndDivision(className: "8", section: "b");
+    // context
+    //     .read<StudentIdController>()
+    //     .getStudentsFromClassAndDivision(className: "8", section: "b");
     super.initState();
   }
-
-  // String _username = '';
-  // String _password = '';
-
-  // // Function to handle login action
-  // void _login(BuildContext context) {
-  //   if (_username == 'ajay' && _password == '1234') {
-  //     context.pushReplacementNamed(AppRouteConst.bottomNavRouteName,
-  //         extra: UserType.admin);
-  //   } else if (_username == 'soorya' && _password == '1234') {
-  //     context.pushReplacementNamed(AppRouteConst.bottomNavRouteName,
-  //         extra: UserType.teacher);
-  //   } else if (_username == 'manu' && _password == '1234') {
-  //     // Navigate to ParentHomeScreen for parent login
-  //     context.pushReplacementNamed(
-  //       AppRouteConst.ParentHomeRouteName,
-  //     );
-  //   } else {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(content: Text('Invalid username or password')),
-  //     );
-  //   }
-  // }
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -78,59 +54,42 @@ class _LoginPageState extends State<LoginPage> {
                       hintText: "Username",
                       iconData: Icon(Icons.person_outline),
                       controller: emailController,
-                      // onChanged: (value) {
-                      //   setState(() {
-                      //     _username = value; // Capture username input
-                      //   });
-                      // },
                       onTap: null, // No tap event required for username input
                       validator: (value) => FormValidator.validateEmail(value),
                     ),
-                   SizedBox(height: Responsive.height * 2),
+                    SizedBox(height: Responsive.height * 2),
                     CustomTextfield(
                       hintText: "Password",
                       iconData: Icon(Icons.lock_outline),
                       isPasswordField: true,
                       controller: passwordController,
-                      // onChanged: (value) {
-                      //   setState(() {
-                      //     _password = value; // Capture password input
-                      //   });
-                      // },
                       onTap: null, // No tap event required for password input
-                      validator: (value) => FormValidator.validatePassword(value),
+                      validator: (value) =>
+                          FormValidator.validatePassword(value),
                     ),
                     SizedBox(height: Responsive.height * 2),
-                    // CustomButton(
-                    //   onPressed: () {
-                    //     context.read<AuthController>().login(
-                    //         context: context,
-                    //         email: emailController.text,
-                    //         password: passwordController.text);
-                    //   },
-                    //   text: "Login",
-                    // ),
                     Consumer<AuthController>(builder: (context, value, child) {
                       return CommonButton(
-
                         onPressed: () {
                           if (_formKey.currentState?.validate() ?? false) {
-                          try {
-                          context.read<AuthController>().login(
-                              context: context,
-                              email: emailController.text,
-                              password: passwordController.text);
-                         } catch (e) {
-                          // Handle any errors and show an error message
-                          CustomSnackbar.show(context,
-            message: "Failed to Login.Please try again", type: SnackbarType.failure);
-                        }
-                      } else {
-                        // Highlight missing fields if the form is invalid
-                       CustomSnackbar.show(context,
-            message: "Please complete all required fields", type: SnackbarType.warning);
-                      }
-                    },
+                            try {
+                              context.read<AuthController>().login(
+                                  context: context,
+                                  email: emailController.text,
+                                  password: passwordController.text);
+                            } catch (e) {
+                              // Handle any errors and show an error message
+                              CustomSnackbar.show(context,
+                                  message: "Failed to Login.Please try again",
+                                  type: SnackbarType.failure);
+                            }
+                          } else {
+                            // Highlight missing fields if the form is invalid
+                            CustomSnackbar.show(context,
+                                message: "Please complete all required fields",
+                                type: SnackbarType.warning);
+                          }
+                        },
                         widget: value.isloading ? Loading() : Text('Login'),
                       );
                     }),

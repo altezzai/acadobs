@@ -14,6 +14,7 @@ class SecureStorageService {
   /// Save data to secure storage
   static Future<void> saveTokenAndUserData(Map<String, dynamic> data) async {
     await _storage.write(key: _tokenKey, value: data['token']);
+    // await _storage.write(key: _tokenKey, value: data['token']);
     await _storage.write(key: _userKey, value: jsonEncode(data['user']));
   }
 
