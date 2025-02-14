@@ -26,6 +26,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
   String? selectedDivision;
   String? selectedGender;
   String? selectedBloodGroup;
+  String? selectedCategory;
   String? selectedTransportation;
   String? selectedHostel;
   String? selectedStudentPhoto;
@@ -47,6 +48,8 @@ class _AddStudentPageState extends State<AddStudentPage> {
   // final TextEditingController _contactNumberController =
   //     TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _previousSchoolController =
+      TextEditingController();
   final TextEditingController _fatherFullNameController =
       TextEditingController();
   final TextEditingController _motherFullNameController =
@@ -65,6 +68,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
       TextEditingController();
   final TextEditingController _alternateNumberController =
       TextEditingController();
+  final TextEditingController _siblingNameController = TextEditingController();
 
   late DropdownProvider dropdownProvider;
 
@@ -86,6 +90,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
       dropdownProvider.clearSelectedItem('class');
       dropdownProvider.clearSelectedItem('division');
       dropdownProvider.clearSelectedItem('blood-group');
+      dropdownProvider.clearSelectedItem('category');
       dropdownProvider.clearSelectedItem('transportation');
       dropdownProvider.clearSelectedItem('hostel');
       context.read<StudentController>().resetParentEmailCheckData();
@@ -107,11 +112,12 @@ class _AddStudentPageState extends State<AddStudentPage> {
     _motherFullNameController.dispose();
     _emailController.dispose();
     _guardianNameController.dispose();
-
+    _previousSchoolController.dispose();
     parentEmailController.dispose();
     _fatherContactNumberController.dispose();
     _motherContactNumberController.dispose();
-
+    _occupationController.dispose();
+    _siblingNameController.dispose();
     super.dispose();
   }
 
@@ -133,6 +139,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   isProfileIcon: false,
                   onTap: () {
                     Navigator.pop(context);
+                    context.read<DropdownProvider>().clearAllDropdowns();
                   },
                 ),
                 // SizedBox(height: Responsive.height * 2),
@@ -217,24 +224,24 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 SizedBox(height: Responsive.height * 2),
 
                 // Date of Joining Input
-                CustomDatePicker(
-                  lastDate: DateTime.now(),
-                  firstDate: DateTime(2022),
-                  label: "Date of Joining",
-                  dateController:
-                      _dateOfJoiningController, // Unique controller for end date
-                  onDateSelected: (selectedDate) {
-                    print("End Date selected: $selectedDate");
-                  },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'This field is required';
-                    }
-                    return null;
-                  },
-                ),
+                // CustomDatePicker(
+                //   lastDate: DateTime.now(),
+                //   firstDate: DateTime(2022),
+                //   label: "Date of Joining",
+                //   dateController:
+                //       _dateOfJoiningController, // Unique controller for end date
+                //   onDateSelected: (selectedDate) {
+                //     print("End Date selected: $selectedDate");
+                //   },
+                //   validator: (value) {
+                //     if (value == null || value.isEmpty) {
+                //       return 'This field is required';
+                //     }
+                //     return null;
+                //   },
+                // ),
 
-                SizedBox(height: Responsive.height * 2),
+                // SizedBox(height: Responsive.height * 2),
 
                 // Date of Birth Input
                 CustomDatePicker(
@@ -322,6 +329,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 SizedBox(height: Responsive.height * 2),
                 CustomTextfield(
                   hintText: 'Previous School',
+                  controller: _previousSchoolController,
                   iconData: Icon(Icons.school_rounded),
                 ),
                 SizedBox(height: Responsive.height * 2),
@@ -502,6 +510,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
 
                 CustomTextfield(
                   hintText: 'Siblings Name',
+                  controller: _siblingNameController,
                   iconData: Icon(Icons.group),
                 ),
 
@@ -591,6 +600,12 @@ class _AddStudentPageState extends State<AddStudentPage> {
             context.read<DropdownProvider>().getSelectedItem('division');
         final selectedBloodGroup =
             context.read<DropdownProvider>().getSelectedItem('blood-group');
+        final selectedCategory =
+            context.read<DropdownProvider>().getSelectedItem('category');
+        final selectedTransportation =
+            context.read<DropdownProvider>().getSelectedItem('transportation');
+        final selectedHostel =
+            context.read<DropdownProvider>().getSelectedItem('hostel');
         final selectedStudentPhoto =
             context.read<FilePickerProvider>().getFile('student photo');
         final selectedAadharPhoto =
@@ -615,6 +630,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
               residentialAddress: _addressController.text,
               contactNumber: _fatherContactNumberController.text,
               email: _emailController.text,
+              previousSchool: _previousSchoolController.text,
               fatherFullName: _fatherFullNameController.text,
               motherFullName: _motherFullNameController.text,
               guardianFullName: _guardianNameController.text,
@@ -622,12 +638,18 @@ class _AddStudentPageState extends State<AddStudentPage> {
               parentEmail: parentEmailController.text,
               fatherContactNumber: _fatherContactNumberController.text,
               motherContactNumber: _motherContactNumberController.text,
+              occupation: _occupationController.text,
+              category: selectedCategory,
+              siblingInformation: _siblingNameController.text,
+              transportRequirement: selectedTransportation,
+              hostelRequirement: selectedHostel,
               studentPhoto: studentPhotoPath!,
               aadharPhoto: aadharPhotoPath,
               fatherMotherPhoto: parentPhotoPath!,
             );
 
         // Clear the form fields upon success
+        context.read<DropdownProvider>().clearAllDropdowns();
         // _clearFormFields();
       } catch (e) {
         // Handle any errors and show an error message
@@ -658,7 +680,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
     _motherFullNameController.clear();
     _fatherContactNumberController.clear();
     _motherContactNumberController.clear();
-
+    _siblingNameController.clear();
     context.read<DropdownProvider>().clearAllDropdowns();
   }
 

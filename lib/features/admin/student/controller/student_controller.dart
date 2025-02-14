@@ -171,6 +171,7 @@ class StudentController extends ChangeNotifier {
       required String residentialAddress,
       required String contactNumber,
       required String email,
+      required String previousSchool,
       required String fatherFullName,
       required String motherFullName,
       required String guardianFullName,
@@ -178,6 +179,11 @@ class StudentController extends ChangeNotifier {
       required String parentEmail,
       required String fatherContactNumber,
       required String motherContactNumber,
+      required String occupation,
+      required String category,
+      required String siblingInformation,
+      required String transportRequirement,
+      required String hostelRequirement,
       required String studentPhoto,
       String? aadharPhoto,
       required String fatherMotherPhoto}) async {
@@ -196,6 +202,7 @@ class StudentController extends ChangeNotifier {
           residentialAddress: residentialAddress,
           contactNumber: contactNumber,
           email: email,
+          previousSchool: previousSchool,
           fatherFullName: fatherFullName,
           motherFullName: motherFullName,
           guardianFullName: guardianFullName,
@@ -203,6 +210,11 @@ class StudentController extends ChangeNotifier {
           bloodGroup: bloodGroup,
           fatherContactNumber: fatherContactNumber,
           motherContactNumber: motherContactNumber,
+          occupation: occupation,
+          category: category,
+          siblingInformation: siblingInformation,
+          transportRequirement: transportRequirement,
+          hostelRequirement: hostelRequirement,
           studentPhotoPath: studentPhoto,
           aadhaarCard: aadharPhoto,
           fatherMotherPhoto: fatherMotherPhoto);
@@ -236,7 +248,6 @@ class StudentController extends ChangeNotifier {
 
   //update student details
 
-
   Future<void> updateStudent(
     BuildContext context, {
     required int studentId,
@@ -251,7 +262,6 @@ class StudentController extends ChangeNotifier {
     required String studentPhoto,
     required String fatherMotherPhoto,
   }) async {
-
     _isLoadingTwo = true;
 
     try {
@@ -500,7 +510,6 @@ class StudentController extends ChangeNotifier {
       if (response.statusCode == 200) {
         // Directly parse the response data
         parentEmailCheckData = ParentEmailCheck.fromJson(response.data);
-        
 
         log("Parent Email Check Data: ${parentEmailCheckData?.status}");
       } else {
@@ -515,8 +524,8 @@ class StudentController extends ChangeNotifier {
   }
 
   void resetParentEmailCheckData() {
-  parentEmailCheckData = null;
-  notifyListeners();
-}
+    parentEmailCheckData = null;
+    notifyListeners();
+  }
 // **********END OF PARENT EMAIL CHECK*************
 }

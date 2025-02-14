@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
+import 'package:school_app/core/shared_widgets/common_appbar.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
@@ -72,53 +73,15 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: Text(
-          'Add Achievement',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-        ),
+      appBar: CommonAppBar(
+        title: 'Add Achievement',
+        isBackButton: true,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // CustomDropdown(
-            //   dropdownKey: 'class',
-            //   label: 'Class',
-            //   items: ['V', 'VI', 'VII', 'VIII', 'IX', 'X'],
-            //   icon: Icons.class_,
-            // ),
-            // SizedBox(height: 16),
-
-            // CustomDropdown(
-            //   dropdownKey: 'division',
-            //   label: 'Division',
-            //   items: ['A', 'B', 'C'],
-            //   icon: Icons.category,
-            // ),
-
-            // SizedBox(height: 13),
-
-            // CustomTextfield(
-            //   hintText: 'Student Name',
-            //   iconData: Icon(Icons.person),
-            //   onChanged: (value) {
-            //     setState(() {
-            //       studentName = value;
-            //     });
-            //   },
-            // ),
-            // SizedBox(height: 24),
-
             Text(
               'Achievement details',
               style: TextStyle(
