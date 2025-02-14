@@ -24,6 +24,7 @@ import 'package:school_app/features/admin/payments/screens/add_payment.dart';
 import 'package:school_app/features/admin/payments/screens/donation_view.dart';
 import 'package:school_app/features/admin/payments/screens/payment_view.dart';
 import 'package:school_app/features/admin/payments/screens/single_student_selection_page.dart';
+import 'package:school_app/features/admin/reports/screens/donation_report.dart';
 import 'package:school_app/features/admin/reports/screens/payment.dart';
 import 'package:school_app/features/admin/reports/screens/student_report.dart';
 import 'package:school_app/features/admin/reports/screens/teacher_report.dart';
@@ -615,6 +616,13 @@ class Approuter {
         path: '/teacherreport',
         pageBuilder: (context, state) {
           return MaterialPage(child: TeacherReport());
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.DonationReportRouteName,
+        path: '/donationreport',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: DonationReport());
         },
       ),
 

@@ -27,11 +27,21 @@ class ReportsHomeScreen extends StatelessWidget {
             ),
             SizedBox(height: 16),
             ReportCard(
+              title: 'Donation Report',
+              icon: Icons.currency_rupee,
+              color: Color(0xFFAEA961),
+              onTap: () {
+                context.pushNamed(AppRouteConst.DonationReportRouteName);
+              },
+            ),
+            SizedBox(height: 16),
+            ReportCard(
               title: 'Student Report',
               icon: Icons.person_outline,
               color: Colors.blue,
               onTap: () {
-                context.pushNamed(AppRouteConst.StudentReportRouteName);// Navigate to Student Report page
+                context.pushNamed(AppRouteConst
+                    .StudentReportRouteName); // Navigate to Student Report page
               },
             ),
             SizedBox(height: 16),
@@ -40,10 +50,10 @@ class ReportsHomeScreen extends StatelessWidget {
               icon: Icons.person_rounded,
               color: Colors.red,
               onTap: () {
-                context.pushNamed(AppRouteConst.TeacherReportRouteName);// Navigate to Teacher Report page
+                context.pushNamed(AppRouteConst
+                    .TeacherReportRouteName); // Navigate to Teacher Report page
               },
             ),
-            
           ],
         ),
       ),
