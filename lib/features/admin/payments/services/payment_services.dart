@@ -39,6 +39,14 @@ class PaymentServices {
     return response;
   }
 
+  //Get donations by class and division
+  Future<Response> getDonationsByClassAndDivision(
+      {required String className, required String section}) async {
+    final Response response = await ApiServices.get(
+        "/getDonationsByClassAndSection?class_grade=$className&section=$section");
+    return response;
+  }
+
   // Get donations by studentId
   Future<Response> getDonationsByStudentId({required int studentId}) async {
     final Response response =
@@ -83,8 +91,8 @@ class PaymentServices {
       'transaction_id': transaction_id,
       'payment_status': payment_status,
       if (fileUploadPath != null)
-      'file_upload': await MultipartFile.fromFile(fileUploadPath,
-          filename: fileUploadPath.split('/').last),
+        'file_upload': await MultipartFile.fromFile(fileUploadPath,
+            filename: fileUploadPath.split('/').last),
       // 'file_upload':
       //     await MultipartFile.fromFile(fileProvider.selectedFile!.path!)
     });
@@ -109,7 +117,8 @@ class PaymentServices {
     required String transaction_id,
     // File? file, // Add the file parameter
   }) async {
-    final receiptUpload = context.read<FilePickerProvider>().getFile('donation receipt');
+    final receiptUpload =
+        context.read<FilePickerProvider>().getFile('donation receipt');
     final receiptUploadPath = receiptUpload?.path;
     //final fileProvider =
     //     Provider.of<FilePickerProvider>(context, listen: false);
@@ -123,9 +132,9 @@ class PaymentServices {
       'donation_type': donation_type,
       'payment_method': payment_method,
       'transaction_id': transaction_id,
-       if (receiptUploadPath != null)
-      'receipt_upload': await MultipartFile.fromFile(receiptUploadPath,
-          filename: receiptUploadPath.split('/').last),
+      if (receiptUploadPath != null)
+        'receipt_upload': await MultipartFile.fromFile(receiptUploadPath,
+            filename: receiptUploadPath.split('/').last),
     });
 
     // Call the ApiServices post method with FormData and isFormData: true

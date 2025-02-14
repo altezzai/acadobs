@@ -38,6 +38,8 @@ class AppRouteConst {
   static const String StudentReportRouteName = 'studentreport';
   static const String TeacherReportRouteName = 'teacherreport';
   static const String ClassReportRouteName = 'classreport';
+  static const String DonationReportRouteName = 'donationreport';
+
   static const String PaymentViewRouteName = 'paymentview';
   static const String DonationViewRouteName = 'donationview';
 
