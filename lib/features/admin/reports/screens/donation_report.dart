@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
-import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart'; // Assuming CustomDropdown is imported from this path
-import 'package:provider/provider.dart';
 import 'package:school_app/features/admin/payments/controller/payment_controller.dart';
-import 'package:school_app/features/admin/payments/widgets/payment_item.dart'; // Assuming TimeFormatter is imported from this path
 
 class DonationReport extends StatefulWidget {
   const DonationReport({Key? key}) : super(key: key);
@@ -57,70 +55,70 @@ class _DonationReportState extends State<DonationReport> {
               },
             ),
             const SizedBox(height: 16),
-            Expanded(
-              child: _buildClassDivisionDonation(context: context),
-            ),
+            // Use Flexible instead of Expanded
+            _buildClassDivisionPayment(context: context),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildClassDivisionDonation({required BuildContext context}) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            Expanded(
-              child: CustomDropdown(
-                dropdownKey: 'class',
-                label: 'Class',
-                items: ['5', '6', '7', '8', '9', '10'],
-                icon: Icons.school,
-                onChanged: (selectedClass) {
-                  final selectedDivision = context
-                      .read<DropdownProvider>()
-                      .getSelectedItem('division');
-                  context
-                      .read<PaymentController>()
-                      .getDonationsByClassAndDivision(
-                        className: selectedClass,
-                        section: selectedDivision,
-                      );
-                },
+  Widget _buildClassDivisionPayment({required BuildContext context}) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: CustomDropdown(
+                  dropdownKey: 'class',
+                  label: 'Class',
+                  items: ['5', '6', '7', '8', '9', '10'],
+                  icon: Icons.school,
+                  onChanged: (selectedClass) {
+                    final selectedDivision = context
+                        .read<DropdownProvider>()
+                        .getSelectedItem('division');
+                    context
+                        .read<PaymentController>()
+                        .getDonationsByClassAndDivision(
+                          className: selectedClass,
+                          section: selectedDivision,
+                        );
+                  },
+                ),
               ),
-            ),
-            const SizedBox(width: 5),
-            Expanded(
-              child: CustomDropdown(
-                dropdownKey: 'division',
-                label: 'Division',
-                items: ['A', 'B', 'C'],
-                icon: Icons.group,
-                onChanged: (selectedDivision) {
-                  final selectedClass =
-                      context.read<DropdownProvider>().getSelectedItem('class');
-                  context
-                      .read<PaymentController>()
-                      .getDonationsByClassAndDivision(
-                        className: selectedClass,
-                        section: selectedDivision,
-                      );
-                },
+              const SizedBox(width: 5),
+              Expanded(
+                child: CustomDropdown(
+                  dropdownKey: 'division',
+                  label: 'Division',
+                  items: ['A', 'B', 'C'],
+                  icon: Icons.group,
+                  onChanged: (selectedDivision) {
+                    final selectedClass = context
+                        .read<DropdownProvider>()
+                        .getSelectedItem('class');
+                    context
+                        .read<PaymentController>()
+                        .getDonationsByClassAndDivision(
+                          className: selectedClass,
+                          section: selectedDivision,
+                        );
+                  },
+                ),
               ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 10),
-        Expanded(
-          child: Consumer<PaymentController>(
+            ],
+          ),
+          const SizedBox(height: 10),
+          // Use SizedBox instead of Expanded
+          Consumer<PaymentController>(
             builder: (context, value, child) {
               if (value.isloading) {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
               } else if (!value.isFiltered) {
-                // Show image before filtering
                 return Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -132,14 +130,13 @@ class _DonationReportState extends State<DonationReport> {
                       const SizedBox(height: 16),
                       Text(
                         'No filter applied. Please select a class and division.',
+                        textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 16),
                       ),
                     ],
                   ),
                 );
-              }
-              if (value.isFiltered && value.filtereddonations.isEmpty) {
-                // Show message after filtering with no results
+              } else if (value.isFiltered && value.filtereddonations.isEmpty) {
                 return Center(
                   child: Text(
                     'No Reports Found',
@@ -148,38 +145,67 @@ class _DonationReportState extends State<DonationReport> {
                 );
               } else {
                 return SingleChildScrollView(
-                  padding: EdgeInsets.zero, // Removes any default padding
+                  scrollDirection: Axis.horizontal,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        padding: EdgeInsets.zero,
-                        itemCount: value.filtereddonations.length,
-                        itemBuilder: (context, index) {
-                          final donation = value.filtereddonations[index];
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 4),
-                            child: PaymentItem(
-                              amount: donation.amountDonated ?? "",
-                              name: capitalizeFirstLetter(
-                                  donation.fullName ?? ""),
-                              time: TimeFormatter.formatTimeFromString(
-                                  donation.createdAt.toString()),
-                              status: donation.purpose ?? "",
-                            ),
-                          );
-                        },
-                      )
+                      SizedBox(height: Responsive.height * 4),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: DataTable(
+                          headingRowColor:
+                              WidgetStatePropertyAll(Colors.grey.shade400),
+                          border: TableBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          columns: [
+                            DataColumn(
+                                label: Text("ID",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold))),
+                            DataColumn(
+                                label: Text("Name",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold))),
+                            DataColumn(
+                                label: Text("Amount Donated",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold))),
+                            DataColumn(
+                                label: Text("Purpose",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold))),
+                            DataColumn(
+                                label: Text("Date",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold))),
+                          ],
+                          rows: value.filtereddonations.map((donation) {
+                            return DataRow(
+                              cells: [
+                                DataCell(Center(
+                                    child: Text(donation.id.toString()))),
+                                DataCell(Text(donation.fullName ?? "")),
+                                DataCell(Center(
+                                    child: Text(donation.amountDonated ?? ""))),
+                                DataCell(Center(
+                                    child: Text(donation.purpose ?? ""))),
+                                DataCell(Center(
+                                    child: Text(DateFormatter.formatDateString(
+                                        donation.createdAt.toString())))),
+                              ],
+                            );
+                          }).toList(),
+                        ),
+                      ),
                     ],
                   ),
                 );
               }
             },
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
