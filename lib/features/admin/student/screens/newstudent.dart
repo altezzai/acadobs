@@ -562,7 +562,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                       return 'This field is required';
                     }
                     return null;
-                  },
+                  },                                    
                 ),
 
                 SizedBox(height: 40),

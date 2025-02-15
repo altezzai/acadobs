@@ -137,11 +137,18 @@ class _DonationReportState extends State<DonationReport> {
                   ),
                 );
               } else if (value.isFiltered && value.filtereddonations.isEmpty) {
-                return Center(
-                  child: Text(
-                    'No Reports Found',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: Responsive.height * 30,
+                    ),
+                    Text(
+                      'No Reports Found',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 );
               } else {
                 return SingleChildScrollView(
