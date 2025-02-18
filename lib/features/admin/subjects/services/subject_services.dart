@@ -55,4 +55,11 @@ class SubjectServices {
       throw Exception('Failed to add subject: $e');
     }
   }
+
+  //delete subject
+Future<Response> deleteSubjects({required int subjectid, })async{
+  final Response response=await ApiServices.delete("/subjects/$subjectid");
+  return response;
+}
+
 }

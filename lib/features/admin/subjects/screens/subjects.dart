@@ -113,7 +113,9 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
                       extra: subject);
                       
                 },
-                onDelete:(){}
+                onDelete:(){
+                  SubjectController().deleteSubjects(context,subjectid: subject.id);
+                }
               ),
             );
           },

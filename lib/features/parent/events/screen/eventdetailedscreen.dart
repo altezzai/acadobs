@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
+import 'package:school_app/base/utils/custom_popup_menu.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
@@ -39,41 +40,24 @@ class _EventDetailPageState extends State<EventDetailPage> {
         [];
 
     return Scaffold(
-      appBar:  CommonAppBar(
+      appBar: CommonAppBar(
         title: capitalizeEachWord(event.title ?? ""),
         isBackButton: true,
         actions: [
           if (widget.userType == UserType.admin) // Show for admin only
             Consumer<NoticeController>(
               builder: (context, dutyController, child) {
-                return PopupMenuButton<String>(
-                  onSelected: (String value) {
-                    if (value == 'delete') {
-                      dutyController.deleteEvents(context,
-                          eventId: event.eventId!); // Pass the duty ID
-                      // Navigator.pop(
-                      //     context); // Close the detailed screen after deletion
-                    }
+                return CustomPopupMenu(
+                  onEdit: () {},
+                  onDelete: () {
+                    dutyController.deleteEvents(context,
+                        eventId: event.eventId!); // Pass the duty ID
                   },
-                  itemBuilder: (BuildContext context) =>
-                      <PopupMenuEntry<String>>[
-                    const PopupMenuItem<String>(
-                      value: 'delete',
-                      child: Row(
-                        children: [
-                          Icon(Icons.delete, color: Colors.red),
-                          SizedBox(width: 10),
-                          Text('Delete'),
-                        ],
-                      ),
-                    ),
-                  ],
                 );
               },
             ),
         ],
       ),
-      
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -162,7 +146,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                       fontSize: 16,
                     ),
                   ),
-                 SizedBox(height: Responsive.height*2),
+                  SizedBox(height: Responsive.height * 2),
                   Container(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
