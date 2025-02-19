@@ -8,7 +8,7 @@ android {
     namespace = "com.example.school_app"
     compileSdk = 34 // Replace with your desired SDK version
 
-    ndkVersion = "23.1.7779620" // Specify the NDK version if needed, or remove if not required
+    ndkVersion = "25.1.8937393" // Specify the NDK version if needed, or remove if not required
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

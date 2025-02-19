@@ -3,6 +3,7 @@ import 'package:school_app/base/interceptor/custom_interceptor.dart';
 
 class ApiServices {
   static const String baseUrl = "https://schoolmanagement.altezzai.com/api";
+  // static const String baseUrl = "https://schooltest.altezzai.com/api";
 
   static final Dio _dio = Dio(BaseOptions(
     baseUrl: baseUrl,
