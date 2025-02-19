@@ -54,6 +54,28 @@ class StudentController extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Latest students (GET request)
+  List<Student> _lateststudents = [];
+  List<Student> get lateststudents => _lateststudents;
+  Future<void> getLatestStudents() async {
+    _isloading = true;
+    notifyListeners(); // Notify listeners before the API call starts
+
+    try {
+      final response = await StudentServices().getLatestStudents();
+      if (response.statusCode == 200) {
+        _lateststudents = (response.data as List<dynamic>)
+            .map((result) => Student.fromJson(result))
+            .toList();
+      }
+    } catch (e) {
+      print(e);
+    }
+
+    _isloading = false;
+    notifyListeners(); // Notify listeners after fetching data
+  }
+
 // **************single child details***************
   Student? _individualStudent;
   Student? get individualStudent => _individualStudent;
@@ -159,65 +181,68 @@ class StudentController extends ChangeNotifier {
   }
 
   // ********Add New Student************
-  Future<void> addNewStudent(BuildContext context,
-      {required String fullName,
-      required String dateOfBirth,
-      required String gender,
-      required String studentClass,
-      required String section,
-      required String rollNumber,
-      required String admissionNumber,
-      required String aadhaarNumber,
-      required String residentialAddress,
-      required String contactNumber,
-      required String email,
-      required String previousSchool,
-      required String fatherFullName,
-      required String motherFullName,
-      required String guardianFullName,
-      required String bloodGroup,
-      required String parentEmail,
-      required String fatherContactNumber,
-      required String motherContactNumber,
-      required String occupation,
-      required String category,
-      required String siblingInformation,
-      required String transportRequirement,
-      required String hostelRequirement,
-      required String studentPhoto,
-      String? aadharPhoto,
-      required String fatherMotherPhoto}) async {
+  Future<void> addNewStudent(
+    BuildContext context, {
+    required String fullName,
+    required String dateOfBirth,
+    required String gender,
+    required String studentClass,
+    required String section,
+    required int rollNumber,
+    required String admissionNumber,
+    required String aadhaarNumber,
+    required String residentialAddress,
+    required String contactNumber,
+    required String email,
+    required String previousSchool,
+    required String fatherFullName,
+    required String motherFullName,
+    required String guardianFullName,
+    required String bloodGroup,
+    required String parentEmail,
+    required String fatherContactNumber,
+    required String motherContactNumber,
+    required String occupation,
+    required String category,
+    required String siblingInformation,
+    required bool transportRequirement,
+    required bool hostelRequirement,
+    // required String studentPhoto,
+    // String? aadharPhoto,
+    // required String fatherMotherPhoto,
+  }) async {
     _isloading = true;
 
     try {
       final response = await StudentServices().addNewStudent(
-          fullName: fullName,
-          dateOfBirth: dateOfBirth,
-          gender: gender,
-          studentClass: studentClass,
-          section: section,
-          rollNumber: rollNumber,
-          admissionNumber: admissionNumber,
-          aadhaarNumber: aadhaarNumber,
-          residentialAddress: residentialAddress,
-          contactNumber: contactNumber,
-          email: email,
-          previousSchool: previousSchool,
-          fatherFullName: fatherFullName,
-          motherFullName: motherFullName,
-          guardianFullName: guardianFullName,
-          parentEmail: parentEmail,
-          bloodGroup: bloodGroup,
-          fatherContactNumber: fatherContactNumber,
-          motherContactNumber: motherContactNumber,
-          occupation: occupation,
-          category: category,
-          siblingInformation: siblingInformation,
-          transportRequirement: transportRequirement,
-          hostelRequirement: hostelRequirement,
-          studentPhotoPath: studentPhoto,
-          aadhaarCard: aadharPhoto,
-          fatherMotherPhoto: fatherMotherPhoto);
+        fullName: fullName,
+        dateOfBirth: dateOfBirth,
+        gender: gender,
+        studentClass: studentClass,
+        section: section,
+        rollNumber: rollNumber,
+        admissionNumber: admissionNumber,
+        aadhaarNumber: aadhaarNumber,
+        residentialAddress: residentialAddress,
+        contactNumber: contactNumber,
+        email: email,
+        previousSchool: previousSchool,
+        fatherFullName: fatherFullName,
+        motherFullName: motherFullName,
+        guardianFullName: guardianFullName,
+        parentEmail: parentEmail,
+        bloodGroup: bloodGroup,
+        fatherContactNumber: fatherContactNumber,
+        motherContactNumber: motherContactNumber,
+        occupation: occupation,
+        category: category,
+        siblingInformation: siblingInformation,
+        transportRequirement: transportRequirement,
+        hostelRequirement: hostelRequirement,
+        // studentPhotoPath: studentPhoto,
+        // aadhaarCard: aadharPhoto,
+        // fatherMotherPhoto: fatherMotherPhoto,
+      );
       if (response.statusCode == 201 || response.statusCode == 200) {
         log(">>>>>>>>>>>>>Student Added}");
         ScaffoldMessenger.of(context).showSnackBar(
