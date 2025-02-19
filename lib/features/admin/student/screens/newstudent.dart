@@ -36,39 +36,63 @@ class _AddStudentPageState extends State<AddStudentPage> {
 
   final TextEditingController _dateOfJoiningController = TextEditingController(
       text: DateFormat('yyyy-MM-dd').format(DateTime.now()));
-  final TextEditingController _dateOfBirthController = TextEditingController();
-  final TextEditingController _fullNameController = TextEditingController();
 
-  final TextEditingController _rollNumberController = TextEditingController();
+  final TextEditingController _dateOfBirthController =
+      TextEditingController(text: '2000-01-01');
+
+  final TextEditingController _fullNameController =
+      TextEditingController(text: 'John Doe');
+
+  final TextEditingController _rollNumberController =
+      TextEditingController(text: '15');
+
   final TextEditingController _admissionNumberController =
-      TextEditingController();
-  final TextEditingController _aadhaarNumberController =
-      TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
-  // final TextEditingController _contactNumberController =
-  //     TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _previousSchoolController =
-      TextEditingController();
-  final TextEditingController _fatherFullNameController =
-      TextEditingController();
-  final TextEditingController _motherFullNameController =
-      TextEditingController();
-  final TextEditingController _guardianNameController = TextEditingController();
+      TextEditingController(text: 'ADM12345');
 
-  final TextEditingController parentEmailController = TextEditingController();
+  final TextEditingController _aadhaarNumberController =
+      TextEditingController(text: '1234 5678 9012');
+
+  final TextEditingController _addressController =
+      TextEditingController(text: '123, Street Name, City');
+
+  final TextEditingController _emailController =
+      TextEditingController(text: 'example@email.com');
+
+  final TextEditingController _previousSchoolController =
+      TextEditingController(text: 'ABC High School');
+
+  final TextEditingController _fatherFullNameController =
+      TextEditingController(text: 'Robert Doe');
+
+  final TextEditingController _motherFullNameController =
+      TextEditingController(text: 'Jane Doe');
+
+  final TextEditingController _guardianNameController =
+      TextEditingController(text: 'Uncle Sam');
+
+  final TextEditingController parentEmailController =
+      TextEditingController(text: 'parent@email.com');
+
   final TextEditingController _fatherContactNumberController =
-      TextEditingController();
+      TextEditingController(text: '9876543210');
+
   final TextEditingController _motherContactNumberController =
-      TextEditingController();
-  final TextEditingController _occupationController = TextEditingController();
+      TextEditingController(text: '9876543211');
+
+  final TextEditingController _occupationController =
+      TextEditingController(text: 'Engineer');
+
   final TextEditingController _motherAadharNumberController =
-      TextEditingController();
+      TextEditingController(text: '2345 6789 0123');
+
   final TextEditingController _fatherAadharNumberController =
-      TextEditingController();
+      TextEditingController(text: '3456 7890 1234');
+
   final TextEditingController _alternateNumberController =
-      TextEditingController();
-  final TextEditingController _siblingNameController = TextEditingController();
+      TextEditingController(text: '9123456789');
+
+  final TextEditingController _siblingNameController =
+      TextEditingController(text: 'Emily Doe');
 
   late DropdownProvider dropdownProvider;
 
@@ -538,31 +562,31 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 CustomFilePicker(
                   label: 'student Photo',
                   fieldName: 'student photo',
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'This field is required';
-                    }
-                    return null;
-                  },
+                  // validator: (value) {
+                  //   if (value == null || value.isEmpty) {
+                  //     return 'This field is required';
+                  //   }
+                  //   return null;
+                  // },
                 ),
 
                 SizedBox(height: Responsive.height * 2),
-                CustomFilePicker(
-                  label: 'Aadhar Photo',
-                  fieldName: 'aadhar photo',
-                ),
+                // CustomFilePicker(
+                //   label: 'Aadhar Photo',
+                //   fieldName: 'aadhar photo',
+                // ),
 
                 SizedBox(height: Responsive.height * 2),
 
                 CustomFilePicker(
                   label: 'Parent Photo',
                   fieldName: 'parent photo',
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'This field is required';
-                    }
-                    return null;
-                  },                                    
+                  // validator: (value) {
+                  //   if (value == null || value.isEmpty) {
+                  //     return 'This field is required';
+                  //   }
+                  //   return null;
+                  // },
                 ),
 
                 SizedBox(height: 40),
@@ -602,18 +626,22 @@ class _AddStudentPageState extends State<AddStudentPage> {
             context.read<DropdownProvider>().getSelectedItem('blood-group');
         final selectedCategory =
             context.read<DropdownProvider>().getSelectedItem('category');
-        final selectedTransportation =
-            context.read<DropdownProvider>().getSelectedItem('transportation');
+
+        final selectedTransportation = context
+                .read<DropdownProvider>()
+                .getSelectedItem('transportation') ==
+            "Yes";
         final selectedHostel =
-            context.read<DropdownProvider>().getSelectedItem('hostel');
+            context.read<DropdownProvider>().getSelectedItem('hostel') == "Yes";
+
         final selectedStudentPhoto =
             context.read<FilePickerProvider>().getFile('student photo');
-        final selectedAadharPhoto =
-            context.read<FilePickerProvider>().getFile('aadhar photo');
+        // final selectedAadharPhoto =
+        //     context.read<FilePickerProvider>().getFile('aadhar photo');
         final parentPhoto =
             context.read<FilePickerProvider>().getFile('parent photo');
         final studentPhotoPath = selectedStudentPhoto?.path;
-        final aadharPhotoPath = selectedAadharPhoto?.path;
+        // final aadharPhotoPath = selectedAadharPhoto?.path;
         final parentPhotoPath = parentPhoto?.path;
 
         // Call the controller method to add the student
@@ -624,7 +652,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
               gender: selectedGender,
               studentClass: selectedClass,
               section: selectedDivision,
-              rollNumber: _rollNumberController.text,
+              rollNumber: int.tryParse(_rollNumberController.text) ?? 0,
               admissionNumber: _admissionNumberController.text,
               aadhaarNumber: _aadhaarNumberController.text,
               residentialAddress: _addressController.text,
@@ -643,13 +671,13 @@ class _AddStudentPageState extends State<AddStudentPage> {
               siblingInformation: _siblingNameController.text,
               transportRequirement: selectedTransportation,
               hostelRequirement: selectedHostel,
-              studentPhoto: studentPhotoPath!,
-              aadharPhoto: aadharPhotoPath,
-              fatherMotherPhoto: parentPhotoPath!,
+              // studentPhoto: studentPhotoPath!,
+              // aadharPhoto: aadharPhotoPath,
+              // fatherMotherPhoto: parentPhotoPath!,
             );
 
         // Clear the form fields upon success
-        context.read<DropdownProvider>().clearAllDropdowns();
+        // context.read<DropdownProvider>().clearAllDropdowns();
         // _clearFormFields();
       } catch (e) {
         // Handle any errors and show an error message
