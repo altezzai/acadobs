@@ -51,22 +51,6 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
                 // Wrap with Expanded to avoid constraint issues
                 child: _buildSubjects(),
               ),
-
-              // Padding(
-              //   padding: EdgeInsets.only(bottom: Responsive.height * 4),
-              //   child:
-              //       Consumer<SubjectController>(builder: (context, value, child) {
-              //     return CommonButton(
-              //       onPressed: () {
-              //         context.pushNamed(AppRouteConst.AddSubjectPageRouteName);
-              //       },
-              //       widget: Text('Add Subjects'),
-              //     );
-              //   }),
-              //   // CustomButton(text: 'Add Subjects', onPressed: (){
-              //   //    context.pushNamed(AppRouteConst.AddSubjectPageRouteName);
-              //   // })
-              // ),
             ]),
           ),
         ),
@@ -127,27 +111,9 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
                 onEdit: () {
                   context.pushNamed(AppRouteConst.EditSubjectPageRouteName,
                       extra: subject);
+                      
                 },
-                // margin: EdgeInsets.symmetric(
-                //     horizontal: Responsive.width * 4,
-                //     vertical: Responsive.height * 1),
-                // child: ListTile(
-                //   leading: CircleAvatar(
-                //     backgroundColor: Colors.blue,
-                //     child: Icon(Icons.book, color: Colors.white),
-                //   ),
-                //   title: Text(capitalizeEachWord(subject.subject ?? ""),
-                //       style:
-                //           TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                //   subtitle: Text(subject.description ?? ""),
-                //   trailing: TextButton(
-                //     onPressed: () {
-                //       context.pushNamed(AppRouteConst.EditSubjectPageRouteName,
-                //           extra: subject);
-                //     },
-                //     child: Text('Edit', style: TextStyle(color: Colors.blue)),
-                //   ),
-                // ),
+                onDelete:(){}
               ),
             );
           },

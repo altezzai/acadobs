@@ -10,14 +10,14 @@ import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart'; // Assuming CustomDropdown is imported from this path
 import 'package:school_app/features/admin/payments/controller/payment_controller.dart';
 
-class PaymentReport extends StatefulWidget {
-  const PaymentReport({Key? key}) : super(key: key);
+class DonationReport extends StatefulWidget {
+  const DonationReport({Key? key}) : super(key: key);
 
   @override
-  State<PaymentReport> createState() => _PaymentReportState();
+  State<DonationReport> createState() => _DonationReportState();
 }
 
-class _PaymentReportState extends State<PaymentReport> {
+class _DonationReportState extends State<DonationReport> {
   late DropdownProvider dropdownprovider;
 
   @override
@@ -27,13 +27,13 @@ class _PaymentReportState extends State<PaymentReport> {
       dropdownprovider.clearSelectedItem('class');
       dropdownprovider.clearSelectedItem('division');
 
-      context.read<PaymentController>().clearPaymentList();
+      context.read<PaymentController>().clearDonationList();
       context.read<PaymentController>().resetFilter();
       // super.dispose();
     });
     super.initState();
 
-    context.read<PaymentController>().getPayments();
+    context.read<PaymentController>().getDonations();
   }
 
   @override
@@ -45,7 +45,7 @@ class _PaymentReportState extends State<PaymentReport> {
         child: Column(
           children: [
             CustomAppbar(
-              title: "Payment Report",
+              title: "Donation Report",
               isBackButton: true,
               onTap: () {
                 context.pushNamed(
@@ -81,7 +81,7 @@ class _PaymentReportState extends State<PaymentReport> {
                         .getSelectedItem('division');
                     context
                         .read<PaymentController>()
-                        .getPaymentsByClassAndDivision(
+                        .getDonationsByClassAndDivision(
                           className: selectedClass,
                           section: selectedDivision,
                         );
@@ -101,7 +101,7 @@ class _PaymentReportState extends State<PaymentReport> {
                         .getSelectedItem('class');
                     context
                         .read<PaymentController>()
-                        .getPaymentsByClassAndDivision(
+                        .getDonationsByClassAndDivision(
                           className: selectedClass,
                           section: selectedDivision,
                         );
@@ -136,7 +136,7 @@ class _PaymentReportState extends State<PaymentReport> {
                     ],
                   ),
                 );
-              } else if (value.isFiltered && value.filteredpayments.isEmpty) {
+              } else if (value.isFiltered && value.filtereddonations.isEmpty) {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -145,8 +145,8 @@ class _PaymentReportState extends State<PaymentReport> {
                     ),
                     Text(
                       'No Reports Found',
-                      style: TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ],
                 );
@@ -175,11 +175,11 @@ class _PaymentReportState extends State<PaymentReport> {
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold))),
                             DataColumn(
-                                label: Text("Amount Paid",
+                                label: Text("Amount Donated",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold))),
                             DataColumn(
-                                label: Text("Payment Status",
+                                label: Text("Purpose",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold))),
                             DataColumn(
@@ -187,19 +187,19 @@ class _PaymentReportState extends State<PaymentReport> {
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold))),
                           ],
-                          rows: value.filteredpayments.map((payment) {
+                          rows: value.filtereddonations.map((donation) {
                             return DataRow(
                               cells: [
-                                DataCell(
-                                    Center(child: Text(payment.id.toString()))),
-                                DataCell(Text(payment.fullName ?? "")),
                                 DataCell(Center(
-                                    child: Text(payment.amountPaid ?? ""))),
+                                    child: Text(donation.id.toString()))),
+                                DataCell(Text(donation.fullName ?? "")),
                                 DataCell(Center(
-                                    child: Text(payment.paymentStatus ?? ""))),
+                                    child: Text(donation.amountDonated ?? ""))),
+                                DataCell(Center(
+                                    child: Text(donation.purpose ?? ""))),
                                 DataCell(Center(
                                     child: Text(DateFormatter.formatDateString(
-                                        payment.createdAt.toString())))),
+                                        donation.createdAt.toString())))),
                               ],
                             );
                           }).toList(),

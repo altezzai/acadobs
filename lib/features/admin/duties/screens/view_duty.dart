@@ -41,6 +41,7 @@ class _DutyViewState extends State<DutyView> {
         title: capitalizeEachWord(widget.duty.dutyTitle ?? ""),
         isBackButton: true,
         actions: [
+          // CustomPopupMenu(onEdit: () {}, onDelete: () {})
           if (widget.userType == UserType.admin) // Show for admin only
             Consumer<DutyController>(
               builder: (context, dutyController, child) {

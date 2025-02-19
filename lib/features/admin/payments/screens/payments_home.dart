@@ -52,6 +52,7 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
                         CustomAppbar(
                           title: "Payments",
                           isBackButton: false,
+                          isProfileIcon: false,
                         ),
                         SizedBox(height: Responsive.height * 2),
                         Row(

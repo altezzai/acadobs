@@ -14,10 +14,11 @@ import 'package:school_app/features/admin/payments/services/payment_services.dar
 class PaymentController extends ChangeNotifier {
   bool _isloading = false;
   bool get isloading => _isloading;
-    bool _isloadingTwo = false;
+  bool _isloadingTwo = false;
   bool get isloadingTwo => _isloadingTwo;
-  bool _isFiltered = false;  // New flag to track filtering
-  bool get isFiltered => _isFiltered;  // Public getter to access the filter state
+  bool _isFiltered = false; // New flag to track filtering
+  bool get isFiltered =>
+      _isFiltered; // Public getter to access the filter state
 
   List<Payment> _payments = [];
   List<Payment> get payments => _payments;
@@ -27,6 +28,8 @@ class PaymentController extends ChangeNotifier {
   List<Payment> get studentPayments => _studentPayments;
   List<Payment> _teacherPayments = [];
   List<Payment> get teacherPayments => _teacherPayments;
+  List<Donation> _filtereddonations = [];
+  List<Donation> get filtereddonations => _filtereddonations;
 
 // Get all Payments
   Future<void> getPayments() async {
@@ -84,7 +87,6 @@ class PaymentController extends ChangeNotifier {
         _filteredpayments = (response.data as List<dynamic>)
             .map((result) => Payment.fromJson(result))
             .toList();
-            
       }
     } catch (e) {
       log(e.toString());
@@ -119,6 +121,11 @@ class PaymentController extends ChangeNotifier {
 
   void clearPaymentList() {
     _filteredpayments.clear();
+    notifyListeners();
+  }
+
+  void clearDonationList() {
+    _filtereddonations.clear();
     notifyListeners();
   }
 
@@ -174,6 +181,31 @@ class PaymentController extends ChangeNotifier {
     }
     _isloading = false;
     notifyListeners();
+  }
+
+  // Get donations by class and division
+  Future<void> getDonationsByClassAndDivision(
+      {required String className, required String section}) async {
+    _isloading = true;
+    _filtereddonations.clear();
+    _isFiltered = false;
+    try {
+      final response = await PaymentServices().getDonationsByClassAndDivision(
+          className: className, section: section);
+      log("***********${response.statusCode}");
+      if (response.statusCode == 200) {
+        _filtereddonations.clear();
+        _filtereddonations = (response.data as List<dynamic>)
+            .map((result) => Donation.fromJson(result))
+            .toList();
+      }
+    } catch (e) {
+      log(e.toString());
+    } finally {
+      _isloading = false;
+      _isFiltered = true;
+      notifyListeners();
+    }
   }
 
   // Get teacher donations

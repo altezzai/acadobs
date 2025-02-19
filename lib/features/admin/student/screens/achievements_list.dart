@@ -56,8 +56,15 @@ class AchievementsList extends StatelessWidget {
                 );
 
                 return value.achievements.isEmpty
-                    ? Center(
-                        child: Text("No Achievements Found!"),
+                    ? Expanded(
+                        child: Center(
+                          child: Text(
+                            "No Achievements Found!",
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
                       )
                     : _buildGroupedList(
                         groupedAchievements,

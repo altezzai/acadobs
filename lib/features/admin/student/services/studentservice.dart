@@ -46,12 +46,13 @@ class StudentServices {
     required String gender,
     required String studentClass,
     required String section,
-    required String rollNumber,
+    required int rollNumber,
     required String admissionNumber,
     required String aadhaarNumber,
     required String residentialAddress,
     required String contactNumber,
     required String email,
+    required String previousSchool,
     required String fatherFullName,
     required String motherFullName,
     required String guardianFullName,
@@ -59,9 +60,14 @@ class StudentServices {
     required String parentEmail,
     required String fatherContactNumber,
     required String motherContactNumber,
-    required String studentPhotoPath,
-    String? aadhaarCard,
-    required String fatherMotherPhoto,
+    required String occupation,
+    required String category,
+    required String siblingInformation,
+    required bool transportRequirement,
+    required bool hostelRequirement,
+    // required String studentPhotoPath,
+    // String? aadhaarCard,
+    // required String fatherMotherPhoto,
   }) async {
     // Create the form data to pass to the API
     final formData = {
@@ -76,6 +82,7 @@ class StudentServices {
       "residential_address": residentialAddress,
       "contact_number": contactNumber,
       "email": email,
+      "previous_school": previousSchool,
       "father_full_name": fatherFullName,
       "mother_full_name": motherFullName,
       "guardian_full_name": guardianFullName,
@@ -83,15 +90,20 @@ class StudentServices {
       "parent_email": parentEmail,
       "father_contact_number": fatherContactNumber,
       "mother_contact_number": motherContactNumber,
+      "occupation": occupation,
+      "category": category,
+      "sibling_information": siblingInformation,
+      "transport_requirement": transportRequirement,
+      "hostel_requirement": hostelRequirement,
 
       // Only include if the photo is provided
-      "student_photo": await MultipartFile.fromFile(studentPhotoPath,
-          filename: studentPhotoPath.split('/').last),
-      if (aadhaarCard != null)
-        "aadhaar_card": await MultipartFile.fromFile(aadhaarCard,
-            filename: aadhaarCard.split('/').last),
-      "father_mother_photo": await MultipartFile.fromFile(fatherMotherPhoto,
-          filename: fatherMotherPhoto.split('/').last)
+      // "student_photo": await MultipartFile.fromFile(studentPhotoPath,
+      //     filename: studentPhotoPath.split('/').last),
+      // // if (aadhaarCard != null)
+      // //   "aadhaar_card": await MultipartFile.fromFile(aadhaarCard,
+      // //       filename: aadhaarCard.split('/').last),
+      // "father_mother_photo": await MultipartFile.fromFile(fatherMotherPhoto,
+      //     filename: fatherMotherPhoto.split('/').last)
     };
 
     // Call the ApiServices post method with formData and isFormData: true
@@ -129,6 +141,16 @@ class StudentServices {
     try {
       final Response response = await ApiServices.get(
           '/getParentNameAndImageByClsAnDiv?class=$classname&section=$section');
+      return response;
+    } on DioException catch (e) {
+      throw Exception('Failed to load data: $e');
+    }
+  }
+
+  // Get latest students
+  Future<Response> getLatestStudents() async {
+    try {
+      final Response response = await ApiServices.get('/getLatestStudents');
       return response;
     } on DioException catch (e) {
       throw Exception('Failed to load data: $e');
