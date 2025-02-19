@@ -76,7 +76,7 @@ class StudentController extends ChangeNotifier {
     notifyListeners(); // Notify listeners after fetching data
   }
 
-// **************single child details***************
+// *************single child details**************
   Student? _individualStudent;
   Student? get individualStudent => _individualStudent;
   Future<void> getIndividualStudentDetails({required int studentId}) async {
