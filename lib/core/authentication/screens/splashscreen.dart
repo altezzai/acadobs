@@ -34,7 +34,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   _navigateToLogin() async {
     await Future.delayed(const Duration(seconds: 3), () async {
-      final token = await SecureStorageService.getToken();
+      final token = await SecureStorageService.getAccessToken();
       final userType = await SecureStorageService.getUserType();
       if (token == null) {
         // ignore: use_build_context_synchronously

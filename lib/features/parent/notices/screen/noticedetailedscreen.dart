@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
+import 'package:school_app/base/utils/custom_popup_menu.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/common_appbar.dart';
@@ -33,16 +34,17 @@ class NoticeDetailPage extends StatelessWidget {
 
         final response = await http.get(Uri.parse(fileUrl));
         if (response.statusCode == 200) {
-          Directory? downloadsDirectory ;
+          Directory? downloadsDirectory;
 
-           if (Platform.isAndroid || Platform.isIOS) {
-          downloadsDirectory = await getExternalStorageDirectory();
-        } else if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-          downloadsDirectory = await getDownloadsDirectory();
-        } else {
-          downloadsDirectory = await getTemporaryDirectory();
-        }
-
+          if (Platform.isAndroid || Platform.isIOS) {
+            downloadsDirectory = await getExternalStorageDirectory();
+          } else if (Platform.isWindows ||
+              Platform.isLinux ||
+              Platform.isMacOS) {
+            downloadsDirectory = await getDownloadsDirectory();
+          } else {
+            downloadsDirectory = await getTemporaryDirectory();
+          }
 
           String filePath = '${downloadsDirectory!.path}/$fileName';
           File file = File(filePath);
@@ -100,21 +102,21 @@ class NoticeDetailPage extends StatelessWidget {
     return false;
   }
 
-Future<Directory?> getDownloadDirectory() async {
-  if (Platform.isAndroid) {
-    Directory? directory = await getExternalStorageDirectory();
-    String path = directory!.path.split("Android")[0] + "Download";
-    directory = Directory(path);
+  Future<Directory?> getDownloadDirectory() async {
+    if (Platform.isAndroid) {
+      Directory? directory = await getExternalStorageDirectory();
+      String path = directory!.path.split("Android")[0] + "Download";
+      directory = Directory(path);
 
-    if (!await directory.exists()) {
-      await directory.create(recursive: true);
+      if (!await directory.exists()) {
+        await directory.create(recursive: true);
+      }
+      return directory;
+    } else if (Platform.isIOS) {
+      return await getApplicationDocumentsDirectory();
     }
-    return directory;
-  } else if (Platform.isIOS) {
-    return await getApplicationDocumentsDirectory();
+    return null;
   }
-  return null;
-}
   // Future<void> _deleteNotice(BuildContext context) async {
   //   // Implement delete logic
   //   ScaffoldMessenger.of(context).showSnackBar(
@@ -126,41 +128,23 @@ Future<Directory?> getDownloadDirectory() async {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:  CommonAppBar(
+      appBar: CommonAppBar(
         title: capitalizeEachWord(notice.title ?? ""),
         isBackButton: true,
         actions: [
           if (userType == UserType.admin) // Show for admin only
             Consumer<NoticeController>(
-              builder: (context,noticeController, child) {
-                return PopupMenuButton<String>(
-                  onSelected: (String value) {
-                    if (value == 'delete') {
+              builder: (context, noticeController, child) {
+                return CustomPopupMenu(
+                    onEdit: () {},
+                    onDelete: () {
                       noticeController.deleteNotices(context,
                           noticeId: notice.id!); // Pass the duty ID
-                      // Navigator.pop(
-                      //     context); // Close the detailed screen after deletion
-                    }
-                  },
-                  itemBuilder: (BuildContext context) =>
-                      <PopupMenuEntry<String>>[
-                    const PopupMenuItem<String>(
-                      value: 'delete',
-                      child: Row(
-                        children: [
-                          Icon(Icons.delete, color: Colors.red),
-                          SizedBox(width: 10),
-                          Text('Delete'),
-                        ],
-                      ),
-                    ),
-                  ],
-                );
+                    });
               },
             ),
         ],
       ),
-    
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),

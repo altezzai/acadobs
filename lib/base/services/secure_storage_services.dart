@@ -1,28 +1,52 @@
 import 'dart:convert'; // For JSON encoding/decoding
 
+import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:school_app/core/authentication/model/login_model.dart';
 
 class SecureStorageService {
   static final _storage = FlutterSecureStorage();
 
   // Keys for secure storage
-  static const _tokenKey = 'token';
+  static const _accessTokenKey = 'access_token';
+  static const _refreshTokenKey = 'refresh_token';
   static const _userKey = 'user';
   static const _teacherKey = 'teacher';
   static const _studentKey = 'student';
 
-  /// Save data to secure storage
-  static Future<void> saveTokenAndUserData(Map<String, dynamic> data) async {
-    await _storage.write(key: _tokenKey, value: data['token']);
-    // await _storage.write(key: _tokenKey, value: data['token']);
-    await _storage.write(key: _userKey, value: jsonEncode(data['user']));
+  /// Save access token, refresh token, and user data
+  static Future<void> saveTokenAndUserData(LoginModel data) async {
+    await _storage.write(key: _accessTokenKey, value: data.token);
+    await _storage.write(key: _refreshTokenKey, value: data.refreshToken);
+    await _storage.write(key: _userKey, value: jsonEncode(data.user));
   }
 
-  /// Retrieve token from secure storage
-  static Future<String?> getToken() async {
-    return await _storage.read(key: _tokenKey);
+  /// Save only the access token (used during token refresh)
+  static Future<void> saveAccessToken(String token) async {
+    await _storage.write(key: _accessTokenKey, value: token);
   }
 
+  /// Save only the refresh token (if needed)
+  static Future<void> saveRefreshToken(String refreshToken) async {
+    await _storage.write(key: _refreshTokenKey, value: refreshToken);
+  }
+
+  /// Retrieve access token from secure storage
+  static Future<String?> getAccessToken() async {
+    return await _storage.read(key: _accessTokenKey);
+  }
+
+  /// Retrieve refresh token from secure storage
+  static Future<String?> getRefreshToken() async {
+    return await _storage.read(key: _refreshTokenKey);
+  }
+
+  /// Delete all stored tokens and user data (used during logout)
+  static Future<void> deleteToken() async {
+    await _storage.delete(key: _accessTokenKey);
+    await _storage.delete(key: _refreshTokenKey);
+    await _storage.delete(key: _userKey);
+  }
   /// Retrieve user data from secure storage
   static Future<Map<String, dynamic>?> getUser() async {
     final userData = await _storage.read(key: _userKey);
@@ -90,7 +114,7 @@ class SecureStorageService {
     return null;
   }
 
-  /// Get individual teacher details
+  ///***************** */ Get individual teacher details************
   static Future<int?> getTeacherId() async {
     final teacher = await getTeacherData();
     return teacher?['id'];
@@ -142,5 +166,103 @@ class SecureStorageService {
   // Delete student data
   static Future<void> clearStudentData() async {
     await _storage.delete(key: _studentKey);
+  }
+}
+
+
+// ********User Credentials***********
+class UserCredentials {
+  static final _storage = FlutterSecureStorage();
+
+  // Keys for secure storage
+  static const _accessTokenKey = 'access_token';
+  static const _refreshTokenKey = 'refresh_token';
+  static const _userKey = 'user';
+  static const _userTypeKey = 'user_type';
+
+  /// Save access token, refresh token, and user data
+  static Future<void> saveTokenAndUserData(LoginModel data) async {
+    try {
+      await _storage.write(key: _accessTokenKey, value: data.token);
+      await _storage.write(key: _refreshTokenKey, value: data.refreshToken);
+      await _storage.write(key: _userKey, value: jsonEncode(data.user));
+      await _storage.write(key: _userTypeKey, value: data.user?.userType);
+    } catch (e) {
+      debugPrint("Error saving token and user data: $e");
+    }
+  }
+
+  /// Save only the access token (used during token refresh)
+  static Future<void> saveAccessToken(String token) async {
+    try {
+      await _storage.write(key: _accessTokenKey, value: token);
+    } catch (e) {
+      debugPrint("Error saving access token: $e");
+    }
+  }
+
+  /// Save only the refresh token (if needed)
+  static Future<void> saveRefreshToken(String refreshToken) async {
+    try {
+      await _storage.write(key: _refreshTokenKey, value: refreshToken);
+    } catch (e) {
+      debugPrint("Error saving refresh token: $e");
+    }
+  }
+
+  /// Retrieve access token from secure storage
+  static Future<String?> getAccessToken() async {
+    try {
+      return await _storage.read(key: _accessTokenKey);
+    } catch (e) {
+      debugPrint("Error retrieving access token: $e");
+      return null;
+    }
+  }
+
+  /// Retrieve refresh token from secure storage
+  static Future<String?> getRefreshToken() async {
+    try {
+      return await _storage.read(key: _refreshTokenKey);
+    } catch (e) {
+      debugPrint("Error retrieving refresh token: $e");
+      return null;
+    }
+  }
+
+  /// Delete all stored tokens and user data (used during logout)
+  static Future<void> deleteToken() async {
+    try {
+      await _storage.delete(key: _accessTokenKey);
+      await _storage.delete(key: _refreshTokenKey);
+      await _storage.delete(key: _userKey);
+      await _storage.delete(key: _userTypeKey);
+    } catch (e) {
+      debugPrint("Error deleting tokens: $e");
+    }
+  }
+
+  /// Retrieve user data from secure storage
+  static Future<Map<String, dynamic>?> getUser() async {
+    try {
+      final userData = await _storage.read(key: _userKey);
+      if (userData != null) {
+        return jsonDecode(userData) as Map<String, dynamic>;
+      }
+      return null;
+    } catch (e) {
+      debugPrint("Error retrieving user data: $e");
+      return null;
+    }
+  }
+
+  /// Retrieve user type from secure storage (e.g., student, teacher, admin)
+  static Future<String?> getUserType() async {
+    try {
+      return await _storage.read(key: _userTypeKey);
+    } catch (e) {
+      debugPrint("Error retrieving user type: $e");
+      return null;
+    }
   }
 }

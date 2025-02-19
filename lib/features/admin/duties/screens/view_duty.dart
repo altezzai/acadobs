@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
+import 'package:school_app/base/utils/custom_popup_menu.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
@@ -45,29 +46,14 @@ class _DutyViewState extends State<DutyView> {
           if (widget.userType == UserType.admin) // Show for admin only
             Consumer<DutyController>(
               builder: (context, dutyController, child) {
-                return PopupMenuButton<String>(
-                  onSelected: (String value) {
-                    if (value == 'delete') {
+                return CustomPopupMenu(
+                    onEdit: () {},
+                    onDelete: () {
                       dutyController.deleteDuties(context,
-                          dutyId: widget.duty.id!); // Pass the duty ID
-                      // Navigator.pop(
-                      //     context); // Close the detailed screen after deletion
-                    }
-                  },
-                  itemBuilder: (BuildContext context) =>
-                      <PopupMenuEntry<String>>[
-                    const PopupMenuItem<String>(
-                      value: 'delete',
-                      child: Row(
-                        children: [
-                          Icon(Icons.delete, color: Colors.red),
-                          SizedBox(width: 10),
-                          Text('Delete'),
-                        ],
-                      ),
-                    ),
-                  ],
-                );
+                          dutyId: widget.duty.id!);
+                    } // Pass the duty ID})
+
+                    );
               },
             ),
         ],

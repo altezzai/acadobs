@@ -6,12 +6,14 @@ import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/services/api_services.dart';
 import 'package:school_app/base/services/secure_storage_services.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
+import 'package:school_app/core/authentication/model/login_model.dart';
 import 'package:school_app/core/authentication/services/auth_services.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 
 class AuthController extends ChangeNotifier {
   bool _isloading = false;
   bool get isloading => _isloading;
+  LoginModel loginModel = LoginModel();
   //********************Login *********************
   Future<void> login(
       {required BuildContext context,
@@ -25,8 +27,10 @@ class AuthController extends ChangeNotifier {
           await AuthServices().login(email: email, password: password);
       log("Response ==== ${response.data.toString()}");
       if (response.statusCode == 200) {
-        final result = response.data;
-        await SecureStorageService.saveTokenAndUserData(result);
+        final result = LoginModel.fromJson(response.data);
+        loginModel = result;
+        await SecureStorageService.saveTokenAndUserData(loginModel);
+        log("Login data: ${loginModel.toString()}");
         final userType = await SecureStorageService.getUserType();
         log("User type from api===== ${response.data['user']["user_type"].toString()} ");
         log("User type from secure storage===== $userType ");
@@ -47,15 +51,16 @@ class AuthController extends ChangeNotifier {
       }
     } catch (e) {
       log(e.toString());
-     CustomSnackbar.show(context,
-            message: "Failed to Login.Please try again", type: SnackbarType.failure);
-                        
+      CustomSnackbar.show(context,
+          message: "Failed to Login.Please try again",
+          type: SnackbarType.failure);
     } finally {
       _isloading = false;
       notifyListeners();
     }
   }
-
+  // *****************Refresh Token*****************
+  
   // *****************Logout ***********************
   Future<void> logout({required BuildContext context}) async {
     _isloading = true;
