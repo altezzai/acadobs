@@ -143,23 +143,24 @@ class SubjectController extends ChangeNotifier {
   }
 
   //delete subjects
-  Future<void> deleteSubjects(BuildContext context,{required subjectid})async{
-    _isloading=true;
-    try{
-      final response=await SubjectServices().deleteSubjects(subjectid:subjectid );
+  Future<void> deleteSubjects(BuildContext context,
+      {required subjectid}) async {
+    _isloading = true;
+    notifyListeners();
+    try {
+      final response =
+          await SubjectServices().deleteSubjects(subjectid: subjectid);
       print("***********${response.statusCode}");
-      if (response.statusCode==200|| response.statusCode == 201){
+      if (response.statusCode == 200 || response.statusCode == 201) {
         log("subject deleted successfully.");
-        Navigator.pop(context);
-       CustomSnackbar.show(context,
+        // Navigator.pop(context);
+        await getSubjects();
+        CustomSnackbar.show(context,
             message: 'Deleted successfully', type: SnackbarType.info);
       }
-    }
-    catch(e){
-
-    }
-    finally{
-      _isloading=false;
+    } catch (e) {
+    } finally {
+      _isloading = false;
       notifyListeners();
     }
   }
@@ -172,7 +173,7 @@ class SubjectController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void clearSelection(){
+  void clearSelection() {
     _selectedSubjectId = null;
     notifyListeners();
   }
