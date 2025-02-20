@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/custom_popup_menu.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/base/utils/show_confirmation_dialog.dart';
 import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
@@ -47,12 +48,16 @@ class _EventDetailPageState extends State<EventDetailPage> {
         actions: [
           if (widget.userType == UserType.admin) // Show for admin only
             Consumer<NoticeController>(
-              builder: (context, dutyController, child) {
+              builder: (context, eventController, child) {
                 return CustomPopupMenu(
                   onEdit: () {},
                   onDelete: () {
-                    dutyController.deleteEvents(context,
-                        eventId: event.eventId ?? 0); // Pass the duty ID
+                    showConfirmationDialog(context: context, title: "Delete Event?",
+                          content:
+                              "Are you sure you want to delete this event?", onConfirm: (){
+                                 eventController.deleteEvents(context,
+                        eventId: event.eventId ?? 0);
+                              });
                   },
                 );
               },

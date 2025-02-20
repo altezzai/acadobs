@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/custom_popup_menu.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/base/utils/show_confirmation_dialog.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/common_appbar.dart';
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
@@ -138,8 +139,15 @@ class NoticeDetailPage extends StatelessWidget {
                 return CustomPopupMenu(
                     onEdit: () {},
                     onDelete: () {
-                      noticeController.deleteNotices(context,
-                          noticeId: notice.id!); // Pass the duty ID
+                      showConfirmationDialog(
+                          context: context,
+                          title: "Delete Notice?",
+                          content:
+                              "Are you sure you want to delete this notice?",
+                          onConfirm: () {
+                            noticeController.deleteNotices(context,
+                                noticeId: notice.id!);
+                          });
                     });
               },
             ),
