@@ -129,7 +129,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                 SizedBox(
                   height: Responsive.height * 2,
                 ),
-                Text("Selected students:"),
+                Text("Selected student:"),
                 SizedBox(height: 10),
                 // Select Student
                 InkWell(
@@ -305,7 +305,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                   label: "Add Receipt",
                   fieldName: 'receipt',
                 ),
-                const SizedBox(height: 34),
+                const SizedBox(height: 30),
                 Center(child: Consumer<PaymentController>(
                     builder: (context, value, child) {
                   return CommonButton(
