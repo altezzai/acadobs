@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/base/utils/form_validators.dart';
-import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/controller/file_picker_provider.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
@@ -180,7 +180,7 @@ class _AddNoticePageState extends State<AddNoticePage> {
 
               SizedBox(height: 16),
               CustomFilePicker(
-                label: "Add Receipt",
+                label: 'Add Receipt (Maximum file size: 5MB)',
                 fieldName: 'notice file',
               ),
               SizedBox(height: 40),
@@ -221,28 +221,6 @@ class _AddNoticePageState extends State<AddNoticePage> {
                   widget: value.isloadingTwo ? Loading() : Text('Submit'),
                 );
               }),
-              // Center(
-              //   child: CustomButton(
-              //     text: 'Submit',
-              //     onPressed: () {
-              //       final selected_Audience = context
-              //           .read<DropdownProvider>()
-              //           .getSelectedItem('targetAudience');
-              //       String selectedClass =
-              //           context.read<DropdownProvider>().getSelectedItem('class');
-              //       String selectedDivision = context
-              //           .read<DropdownProvider>()
-              //           .getSelectedItem('division');
-              //       context.read<NoticeController>().addNotice(context,
-              //           className: selectedClass,
-              //           division: selectedDivision,
-              //           audience_type: selected_Audience,
-              //           title: _titleController.text,
-              //           description: _descriptionController.text,
-              //           date: _dateController.text);
-              //     },
-              //   ),
-              // ),
             ],
           ),
         ),

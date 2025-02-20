@@ -190,7 +190,7 @@ class StudentController extends ChangeNotifier {
     required String section,
     required int rollNumber,
     required String admissionNumber,
-    required String aadhaarNumber,
+    // required String aadhaarNumber,
     required String residentialAddress,
     required String contactNumber,
     required String email,
@@ -205,14 +205,14 @@ class StudentController extends ChangeNotifier {
     required String occupation,
     required String category,
     required String siblingInformation,
-    required bool transportRequirement,
-    required bool hostelRequirement,
-    // required String studentPhoto,
+    required int transportRequirement,
+    required int hostelRequirement,
+    required String studentPhoto,
     // String? aadharPhoto,
-    // required String fatherMotherPhoto,
+    required String fatherMotherPhoto,
   }) async {
-    _isloading = true;
-
+    _isLoadingTwo = true;
+    notifyListeners();
     try {
       final response = await StudentServices().addNewStudent(
         fullName: fullName,
@@ -222,7 +222,7 @@ class StudentController extends ChangeNotifier {
         section: section,
         rollNumber: rollNumber,
         admissionNumber: admissionNumber,
-        aadhaarNumber: aadhaarNumber,
+        // aadhaarNumber: aadhaarNumber,
         residentialAddress: residentialAddress,
         contactNumber: contactNumber,
         email: email,
@@ -239,34 +239,48 @@ class StudentController extends ChangeNotifier {
         siblingInformation: siblingInformation,
         transportRequirement: transportRequirement,
         hostelRequirement: hostelRequirement,
-        // studentPhotoPath: studentPhoto,
+        studentPhotoPath: studentPhoto,
         // aadhaarCard: aadharPhoto,
-        // fatherMotherPhoto: fatherMotherPhoto,
+        fatherMotherPhoto: fatherMotherPhoto,
       );
       if (response.statusCode == 201 || response.statusCode == 200) {
         log(">>>>>>>>>>>>>Student Added}");
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Student Added successfully!'),
-            backgroundColor: Colors.green, // Set color for success
-          ),
-        );
+        CustomSnackbar.show(context,
+            message: 'Student Added successfully!', type: SnackbarType.success);
         // Navigate to the desired route
-
+        await getLatestStudents();
         Navigator.pop(context);
       } else {
-        // Handle failure case here if needed
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to add student. Please try again.'),
-            backgroundColor: Colors.red, // Set color for error
-          ),
+        final Map<String, dynamic> errors = response.data['message'];
+
+        // Extract all error messages into a list
+        List<String> errorMessages = [];
+        errors.forEach((key, value) {
+          if (value is List) {
+            errorMessages.addAll(value.map((e) => e.toString()));
+          } else if (value is String) {
+            errorMessages.add(value);
+          }
+        });
+
+        // Format the errors with numbering
+        String formattedErrors = errorMessages
+            .asMap()
+            .entries
+            .map((entry) => "${entry.key + 1}. ${entry.value}")
+            .join("\n");
+
+        // Show error messages in Snackbar
+        CustomSnackbar.show(
+          context,
+          message: formattedErrors,
+          type: SnackbarType.failure,
         );
       }
     } catch (e) {
       log(e.toString());
     } finally {
-      _isloading = false;
+      _isLoadingTwo = false;
       notifyListeners();
     }
   }
