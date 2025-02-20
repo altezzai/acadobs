@@ -86,4 +86,9 @@ class DutyServices {
     final Response response = await ApiServices.delete("/duties/$dutyId");
     return response;
   }
+
+  Future<Response> getSingleDuty({required int dutyId}) async {
+     final Response response = await ApiServices.get("/duties/$dutyId");
+    return response;
+  }
 }

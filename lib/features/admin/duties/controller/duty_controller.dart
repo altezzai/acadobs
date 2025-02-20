@@ -142,9 +142,9 @@ class DutyController extends ChangeNotifier {
           fileAttachment: fileattachment);
       if (response.statusCode == 201 || response.statusCode == 200) {
         log(">>>>>>${response.statusMessage}");
-         CustomSnackbar.show(context,
+        CustomSnackbar.show(context,
             message: "Duty added successfully!", type: SnackbarType.success);
-       
+
         context.pushNamed(AppRouteConst.bottomNavRouteName,
             extra: UserType.admin);
       }
@@ -216,9 +216,9 @@ class DutyController extends ChangeNotifier {
     _isloading = false;
     notifyListeners();
   }
-  // delete 
-  Future<void> deleteDuties(BuildContext context,
-      {required int dutyId}) async {
+
+  // delete
+  Future<void> deleteDuties(BuildContext context, {required int dutyId}) async {
     _isloading = true;
     try {
       final response = await DutyServices().deleteDuties(dutyId: dutyId);
@@ -229,10 +229,31 @@ class DutyController extends ChangeNotifier {
         Navigator.pop(context);
         CustomSnackbar.show(context,
             message: 'Deleted successfully', type: SnackbarType.info);
-            await getDuties();
+        await getDuties();
       }
     } catch (e) {
       // print(e);
+    } finally {
+      _isloading = false;
+      notifyListeners();
+    }
+  }
+
+  DutyClass singleDuty = DutyClass();
+
+  Future<void> getSingleDuty({required int dutyId}) async {
+    _isloading = true;
+    try {
+      final response = await DutyServices().getSingleDuty(dutyId: dutyId);
+      log("Single Duty response :${response.data.toString()}");
+      if (response.statusCode == 200) {
+        final temp = DutyClass.fromJson(response.data["duty"]);
+        singleDuty = temp;
+        log("Single Duty: ${singleDuty.toString()}");
+        notifyListeners(); // Ensure UI updates
+      }
+    } catch (e) {
+      log(e.toString());
     } finally {
       _isloading = false;
       notifyListeners();
