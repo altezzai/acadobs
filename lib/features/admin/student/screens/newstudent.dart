@@ -47,7 +47,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
       TextEditingController(text: '15');
 
   final TextEditingController _admissionNumberController =
-      TextEditingController(text: 'ADM12345');
+      TextEditingController(text: '721');
 
   final TextEditingController _aadhaarNumberController =
       TextEditingController(text: '1234 5678 9012');
@@ -316,18 +316,18 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   },
                 ),
                 SizedBox(height: Responsive.height * 2),
-                CustomTextfield(
-                  hintText: 'Aadhar Number',
-                  controller: _aadhaarNumberController,
-                  keyBoardtype: TextInputType.number,
-                  iconData: Icon(Icons.account_box_outlined),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'This field is required';
-                    }
-                    return null;
-                  },
-                ),
+                // CustomTextfield(
+                //   hintText: 'Aadhar Number',
+                //   controller: _aadhaarNumberController,
+                //   keyBoardtype: TextInputType.number,
+                //   iconData: Icon(Icons.account_box_outlined),
+                //   validator: (value) {
+                //     if (value == null || value.isEmpty) {
+                //       return 'This field is required';
+                //     }
+                //     return null;
+                //   },
+                // ),
                 SizedBox(height: Responsive.height * 2),
 
                 // Blood Group, Email, Previous School Inputs
@@ -526,7 +526,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 CustomDropdown(
                   dropdownKey: 'category',
                   label: 'Category',
-                  items: ['private', 'Public'],
+                  items: ['Private', 'Public'],
                   icon: Icons.category,
                 ),
 
@@ -560,17 +560,17 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 SizedBox(height: 10),
 
                 CustomFilePicker(
-                  label: 'student Photo',
+                  label: 'Student Photo',
                   fieldName: 'student photo',
-                  // validator: (value) {
-                  //   if (value == null || value.isEmpty) {
-                  //     return 'This field is required';
-                  //   }
-                  //   return null;
-                  // },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
                 ),
 
-                SizedBox(height: Responsive.height * 2),
+                // SizedBox(height: Responsive.height * 2),
                 // CustomFilePicker(
                 //   label: 'Aadhar Photo',
                 //   fieldName: 'aadhar photo',
@@ -581,12 +581,12 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 CustomFilePicker(
                   label: 'Parent Photo',
                   fieldName: 'parent photo',
-                  // validator: (value) {
-                  //   if (value == null || value.isEmpty) {
-                  //     return 'This field is required';
-                  //   }
-                  //   return null;
-                  // },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
                 ),
 
                 SizedBox(height: 40),
@@ -596,7 +596,6 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   return CommonButton(
                     onPressed: () {
                       _submitForm(context);
-                      // context.read<StudentController>().addNewStudentTesting();
                     },
                     widget:
                         value.isLoadingTwo ? ButtonLoading() : Text('Submit'),
@@ -614,79 +613,82 @@ class _AddStudentPageState extends State<AddStudentPage> {
   void _submitForm(BuildContext context) {
     // Validate the form first
     if (_formKey.currentState?.validate() ?? false) {
-      try {
-        // Fetch data from dropdowns and file pickers
-        final selectedGender =
-            context.read<DropdownProvider>().getSelectedItem('gender');
-        final selectedClass =
-            context.read<DropdownProvider>().getSelectedItem('class');
-        final selectedDivision =
-            context.read<DropdownProvider>().getSelectedItem('division');
-        final selectedBloodGroup =
-            context.read<DropdownProvider>().getSelectedItem('blood-group');
-        final selectedCategory =
-            context.read<DropdownProvider>().getSelectedItem('category');
+      // try {
+      // Fetch data from dropdowns and file pickers
+      final selectedGender =
+          context.read<DropdownProvider>().getSelectedItem('gender');
+      final selectedClass =
+          context.read<DropdownProvider>().getSelectedItem('class');
+      final selectedDivision =
+          context.read<DropdownProvider>().getSelectedItem('division');
+      final selectedBloodGroup =
+          context.read<DropdownProvider>().getSelectedItem('blood-group');
+      final selectedCategory =
+          context.read<DropdownProvider>().getSelectedItem('category');
 
-        final selectedTransportation = context
-                .read<DropdownProvider>()
-                .getSelectedItem('transportation') ==
-            "Yes";
-        final selectedHostel =
-            context.read<DropdownProvider>().getSelectedItem('hostel') == "Yes";
+      final selectedTransportation =
+          context.read<DropdownProvider>().getSelectedItem('transportation') ==
+                  "Yes"
+              ? 1
+              : 0;
+      final selectedHostel =
+          context.read<DropdownProvider>().getSelectedItem('hostel') == "Yes"
+              ? 1
+              : 0;
 
-        final selectedStudentPhoto =
-            context.read<FilePickerProvider>().getFile('student photo');
-        // final selectedAadharPhoto =
-        //     context.read<FilePickerProvider>().getFile('aadhar photo');
-        final parentPhoto =
-            context.read<FilePickerProvider>().getFile('parent photo');
-        final studentPhotoPath = selectedStudentPhoto?.path;
-        // final aadharPhotoPath = selectedAadharPhoto?.path;
-        final parentPhotoPath = parentPhoto?.path;
+      final selectedStudentPhoto =
+          context.read<FilePickerProvider>().getFile('student photo');
+      // final selectedAadharPhoto =
+      //     context.read<FilePickerProvider>().getFile('aadhar photo');
+      final parentPhoto =
+          context.read<FilePickerProvider>().getFile('parent photo');
+      final studentPhotoPath = selectedStudentPhoto?.path;
+      // final aadharPhotoPath = selectedAadharPhoto?.path;
+      final parentPhotoPath = parentPhoto?.path;
 
-        // Call the controller method to add the student
-        context.read<StudentController>().addNewStudent(
-              context,
-              fullName: _fullNameController.text,
-              dateOfBirth: _dateOfBirthController.text,
-              gender: selectedGender,
-              studentClass: selectedClass,
-              section: selectedDivision,
-              rollNumber: int.tryParse(_rollNumberController.text) ?? 0,
-              admissionNumber: _admissionNumberController.text,
-              aadhaarNumber: _aadhaarNumberController.text,
-              residentialAddress: _addressController.text,
-              contactNumber: _fatherContactNumberController.text,
-              email: _emailController.text,
-              previousSchool: _previousSchoolController.text,
-              fatherFullName: _fatherFullNameController.text,
-              motherFullName: _motherFullNameController.text,
-              guardianFullName: _guardianNameController.text,
-              bloodGroup: selectedBloodGroup,
-              parentEmail: parentEmailController.text,
-              fatherContactNumber: _fatherContactNumberController.text,
-              motherContactNumber: _motherContactNumberController.text,
-              occupation: _occupationController.text,
-              category: selectedCategory,
-              siblingInformation: _siblingNameController.text,
-              transportRequirement: selectedTransportation,
-              hostelRequirement: selectedHostel,
-              // studentPhoto: studentPhotoPath!,
-              // aadharPhoto: aadharPhotoPath,
-              // fatherMotherPhoto: parentPhotoPath!,
-            );
+      // Call the controller method to add the student
+      context.read<StudentController>().addNewStudent(
+            context,
+            fullName: _fullNameController.text,
+            dateOfBirth: _dateOfBirthController.text,
+            gender: selectedGender,
+            studentClass: selectedClass,
+            section: selectedDivision,
+            rollNumber: int.tryParse(_rollNumberController.text) ?? 0,
+            admissionNumber: _admissionNumberController.text,
+            // aadhaarNumber: _aadhaarNumberController.text,
+            residentialAddress: _addressController.text,
+            contactNumber: _fatherContactNumberController.text,
+            email: _emailController.text,
+            previousSchool: _previousSchoolController.text,
+            fatherFullName: _fatherFullNameController.text,
+            motherFullName: _motherFullNameController.text,
+            guardianFullName: _guardianNameController.text,
+            bloodGroup: selectedBloodGroup,
+            parentEmail: parentEmailController.text,
+            fatherContactNumber: _fatherContactNumberController.text,
+            motherContactNumber: _motherContactNumberController.text,
+            occupation: _occupationController.text,
+            category: selectedCategory,
+            siblingInformation: _siblingNameController.text,
+            transportRequirement: selectedTransportation,
+            hostelRequirement: selectedHostel,
+            studentPhoto: studentPhotoPath!,
+            // aadharPhoto: aadharPhotoPath,
+            fatherMotherPhoto: parentPhotoPath!,
+          );
 
-        // Clear the form fields upon success
-        // context.read<DropdownProvider>().clearAllDropdowns();
-        // _clearFormFields();
-      } catch (e) {
-        // Handle any errors and show an error message
-        CustomSnackbar.show(context,
-            message: "Failed to add student.Please try again",
-            type: SnackbarType.failure);
-      }
+      // Clear the form fields upon success
+      _clearFormFields();
+      // }
+      //catch (e) {
+      //   // Handle any errors and show an error message
+      //   CustomSnackbar.show(context,
+      //       message: "Failed to add student.Please try again",
+      //       type: SnackbarType.failure);
+      // }
     } else {
-      // Highlight missing fields if the form is invalid
+      //     // Highlight missing fields if the form is invalid
       CustomSnackbar.show(context,
           message: "Please complete all required fields",
           type: SnackbarType.warning);

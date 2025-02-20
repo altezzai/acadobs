@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
+import 'package:school_app/core/shared_widgets/common_appbar.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/features/admin/duties/widgets/staff_selection_card.dart';
 import 'package:school_app/features/admin/teacher_section/controller/teacher_controller.dart';
@@ -25,9 +26,9 @@ class _TeacherSelectionScreenState extends State<TeacherSelectionScreen> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Select Teachers"),
-        centerTitle: true,
+      appBar: CommonAppBar(
+        title: "Select Staffs",
+        isBackButton: true,
       ),
       body: SingleChildScrollView(
         child: Padding(

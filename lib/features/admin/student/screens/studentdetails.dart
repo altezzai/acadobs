@@ -243,7 +243,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                                 tabs: const [
                                   Tab(text: "Dashboard"),
                                   Tab(text: "Achievements"),
-                                  Tab(text: "Exam"),
+                                  Tab(text: "Marks"),
                                   Tab(text: "Homework"),
                                   Tab(text: "Leave Request"),
                                 ],
