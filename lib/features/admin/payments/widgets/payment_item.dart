@@ -66,7 +66,7 @@ class PaymentItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                amount,
+                '₹ ${double.tryParse(amount)?.toInt() ?? 0}',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 14,

@@ -23,7 +23,6 @@ import 'package:school_app/core/shared_widgets/custom_filepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/admin/payments/controller/payment_controller.dart';
 
-
 class AddPaymentPage extends StatefulWidget {
   const AddPaymentPage({super.key});
 
@@ -130,48 +129,49 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                 SizedBox(
                   height: Responsive.height * 2,
                 ),
-                 Text("Selected students:"),
-              SizedBox(height: 10),
-              // Select Student
-              InkWell(
-                onTap: () {
-                  final classGrade = context
-                      .read<DropdownProvider>()
-                      .getSelectedItem('class');
-                  final division = context
-                      .read<DropdownProvider>()
-                      .getSelectedItem('division');
-                  final classAndDivision = ClassAndDivision(
-                      className: classGrade, section: division);
-                  context.pushNamed(AppRouteConst.singlestudentselectionRouteName,
-                      extra: classAndDivision);
-                },
-                child: Consumer<StudentIdController>(
-                  builder: (context, value, child) {
-                    final studentId = context
-                            .read<StudentIdController>()
-                            .getSelectedStudentId();
-                 String? selectedStudentName = studentId != null
-    ? value.students
-        .firstWhere(
-          (student) => student['id'] == studentId,
-          orElse: () => {'id': null, 'full_name': null}, // Default student
-        )['full_name']
-    : null;
-
-return TextFormField(
-  decoration: InputDecoration(
-    hintText: selectedStudentName == null
-        ? "Select Students"
-        : capitalizeEachWord(selectedStudentName),
-    enabled: false,
-  ),
-);
-
-
+                Text("Selected students:"),
+                SizedBox(height: 10),
+                // Select Student
+                InkWell(
+                  onTap: () {
+                    final classGrade = context
+                        .read<DropdownProvider>()
+                        .getSelectedItem('class');
+                    final division = context
+                        .read<DropdownProvider>()
+                        .getSelectedItem('division');
+                    final classAndDivision = ClassAndDivision(
+                        className: classGrade, section: division);
+                    context.pushNamed(
+                        AppRouteConst.singlestudentselectionRouteName,
+                        extra: classAndDivision);
                   },
+                  child: Consumer<StudentIdController>(
+                    builder: (context, value, child) {
+                      final studentId = context
+                          .read<StudentIdController>()
+                          .getSelectedStudentId();
+                      String? selectedStudentName = studentId != null
+                          ? value.students.firstWhere(
+                              (student) => student['id'] == studentId,
+                              orElse: () => {
+                                'id': null,
+                                'full_name': null
+                              }, // Default student
+                            )['full_name']
+                          : null;
+
+                      return TextFormField(
+                        decoration: InputDecoration(
+                          hintText: selectedStudentName == null
+                              ? "Select Student"
+                              : capitalizeEachWord(selectedStudentName),
+                          enabled: false,
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
                 // Text(
                 //   "Select Student",
                 // ),
@@ -305,9 +305,9 @@ return TextFormField(
                   label: "Add Receipt",
                   fieldName: 'receipt',
                 ),
-                const SizedBox(height: 45),
+                const SizedBox(height: 34),
                 Center(child: Consumer<PaymentController>(
-                        builder: (context, value, child) {
+                    builder: (context, value, child) {
                   return CommonButton(
                       onPressed: () {
                         if (_formKey.currentState?.validate() ?? false) {
@@ -357,41 +357,7 @@ return TextFormField(
                       widget: value.isloadingTwo
                           ? ButtonLoading()
                           : Text('Submit'));
-                })
-                    // CustomButton(
-                    //   text: 'Submit',
-                    //   onPressed: () {
-                    //     final selectedYear = context
-                    //         .read<DropdownProvider>()
-                    //         .getSelectedItem('selectedYear');
-                    //     final selectedMonth = context
-                    //         .read<DropdownProvider>()
-                    //         .getSelectedItem('selectedMonth');
-                    //     final paymentMethod = context
-                    //         .read<DropdownProvider>()
-                    //         .getSelectedItem('paymentMethod');
-                    //     final paymentStatus = context
-                    //         .read<DropdownProvider>()
-                    //         .getSelectedItem('paymentStatus');
-                    //     final studentId = context
-                    //         .read<StudentIdController>()
-                    //         .getSelectedStudentId();
-
-                    //     log(">>>>>>>>>>>>${studentId}");
-                    //     context.read<PaymentController>().addPayment(
-                    //           context,
-                    //           userId: studentId ?? 0,
-                    //           amount_paid: _amountController.text,
-                    //           payment_date: _dateController.text,
-                    //           month: selectedMonth,
-                    //           year: selectedYear,
-                    //           payment_method: paymentMethod,
-                    //           transaction_id: _transactionController.text,
-                    //           payment_status: paymentStatus,
-                    //         );
-                    //   },
-                    // ),
-                    ),
+                })),
               ],
             ),
           ),
