@@ -7,6 +7,7 @@ class ApiServices {
 
   static final Dio _dio = Dio(BaseOptions(
     baseUrl: baseUrl,
+    validateStatus: (status) => true,
     connectTimeout: const Duration(seconds: 30),
     receiveTimeout: const Duration(seconds: 30),
     followRedirects: true, // Follow redirects automatically

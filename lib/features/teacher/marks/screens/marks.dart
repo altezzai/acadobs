@@ -33,7 +33,7 @@ class ProgressReport extends StatelessWidget {
           child: Column(
             children: [
               CustomAppbar(
-                title: "Progress Report",
+                title: "Marks",
                 onTap: () {
                   Navigator.pop(context);
                 },

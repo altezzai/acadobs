@@ -23,14 +23,10 @@ class SubjectServices {
       'description': description,
     };
 
-    try {
-      // Call the ApiServices post method with the data as JSON
-      final Response response = await ApiServices.post("/subjects", data);
+    // Call the ApiServices post method with the data as JSON
+    final Response response = await ApiServices.post("/subjects", data);
 
-      return response;
-    } catch (e) {
-      throw Exception('Failed to add subject: $e');
-    }
+    return response;
   }
 
   Future<Response> editSubject({
@@ -57,9 +53,10 @@ class SubjectServices {
   }
 
   //delete subject
-Future<Response> deleteSubjects({required int subjectid, })async{
-  final Response response=await ApiServices.delete("/subjects/$subjectid");
-  return response;
-}
-
+  Future<Response> deleteSubjects({
+    required int subjectid,
+  }) async {
+    final Response response = await ApiServices.delete("/subjects/$subjectid");
+    return response;
+  }
 }

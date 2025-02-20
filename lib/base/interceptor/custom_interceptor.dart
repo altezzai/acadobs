@@ -15,6 +15,7 @@ class CustomInterceptor extends Interceptor {
       RequestOptions options, RequestInterceptorHandler handler) async {
     final String? token = await UserCredentials.getAccessToken();
 
+
     if (token != null) {
       options.headers['Authorization'] = 'Bearer $token';
     }

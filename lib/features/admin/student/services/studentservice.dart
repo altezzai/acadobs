@@ -46,9 +46,9 @@ class StudentServices {
     required String gender,
     required String studentClass,
     required String section,
-    required String rollNumber,
+    required int rollNumber,
     required String admissionNumber,
-    required String aadhaarNumber,
+    // required String aadhaarNumber,
     required String residentialAddress,
     required String contactNumber,
     required String email,
@@ -63,10 +63,10 @@ class StudentServices {
     required String occupation,
     required String category,
     required String siblingInformation,
-    required String transportRequirement,
-    required String hostelRequirement,
+    required int transportRequirement,
+    required int hostelRequirement,
     required String studentPhotoPath,
-    String? aadhaarCard,
+    // String? aadhaarCard,
     required String fatherMotherPhoto,
   }) async {
     // Create the form data to pass to the API
@@ -78,7 +78,7 @@ class StudentServices {
       "section": section,
       "roll_number": rollNumber,
       "admission_number": admissionNumber,
-      "aadhaar_number": aadhaarNumber,
+      // "aadhaar_number": aadhaarNumber,
       "residential_address": residentialAddress,
       "contact_number": contactNumber,
       "email": email,
@@ -99,9 +99,9 @@ class StudentServices {
       // Only include if the photo is provided
       "student_photo": await MultipartFile.fromFile(studentPhotoPath,
           filename: studentPhotoPath.split('/').last),
-      if (aadhaarCard != null)
-        "aadhaar_card": await MultipartFile.fromFile(aadhaarCard,
-            filename: aadhaarCard.split('/').last),
+      // if (aadhaarCard != null)
+      //   "aadhaar_card": await MultipartFile.fromFile(aadhaarCard,
+      //       filename: aadhaarCard.split('/').last),
       "father_mother_photo": await MultipartFile.fromFile(fatherMotherPhoto,
           filename: fatherMotherPhoto.split('/').last)
     };
@@ -141,6 +141,16 @@ class StudentServices {
     try {
       final Response response = await ApiServices.get(
           '/getParentNameAndImageByClsAnDiv?class=$classname&section=$section');
+      return response;
+    } on DioException catch (e) {
+      throw Exception('Failed to load data: $e');
+    }
+  }
+
+  // Get latest students
+  Future<Response> getLatestStudents() async {
+    try {
+      final Response response = await ApiServices.get('/getLatestStudents');
       return response;
     } on DioException catch (e) {
       throw Exception('Failed to load data: $e');

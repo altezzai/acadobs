@@ -50,18 +50,18 @@ class SubjectController extends ChangeNotifier {
     notifyListeners();
 
     // Check if the subject already exists
-    final subjectExists =
-        _subjects.any((s) => s.subject?.toLowerCase() == subject.toLowerCase());
+    // final subjectExists =
+    //     _subjects.any((s) => s.subject?.toLowerCase() == subject.toLowerCase());
 
-    if (subjectExists) {
-      // Show error message for duplicate subject
-      CustomSnackbar.show(context,
-          message: 'Subject already exists. Please try a different name.',
-          type: SnackbarType.info);
-      _isloadingTwo = false;
-      notifyListeners();
-      return;
-    }
+    // if (subjectExists) {
+    //   // Show error message for duplicate subject
+    //   CustomSnackbar.show(context,
+    //       message: 'Subject already exists. Please try a different name.',
+    //       type: SnackbarType.info);
+    //   _isloadingTwo = false;
+    //   notifyListeners();
+    //   return;
+    // }
 
     try {
       final response = await SubjectServices().addNewSubject(
@@ -73,14 +73,14 @@ class SubjectController extends ChangeNotifier {
         log('Subject added successfully.');
 
         // Add the new subject to the list and notify listeners
-        _subjects.add(Subject(
-          id: response.data['id'],
-          subject: subject,
-          description: description,
-          trash: 0,
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-        ));
+        // _subjects.add(Subject(
+        //   id: response.data['id'],
+        //   subject: subject,
+        //   description: description,
+        //   trash: 0,
+        //   createdAt: DateTime.now(),
+        //   updatedAt: DateTime.now(),
+        // ));
 
         // Show success message
         CustomSnackbar.show(context,
@@ -88,14 +88,17 @@ class SubjectController extends ChangeNotifier {
 
         // Navigate to the subjects page
         context.pushNamed(AppRouteConst.SubjectsPageRouteName);
-      } else {
+      } else if (response.statusCode == 409) {
         // Handle failure response
         CustomSnackbar.show(context,
-            message: 'Failed to add subject. Please try again.',
+            message: response.data['message']['subject'][0],
             type: SnackbarType.info);
       }
     } catch (e) {
       log('Error adding subject: $e');
+
+      CustomSnackbar.show(context,
+          message: e.toString(), type: SnackbarType.failure);
     } finally {
       _isloadingTwo = false;
       notifyListeners();
@@ -135,6 +138,8 @@ class SubjectController extends ChangeNotifier {
       }
     } catch (e) {
       log(e.toString());
+      CustomSnackbar.show(context,
+          message: e.toString(), type: SnackbarType.failure);
     } finally {
       // loadingProvider.setLoading(false); // End loader
       _isloading = false;
@@ -143,23 +148,26 @@ class SubjectController extends ChangeNotifier {
   }
 
   //delete subjects
-  Future<void> deleteSubjects(BuildContext context,{required subjectid})async{
-    _isloading=true;
-    try{
-      final response=await SubjectServices().deleteSubjects(subjectid:subjectid );
+  Future<void> deleteSubjects(BuildContext context,
+      {required subjectid}) async {
+    _isloading = true;
+    notifyListeners();
+    try {
+      final response =
+          await SubjectServices().deleteSubjects(subjectid: subjectid);
       print("***********${response.statusCode}");
-      if (response.statusCode==200|| response.statusCode == 201){
+      if (response.statusCode == 200 || response.statusCode == 201) {
         log("subject deleted successfully.");
-        Navigator.pop(context);
-       CustomSnackbar.show(context,
+        // Navigator.pop(context);
+        await getSubjects();
+        CustomSnackbar.show(context,
             message: 'Deleted successfully', type: SnackbarType.info);
       }
-    }
-    catch(e){
-
-    }
-    finally{
-      _isloading=false;
+    } catch (e) {
+      CustomSnackbar.show(context,
+          message: e.toString(), type: SnackbarType.failure);
+    } finally {
+      _isloading = false;
       notifyListeners();
     }
   }
@@ -172,7 +180,7 @@ class SubjectController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void clearSelection(){
+  void clearSelection() {
     _selectedSubjectId = null;
     notifyListeners();
   }

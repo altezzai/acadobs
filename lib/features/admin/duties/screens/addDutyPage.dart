@@ -1,4 +1,5 @@
 import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -12,11 +13,11 @@ import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
-
 import 'package:school_app/core/shared_widgets/custom_filepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/admin/duties/controller/duty_controller.dart';
 import 'package:school_app/features/admin/teacher_section/controller/teacher_controller.dart';
+
 import '../../../../base/utils/form_validators.dart';
 
 class AddDutyPage extends StatefulWidget {
@@ -83,7 +84,7 @@ class _AddDutyPageState extends State<AddDutyPage> {
 
                     // Title Input
                     CustomTextfield(
-                      hintText: 'Title',
+                      label: 'Title',
                       controller: _titleController,
                       iconData: Icon(Icons.title),
                       hintStyle: TextStyle(fontSize: Responsive.text * 1.8),
@@ -95,7 +96,7 @@ class _AddDutyPageState extends State<AddDutyPage> {
 
                     // Description Input
                     CustomTextfield(
-                      hintText: 'Description',
+                      label: 'Description',
                       controller: _descriptionController,
                       iconData: Icon(Icons.description),
                       keyBoardtype: TextInputType.multiline,
@@ -108,7 +109,7 @@ class _AddDutyPageState extends State<AddDutyPage> {
 
                     // Remark Input
                     CustomTextfield(
-                      hintText: 'Remark',
+                      label: 'Remark',
                       controller: _remarkController,
                       iconData: Icon(Icons.description),
                       keyBoardtype: TextInputType.multiline,
@@ -164,20 +165,8 @@ class _AddDutyPageState extends State<AddDutyPage> {
                     ),
                     SizedBox(height: Responsive.height * 2),
 
-                    // Status Dropdown
-                    // CustomDropdown(
-                    //   dropdownKey: 'status',
-                    //   label: 'Status',
-                    //   items: ['Pending', 'In Progress', 'Completed'],
-                    //   icon: Icons.pending_actions,
-                    //   validator: (value) => FormValidator.validateNotEmpty(
-                    //       value,
-                    //       fieldName: "Status"),
-                    // ),
-                    // SizedBox(height: Responsive.height * 2),
-
                     CustomFilePicker(
-                      label: 'Document',
+                      label: 'Document (Maximum file size: 5MB)',
                       fieldName: 'duty file',
                       validator: (value) => FormValidator.validateNotEmpty(
                           value,

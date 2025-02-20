@@ -4,6 +4,7 @@ import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/custom_popup_menu.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/base/utils/show_confirmation_dialog.dart';
 import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/common_appbar.dart';
@@ -36,6 +37,31 @@ class _DutyViewState extends State<DutyView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+      appBar: CommonAppBar(
+        title: capitalizeEachWord(widget.duty.dutyTitle ?? ""),
+        isBackButton: true,
+        actions: [
+          // CustomPopupMenu(onEdit: () {}, onDelete: () {})
+          if (widget.userType == UserType.admin) // Show for admin only
+            Consumer<DutyController>(
+              builder: (context, dutyController, child) {
+                return CustomPopupMenu(
+                    onEdit: () {},
+                    onDelete: () {
+                      showConfirmationDialog(
+                          context: context,
+                          title: "Delete Duty?",
+                          content: "Are you sure you want to delete this duty?",
+                          onConfirm: () {
+                            dutyController.deleteDuties(context,
+                                dutyId: widget.duty.id!);
+                          });
+                    });
+              },
+            ),
+        ],
+      ),
       body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Consumer<DutyController>(
