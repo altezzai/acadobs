@@ -86,4 +86,9 @@ class DutyServices {
     final Response response = await ApiServices.delete("/duties/$dutyId");
     return response;
   }
+
+  Future<Response> getSingleDuty({required int dutyId}) {
+     final Dio dio = Dio();
+    return dio.get('duties/$dutyId');
+  }
 }

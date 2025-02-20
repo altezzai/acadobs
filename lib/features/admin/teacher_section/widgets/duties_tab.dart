@@ -4,11 +4,13 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/admin/duties/controller/duty_controller.dart';
-import 'package:school_app/features/teacher/homework/widgets/work_container.dart';
+import 'package:school_app/features/admin/teacher_section/widgets/teacherDuty_tile.dart';
 
 class DutiesTab extends StatefulWidget {
   final int teacherId;
@@ -84,71 +86,108 @@ class _DutiesTabState extends State<DutiesTab> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Consumer<DutyController>(
-        builder: (context, value, child) {
-          if (value.isloading) {
-            return Center(
-              child: Loading(color: Colors.grey),
-            );
-          }
-
-          // Group duties by date
-          final groupedDuties = groupItemsByDate(
-            value.teacherDuties,
-            (duty) =>
-                DateTime.tryParse(duty.createdAt.toString()) ?? DateTime.now(),
-          );
-
-          return SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: groupedDuties.entries.map((entry) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Date Header
-                    Padding(
-                      padding: const EdgeInsets.only(top: 13),
-                      child: Text(
-                        entry.key,
-                        style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    // List of duties
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: entry.value.length,
-                      itemBuilder: (context, index) {
-                        final duty = entry.value[index];
-                        return WorkContainer(
-                          bcolor: const Color(0xffCEFFD3),
-                          icolor: Colors.white,
-                          icon: Icons.done,
-                          work: duty.dutyTitle ?? "",
-                          sub: DateFormatter.formatDateString(
-                              duty.createdAt.toString()),
-                          prefixText: duty.status ?? "",
-                          prefixColor: Colors.red,
-                          onTap: () {
-                            context.pushNamed(
-                              AppRouteConst.dutiesRouteName,
-                              extra: DutyDetailArguments(
-                                  dutyItem: duty, index: index),
-                            );
-                          },
-                        );
-                      },
-                    ),
-                   SizedBox(height: Responsive.height*2),
-                  ],
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: Responsive.height * 5),
+          Consumer<DutyController>(
+            builder: (context, value, child) {
+              if (value.isloading) {
+                return const Center(
+                  child: Loading(color: Colors.grey),
                 );
-              }).toList(),
-            ),
+              }
+
+              // Group duties by date
+              final groupedDuties = groupItemsByDate(
+                value.teacherDuties,
+                (duty) =>
+                    DateTime.tryParse(duty.createdAt.toString()) ??
+                    DateTime.now(),
+              );
+
+              return value.teacherDuties.isEmpty
+                  ? Expanded(
+                      child: Center(
+                        child: Text(
+                          "No Achievements Found!",
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    )
+                  : _buildGroupedList(groupedDuties, (duty, index, total) {
+                      final isFirst = index == 0;
+                      final isLast = index == total - 1;
+                      final topRadius = isFirst ? 16.0 : 0.0;
+                      final bottomRadius = isLast ? 16.0 : 0.0;
+
+                      return TeacherdutyTile(
+                        work: duty.dutyTitle ?? "",
+                        sub: DateFormatter.formatDateString(
+                            duty.createdAt.toString()),
+                        status: duty.status ?? "",
+                        topRadius: topRadius,
+                        bottomRadius: bottomRadius,
+                        onTap: () {
+                          context.pushNamed(
+                            AppRouteConst.AdminViewDutyRouteName,
+                            extra: AdminDutyDetailArguments(
+                                dutyId: duty.dutyId!,
+                                 userType: UserType.admin),
+                          );
+                        },
+                      );
+                    });
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGroupedList<T>(Map<String, List<T>> groupedItems,
+      Widget Function(T, int, int) buildItem) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: groupedItems.entries.map((entry) {
+          final itemCount = entry.value.length;
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildDateHeader(entry.key),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                padding: EdgeInsets.zero,
+                itemCount: itemCount,
+                itemBuilder: (context, index) {
+                  return buildItem(entry.value[index], index, itemCount);
+                },
+              ),
+            ],
           );
-        },
+        }).toList(),
+      ),
+    );
+  }
+
+  Widget _buildDateHeader(String date) {
+    return Padding(
+      padding: EdgeInsets.only(
+        top: Responsive.height * 2, // 20px equivalent
+        bottom: Responsive.height * 1.5, // 10px equivalent
+        // left: Responsive.width * 4
+      ),
+      child: Text(
+        date,
+        style: textThemeData.bodyMedium?.copyWith(
+          fontSize: 16, // Responsive font size
+        ),
       ),
     );
   }

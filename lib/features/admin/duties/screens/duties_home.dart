@@ -114,7 +114,7 @@ class _DutiesHomeScreenState extends State<DutiesHomeScreen> {
                                 context.pushNamed(
                                     AppRouteConst.AdminViewDutyRouteName,
                                     extra: AdminDutyDetailArguments(
-                                      duty: duty,
+                                      dutyId: duty.id!,
                                       userType: UserType.admin,
                                     ));
                               },

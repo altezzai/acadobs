@@ -82,4 +82,13 @@ class TeacherServices {
 
     return response;
   }
+
+   Future<Response> getActivities({required int teacherId}) async {
+    try {
+      final Response response = await ApiServices.get('/getTeacherActivities/$teacherId');
+      return response;
+    } on DioException catch (e) {
+      throw Exception('Failed to load data: $e');
+    }
+  }
 }
