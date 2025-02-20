@@ -212,7 +212,7 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
         final bottomRadius = isLast ? 16 : 0;
 
         return Padding(
-            padding: const EdgeInsets.only(bottom: 1.5),
+            padding: const EdgeInsets.only(bottom: 0),
             child: value.payments.isEmpty
                 ? Center(
                     child: Text("No Payments Found!"),
@@ -258,7 +258,7 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
         final bottomRadius = isLast ? 16 : 0;
 
         return Padding(
-          padding: const EdgeInsets.only(bottom: 1.5),
+          padding: const EdgeInsets.only(bottom: 0),
           child: value.donations.isEmpty
               ? Center(
                   child: Text("No Donations Found!"),
@@ -286,6 +286,7 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
   Widget _buildGroupedList<T>(Map<String, List<T>> groupedItems,
       Widget Function(T, int, int) buildItem) {
     return SingleChildScrollView(
+      padding: EdgeInsets.only(bottom: Responsive.height * 2),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: groupedItems.entries.map((entry) {

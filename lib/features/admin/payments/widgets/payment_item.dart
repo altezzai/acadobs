@@ -39,23 +39,28 @@ class PaymentItem extends StatelessWidget {
       onTap: onTap,
       child: Container(
         margin: const EdgeInsets.symmetric(
-            vertical: 2, horizontal: 2), // Space around each tile
+            vertical: .5, horizontal: 2), // Space around each tile
         decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.grey.shade300, // Border color
-            width: 1.0, // Border width
-          ),
+          color: Colors.white,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(topRadius ?? 8), // Default radius: 8
             topRight: Radius.circular(topRadius ?? 8), // Default radius: 8
             bottomLeft: Radius.circular(bottomRadius ?? 8), // Default radius: 8
-            bottomRight: Radius.circular(bottomRadius ?? 8), // Default radius: 8
+            bottomRight:
+                Radius.circular(bottomRadius ?? 8), // Default radius: 8
           ),
         ),
         child: ListTile(
           leading: CircleAvatar(
             backgroundColor: _getStatusColor().withOpacity(0.2),
-            child: Icon(Icons.currency_rupee, color: _getStatusColor()),
+            radius: 20,
+            child: Image.asset(
+              'assets/icons/money.png',
+              width: 20,
+              height: 20,
+              color: _getStatusColor(), // Apply color
+              colorBlendMode: BlendMode.srcATop, // Apply blend mode
+            ),
           ),
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,14 +69,14 @@ class PaymentItem extends StatelessWidget {
                 amount,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 16,
+                  fontSize: 14,
                 ),
               ),
               SizedBox(height: 4), // Space between amount and name
               Text(
                 name,
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 12,
                   color: Colors.grey[600], // Subdued color for the name
                 ),
               ),
@@ -110,4 +115,3 @@ class PaymentItem extends StatelessWidget {
     );
   }
 }
-
