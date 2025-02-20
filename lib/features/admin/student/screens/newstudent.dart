@@ -634,15 +634,15 @@ class _AddStudentPageState extends State<AddStudentPage> {
         final selectedHostel =
             context.read<DropdownProvider>().getSelectedItem('hostel') == "Yes";
 
-        final selectedStudentPhoto =
-            context.read<FilePickerProvider>().getFile('student photo');
+        // final selectedStudentPhoto =
+        context.read<FilePickerProvider>().getFile('student photo');
         // final selectedAadharPhoto =
         //     context.read<FilePickerProvider>().getFile('aadhar photo');
-        final parentPhoto =
-            context.read<FilePickerProvider>().getFile('parent photo');
-        final studentPhotoPath = selectedStudentPhoto?.path;
+        // final parentPhoto =
+        context.read<FilePickerProvider>().getFile('parent photo');
+        // final studentPhotoPath = selectedStudentPhoto?.path;
         // final aadharPhotoPath = selectedAadharPhoto?.path;
-        final parentPhotoPath = parentPhoto?.path;
+        // final parentPhotoPath = parentPhoto?.path;
 
         // Call the controller method to add the student
         context.read<StudentController>().addNewStudent(
