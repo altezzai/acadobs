@@ -146,6 +146,7 @@ class _StudentsPageState extends State<StudentsPage> {
       );
     }
     return ListView.builder(
+      padding: EdgeInsets.only(bottom: Responsive.height * 12),
       itemCount: students.length,
       itemBuilder: (context, index) {
         final student = students[index];
