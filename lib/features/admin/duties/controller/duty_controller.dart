@@ -238,4 +238,16 @@ class DutyController extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  DutyClass singleDuty = DutyClass();
+
+  
+  Future<void> getSingleDuty({required int dutyId}) async {
+    final response = await DutyServices().getSingleDuty(dutyId: dutyId);
+    if (response.statusCode == 200) {
+      final temp = response.data["duties"];
+      singleDuty = DutyClass.fromJson(temp);
+      notifyListeners();  // Ensure UI updates
+    }
+  }
 }

@@ -363,7 +363,7 @@ class Approuter {
           final args = state.extra as AdminDutyDetailArguments;
           return MaterialPage(
               child: DutyView(
-            duty: args.duty,
+            dutyId: args.dutyId,
             userType: args.userType,
           ));
         },
@@ -766,9 +766,9 @@ class DutyDetailArguments {
 }
 
 class AdminDutyDetailArguments {
-  DutyClass duty;
+  int dutyId;
   UserType userType;
-  AdminDutyDetailArguments({required this.duty, required this.userType});
+  AdminDutyDetailArguments({required this.dutyId, required this.userType});
 }
 
 class StudentDetailArguments {
