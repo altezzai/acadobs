@@ -103,6 +103,9 @@ class _StudentsPageState extends State<StudentsPage> {
                     ),
                   ],
                 ),
+                SizedBox(
+                  height: Responsive.height * 2,
+                ),
                 Expanded(
                   child: studentController.isloading
                       ? const Center(child: Loading(color: Colors.grey))
