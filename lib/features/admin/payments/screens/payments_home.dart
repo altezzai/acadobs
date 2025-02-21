@@ -305,6 +305,7 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
                   return buildItem(entry.value[index], index, itemCount);
                 },
               ),
+              // SizedBox(height: 2,),
               // SizedBox(
               //   height: Responsive.height * 2,
               // )
