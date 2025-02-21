@@ -135,16 +135,16 @@ class TeacherController extends ChangeNotifier {
         .toList();
   }
 
-  List<Activity> _activities = [];
-  List<Activity> get activities => _activities;
+  List<ActivityElement> _activities = [];
+  List<ActivityElement> get activities => _activities;
    Future<void> getTeacherActivities({required int teacherId}) async {
     _isloading = true;
    // _selectedTeacherIds.clear();
     try {
       final response = await TeacherServices().getActivities(teacherId: teacherId);
       if (response.statusCode == 200) {
-        _activities = (response.data as List<dynamic>)
-            .map((result) => Activity.fromJson(result))
+        _activities = (response.data ["activities"] as List<dynamic>)
+            .map((result) => ActivityElement.fromJson(result))
             .toList();
       }
     } catch (e) {
