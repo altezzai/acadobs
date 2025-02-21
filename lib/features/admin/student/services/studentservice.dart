@@ -219,4 +219,10 @@ class StudentServices {
         await ApiServices.get("/checkParentEmailUsage?parent_email=$email");
     return response;
   }
+
+  // Delete students
+  Future<Response> deleteStudents({required int studentId}) async {
+    final Response response = await ApiServices.delete("/students/$studentId");
+    return response;
+  }
 }

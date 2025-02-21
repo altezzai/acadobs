@@ -30,7 +30,9 @@ class TabSection extends StatelessWidget {
             child: TabBarView(
               children: [
                 DashboardTab(),
-                ActivityTab(),
+                ActivityTab(
+                  teacherId: teacherId,
+                ),
                 DutiesTab(
                   teacherId: teacherId,
                 ),

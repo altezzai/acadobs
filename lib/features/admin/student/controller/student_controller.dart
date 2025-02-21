@@ -567,4 +567,28 @@ class StudentController extends ChangeNotifier {
     notifyListeners();
   }
 // **********END OF PARENT EMAIL CHECK*************
+
+  // delete students
+  Future<void> deleteStudents(BuildContext context,
+      {required int studentId}) async {
+    _isloading = true;
+    try {
+      final response =
+          await StudentServices().deleteStudents(studentId: studentId);
+      print("***********${response.statusCode}");
+      // print(response.toString());
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        log("Student deleted successfully.");
+        Navigator.pop(context);
+        CustomSnackbar.show(context,
+            message: 'Deleted successfully', type: SnackbarType.info);
+        await getLatestStudents();
+      }
+    } catch (e) {
+      // print(e);
+    } finally {
+      _isloading = false;
+      notifyListeners();
+    }
+  }
 }
