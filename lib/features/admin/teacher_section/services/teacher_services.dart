@@ -2,20 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:school_app/base/services/api_services.dart';
 
 class TeacherServices {
-  // static const String baseUrl = "https://schoolmanagement.altezzai.com/api";
-
-  // static final Dio _dio = Dio(
-  //   BaseOptions(
-  //     baseUrl: baseUrl,
-  //     connectTimeout: const Duration(seconds: 30),
-  //     receiveTimeout: const Duration(seconds: 30),
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //   ),
-  // );
-
-  //**************** */ GET request for fetching teachers*************
+  //**************** / GET request for fetching teachers************
   Future<Response> getTeacher() async {
     try {
       final Response response = await ApiServices.get('/teachers');
@@ -35,25 +22,7 @@ class TeacherServices {
     }
   }
 
-  // // POST request for adding a teacher
-  // Future<Response> addTeacher(String endPoint, FormData formData) async {
-  //   try {
-  //     Response response = await _dio.post(
-  //       endPoint,
-  //       data: formData,
-  //       options: Options(
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //         },
-  //       ),
-  //     );
-  //     return response;
-  //   } catch (e) {
-  //     throw Exception('Failed to add teacher: $e');
-  //   }
-  // }
-
-  // **************Add Teacher**************
+  // *************Add Teacher*************
   Future<Response> addNewTeacher(
       {required String fullName,
       required String dateOfBirth,
@@ -83,12 +52,20 @@ class TeacherServices {
     return response;
   }
 
-   Future<Response> getActivities({required int teacherId}) async {
+// *****Get teacher activities(attendance)
+  Future<Response> getActivities({required int teacherId}) async {
     try {
-      final Response response = await ApiServices.get('/getTeacherActivities/$teacherId');
+      final Response response =
+          await ApiServices.get('/getTeacherActivities/$teacherId');
       return response;
     } on DioException catch (e) {
       throw Exception('Failed to load data: $e');
     }
+  }
+
+  // Delete teacher
+  Future<Response> deleteTeacher({required int teacherId}) async {
+    final Response response = await ApiServices.delete("/teachers/$teacherId");
+    return response;
   }
 }
