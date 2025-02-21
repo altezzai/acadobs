@@ -127,7 +127,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                 SizedBox(
                   height: Responsive.height * 2,
                 ),
-                Text("Selected student:"),
+                Text("Selected Student:"),
                 SizedBox(height: 10),
                 // Select Student
                 InkWell(
@@ -170,28 +170,6 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                     },
                   ),
                 ),
-                // Text(
-                //   "Select Student",
-                // ),
-                // SizedBox(
-                //   height: Responsive.height * 1,
-                // ),
-                // Consumer<StudentIdController>(builder: (context, value, child) {
-                //   return ListView.builder(
-                //       itemCount: value.students.length,
-                //       shrinkWrap: true,
-                //       padding: EdgeInsets.zero,
-                //       itemBuilder: (context, index) {
-                //         return Padding(
-                //           padding: const EdgeInsets.only(bottom: 4),
-                //           child: StudentListTile(
-                //               rollNumber:
-                //                   (value.students[index]['id'].toString()),
-                //               name: value.students[index]['full_name'],
-                //               index: index),
-                //         );
-                //       });
-                // }),
                 SizedBox(height: Responsive.height * 1),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -242,7 +220,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: Responsive.height * 1.6),
                     CustomDatePicker(
                       dateController: _dateController,
                       onDateSelected: (selectedDate) {
@@ -257,7 +235,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                           value,
                           fieldName: "Payment Date"),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: Responsive.height * 1.6),
                     CustomTextfield(
                       hintText: 'Amount',
                       controller: _amountController,
@@ -267,7 +245,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                           value,
                           fieldName: "Amount"),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: Responsive.height * 1.6),
                     CustomDropdown(
                       dropdownKey: 'paymentMethod',
                       label: 'Payment Method',
@@ -277,7 +255,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                           value,
                           fieldName: "Payment Method"),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: Responsive.height * 1.6),
                     CustomTextfield(
                       hintText: 'Transaction Id',
                       controller: _transactionController,
@@ -287,7 +265,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                           value,
                           fieldName: "Transaction ID"),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: Responsive.height * 1.6),
                     CustomDropdown(
                       dropdownKey: 'paymentStatus',
                       label: 'Payment Status',
@@ -299,12 +277,12 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: Responsive.height * 1.6),
                 CustomFilePicker(
                   label: "Add Receipt (Maximum file size: 5MB)",
                   fieldName: 'receipt',
                 ),
-                const SizedBox(height: 30),
+                SizedBox(height: Responsive.height * 1.6),
                 Center(child: Consumer<PaymentController>(
                     builder: (context, value, child) {
                   return CommonButton(
