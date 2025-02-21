@@ -92,8 +92,10 @@ class _DutiesTabState extends State<DutiesTab> {
         Consumer<DutyController>(
           builder: (context, value, child) {
             if (value.isloading) {
-              return const Center(
-                child: Loading(color: Colors.grey),
+              return Expanded(
+                child: const Center(
+                  child: Loading(color: Colors.grey),
+                ),
               );
             }
 
