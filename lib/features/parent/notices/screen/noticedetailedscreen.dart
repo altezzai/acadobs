@@ -204,7 +204,7 @@ class NoticeDetailPage extends StatelessWidget {
                         Text(
                           (notice.fileUpload?.length ?? 0) > 10
                               ? '${notice.fileUpload!.substring(notice.fileUpload!.length - 10)}' // Last 10 characters
-                              : notice.fileUpload ?? "",
+                              : notice.fileUpload ?? "No Documents Found!",
                           style: const TextStyle(
                             color: Colors.black,
                             fontSize: 10,
@@ -212,14 +212,16 @@ class NoticeDetailPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    GestureDetector(
-                      onTap: () =>
-                          _downloadFile(context, notice.fileUpload ?? ""),
-                      child: const Icon(
-                        Icons.download,
-                        color: Colors.black,
-                      ),
-                    ),
+                    notice.fileUpload != null
+                        ? GestureDetector(
+                            onTap: () =>
+                                _downloadFile(context, notice.fileUpload ?? ""),
+                            child: const Icon(
+                              Icons.download,
+                              color: Colors.black,
+                            ),
+                          )
+                        : SizedBox.shrink()
                   ],
                 ),
               ),

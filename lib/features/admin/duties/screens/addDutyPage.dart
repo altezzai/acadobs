@@ -72,6 +72,7 @@ class _AddDutyPageState extends State<AddDutyPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    SizedBox(height: Responsive.height * 1),
                     CustomAppbar(
                       title: "Add Duty",
                       isProfileIcon: false,
@@ -168,9 +169,9 @@ class _AddDutyPageState extends State<AddDutyPage> {
                     CustomFilePicker(
                       label: 'Document (Maximum file size: 5MB)',
                       fieldName: 'duty file',
-                      validator: (value) => FormValidator.validateNotEmpty(
-                          value,
-                          fieldName: "Document"),
+                      // validator: (value) => FormValidator.validateNotEmpty(
+                      //     value,
+                      //     fieldName: "Document"),
                     ),
                     SizedBox(height: Responsive.height * 2),
 
