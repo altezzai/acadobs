@@ -1,33 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
-import 'package:school_app/base/utils/constants.dart';
 
 class TeacherdutyTile extends StatelessWidget {
-  
   final String? iconPath;
   final IconData icon;
   final String work;
   final String sub;
   final String status;
-  
+
   final VoidCallback? onTap;
   final double bottomRadius;
   final double topRadius;
 
   const TeacherdutyTile(
       {super.key,
-      
       this.iconPath,
       this.icon = Icons.invert_colors_on_sharp,
       required this.sub,
       required this.work,
-      required this.status ,
-     
+      required this.status,
       this.onTap,
       this.bottomRadius = 10,
       this.topRadius = 10});
 
-    static getStatusColor(String? status) {
+  static getStatusColor(String? status) {
     switch (status) {
       case 'Pending':
         return Color(0xFFA86637);
@@ -35,11 +31,8 @@ class TeacherdutyTile extends StatelessWidget {
         return Color(0xFF44A837);
       case 'Not attended':
         return Color(0xFFA83737);
-    
-
     }
   }
-
 
   static getStatusIcon(String? status) {
     switch (status) {
@@ -49,7 +42,6 @@ class TeacherdutyTile extends StatelessWidget {
         return Icons.done;
       case 'Not attended':
         return Icons.cancel;
-    
     }
   }
 
@@ -95,7 +87,8 @@ class TeacherdutyTile extends StatelessWidget {
                           height: 22,
                           width: 20,
                         )
-                      : Icon(getStatusIcon(status), size: 22, color: getStatusColor(status)),
+                      : Icon(getStatusIcon(status),
+                          size: 22, color: getStatusColor(status)),
                 )),
 
             SizedBox(width: 10),
@@ -126,8 +119,8 @@ class TeacherdutyTile extends StatelessWidget {
             Spacer(),
             Text(
               status,
-              style:
-                  TextStyle(fontWeight: FontWeight.w600, color: getStatusColor(status)),
+              style: TextStyle(
+                  fontWeight: FontWeight.w600, color: getStatusColor(status)),
             ),
             // SizedBox(
             //   width: Responsive.width * 4,

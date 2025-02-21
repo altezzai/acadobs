@@ -85,66 +85,63 @@ class _DutiesTabState extends State<DutiesTab> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: Responsive.height * 5),
-          Consumer<DutyController>(
-            builder: (context, value, child) {
-              if (value.isloading) {
-                return const Center(
-                  child: Loading(color: Colors.grey),
-                );
-              }
-
-              // Group duties by date
-              final groupedDuties = groupItemsByDate(
-                value.teacherDuties,
-                (duty) =>
-                    DateTime.tryParse(duty.createdAt.toString()) ??
-                    DateTime.now(),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // SizedBox(height: Responsive.height * 5),
+        Consumer<DutyController>(
+          builder: (context, value, child) {
+            if (value.isloading) {
+              return const Center(
+                child: Loading(color: Colors.grey),
               );
+            }
 
-              return value.teacherDuties.isEmpty
-                  ? Expanded(
-                      child: Center(
-                        child: Text(
-                          "No Achievements Found!",
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
+            // Group duties by date
+            final groupedDuties = groupItemsByDate(
+              value.teacherDuties,
+              (duty) =>
+                  DateTime.tryParse(duty.createdAt.toString()) ??
+                  DateTime.now(),
+            );
+
+            return value.teacherDuties.isEmpty
+                ? Expanded(
+                    child: Center(
+                      child: Text(
+                        "No Duties Found!",
+                        style: TextStyle(
+                          fontSize: 16,
                         ),
                       ),
-                    )
-                  : _buildGroupedList(groupedDuties, (duty, index, total) {
-                      final isFirst = index == 0;
-                      final isLast = index == total - 1;
-                      final topRadius = isFirst ? 16.0 : 0.0;
-                      final bottomRadius = isLast ? 16.0 : 0.0;
+                    ),
+                  )
+                : _buildGroupedList(groupedDuties, (duty, index, total) {
+                    final isFirst = index == 0;
+                    final isLast = index == total - 1;
+                    final topRadius = isFirst ? 16.0 : 0.0;
+                    final bottomRadius = isLast ? 16.0 : 0.0;
 
-                      return TeacherdutyTile(
-                        work: duty.dutyTitle ?? "",
-                        sub: DateFormatter.formatDateString(
-                            duty.createdAt.toString()),
-                        status: duty.status ?? "",
-                        topRadius: topRadius,
-                        bottomRadius: bottomRadius,
-                        onTap: () {
-                          context.pushNamed(
-                            AppRouteConst.AdminViewDutyRouteName,
-                            extra: AdminDutyDetailArguments(
-                                dutyId: duty.dutyId!,
-                                 userType: UserType.admin),
-                          );
-                        },
-                      );
-                    });
-            },
-          ),
-        ],
-      ),
+                    return TeacherdutyTile(
+                      work: duty.dutyTitle ?? "",
+                      sub: DateFormatter.formatDateString(
+                          duty.createdAt.toString()),
+                      status: duty.status ?? "",
+                      topRadius: topRadius,
+                      bottomRadius: bottomRadius,
+                      onTap: () {
+                        context.pushNamed(
+                          AppRouteConst.AdminViewDutyRouteName,
+                          extra: AdminDutyDetailArguments(
+                              dutyId: duty.dutyId ?? 0,
+                              userType: UserType.admin),
+                        );
+                      },
+                    );
+                  });
+          },
+        ),
+      ],
     );
   }
 

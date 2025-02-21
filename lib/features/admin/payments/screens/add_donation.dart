@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/controller/student_id_controller.dart';
-
 import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
-
 import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
@@ -22,7 +20,6 @@ import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/custom_filepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/admin/payments/controller/payment_controller.dart';
-
 
 class AddDonationPage extends StatefulWidget {
   const AddDonationPage({super.key});
@@ -138,66 +135,49 @@ class _AddDonationPageState extends State<AddDonationPage> {
                 // Text(
                 //   "Select Student",
                 // ),
-                 InkWell(
-                onTap: () {
-                  final classGrade = context
-                      .read<DropdownProvider>()
-                      .getSelectedItem('class');
-                  final division = context
-                      .read<DropdownProvider>()
-                      .getSelectedItem('division');
-                  final classAndDivision = ClassAndDivision(
-                      className: classGrade, section: division);
-                  context.pushNamed(AppRouteConst.singlestudentselectionRouteName,
-                      extra: classAndDivision);
-                },
-                child: Consumer<StudentIdController>(
-                  builder: (context, value, child) {
-                    final studentId = context
-                            .read<StudentIdController>()
-                            .getSelectedStudentId();
-                 String? selectedStudentName = studentId != null
-    ? value.students
-        .firstWhere(
-          (student) => student['id'] == studentId,
-          orElse: () => {'id': null, 'full_name': null}, // Default student
-        )['full_name']
-    : null;
-
-return TextFormField(
-  decoration: InputDecoration(
-    hintText: selectedStudentName == null
-        ? "Select Students"
-        : capitalizeEachWord(selectedStudentName),
-    enabled: false,
-  ),
-);
-
-
+                InkWell(
+                  onTap: () {
+                    final classGrade = context
+                        .read<DropdownProvider>()
+                        .getSelectedItem('class');
+                    final division = context
+                        .read<DropdownProvider>()
+                        .getSelectedItem('division');
+                    final classAndDivision = ClassAndDivision(
+                        className: classGrade, section: division);
+                    context.pushNamed(
+                        AppRouteConst.singlestudentselectionRouteName,
+                        extra: classAndDivision);
                   },
+                  child: Consumer<StudentIdController>(
+                    builder: (context, value, child) {
+                      final studentId = context
+                          .read<StudentIdController>()
+                          .getSelectedStudentId();
+                      String? selectedStudentName = studentId != null
+                          ? value.students.firstWhere(
+                              (student) => student['id'] == studentId,
+                              orElse: () => {
+                                'id': null,
+                                'full_name': null
+                              }, // Default student
+                            )['full_name']
+                          : null;
+
+                      return TextFormField(
+                        decoration: InputDecoration(
+                          hintText: selectedStudentName == null
+                              ? "Select Students"
+                              : capitalizeEachWord(selectedStudentName),
+                          enabled: false,
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
                 SizedBox(
                   height: Responsive.height * 1,
                 ),
-                // Consumer<StudentIdController>(
-                //   builder: (context, value, child) {
-                //     return ListView.builder(
-                //         itemCount: value.students.length,
-                //         shrinkWrap: true,
-                //         padding: EdgeInsets.zero,
-                //         itemBuilder: (context, index) {
-                //           return Padding(
-                //             padding: const EdgeInsets.only(bottom: 4),
-                //             child: StudentListTile(
-                //                 rollNumber:
-                //                     (value.students[index]['id'].toString()),
-                //                 name: value.students[index]['full_name'],
-                //                 index: index),
-                //           );
-                //         });
-                //   },
-                // ),
                 SizedBox(height: Responsive.height * 1),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -214,11 +194,9 @@ return TextFormField(
                       hintText: 'Title',
                       controller: _purposeController,
                       iconData: const Icon(Icons.title),
-
                       validator: (value) => FormValidator.validateNotEmpty(
                           value,
                           fieldName: "Title"),
-
                     ),
                     const SizedBox(height: 16),
                     CustomTextfield(
@@ -279,7 +257,7 @@ return TextFormField(
                 ),
                 const SizedBox(height: 16),
                 CustomFilePicker(
-                  label: "Add Receipt",
+                  label: "Add Receipt (Maximum file size: 5MB)",
                   fieldName: 'donation receipt',
                 ),
                 Padding(

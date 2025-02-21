@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/controller/student_id_controller.dart';
-
 import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
-
 import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
@@ -254,6 +252,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                       lastDate:
                           DateTime(2100), // Extend to a reasonable future date
                       initialDate: DateTime.now(),
+
                       validator: (value) => FormValidator.validateNotEmpty(
                           value,
                           fieldName: "Payment Date"),
@@ -302,7 +301,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                 ),
                 const SizedBox(height: 16),
                 CustomFilePicker(
-                  label: "Add Receipt",
+                  label: "Add Receipt (Maximum file size: 5MB)",
                   fieldName: 'receipt',
                 ),
                 const SizedBox(height: 30),

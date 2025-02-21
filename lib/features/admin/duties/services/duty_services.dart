@@ -87,8 +87,8 @@ class DutyServices {
     return response;
   }
 
-  Future<Response> getSingleDuty({required int dutyId}) {
-     final Dio dio = Dio();
-    return dio.get('duties/$dutyId');
+  Future<Response> getSingleDuty({required int dutyId}) async {
+     final Response response = await ApiServices.get("/duties/$dutyId");
+    return response;
   }
 }
