@@ -129,14 +129,37 @@ class _PaymentViewState extends State<PaymentView> {
               ],
             ),
             SizedBox(height: Responsive.height * 1),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Month and year: ",
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall!
+                      .copyWith(fontWeight: FontWeight.normal),
+                ),
+                Text(
+                    "${widget.payment.month ?? ""}, ${widget.payment.year ?? ""}",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall!
+                        .copyWith(fontWeight: FontWeight.bold)),
+              ],
+            ),
+            SizedBox(height: Responsive.height * 2),
             Container(
               height: Responsive.height * .1,
               width: Responsive.width * 60,
               color: Colors.grey.shade400,
             ),
-            SizedBox(height: Responsive.height * 2),
+            SizedBox(height: Responsive.height * 1),
             Text(
               '${DateFormatter.formatDateString(widget.payment.paymentDate.toString())}, ${TimeFormatter.formatTimeFromString(widget.payment.createdAt.toString())}',
+              style: Theme.of(context)
+                  .textTheme
+                  .bodySmall!
+                  .copyWith(fontWeight: FontWeight.normal),
             ),
           ],
         ),
