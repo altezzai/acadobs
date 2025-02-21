@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/features/admin/teacher_section/model/activity_model.dart';
 import 'package:school_app/features/admin/teacher_section/model/teacher_model.dart';
 import 'package:school_app/features/admin/teacher_section/services/teacher_services.dart';
 
@@ -133,4 +134,25 @@ class TeacherController extends ChangeNotifier {
         .where((teacher) => _selectedTeacherIds.contains(teacher.id))
         .toList();
   }
+
+  List<Activity> _activities = [];
+  List<Activity> get activities => _activities;
+   Future<void> getTeacherActivities({required int teacherId}) async {
+    _isloading = true;
+   // _selectedTeacherIds.clear();
+    try {
+      final response = await TeacherServices().getActivities(teacherId: teacherId);
+      if (response.statusCode == 200) {
+        _activities = (response.data as List<dynamic>)
+            .map((result) => Activity.fromJson(result))
+            .toList();
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      _isloading = false;
+      notifyListeners();
+    }
+  }
+
 }
