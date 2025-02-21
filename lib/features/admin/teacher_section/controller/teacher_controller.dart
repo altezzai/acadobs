@@ -1,7 +1,9 @@
 import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/features/admin/teacher_section/model/activity_model.dart';
 import 'package:school_app/features/admin/teacher_section/model/teacher_model.dart';
 import 'package:school_app/features/admin/teacher_section/services/teacher_services.dart';
@@ -85,6 +87,7 @@ class TeacherController extends ChangeNotifier {
     required String profilePhoto,
   }) async {
     _isloadingTwo = true;
+    notifyListeners();
     try {
       final response = await TeacherServices().addNewTeacher(
         fullName: fullName,
@@ -98,6 +101,32 @@ class TeacherController extends ChangeNotifier {
       if (response.statusCode == 201) {
         log("Teacher added successfully");
         context.pushNamed(AppRouteConst.AdminteacherRouteName);
+      } else {
+        final Map<String, dynamic> errors = response.data['message'];
+
+        // Extract all error messages into a list
+        List<String> errorMessages = [];
+        errors.forEach((key, value) {
+          if (value is List) {
+            errorMessages.addAll(value.map((e) => e.toString()));
+          } else if (value is String) {
+            errorMessages.add(value);
+          }
+        });
+
+        // Format the errors with numbering
+        String formattedErrors = errorMessages
+            .asMap()
+            .entries
+            .map((entry) => "${entry.key + 1}. ${entry.value}")
+            .join("\n");
+
+        // Show error messages in Snackbar
+        CustomSnackbar.show(
+          context,
+          message: formattedErrors,
+          type: SnackbarType.failure,
+        );
       }
     } catch (e) {
       log(e.toString());
@@ -137,13 +166,14 @@ class TeacherController extends ChangeNotifier {
 
   List<ActivityElement> _activities = [];
   List<ActivityElement> get activities => _activities;
-   Future<void> getTeacherActivities({required int teacherId}) async {
+  Future<void> getTeacherActivities({required int teacherId}) async {
     _isloading = true;
-   // _selectedTeacherIds.clear();
+    // _selectedTeacherIds.clear();
     try {
-      final response = await TeacherServices().getActivities(teacherId: teacherId);
+      final response =
+          await TeacherServices().getActivities(teacherId: teacherId);
       if (response.statusCode == 200) {
-        _activities = (response.data ["activities"] as List<dynamic>)
+        _activities = (response.data["activities"] as List<dynamic>)
             .map((result) => ActivityElement.fromJson(result))
             .toList();
       }
@@ -154,5 +184,4 @@ class TeacherController extends ChangeNotifier {
       notifyListeners();
     }
   }
-
 }

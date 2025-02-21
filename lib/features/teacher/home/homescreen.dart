@@ -126,7 +126,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomNameContainer(
-                    horizontalWidth: 14.2,
+                    // horizontalWidth: 14.2,
                     text: "Students",
                     onPressed: () {
                       context.pushNamed(AppRouteConst.studentRouteName,
@@ -134,7 +134,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                     },
                   ),
                   CustomNameContainer(
-                    horizontalWidth: 14.2,
+                    // horizontalWidth: 14.2,
                     text: "Parents",
                     onPressed: () {
                       context.pushNamed(AppRouteConst.parentRouteName);

@@ -5,7 +5,6 @@ import 'package:school_app/core/authentication/screens/login.dart';
 import 'package:school_app/core/authentication/screens/logout.dart';
 import 'package:school_app/core/authentication/screens/splashscreen.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
-import 'package:school_app/features/admin/duties/model/duty_model.dart';
 import 'package:school_app/features/admin/duties/model/teacherDuty_model.dart';
 import 'package:school_app/features/admin/duties/screens/addDutyPage.dart';
 import 'package:school_app/features/admin/duties/screens/teacher_selection_screen.dart';

@@ -27,11 +27,15 @@ class _AddTeacherState extends State<AddTeacher> {
   String? selectedGender;
 
   // textediting controllers
-  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _nameController =
+      TextEditingController(text: "Mini");
   final TextEditingController _dateOfBirthController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _addressController =
+      TextEditingController(text: "Kannur");
+  final TextEditingController _phoneController =
+      TextEditingController(text: "9639639639");
+  final TextEditingController _emailController =
+      TextEditingController(text: "teacher@email.com");
 
   late DropdownProvider dropdownProvider;
 
@@ -197,7 +201,7 @@ class _AddTeacherState extends State<AddTeacher> {
                   },
                 ),
                 SizedBox(
-                  height: Responsive.height * 22,
+                  height: Responsive.height * 10,
                 ),
                 Consumer<TeacherController>(builder: (context, value, child) {
                   return CommonButton(

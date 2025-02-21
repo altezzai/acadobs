@@ -5,9 +5,7 @@ import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
-import 'package:school_app/features/admin/duties/controller/duty_controller.dart';
 import 'package:school_app/features/admin/teacher_section/controller/teacher_controller.dart';
-import 'package:school_app/features/admin/teacher_section/model/teacher_model.dart';
 
 class ActivityTab extends StatefulWidget {
   final int teacherId;
@@ -159,7 +157,7 @@ class _ActivityTabState extends State<ActivityTab> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: groupedItems.entries.map((entry) {
             final itemCount = entry.value.length;
-      
+
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
