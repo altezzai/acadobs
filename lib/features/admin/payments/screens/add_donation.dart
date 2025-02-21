@@ -132,9 +132,8 @@ class _AddDonationPageState extends State<AddDonationPage> {
                 SizedBox(
                   height: Responsive.height * 2,
                 ),
-                // Text(
-                //   "Select Student",
-                // ),
+                Text("Selected Student:"),
+                SizedBox(height: 10),
                 InkWell(
                   onTap: () {
                     final classGrade = context
@@ -167,7 +166,7 @@ class _AddDonationPageState extends State<AddDonationPage> {
                       return TextFormField(
                         decoration: InputDecoration(
                           hintText: selectedStudentName == null
-                              ? "Select Students"
+                              ? "Select Student"
                               : capitalizeEachWord(selectedStudentName),
                           enabled: false,
                         ),
@@ -198,7 +197,7 @@ class _AddDonationPageState extends State<AddDonationPage> {
                           value,
                           fieldName: "Title"),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: Responsive.height * 1.6),
                     CustomTextfield(
                       hintText: 'Amount',
                       controller: _amountController,
@@ -208,7 +207,7 @@ class _AddDonationPageState extends State<AddDonationPage> {
                           value,
                           fieldName: "Amount"),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: Responsive.height * 1.6),
                     CustomDatePicker(
                       dateController: _dateController,
                       onDateSelected: (selectedDate) {
@@ -221,14 +220,14 @@ class _AddDonationPageState extends State<AddDonationPage> {
                           value,
                           fieldName: "Donation Date"),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: Responsive.height * 1.6),
                     CustomDropdown(
                       dropdownKey: 'donationType',
                       label: 'Donation Type',
                       items: ['One-time', 'Recurring', 'Event-based'],
                       icon: Icons.category,
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: Responsive.height * 1.6),
                     CustomDropdown(
                       dropdownKey: 'paymentMethod',
                       label: 'Payment Method',
@@ -244,7 +243,7 @@ class _AddDonationPageState extends State<AddDonationPage> {
                           value,
                           fieldName: "Payment Method"),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: Responsive.height * 1.6),
                     CustomTextfield(
                       hintText: 'Transaction Id',
                       controller: _transactionController,
@@ -255,13 +254,13 @@ class _AddDonationPageState extends State<AddDonationPage> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: Responsive.height * 1.6),
                 CustomFilePicker(
                   label: "Add Receipt (Maximum file size: 5MB)",
                   fieldName: 'donation receipt',
                 ),
                 Padding(
-                    padding: const EdgeInsets.only(top: 45),
+                    padding: EdgeInsets.only(top: Responsive.height * 1.6),
                     child: Consumer<PaymentController>(
                         builder: (context, value, child) {
                       return CommonButton(
@@ -307,34 +306,7 @@ class _AddDonationPageState extends State<AddDonationPage> {
                             ? ButtonLoading()
                             : Text('Submit'),
                       );
-                    })
-                    // CustomButton(
-                    //   text: 'Submit',
-                    //   onPressed: () {
-                    //     final donationType = context
-                    //         .read<DropdownProvider>()
-                    //         .getSelectedItem('donationType');
-                    //     final paymentMethod = context
-                    //         .read<DropdownProvider>()
-                    //         .getSelectedItem('paymentMethod');
-                    //     final studentId = context
-                    //         .read<StudentIdController>()
-                    //         .getSelectedStudentId();
-
-                    //     log(">>>>>>>>>>>>${studentId}");
-                    //     context.read<PaymentController>().addDonation(
-                    //           context,
-                    //           userId: studentId ?? 0,
-                    //           amount_donated: _amountController.text,
-                    //           donation_date: _dateController.text,
-                    //           purpose: _purposeController.text,
-                    //           donation_type: donationType,
-                    //           payment_method: paymentMethod,
-                    //           transaction_id: _transactionController.text,
-                    //         );
-                    //   },
-                    // ),
-                    ),
+                    })),
               ],
             ),
           ),
