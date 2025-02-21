@@ -23,8 +23,11 @@ class _DonationViewState extends State<DonationView> {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           children: [
+            SizedBox(
+              height: Responsive.height * 1,
+            ),
             CustomAppbar(
-              title: 'Donations',
+              title: widget.donation.purpose ?? "",
               isProfileIcon: false,
               onTap: () {
                 Navigator.pop(context);
@@ -33,7 +36,8 @@ class _DonationViewState extends State<DonationView> {
             SizedBox(height: Responsive.height * 2),
             CircleAvatar(
               backgroundImage: widget.donation.studentPhoto != null
-                  ? NetworkImage("${baseUrl}${Urls.studentPhotos}${widget.donation.studentPhoto}")
+                  ? NetworkImage(
+                      "${baseUrl}${Urls.studentPhotos}${widget.donation.studentPhoto}")
                   : AssetImage('assets/child1.png') as ImageProvider,
               radius: 25,
             ),
@@ -42,7 +46,26 @@ class _DonationViewState extends State<DonationView> {
               'From ${capitalizeFirstLetter(widget.donation.fullName ?? "")}',
               style: textThemeData.bodyMedium,
             ),
-            Text(widget.donation.transactionId ?? ""),
+            Text(
+                '${widget.donation.donationClass ?? ""} ${widget.donation.section ?? ""}'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Transaction Id : ',
+                  style: TextStyle(
+                    color: Colors.grey.shade500,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  widget.donation.transactionId ?? "",
+                  style: TextStyle(
+                    color: Colors.grey.shade500,
+                  ),
+                ),
+              ],
+            ),
             SizedBox(height: Responsive.height * 2),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),

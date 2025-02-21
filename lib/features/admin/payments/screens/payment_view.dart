@@ -52,6 +52,9 @@ class _PaymentViewState extends State<PaymentView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            SizedBox(
+              height: Responsive.height * 1,
+            ),
             CustomAppbar(
               title: "Payments",
               isProfileIcon: false,
@@ -71,7 +74,24 @@ class _PaymentViewState extends State<PaymentView> {
               'From ${capitalizeFirstLetter(widget.payment.fullName ?? "")}',
               style: textThemeData.bodyMedium,
             ),
-            Text(widget.payment.transactionId ?? ""),
+            SizedBox(height: Responsive.height * .8),
+            Text('${widget.payment.paymentClass} ${widget.payment.section}'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Transaction Id : ',
+                  style: TextStyle(
+                      color: Colors.grey.shade500, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  widget.payment.transactionId ?? "",
+                  style: TextStyle(
+                    color: Colors.grey.shade500,
+                  ),
+                )
+              ],
+            ),
             SizedBox(height: Responsive.height * 2),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
