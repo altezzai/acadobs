@@ -31,10 +31,6 @@ class AddDonationPage extends StatefulWidget {
 class _AddDonationPageState extends State<AddDonationPage> {
   final _formKey = GlobalKey<FormState>();
   String? selectedClass;
-  // final _formKey = GlobalKey<FormState>();
-  // String? selectedDivision;
-  // String? selectedStudent;
-  // String? selectedFile;
 
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
@@ -81,11 +77,6 @@ class _AddDonationPageState extends State<AddDonationPage> {
                   isProfileIcon: false,
                   onTap: () {
                     Navigator.pop(context);
-                    // context.pushNamed(
-                    //   AppRouteConst.bottomNavRouteName,
-                    //   extra:
-                    //       UserType.admin, // Pass the userType to the next screen
-                    // );
                   },
                 ),
                 Row(

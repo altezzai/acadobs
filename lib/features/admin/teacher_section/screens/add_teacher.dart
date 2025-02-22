@@ -38,7 +38,6 @@ class _AddTeacherState extends State<AddTeacher> {
       TextEditingController(text: "teacher@email.com");
 
   late DropdownProvider dropdownProvider;
-
   late FilePickerProvider filePickerProvider;
   @override
   void initState() {

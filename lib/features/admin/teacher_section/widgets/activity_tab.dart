@@ -87,8 +87,10 @@ class _ActivityTabState extends State<ActivityTab> {
         Consumer<TeacherController>(
           builder: (context, value, child) {
             if (value.isloading) {
-              return const Center(
-                child: Loading(color: Colors.grey),
+              return Expanded(
+                child: const Center(
+                  child: Loading(color: Colors.grey),
+                ),
               );
             }
             List<Color> subjectColors = [

@@ -33,9 +33,6 @@ class NoticeServices {
     final fileUpload =
         context.read<FilePickerProvider>().getFile('notice file');
     final fileUploadPath = fileUpload?.path;
-    // final fileProvider =
-    //     Provider.of<FilePickerProvider>(context, listen: false);
-    // Create the form data to pass to the API
     final formData = FormData.fromMap({
       'audience_type': audience_type,
       'class': className,
@@ -43,27 +40,49 @@ class NoticeServices {
       'title': title,
       'description': description,
       'date': date,
-      
-       if (fileUploadPath != null && fileUploadPath.isNotEmpty)
-    'file_upload': await MultipartFile.fromFile(
-      fileUploadPath,
-      filename: fileUploadPath.split('/').last,
-    ), // Make sure this date is a string
-      //'file_upload':
-      //await MultipartFile.fromFile(fileProvider.selectedFile!.path!)
+      if (fileUploadPath != null && fileUploadPath.isNotEmpty)
+        'file_upload': await MultipartFile.fromFile(
+          fileUploadPath,
+          filename: fileUploadPath.split('/').last,
+        ),
     });
-
-    // Log the file details
-    // if (fileProvider.selectedFile != null) {
-    //   log('File selected: ${fileProvider.selectedFile!.path}');
-    //   log('File name: ${fileProvider.selectedFile!.name}');
-    // } else {
-    //   log('No file selected');
-    // }
-
-    // Call the ApiServices post method with formData and isFormData: true
     final Response response =
         await ApiServices.post("/notices", formData, isFormData: true);
+
+    return response;
+  }
+
+  // Edit Notice
+  Future<Response> editNotice(
+    BuildContext context, {
+    required int noticeId,
+    required String audience_type,
+    required String title,
+    required String description,
+    required String date,
+    String? className,
+    String? division,
+  }) async {
+    final fileUpload =
+        context.read<FilePickerProvider>().getFile('notice file');
+    final fileUploadPath = fileUpload?.path;
+    final formData = FormData.fromMap({
+      'audience_type': audience_type,
+      'class': className,
+      'division': division,
+      'title': title,
+      'description': description,
+      'date': date,
+      "_method": "put",
+      if (fileUploadPath != null && fileUploadPath.isNotEmpty)
+        'file_upload': await MultipartFile.fromFile(
+          fileUploadPath,
+          filename: fileUploadPath.split('/').last,
+        ),
+    });
+    final Response response = await ApiServices.post(
+        "/notices/$noticeId", formData,
+        isFormData: true);
 
     return response;
   }
@@ -89,12 +108,36 @@ class NoticeServices {
         ),
       ),
     };
-    // Log formData for debugging
-
-    // Call the ApiServices post method with formData and isFormData: true
     final Response response =
         await ApiServices.post("/events", formData, isFormData: true);
+    return response;
+  }
 
+  // Edit event
+  Future<Response> editEvent(
+      {
+        required int eventId,
+        required String title,
+      required String description,
+      required String date,
+      required List<XFile> images}) async {
+    // Create the form data to pass to the API
+    final formData = {
+      'title': title,
+      'description': description,
+      'event_date': date,
+      "_method": "put",
+      'images[]': await Future.wait(
+        images.map(
+          (image) async => await MultipartFile.fromFile(
+            image.path,
+            filename: image.name,
+          ),
+        ),
+      ),
+    };
+    final Response response =
+        await ApiServices.post("/events/$eventId", formData, isFormData: true);
     return response;
   }
 

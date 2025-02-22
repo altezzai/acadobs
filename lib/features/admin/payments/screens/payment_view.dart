@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
+import 'package:school_app/base/utils/custom_popup_menu.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/responsive.dart';
-import 'package:school_app/core/shared_widgets/custom_appbar.dart';
+import 'package:school_app/core/shared_widgets/common_appbar.dart';
 import 'package:school_app/features/admin/payments/model/payment_model.dart';
 
 class PaymentView extends StatefulWidget {
@@ -47,21 +50,40 @@ class _PaymentViewState extends State<PaymentView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CommonAppBar(
+        title: "Payment",
+        isBackButton: true,
+        actions: [
+          CustomPopupMenu(onEdit: () {
+            context.pushNamed(AppRouteConst.editPaymentRouteName,
+                extra: widget.payment);
+          }, onDelete: () {
+            // showConfirmationDialog(
+            //     context: context,
+            //     title: "Delete Duty?",
+            //     content: "Are you sure you want to delete this duty?",
+            //     onConfirm: () {
+            //       dutyController.deleteDuties(context,
+            //           dutyId: widget.dutyId);
+            //     });
+          })
+        ],
+      ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
-              height: Responsive.height * 1,
-            ),
-            CustomAppbar(
-              title: "Payments",
-              isProfileIcon: false,
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
+            // SizedBox(
+            //   height: Responsive.height * 1,
+            // ),
+            // CustomAppbar(
+            //   title: "Payments",
+            //   isProfileIcon: false,
+            //   onTap: () {
+            //     Navigator.pop(context);
+            //   },
+            // ),
             SizedBox(height: Responsive.height * 2),
             CircleAvatar(
               backgroundImage: widget.payment.studentPhoto != null

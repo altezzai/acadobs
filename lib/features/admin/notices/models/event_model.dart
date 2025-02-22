@@ -16,7 +16,7 @@ class Event {
   String? description;
   DateTime? eventDate;
   DateTime? createdAt;
-  List<Image>? images;
+  List<EventImage>? images;
 
   Event({
     this.eventId,
@@ -39,7 +39,7 @@ class Event {
             : DateTime.parse(json["created_at"]),
         images: json["images"] == null
             ? []
-            : List<Image>.from(json["images"]!.map((x) => Image.fromJson(x))),
+            : List<EventImage>.from(json["images"]!.map((x) => EventImage.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -55,16 +55,16 @@ class Event {
       };
 }
 
-class Image {
+class EventImage {
   int? imageId;
   String? imagePath;
 
-  Image({
+  EventImage({
     this.imageId,
     this.imagePath,
   });
 
-  factory Image.fromJson(Map<String, dynamic> json) => Image(
+  factory EventImage.fromJson(Map<String, dynamic> json) => EventImage(
         imageId: json["image_id"],
         imagePath: json["image_path"],
       );

@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:school_app/base/services/api_services.dart';
 
 class TeacherServices {
-  //**************** */ GET request for fetching teachers*************
+  //**************** / GET request for fetching teachers************
   Future<Response> getTeacher() async {
     try {
       final Response response = await ApiServices.get('/teachers');
@@ -22,7 +22,7 @@ class TeacherServices {
     }
   }
 
-  // **************Add Teacher**************
+// **********Add teacher
   Future<Response> addNewTeacher(
       {required String fullName,
       required String dateOfBirth,
@@ -61,5 +61,48 @@ class TeacherServices {
     } on DioException catch (e) {
       throw Exception('Failed to load data: $e');
     }
+  }
+
+  //********** */ Edit Teacher
+
+  Future<Response> editTeacher({
+    required int teacherId,
+    required String fullName,
+    required String email,
+    required String address,
+    required String contactNumber,
+    String? profilePhoto,
+  }) async {
+    // Define formData as Map<String, dynamic> to allow multiple types.
+    final Map<String, dynamic> formData = {
+      'full_name': fullName,
+      'email': email,
+      'address': address,
+      'contact_number': contactNumber,
+      "_method": "put",
+    };
+
+    // If profilePhoto is provided and not empty, add it as a MultipartFile.
+    if (profilePhoto != null && profilePhoto.isNotEmpty) {
+      formData['profile_photo'] = await MultipartFile.fromFile(
+        profilePhoto,
+        filename: profilePhoto.split('/').last,
+      );
+    }
+
+    // Call the ApiServices.put method with the form data.
+    final Response response = await ApiServices.post(
+      "/teachers/$teacherId",
+      formData,
+      isFormData: true,
+    );
+
+    return response;
+  }
+
+  // **********8Delete teacher
+  Future<Response> deleteTeacher({required int teacherId}) async {
+    final Response response = await ApiServices.delete("/teachers/$teacherId");
+    return response;
   }
 }

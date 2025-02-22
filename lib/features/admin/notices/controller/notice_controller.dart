@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
@@ -61,7 +60,7 @@ class NoticeController extends ChangeNotifier {
     notifyListeners();
   }
 
-  // add events
+  // add notice
   Future<void> addNotice(
     BuildContext context, {
     required String audience_type,
@@ -72,9 +71,6 @@ class NoticeController extends ChangeNotifier {
     String? division,
     File? file,
   }) async {
-    // final loadingProvider =
-    //     Provider.of<LoadingProvider>(context, listen: false); //loading provider
-    // loadingProvider.setLoading(true); //start loader
     _isloadingTwo = true;
     notifyListeners();
     try {
@@ -96,7 +92,47 @@ class NoticeController extends ChangeNotifier {
     } catch (e) {
       log(e.toString());
     } finally {
-      // loadingProvider.setLoading(false); // End loader
+      _isloadingTwo = false;
+      notifyListeners();
+    }
+  }
+
+  // edit notice
+  Future<void> editNotice(
+    BuildContext context, {
+    required int noticeId,
+    required String audience_type,
+    required String title,
+    required String description,
+    required String date,
+    String? className,
+    String? division,
+    File? file,
+  }) async {
+    _isloadingTwo = true;
+    notifyListeners();
+    try {
+      final response = await NoticeServices().editNotice(context,
+          noticeId: noticeId,
+          title: title,
+          description: description,
+          date: date,
+          className: className,
+          division: division,
+          audience_type: audience_type);
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        log(">>>>>>${response.statusMessage}");
+
+        context.pushNamed(AppRouteConst.bottomNavRouteName,
+            extra: UserType.admin);
+        CustomSnackbar.show(context,
+            message: 'Notice Updated successfully', type: SnackbarType.success);
+        Navigator.pop(context);
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      log(e.toString());
+    } finally {
       _isloadingTwo = false;
       notifyListeners();
     }
@@ -109,9 +145,6 @@ class NoticeController extends ChangeNotifier {
     required String description,
     required String date,
   }) async {
-    // final loadingProvider =
-    //     Provider.of<LoadingProvider>(context, listen: false); //loading provider
-    // loadingProvider.setLoading(true); //start loader
     _isloadingTwo = true;
     notifyListeners();
     try {
@@ -125,42 +158,52 @@ class NoticeController extends ChangeNotifier {
         log(">>>>>>${response.statusMessage}");
         log("Images to upload: ${chosenFiles?.map((e) => e.path).toList()}");
         CustomSnackbar.show(context,
-            message: 'Event Added successfully', type: SnackbarType.success);
-        context.pushNamed(AppRouteConst.bottomNavRouteName,
-            extra: UserType.admin);
+            message: 'Event Edited successfully', type: SnackbarType.success);
+        Navigator.pop(context);
       }
     } catch (e) {
       log(e.toString());
     } finally {
-      // loadingProvider.setLoading(false); // End loader
       _isloadingTwo = false;
       notifyListeners();
     }
   }
 
-  // *********** Add cover photo***************
-  // XFile? _chosenFile; // Chosen image file
+// Edit events
+  Future<void> editEvent(
+    BuildContext context, {
+    required int eventId,
+    required String title,
+    required String description,
+    required String date,
+  }) async {
+    _isloadingTwo = true;
+    notifyListeners();
+    try {
+      final response = await NoticeServices().editEvent(
+          eventId: eventId,
+          title: title,
+          description: description,
+          date: date,
+          images: _chosenFiles);
+      log(response.data.toString());
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        log(">>>>>>${response.statusMessage}");
+        log("Images to upload: ${chosenFiles?.map((e) => e.path).toList()}");
+        CustomSnackbar.show(context,
+            message: 'Event Added successfully', type: SnackbarType.success);
+        Navigator.pop(context);
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      log(e.toString());
+    } finally {
+      _isloadingTwo = false;
+      notifyListeners();
+    }
+  }
+
   // final ImagePicker _picker = ImagePicker();
-
-  // XFile? get chosenFile => _chosenFile;
-
-  // // Function to pick an image from the camera or gallery
-  // Future<void> pickImage(ImageSource source) async {
-  //   try {
-  //     final pickedFile = await _picker.pickImage(source: source);
-  //     if (pickedFile != null) {
-  //       log('Picked file path: ${pickedFile.path}');
-  //       _chosenFile = pickedFile;
-  //       notifyListeners(); // Notify listeners to rebuild UI
-  //     } else {
-  //       log('No image selected.');
-  //     }
-  //   } catch (e) {
-  //     log('Error picking image: $e');
-  //   }
-  // }
-  // ignore: unused_field
-  final ImagePicker _picker = ImagePicker();
   List<XFile> _chosenFiles = []; // List to store selected images
 
   List<XFile>? get chosenFiles => _chosenFiles;
