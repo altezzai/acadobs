@@ -21,7 +21,7 @@ class _TeachersPageState extends State<TeachersPage> {
   @override
   void initState() {
     super.initState();
-
+    
     context.read<TeacherController>().getTeacherDetails();
   }
 

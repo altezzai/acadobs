@@ -75,7 +75,7 @@ class TeacherController extends ChangeNotifier {
     }
   }
 
-  // Add a new teacher
+  //******** */ Add a new teacher
   Future<void> addNewTeacher(
     BuildContext context, {
     required String fullName,
@@ -100,7 +100,13 @@ class TeacherController extends ChangeNotifier {
       );
       if (response.statusCode == 201) {
         log("Teacher added successfully");
-        context.pushNamed(AppRouteConst.AdminteacherRouteName);
+        // context.pushNamed(AppRouteConst.AdminteacherRouteName);
+        CustomSnackbar.show(
+          context,
+          message: "Teacher Added Successfully",
+          type: SnackbarType.success,
+        );
+        Navigator.pop(context);
       } else {
         final Map<String, dynamic> errors = response.data['message'];
 
@@ -113,8 +119,7 @@ class TeacherController extends ChangeNotifier {
             errorMessages.add(value);
           }
         });
-
-        // Format the errors with numbering
+// Format the errors with numbering
         String formattedErrors = errorMessages
             .asMap()
             .entries
@@ -185,7 +190,66 @@ class TeacherController extends ChangeNotifier {
     }
   }
 
-  // delete teacher
+  // ***********Edit Teacher***********
+  Future<void> editTeacher(
+    BuildContext context, {
+    required int teacherId,
+    required String fullName,
+    required String email,
+    required address,
+    required contactNumber,
+    String? profilePhoto,
+  }) async {
+    _isloadingTwo = true;
+    notifyListeners();
+    try {
+      final response = await TeacherServices().editTeacher(
+        teacherId: teacherId,
+        fullName: fullName,
+        email: email,
+        address: address,
+        contactNumber: contactNumber,
+        profilePhoto: profilePhoto ?? "",
+      );
+      if (response.statusCode == 201) {
+        log("Edited teacher successfully");
+        context.pushNamed(AppRouteConst.AdminteacherRouteName);
+      } else {
+        // final Map<String, dynamic> errors = response.data['message'];
+
+        // // Extract all error messages into a list
+        // List<String> errorMessages = [];
+        // errors.forEach((key, value) {
+        //   if (value is List) {
+        //     errorMessages.addAll(value.map((e) => e.toString()));
+        //   } else if (value is String) {
+        //     errorMessages.add(value);
+        //   }
+        // });
+
+        // // Format the errors with numbering
+        // String formattedErrors = errorMessages
+        //     .asMap()
+        //     .entries
+        //     .map((entry) => "${entry.key + 1}. ${entry.value}")
+        //     .join("\n");
+
+        // // Show error messages in Snackbar
+        // CustomSnackbar.show(
+        //   context,
+        //   message: formattedErrors,
+        //   type: SnackbarType.failure,
+        // );
+      }
+    } catch (e) {
+      log(e.toString());
+    } finally {
+      _isloadingTwo = false;
+      notifyListeners();
+    }
+  }
+
+  //********* */ delete teacher
   Future<void> deleteTeacher(BuildContext context,
       {required int teacherId}) async {
     _isloading = true;

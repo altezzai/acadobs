@@ -55,6 +55,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
       dropdownProvider.clearSelectedItem('selectedMonth');
       dropdownProvider.clearSelectedItem('paymentStatus');
       dropdownProvider.clearSelectedItem('paymentMethod');
+      filePickerProvider.clearFile('receipt');
       //filePickerProvider.clearFile();
       studentIdController.clearSelection();
     });
@@ -77,10 +78,6 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                   isProfileIcon: false,
                   onTap: () {
                     Navigator.pop(context);
-                    // context.pushNamed(
-                    //   AppRouteConst.bottomNavRouteName,
-                    //   extra: UserType.admin,
-                    // );
                   },
                 ),
                 Row(

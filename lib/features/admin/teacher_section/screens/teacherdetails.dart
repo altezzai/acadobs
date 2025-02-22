@@ -1,110 +1,7 @@
-// import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
-// import 'package:school_app/base/utils/capitalize_first_letter.dart';
-// import 'package:school_app/base/utils/custom_popup_menu.dart';
-// import 'package:school_app/base/utils/responsive.dart';
-// import 'package:school_app/base/utils/show_confirmation_dialog.dart';
-// import 'package:school_app/base/utils/urls.dart';
-// import 'package:school_app/core/shared_widgets/profile_container.dart';
-// import 'package:school_app/features/admin/teacher_section/controller/teacher_controller.dart';
-// import 'package:school_app/features/admin/teacher_section/model/teacher_model.dart';
-// import 'package:school_app/features/admin/teacher_section/widgets/tab_section.dart';
-
-// class TeacherDetailsPage extends StatelessWidget {
-//   // final String name;
-//   // final String studentClass;
-//   // final String image;
-//   final Teacher teacher;
-
-//   TeacherDetailsPage({
-//     // required this.name,
-//     // required this.studentClass,
-//     // required this.image,
-//     required this.teacher,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: SliverToBoxAdapter(
-//         child: Padding(
-//           padding: const EdgeInsets.symmetric(horizontal: 16),
-//           child: Column(
-//             children: [
-//               SizedBox(
-//                 height: Responsive.height * 4,
-//               ),
-//               Row(
-//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                 children: [
-//                   GestureDetector(
-//                     onTap: () {
-//                       Navigator.pop(context);
-//                     },
-//                     child: const CircleAvatar(
-//                       radius: 16,
-//                       backgroundColor: Color(0xFFD9D9D9),
-//                       child: Icon(
-//                         Icons.arrow_back_ios_new,
-//                         size: 18,
-//                       ),
-//                     ),
-//                   ),
-//                   Text(
-//                     textAlign: TextAlign.center,
-//                     "Teacher",
-//                     style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-//                           fontWeight: FontWeight.w600,
-//                           fontSize: 22,
-//                           overflow: TextOverflow.ellipsis,
-//                         ),
-//                   ),
-//                   Consumer<TeacherController>(builder: (context, value, child) {
-//                     return CustomPopupMenu(
-//                         onEdit: () {},
-//                         onDelete: () {
-//                           showConfirmationDialog(
-//                               context: context,
-//                               title: "Delete Teacher?",
-//                               content:
-//                                   "Are you sure you want to delete this teacher?",
-//                               onConfirm: () {
-//                                 value.deleteTeacher(context,
-//                                     teacherId: teacher.id ?? 0);
-//                               });
-//                         });
-//                   })
-//                 ],
-//               ),
-//               SizedBox(
-//                 height: Responsive.height * 1,
-//               ),
-//               ProfileContainer(
-//                 imagePath:
-//                     "${baseUrl}${Urls.teacherPhotos}${teacher.profilePhoto}",
-//                 name: capitalizeFirstLetter(teacher.fullName ?? ""),
-//                 present: '27',
-//                 absent: '7',
-//                 late: '3',
-//                 description: teacher.classGradeHandling,
-//               ),
-//               SizedBox(
-//                 height: Responsive.height * 2,
-//               ),
-//               Expanded(
-//                 child: TabSection(
-//                   teacherId: teacher.id ?? 0,
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/custom_popup_menu.dart';
 import 'package:school_app/base/utils/responsive.dart';
@@ -167,7 +64,11 @@ class TeacherDetailsPage extends StatelessWidget {
                           Consumer<TeacherController>(
                             builder: (context, value, child) {
                               return CustomPopupMenu(
-                                onEdit: () {},
+                                onEdit: () {
+                                  context.pushNamed(
+                                      AppRouteConst.editTeacherRouteName,
+                                      extra: teacher);
+                                },
                                 onDelete: () {
                                   showConfirmationDialog(
                                     context: context,
@@ -238,22 +139,6 @@ class TeacherDetailsPage extends StatelessWidget {
                 DutiesTab(
                   teacherId: teacher.id ?? 0,
                 ),
-                // Builder(
-                //   builder: (BuildContext context) {
-                //     return CustomScrollView(
-                //       slivers: <Widget>[
-                //         SliverOverlapInjector(
-                //           handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
-                //               context),
-                //         ),
-                //         SliverToBoxAdapter(
-                //           child: TabSection(teacherId: teacher.id ?? 0),
-                //         ),
-                //       ],
-                //     );
-                //   },
-                // ),
-                // Add other tab contents here
               ],
             ),
           ),
