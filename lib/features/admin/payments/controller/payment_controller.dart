@@ -398,4 +398,48 @@ class PaymentController extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  // Delete payment
+  Future<void> deletePayment({ required BuildContext context,required int paymentId}) async {
+    _isloading = true;
+    notifyListeners();
+    try {
+      final response = await PaymentServices().deletePayment(paymentId: paymentId);
+      print("***********${response.statusCode}");
+      // print(response.toString());
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        log("Payment deleted successfully.");
+        Navigator.pop(context);
+        CustomSnackbar.show(context,
+            message: 'Deleted Payment successfully', type: SnackbarType.info);
+      }
+    } catch (e) {
+     log("Deleting error: ${e.toString()}");
+    } finally {
+      _isloading = false;
+      notifyListeners();
+    }
+  }
+
+   // Delete payment
+  Future<void> deleteDoantion({ required BuildContext context,required int donationId}) async {
+    _isloading = true;
+    notifyListeners();
+    try {
+      final response = await PaymentServices().deleteDonation(donationId: donationId);
+      print("***********${response.statusCode}");
+      // print(response.toString());
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        log("Donation deleted successfully.");
+        Navigator.pop(context);
+        CustomSnackbar.show(context,
+            message: 'Deleted Donation successfully', type: SnackbarType.info);
+      }
+    } catch (e) {
+     log("Deleting error: ${e.toString()}");
+    } finally {
+      _isloading = false;
+      notifyListeners();
+    }
+  }
 }

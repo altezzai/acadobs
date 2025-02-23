@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/custom_popup_menu.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/base/utils/show_confirmation_dialog.dart';
 import 'package:school_app/core/shared_widgets/common_appbar.dart';
+import 'package:school_app/features/admin/payments/controller/payment_controller.dart';
 import 'package:school_app/features/admin/payments/model/payment_model.dart';
 
 class PaymentView extends StatefulWidget {
@@ -54,19 +57,24 @@ class _PaymentViewState extends State<PaymentView> {
         title: "Payment",
         isBackButton: true,
         actions: [
-          CustomPopupMenu(onEdit: () {
-            context.pushNamed(AppRouteConst.editPaymentRouteName,
-                extra: widget.payment);
-          }, onDelete: () {
-            // showConfirmationDialog(
-            //     context: context,
-            //     title: "Delete Duty?",
-            //     content: "Are you sure you want to delete this duty?",
-            //     onConfirm: () {
-            //       dutyController.deleteDuties(context,
-            //           dutyId: widget.dutyId);
-            //     });
-          })
+          Consumer<PaymentController>(
+            builder: (context, value, child) {
+              return CustomPopupMenu(onEdit: () {
+                context.pushNamed(AppRouteConst.editPaymentRouteName,
+                    extra: widget.payment);
+              }, onDelete: () {
+                showConfirmationDialog(
+                    context: context,
+                    title: "Delete Payment?",
+                    content: "Are you sure you want to delete this payment?",
+                    onConfirm: () {
+                      value.deletePayment(
+                        context: context,
+                          paymentId: widget.payment.id??0);
+                    });
+              });
+            }
+          )
         ],
       ),
       body: Padding(

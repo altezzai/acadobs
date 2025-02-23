@@ -206,4 +206,17 @@ class PaymentServices {
 
     return response;
   }
+
+  // Delete payment
+  Future<Response> deletePayment({ required int paymentId}) async {
+    final Response response = await ApiServices.delete("/monthlyPayments/$paymentId");
+    return response;
+}
+
+ // Delete donation
+  Future<Response> deleteDonation({ required int donationId}) async {
+    final Response response = await ApiServices.delete("/donations/$donationId");
+    return response;
+}
+
 }
