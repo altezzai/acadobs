@@ -5,8 +5,10 @@ import 'package:school_app/core/authentication/screens/login.dart';
 import 'package:school_app/core/authentication/screens/logout.dart';
 import 'package:school_app/core/authentication/screens/splashscreen.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+import 'package:school_app/features/admin/duties/model/duty_model.dart';
 import 'package:school_app/features/admin/duties/model/teacherDuty_model.dart';
 import 'package:school_app/features/admin/duties/screens/addDutyPage.dart';
+import 'package:school_app/features/admin/duties/screens/edit_duty_screen.dart';
 import 'package:school_app/features/admin/duties/screens/teacher_selection_screen.dart';
 import 'package:school_app/features/admin/duties/screens/view_duty.dart';
 import 'package:school_app/features/admin/leave_request/screens/leaveRequest_page.dart';
@@ -792,6 +794,17 @@ class Approuter {
           final donation = state.extra as Donation;
           return MaterialPage(child: EditDonationScreen(
            donation: donation,
+          ));
+        },
+      ),
+       //  Edit duty
+       GoRoute(
+        name: AppRouteConst.editDutyRouteName,
+        path: '/editDuty',
+        pageBuilder: (context, state) {
+          final duty = state.extra as Duty;
+          return MaterialPage(child: EditDutyScreen(
+           duty: duty,
           ));
         },
       ),
