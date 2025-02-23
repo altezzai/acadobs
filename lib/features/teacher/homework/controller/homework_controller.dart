@@ -1,9 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/services/secure_storage_services.dart';
+import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/features/teacher/homework/model/homework_model.dart';
 import 'package:school_app/features/teacher/homework/services/homework_service.dart';
 
@@ -92,7 +91,81 @@ class HomeworkController extends ChangeNotifier {
       log("Response++++=${response.data.toString()}");
       if (response.statusCode == 201) {
         log(">>>>>>${response.statusMessage}");
-        context.pushNamed(AppRouteConst.homeworkRouteName);
+        CustomSnackbar.show(context,
+            message: "Homework Added Successfully", type: SnackbarType.success);
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      log(e.toString());
+    } finally {
+      _isloading = false;
+      notifyListeners();
+    }
+  }
+
+  // add homework
+  Future<void> editHomework(
+    BuildContext context, {
+    required int homeworkId,
+    required String class_grade,
+    required String section,
+    required int subjectId,
+    required String assignment_title,
+    required String description,
+    required String assigned_date,
+    required String due_date,
+    required String submission_type,
+    required total_marks,
+    required String status,
+    required List<int> studentsId,
+  }) async {
+    _isloading = true;
+    try {
+      final teacherId = await SecureStorageService.getUserId();
+      log("${teacherId.toString}");
+      final response = await HomeworkServices().editHomework(context,
+          homeworkId: homeworkId,
+          teacherId: teacherId,
+          class_grade: class_grade,
+          section: section,
+          subjectId: subjectId,
+          assignment_title: assignment_title,
+          description: description,
+          assigned_date: assigned_date,
+          due_date: due_date,
+          submission_type: submission_type,
+          total_marks: total_marks,
+          status: status,
+          studentsId: studentsId);
+      log("Response++++=${response.data.toString()}");
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        log(">>>>>>${response.statusMessage}");
+        CustomSnackbar.show(context,
+            message: "Homework Edited Successfully",
+            type: SnackbarType.success);
+        Navigator.pop(context);
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      log(e.toString());
+    } finally {
+      _isloading = false;
+      notifyListeners();
+    }
+  }
+
+  // Delete Homework
+  Future<void>deleteHomework({required BuildContext context, required int homeworkId}) async {
+    _isloading = true;
+    notifyListeners();
+    try {
+      final response = await HomeworkServices().deleteHomework(homeworkId: homeworkId);
+     if (response.statusCode == 201 || response.statusCode == 200) {
+        log(">>>>>>${response.statusMessage}");
+        CustomSnackbar.show(context,
+            message: "Homework Deleted Successfully",
+            type: SnackbarType.info);
+        Navigator.pop(context);
       }
     } catch (e) {
       log(e.toString());

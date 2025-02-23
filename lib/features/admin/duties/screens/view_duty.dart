@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/custom_popup_menu.dart';
@@ -43,22 +45,22 @@ class _DutyViewState extends State<DutyView> {
         title: "Duty",
         isBackButton: true,
         actions: [
-          // CustomPopupMenu(onEdit: () {}, onDelete: () {})
           if (widget.userType == UserType.admin) // Show for admin only
             Consumer<DutyController>(
               builder: (context, dutyController, child) {
-                return CustomPopupMenu(
-                    onEdit: () {},
-                    onDelete: () {
-                      showConfirmationDialog(
-                          context: context,
-                          title: "Delete Duty?",
-                          content: "Are you sure you want to delete this duty?",
-                          onConfirm: () {
-                            dutyController.deleteDuties(context,
-                                dutyId: widget.dutyId);
-                          });
-                    });
+                return CustomPopupMenu(onEdit: () {
+                  context.pushNamed(AppRouteConst.editDutyRouteName,
+                      extra: dutyController.dutyFullDetail);
+                }, onDelete: () {
+                  showConfirmationDialog(
+                      context: context,
+                      title: "Delete Duty?",
+                      content: "Are you sure you want to delete this duty?",
+                      onConfirm: () {
+                        dutyController.deleteDuties(context,
+                            dutyId: widget.dutyId);
+                      });
+                });
               },
             ),
         ],
