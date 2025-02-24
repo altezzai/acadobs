@@ -100,7 +100,7 @@ class TeacherController extends ChangeNotifier {
       );
       if (response.statusCode == 201) {
         log("Teacher added successfully");
-        await getTeachers();
+        await getTeacherDetails();
         CustomSnackbar.show(
           context,
           message: "Teacher Added Successfully",
