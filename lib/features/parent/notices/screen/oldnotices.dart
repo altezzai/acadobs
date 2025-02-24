@@ -94,7 +94,7 @@ class _NoticePageState extends State<NoticePage> {
               );
             },
             description: notice.description ?? "",
-            fileUpload: notice.fileUpload ?? "",
+            // fileUpload: notice.fileUpload ?? "",
           );
                   },
                 );

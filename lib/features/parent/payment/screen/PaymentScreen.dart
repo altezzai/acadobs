@@ -53,7 +53,8 @@ class _PaymentPageState extends State<PaymentPage> {
               onTap: () {
                context.pushNamed(
               AppRouteConst.ParentHomeRouteName,
-            );}),
+            );
+            }),
               Consumer<PaymentController>(builder: (context, controller, _) {
                 // Sort payments by date (newest first)
                 final sortedPayments = controller.payments

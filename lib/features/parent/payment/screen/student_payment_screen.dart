@@ -8,7 +8,6 @@ import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
-
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/admin/payments/controller/payment_controller.dart';
 import 'package:school_app/features/admin/payments/widgets/payment_item.dart';
@@ -45,35 +44,26 @@ class _StudentPaymentScreenState extends State<StudentPaymentScreen>
             CustomAppbar(
               title: "Payments",
               isProfileIcon: false,
+              onTap: () {
+                Navigator.pop(context);
+              },
             ),
-            // Row(
-            //   children: [
-            //     Expanded(
-            //       child: AddButton(
-            //         iconPath: paymentIcon,
-            //         onPressed: () {
-            //           context.pushNamed(AppRouteConst.AddPaymentRouteName);
-            //         },
-            //         text: "Add Payment",
-            //       ),
-            //     ),
-            //     SizedBox(width: 16),
-            //     Expanded(
-            //       child: AddButton(
-            //         iconPath: donationIcon,
-            //         onPressed: () {
-            //           context.pushNamed(AppRouteConst.AddDonationRouteName);
-            //         },
-            //         text: "Add Donation",
-            //       ),
-            //     ),
-            //   ],
-            // ),
             SizedBox(height: Responsive.height * 2),
             TabBar(
-              controller: _tabController,
+              labelPadding:
+                  EdgeInsets.symmetric(horizontal: Responsive.width * 4),
+              dividerHeight: 3,
+              indicatorWeight: 3,
+              dividerColor: Colors.grey,
+              // indicatorPadding: EdgeInsets.symmetric(horizontal: 1),
+              tabAlignment: TabAlignment.center,
               indicatorColor: Colors.black,
-              labelColor: Colors.black,
+              unselectedLabelColor: Color(0xFF757575),
+              unselectedLabelStyle: TextStyle(fontSize: 14),
+              indicatorSize: TabBarIndicatorSize.tab,
+              controller: _tabController,
+              labelStyle: textThemeData.bodyMedium
+                  ?.copyWith(fontSize: 14, fontWeight: FontWeight.bold),
               tabs: [
                 Tab(text: 'Payments'),
                 Tab(text: 'Donations'),

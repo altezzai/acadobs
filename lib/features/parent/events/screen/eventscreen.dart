@@ -15,7 +15,11 @@ import 'package:school_app/features/admin/notices/controller/notice_controller.d
 import 'package:school_app/features/parent/events/widget/eventcard.dart';
 
 class EventsPage extends StatefulWidget {
-  const EventsPage({super.key});
+  final bool forNavbar;
+  const EventsPage({
+    super.key,
+    this.forNavbar = false,
+  });
 
   @override
   State<EventsPage> createState() => _EventsPageState();
@@ -37,10 +41,13 @@ class _EventsPageState extends State<EventsPage> {
           child: Column(
             children: [
               CustomAppbar(
-                  title: "Events",
-                  isBackButton: false,
-                  isProfileIcon: false,
-                 ),
+                title: "Events",
+                isBackButton: widget.forNavbar,
+                isProfileIcon: false,
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
               Consumer<NoticeController>(builder: (context, controller, child) {
                 final now = DateTime.now();
 
@@ -78,14 +85,17 @@ class _EventsPageState extends State<EventsPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Upcoming Events Section
-                    const Text(
-                      "Upcoming",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
+                    upcomingEvents.isNotEmpty
+                        ? const Text(
+                            "Upcoming",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          )
+                        : SizedBox.shrink(),
                     const SizedBox(height: 10),
                     upcomingEvents.isNotEmpty
                         ? ListView.builder(
+                            padding: EdgeInsets.zero,
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                             itemCount: upcomingEvents.length,
@@ -113,18 +123,21 @@ class _EventsPageState extends State<EventsPage> {
                               );
                             },
                           )
-                        : const Text("No upcoming events available."),
+                        : SizedBox.shrink(),
                     SizedBox(height: Responsive.height * 2),
 
                     // Latest Events Section
-                    const Text(
-                      "Latest",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
+                    latestEvents.isNotEmpty
+                        ? const Text(
+                            "Latest",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          )
+                        : SizedBox.shrink(),
                     const SizedBox(height: 10),
                     latestEvents.isNotEmpty
                         ? ListView.builder(
+                            padding: EdgeInsets.zero,
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                             itemCount: latestEvents.length,
@@ -153,18 +166,21 @@ class _EventsPageState extends State<EventsPage> {
                               );
                             },
                           )
-                        : const Text("No latest events available."),
-                    SizedBox(height: Responsive.height * 2),
+                        : SizedBox.shrink(),
+                    SizedBox(height: Responsive.height * 1),
 
                     // Previous Events Section
-                    const Text(
-                      "Previous",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
+                    previousEvents.isNotEmpty
+                        ? const Text(
+                            "Previous",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          )
+                        : SizedBox.shrink(),
                     const SizedBox(height: 10),
                     previousEvents.isNotEmpty
                         ? ListView.builder(
+                            padding: EdgeInsets.zero,
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                             itemCount: previousEvents.length,

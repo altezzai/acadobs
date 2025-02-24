@@ -170,9 +170,8 @@ class _TeacherScreenState extends State<TeacherScreen> {
                   ),
                   TextButton(
                     onPressed: () {
-                      context.pushNamed(
-                        AppRouteConst.ParentNoticePageRouteName,
-                      );
+                      context.pushNamed(AppRouteConst.ParentNoticePageRouteName,
+                          extra: true);
                     },
                     child: const Text(
                       "View",
@@ -229,9 +228,8 @@ class _TeacherScreenState extends State<TeacherScreen> {
                   ),
                   TextButton(
                     onPressed: () {
-                      context.pushNamed(
-                        AppRouteConst.EventsPageRouteName,
-                      );
+                      context.pushNamed(AppRouteConst.EventsPageRouteName,
+                          extra: true);
                     },
                     child: const Text(
                       "View",
