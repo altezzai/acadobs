@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
@@ -37,7 +38,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   @override
   void initState() {
     super.initState();
-
+    _dateController.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
     // Use post-frame callback to clear dropdowns after widget is mounted
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final dropdownProvider = context.read<DropdownProvider>();
@@ -46,7 +47,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
       dropdownProvider.clearSelectedItem('division');
       dropdownProvider.clearSelectedItem('period');
       dropdownProvider.clearSelectedItem('subject');
-      subjectController.clearSubjects();
+      // subjectController.clearSubjects();
+      subjectController.clearSelection();
     });
   }
 
@@ -88,7 +90,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                                   child: TextFormField(
                                     decoration: InputDecoration(
                                       hintText: subjectProvider
-                                              .subjects.isNotEmpty
+                                                  .selectedSubjectId !=
+                                              null
                                           ? capitalizeEachWord(subjectProvider
                                                   .subjects
                                                   .firstWhere((subject) =>

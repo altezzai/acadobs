@@ -100,7 +100,7 @@ class TeacherController extends ChangeNotifier {
       );
       if (response.statusCode == 201) {
         log("Teacher added successfully");
-        // context.pushNamed(AppRouteConst.AdminteacherRouteName);
+        await getTeacherDetails();
         CustomSnackbar.show(
           context,
           message: "Teacher Added Successfully",

@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:school_app/base/services/secure_storage_services.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
+import 'package:school_app/base/utils/loading_dialog.dart';
 import 'package:school_app/features/admin/payments/model/donation_model.dart';
 import 'package:school_app/features/admin/payments/model/payment_model.dart';
 import 'package:school_app/features/admin/payments/services/payment_services.dart';
@@ -403,6 +404,7 @@ class PaymentController extends ChangeNotifier {
   Future<void> deletePayment({ required BuildContext context,required int paymentId}) async {
     _isloading = true;
     notifyListeners();
+    LoadingDialog.show(context, message: "Deleting payment...");
     try {
       final response = await PaymentServices().deletePayment(paymentId: paymentId);
       print("***********${response.statusCode}");
@@ -418,6 +420,7 @@ class PaymentController extends ChangeNotifier {
     } finally {
       _isloading = false;
       notifyListeners();
+      LoadingDialog.hide(context);
     }
   }
 
@@ -425,6 +428,7 @@ class PaymentController extends ChangeNotifier {
   Future<void> deleteDoantion({ required BuildContext context,required int donationId}) async {
     _isloading = true;
     notifyListeners();
+    LoadingDialog.show(context, message: "Deleting donation...");
     try {
       final response = await PaymentServices().deleteDonation(donationId: donationId);
       print("***********${response.statusCode}");
@@ -440,6 +444,7 @@ class PaymentController extends ChangeNotifier {
     } finally {
       _isloading = false;
       notifyListeners();
+      LoadingDialog.hide(context);
     }
   }
 }

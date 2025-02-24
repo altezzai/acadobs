@@ -3,12 +3,15 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:school_app/base/services/secure_storage_services.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
+import 'package:school_app/base/utils/loading_dialog.dart';
 import 'package:school_app/features/teacher/homework/model/homework_model.dart';
 import 'package:school_app/features/teacher/homework/services/homework_service.dart';
 
 class HomeworkController extends ChangeNotifier {
   bool _isloading = false;
   bool get isloading => _isloading;
+  bool _isloadingTwo = false;
+  bool get isloadingTwo => _isloadingTwo;
   List<Homework> _homework = [];
   List<Homework> get homework => _homework;
 
@@ -71,7 +74,8 @@ class HomeworkController extends ChangeNotifier {
     required String status,
     required List<int> studentsId,
   }) async {
-    _isloading = true;
+    _isloadingTwo = true;
+    notifyListeners();
     try {
       final teacherId = await SecureStorageService.getUserId();
       log("${teacherId.toString}");
@@ -91,6 +95,7 @@ class HomeworkController extends ChangeNotifier {
       log("Response++++=${response.data.toString()}");
       if (response.statusCode == 201) {
         log(">>>>>>${response.statusMessage}");
+        await getHomeworkByTeacherId();
         CustomSnackbar.show(context,
             message: "Homework Added Successfully", type: SnackbarType.success);
         Navigator.pop(context);
@@ -98,7 +103,7 @@ class HomeworkController extends ChangeNotifier {
     } catch (e) {
       log(e.toString());
     } finally {
-      _isloading = false;
+      _isloadingTwo = false;
       notifyListeners();
     }
   }
@@ -119,7 +124,7 @@ class HomeworkController extends ChangeNotifier {
     required String status,
     required List<int> studentsId,
   }) async {
-    _isloading = true;
+    _isloadingTwo = true;
     try {
       final teacherId = await SecureStorageService.getUserId();
       log("${teacherId.toString}");
@@ -140,31 +145,37 @@ class HomeworkController extends ChangeNotifier {
       log("Response++++=${response.data.toString()}");
       if (response.statusCode == 201 || response.statusCode == 200) {
         log(">>>>>>${response.statusMessage}");
+        await getHomeworkByTeacherId();
         CustomSnackbar.show(context,
             message: "Homework Edited Successfully",
             type: SnackbarType.success);
+
         Navigator.pop(context);
         Navigator.pop(context);
       }
     } catch (e) {
       log(e.toString());
     } finally {
-      _isloading = false;
+      _isloadingTwo = false;
       notifyListeners();
     }
   }
 
   // Delete Homework
-  Future<void>deleteHomework({required BuildContext context, required int homeworkId}) async {
+  Future<void> deleteHomework(
+      {required BuildContext context, required int homeworkId}) async {
     _isloading = true;
     notifyListeners();
+    // Show loading dialog
+    LoadingDialog.show(context, message: "Deleting homework...");
     try {
-      final response = await HomeworkServices().deleteHomework(homeworkId: homeworkId);
-     if (response.statusCode == 201 || response.statusCode == 200) {
+      final response =
+          await HomeworkServices().deleteHomework(homeworkId: homeworkId);
+      if (response.statusCode == 201 || response.statusCode == 200) {
         log(">>>>>>${response.statusMessage}");
+        await getHomeworkByTeacherId();
         CustomSnackbar.show(context,
-            message: "Homework Deleted Successfully",
-            type: SnackbarType.info);
+            message: "Homework Deleted Successfully", type: SnackbarType.info);
         Navigator.pop(context);
       }
     } catch (e) {
@@ -172,6 +183,7 @@ class HomeworkController extends ChangeNotifier {
     } finally {
       _isloading = false;
       notifyListeners();
+      LoadingDialog.hide(context);
     }
   }
 }

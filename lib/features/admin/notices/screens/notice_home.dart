@@ -248,7 +248,7 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
               );
             },
             description: notice.description ?? "",
-            fileUpload: notice.fileUpload ?? "",
+            // fileUpload: notice.fileUpload ?? "",
           ),
         );
       });
