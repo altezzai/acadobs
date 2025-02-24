@@ -12,10 +12,11 @@ import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/profile_tile.dart';
+import 'package:school_app/features/admin/duties/widgets/duty_card.dart';
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
 import 'package:school_app/features/admin/student/controller/student_controller.dart';
 import 'package:school_app/features/parent/events/widget/eventcard.dart';
-import 'package:school_app/features/parent/notices/widget/noticecard.dart';
+
 // import 'package:school_app/features/admin/student/model/student_data.dart';
 // import 'package:school_app/features/parent/chat/screen/parentchatscreen.dart';
 // import 'package:school_app/features/parent/events/screen/eventscreen.dart';
@@ -380,28 +381,51 @@ class _HomePageState extends State<HomePage> {
                                 shrinkWrap: true,
                                 itemCount: value.notices.take(2).length,
                                 itemBuilder: (context, index) {
-                                  return NoticeCard(
-                                    description:
-                                        value.notices[index].description ?? "",
-                                    noticeTitle:
-                                        value.notices[index].title ?? "",
-                                    date: DateFormatter.formatDateString(
-                                        value.notices[index].date.toString()),
-                                    time: TimeFormatter.formatTimeFromString(
-                                        value.notices[index].createdAt
-                                            .toString()),
-                                    fileUpload:
-                                        value.notices[index].fileUpload ?? "",
-                                    onTap: () {
-                                      context.pushNamed(
-                                          AppRouteConst
-                                              .NoticeDetailedPageRouteName,
-                                          extra: NoticeDetailArguments(
-                                            notice: value.notices[index],
-                                            userType: UserType.parent,
-                                          ));
-                                    },
-                                  );
+                                   final isFirst = index == 0;
+        final isLast = index == value.notices.take(2).length - 1;
+        final topRadius = isFirst ? 16 : 0;
+        final bottomRadius = isLast ? 16 : 0;
+                          final notice = value.notices[index];
+                           return Padding(
+          padding: const EdgeInsets.only(bottom: 1.5),child: DutyCard(
+             bottomRadius: bottomRadius.toDouble(),
+             topRadius: topRadius.toDouble(),
+            title: notice.title ?? "",
+            date: DateFormatter.formatDateString(notice.date.toString()),
+            time:
+                TimeFormatter.formatTimeFromString(notice.createdAt.toString()),
+            onTap: () {
+              context.pushNamed(
+                AppRouteConst.NoticeDetailedPageRouteName,
+                extra: NoticeDetailArguments(
+                    notice: notice, userType: UserType.parent),
+              );
+            },
+            description: notice.description ?? "",
+            fileUpload: notice.fileUpload ?? "",
+          ));
+                                  // return NoticeCard(
+                                  //   description:
+                                  //       value.notices[index].description ?? "",
+                                  //   noticeTitle:
+                                  //       value.notices[index].title ?? "",
+                                  //   date: DateFormatter.formatDateString(
+                                  //       value.notices[index].date.toString()),
+                                  //   time: TimeFormatter.formatTimeFromString(
+                                  //       value.notices[index].createdAt
+                                  //           .toString()),
+                                  //   fileUpload:
+                                  //       value.notices[index].fileUpload ?? "",
+                                  //   onTap: () {
+                                  //     context.pushNamed(
+                                  //         AppRouteConst
+                                  //             .NoticeDetailedPageRouteName,
+                                  //         extra: NoticeDetailArguments(
+                                  //           notice: value.notices[index],
+                                  //           userType: UserType.parent,
+                                  //         ));
+                                  //   },
+                                  // );
                                 },
                               );
                             }),

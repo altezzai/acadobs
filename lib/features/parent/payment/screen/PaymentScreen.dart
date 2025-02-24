@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
+import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/admin/payments/controller/payment_controller.dart';
 
 class PaymentPage extends StatefulWidget {
@@ -43,71 +44,83 @@ class _PaymentPageState extends State<PaymentPage> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Consumer<PaymentController>(builder: (context, controller, _) {
-            // Sort payments by date (newest first)
-            final sortedPayments = controller.payments
-              ..sort((a, b) => b.paymentDate!.compareTo(a.paymentDate!));
-
-            // Group payments by date
-            final groupedPayments = <String, List<dynamic>>{};
-            for (var payment in sortedPayments) {
-              final formattedDate = DateFormatter.formatDateString(
-                payment.paymentDate.toString(),
-              );
-              if (!groupedPayments.containsKey(formattedDate)) {
-                groupedPayments[formattedDate] = [];
-              }
-              groupedPayments[formattedDate]!.add(payment);
-            }
-
-            // Render grouped payments
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: groupedPayments.entries.map((entry) {
-                final date = entry.key;
-                final payments = entry.value;
-
+          child: Column(
+            children: [
+                CustomAppbar(
+              title: "Payments",
+              isBackButton: true,
+              isProfileIcon: false,
+              onTap: () {
+               context.pushNamed(
+              AppRouteConst.ParentHomeRouteName,
+            );}),
+              Consumer<PaymentController>(builder: (context, controller, _) {
+                // Sort payments by date (newest first)
+                final sortedPayments = controller.payments
+                  ..sort((a, b) => b.paymentDate!.compareTo(a.paymentDate!));
+              
+                // Group payments by date
+                final groupedPayments = <String, List<dynamic>>{};
+                for (var payment in sortedPayments) {
+                  final formattedDate = DateFormatter.formatDateString(
+                    payment.paymentDate.toString(),
+                  );
+                  if (!groupedPayments.containsKey(formattedDate)) {
+                    groupedPayments[formattedDate] = [];
+                  }
+                  groupedPayments[formattedDate]!.add(payment);
+                }
+              
+                // Render grouped payments
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Display the date as a section header
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: Text(
-                        date,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black54,
-                        ),
-                      ),
-                    ),
-                    // Render payment cards for the given date
-                    ListView.builder(
-                      padding: EdgeInsets.zero,
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: payments.length,
-                      itemBuilder: (context, index) {
-                        final payment = payments[index];
-                        return PaymentCard(
-                          amountTitle: payment.amountPaid ?? "",
-                          name: payment.userId.toString(),
-                          paymentMethod: payment.paymentMethod ?? "",
-                          transactionId: payment.transactionId ?? "",
-                          time: TimeFormatter.formatTimeFromString(
-                            payment.createdAt.toString(),
+                  children: groupedPayments.entries.map((entry) {
+                    final date = entry.key;
+                    final payments = entry.value;
+              
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Display the date as a section header
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Text(
+                            date,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black54,
+                            ),
                           ),
-                          description: payment.paymentStatus.toString(),
-                          fileUpload: payment.fileUpload,
-                        );
-                      },
-                    ),
-                  ],
+                        ),
+                        // Render payment cards for the given date
+                        ListView.builder(
+                          padding: EdgeInsets.zero,
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: payments.length,
+                          itemBuilder: (context, index) {
+                            final payment = payments[index];
+                            return PaymentCard(
+                              amountTitle: payment.amountPaid ?? "",
+                              name: payment.userId.toString(),
+                              paymentMethod: payment.paymentMethod ?? "",
+                              transactionId: payment.transactionId ?? "",
+                              time: TimeFormatter.formatTimeFromString(
+                                payment.createdAt.toString(),
+                              ),
+                              description: payment.paymentStatus.toString(),
+                              fileUpload: payment.fileUpload,
+                            );
+                          },
+                        ),
+                      ],
+                    );
+                  }).toList(),
                 );
-              }).toList(),
-            );
-          }),
+              }),
+            ],
+          ),
         ),
       ),
     );
