@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+import 'package:school_app/core/shared_widgets/custom_appbar.dart';
+import 'package:school_app/features/admin/duties/widgets/duty_card.dart';
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
 
-import 'package:school_app/features/parent/notices/widget/noticecard.dart';
 
 class NoticePage extends StatefulWidget {
   const NoticePage({super.key});
@@ -24,32 +27,23 @@ class _NoticePageState extends State<NoticePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.chevron_left, color: Colors.black),
-          onPressed: () {
-            context.pushReplacementNamed(
-              AppRouteConst.ParentHomeRouteName,
-            );
-            // Navigator.of(context).pop();
-          },
-        ),
-        title: Center(
-          child: const Text(
-            'Notices',
-            style: TextStyle(color: Colors.black),
-          ),
-        ),
-        backgroundColor: Colors.white,
-        elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black),
-      ),
+     
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+               CustomAppbar(
+              title: "Notices",
+              isBackButton: true,
+              isProfileIcon: false,
+              onTap: () {
+               context.pushReplacementNamed(
+              AppRouteConst.ParentHomeRouteName,
+            );
+              },
+             ),
               Text(
                 "Latest",
                 style: TextStyle(
@@ -80,16 +74,28 @@ class _NoticePageState extends State<NoticePage> {
                   shrinkWrap: true,
                   itemCount: value.notices.length,
                   itemBuilder: (context, index) {
-                    return NoticeCard(
-                      description: value.notices[index].description ?? "",
-                      noticeTitle: value.notices[index].title ?? "",
-                      date: DateFormatter.formatDateString(
-                          value.notices[index].date.toString()),
-                      time: TimeFormatter.formatTimeFromString(
-                          value.notices[index].createdAt.toString()),
-                      fileUpload: value.notices[index].fileUpload ?? "",
-                      onTap: () {},
-                    );
+                     final isFirst = index == 0;
+        final isLast = index ==value.notices.length - 1;
+        final topRadius = isFirst ? 16 : 0;
+        final bottomRadius = isLast ? 16 : 0;
+                          final notice = value.notices[index];
+                    return  DutyCard(
+             bottomRadius: bottomRadius.toDouble(),
+             topRadius: topRadius.toDouble(),
+            title: notice.title ?? "",
+            date: DateFormatter.formatDateString(notice.date.toString()),
+            time:
+                TimeFormatter.formatTimeFromString(notice.createdAt.toString()),
+            onTap: () {
+              context.pushNamed(
+                AppRouteConst.NoticeDetailedPageRouteName,
+                extra: NoticeDetailArguments(
+                    notice: notice, userType: UserType.parent),
+              );
+            },
+            description: notice.description ?? "",
+            fileUpload: notice.fileUpload ?? "",
+          );
                   },
                 );
               })

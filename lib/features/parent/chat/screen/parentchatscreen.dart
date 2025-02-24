@@ -7,6 +7,7 @@ import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/base/utils/urls.dart';
+import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/teacher/parent/controller/notes_controller.dart';
 
 class ParentNoteScreen extends StatefulWidget {
@@ -35,26 +36,36 @@ class _ParentNoteScreenState extends State<ParentNoteScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.grey.shade200,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.chevron_left, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: const Text(
-          'Chat',
-          style: TextStyle(
-              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
-        ),
-        centerTitle: true,
-      ),
+      
+      // AppBar(
+      //   backgroundColor: Colors.grey.shade200,
+      //   elevation: 0,
+      //   leading: IconButton(
+      //     icon: const Icon(Icons.chevron_left, color: Colors.black),
+      //     onPressed: () {
+      //       Navigator.pop(context);
+      //     },
+      //   ),
+      //   title: const Text(
+      //     'Chat',
+      //     style: TextStyle(
+      //         color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
+      //   ),
+      //   centerTitle: true,
+      // ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
           children: [
+             SizedBox(height: Responsive.height * 2),
+ CustomAppbar(
+              title: "Chat",
+              isBackButton: true,
+              isProfileIcon: false,
+              onTap: () {
+               Navigator.pop(context);
+              },
+             ),
             SizedBox(height: Responsive.height * 2),
             _buildSearchBar(),
             Expanded(

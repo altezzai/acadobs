@@ -8,7 +8,7 @@ import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
-import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/admin/payments/controller/payment_controller.dart';
 import 'package:school_app/features/admin/payments/widgets/payment_item.dart';
@@ -44,10 +44,7 @@ class _StudentPaymentScreenState extends State<StudentPaymentScreen>
           children: [
             CustomAppbar(
               title: "Payments",
-              onTap: () {
-                context.goNamed(AppRouteConst.bottomNavRouteName,
-                    extra: UserType.parent);
-              },
+              isProfileIcon: false,
             ),
             // Row(
             //   children: [
