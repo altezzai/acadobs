@@ -25,226 +25,227 @@ class TakeAttendance extends StatelessWidget {
     // context.read<StudentIdController>().getStudentsFromClassAndDivision(
     //     className: attendanceData.selectedClass,
     //     section: attendanceData.selectedDivision);
-    return SafeArea(
-      child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Consumer<AttendanceController>(
-              builder: (context, attendanceController, child) {
-            final teacherId = attendanceController.attendanceList[0].recordedBy;
-            return Column(
-              children: [
-                CustomAppbar(
-                  isProfileIcon: false,
-                  verticalPadding: 3,
-                  title:
-                      "${attendanceData.selectedClass}th ${attendanceData.selectedDivision}",
-                  onTap: () {
-                    Navigator.pop(context);
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Consumer<AttendanceController>(
+            builder: (context, attendanceController, child) {
+          final teacherId = attendanceController.attendanceList[0].recordedBy;
+          return Column(
+            children: [
+              SizedBox(
+                height: Responsive.height * 2,
+              ),
+              CustomAppbar(
+                isProfileIcon: false,
+                verticalPadding: 3,
+                title:
+                    "${attendanceData.selectedClass}th ${attendanceData.selectedDivision}",
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    attendanceData.selectedDate,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium!
+                        .copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  teacherId != null
+                      ? Text(
+                          "  (Attendance Already Taken)",
+                          style: TextStyle(color: Colors.red),
+                        )
+                      : SizedBox()
+                ],
+              ),
+              Text(
+                context
+                        .read<SubjectController>()
+                        .subjects
+                        .firstWhere(
+                          (subject) => subject.id == attendanceData.subject,
+                          orElse: () => Subject(
+                              id: -1, subject: 'Unknown', description: ''),
+                        )
+                        .subject ??
+                    'Unknown', // Default to 'Unknown' if subject is null
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              SizedBox(height: Responsive.height * 2),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: List.generate(
+                  10,
+                  (index) {
+                    final _previousPeriodList =
+                        attendanceController.alreadyTakenPeriodList;
+                    final int _selectedPeriod =
+                        int.parse(attendanceData.selectedPeriod);
+
+                    // Determine color based on previous periods and selected period
+                    Color? periodColor;
+                    bool isSelectedPeriod = index + 1 == _selectedPeriod;
+
+                    if (_previousPeriodList.contains(index + 1)) {
+                      periodColor = Colors.red; // Color for completed periods
+                    } else if (isSelectedPeriod) {
+                      periodColor = Colors.blue;
+                    }
+
+                    return Expanded(
+                      child: _periodBox(
+                        context,
+                        period: index + 1,
+                        isSelectedPeriod: isSelectedPeriod,
+                        color: periodColor,
+                      ),
+                    );
                   },
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+              ),
+              SizedBox(height: Responsive.height * 2),
+              Expanded(
+                  child: SingleChildScrollView(
+                child: Column(
                   children: [
-                    Text(
-                      attendanceData.selectedDate,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium!
-                          .copyWith(fontWeight: FontWeight.bold),
-                    ),
-                    teacherId != null
-                        ? Text(
-                            "  (Attendance Already Taken)",
-                            style: TextStyle(color: Colors.red),
-                          )
-                        : SizedBox()
-                  ],
-                ),
-                Text(
-                  context
-                          .read<SubjectController>()
-                          .subjects
-                          .firstWhere(
-                            (subject) => subject.id == attendanceData.subject,
-                            orElse: () => Subject(
-                                id: -1, subject: 'Unknown', description: ''),
-                          )
-                          .subject ??
-                      'Unknown', // Default to 'Unknown' if subject is null
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-                SizedBox(height: Responsive.height * 2),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: List.generate(
-                    10,
-                    (index) {
-                      final _previousPeriodList =
-                          attendanceController.alreadyTakenPeriodList;
-                      final int _selectedPeriod =
-                          int.parse(attendanceData.selectedPeriod);
-
-                      // Determine color based on previous periods and selected period
-                      Color? periodColor;
-                      bool isSelectedPeriod = index + 1 == _selectedPeriod;
-
-                      if (_previousPeriodList.contains(index + 1)) {
-                        periodColor = Colors.red; // Color for completed periods
-                      } else if (isSelectedPeriod) {
-                        periodColor = Colors.blue;
+                    Consumer<AttendanceController>(
+                        builder: (context, value, child) {
+                      // if (studentController.isloading) {
+                      //   return Center(
+                      //     child: CircularProgressIndicator(),
+                      //   );
+                      // }
+                      final studentsList = value.attendanceList;
+                      if (studentsList.isEmpty) {
+                        return Center(child: Text("No students found."));
                       }
 
-                      return Expanded(
-                        child: _periodBox(
-                          context,
-                          period: index + 1,
-                          isSelectedPeriod: isSelectedPeriod,
-                          color: periodColor,
-                        ),
-                      );
-                    },
-                  ),
+                      return ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: studentsList.length,
+                          itemBuilder: (context, index) {
+                            final studentId = studentsList[index].id;
+                            final teacherId =
+                                value.attendanceList[0].recordedBy;
+                            final action = attendanceData.action;
+                            switch (action) {
+                              case AttendanceAction.markAttendance:
+                                return Padding(
+                                  padding: EdgeInsets.only(
+                                      bottom: Responsive.height * 1),
+                                  child: teacherId != null
+                                      ? AlreadyTakenTile(
+                                          studentId:
+                                              studentsList[index].studentId ??
+                                                  0,
+                                          studentName: capitalizeFirstLetter(
+                                              studentsList[index].fullName ??
+                                                  ""),
+                                          rollNo: (index + 1).toString(),
+                                          index: index,
+                                          // currentStatus: AttendanceStatus.present,
+                                        )
+                                      : AttendanceTile(
+                                          studentId: studentId ?? 0,
+                                          rollNo: (index + 1).toString(),
+                                          studentName: capitalizeFirstLetter(
+                                              studentsList[index].fullName ??
+                                                  ""),
+                                        ),
+                                );
+                              // case AttendanceAction.markAllPresent:
+                              //   // Show AttendanceTile with initial "Present" status
+                              //   return Padding(
+                              //     padding: EdgeInsets.only(
+                              //         bottom: Responsive.height * 1),
+                              //     child: AttendanceTile(
+                              //       studentId: studentId ?? 0,
+                              //       rollNo: (index + 1).toString(),
+                              //       studentName: capitalizeFirstLetter(
+                              //           studentsList[index].fullName ?? ""),
+                              //       isAllPresent: true,
+                              //       // Add an initial present status
+                              //       // initialStatus: AttendanceStatus.present,
+                              //     ),
+                              //   );
+                              default:
+                                return Container();
+                            }
+                          });
+                    }),
+                    SizedBox(
+                      height: Responsive.height * 2.5,
+                    ),
+                    Consumer<AttendanceController>(
+                        builder: (context, value, child) {
+                      if (value.isloading) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      final attendanceStatusList = value.attendanceStatusList;
+                      final teacherId = value.attendanceList[0].recordedBy;
+
+                      return teacherId != null
+                          ? SizedBox()
+                          : CommonButton(
+                              onPressed: () {
+                                log(">>>>>>>>>>${value.getStatus(1)}");
+                                log(">>>>>>>>>>>>>>>>${attendanceStatusList}");
+                                context
+                                    .read<AttendanceController>()
+                                    .submitAttendance(context,
+                                        date: attendanceData.selectedDate,
+                                        classGrade:
+                                            attendanceData.selectedClass,
+                                        section:
+                                            attendanceData.selectedDivision,
+                                        periodNumber:
+                                            attendanceData.selectedPeriod,
+                                        // recordedBy: 1,
+                                        students: attendanceStatusList,
+                                        subject: attendanceData.subject);
+                              },
+                              widget: value.isloadingTwo
+                                  ? ButtonLoading()
+                                  : Text('Submit'),
+                            );
+                      // CustomButton(
+                      //     text: "Submit",
+                      //     onPressed: () {
+                      //       log(">>>>>>>>>>${value.getStatus(1)}");
+                      //       log(">>>>>>>>>>>>>>>>${attendanceStatusList}");
+                      //       context
+                      //           .read<AttendanceController>()
+                      //           .submitAttendance(context,
+                      //               date: attendanceData.selectedDate,
+                      //               classGrade:
+                      //                   attendanceData.selectedClass,
+                      //               section:
+                      //                   attendanceData.selectedDivision,
+                      //               periodNumber:
+                      //                   attendanceData.selectedPeriod,
+                      //               recordedBy: 1,
+                      //               students: attendanceStatusList);
+                      //     });
+                    }),
+                    SizedBox(
+                      height: Responsive.height * 3,
+                    ),
+                  ],
                 ),
-                SizedBox(height: Responsive.height * 2),
-                Expanded(
-                    child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Consumer<AttendanceController>(
-                          builder: (context, value, child) {
-                        // if (studentController.isloading) {
-                        //   return Center(
-                        //     child: CircularProgressIndicator(),
-                        //   );
-                        // }
-                        final studentsList = value.attendanceList;
-                        if (studentsList.isEmpty) {
-                          return Center(child: Text("No students found."));
-                        }
-
-                        return ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: studentsList.length,
-                            itemBuilder: (context, index) {
-                              final studentId = studentsList[index].id;
-                              final teacherId =
-                                  value.attendanceList[0].recordedBy;
-                              final action = attendanceData.action;
-                              switch (action) {
-                                case AttendanceAction.markAttendance:
-                                  return Padding(
-                                    padding: EdgeInsets.only(
-                                        bottom: Responsive.height * 1),
-                                    child: teacherId != null
-                                        ? AlreadyTakenTile(
-                                            studentId:
-                                                studentsList[index].studentId ??
-                                                    0,
-                                            studentName: capitalizeFirstLetter(
-                                                studentsList[index].fullName ??
-                                                    ""),
-                                            rollNo: (index + 1).toString(),
-                                            index: index,
-                                            // currentStatus: AttendanceStatus.present,
-                                          )
-                                        : AttendanceTile(
-                                            studentId: studentId ?? 0,
-                                            rollNo: (index + 1).toString(),
-                                            studentName: capitalizeFirstLetter(
-                                                studentsList[index].fullName ??
-                                                    ""),
-                                          ),
-                                  );
-                                // case AttendanceAction.markAllPresent:
-                                //   // Show AttendanceTile with initial "Present" status
-                                //   return Padding(
-                                //     padding: EdgeInsets.only(
-                                //         bottom: Responsive.height * 1),
-                                //     child: AttendanceTile(
-                                //       studentId: studentId ?? 0,
-                                //       rollNo: (index + 1).toString(),
-                                //       studentName: capitalizeFirstLetter(
-                                //           studentsList[index].fullName ?? ""),
-                                //       isAllPresent: true,
-                                //       // Add an initial present status
-                                //       // initialStatus: AttendanceStatus.present,
-                                //     ),
-                                //   );
-                                default:
-                                  return Container();
-                              }
-                            });
-                      }),
-                      SizedBox(
-                        height: Responsive.height * 2.5,
-                      ),
-                      Consumer<AttendanceController>(
-                          builder: (context, value, child) {
-                        if (value.isloading) {
-                          return Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                        final attendanceStatusList = value.attendanceStatusList;
-                        final teacherId = value.attendanceList[0].recordedBy;
-
-                        return teacherId != null
-                            ? SizedBox()
-                            : CommonButton(
-                                onPressed: () {
-                                  log(">>>>>>>>>>${value.getStatus(1)}");
-                                  log(">>>>>>>>>>>>>>>>${attendanceStatusList}");
-                                  context
-                                      .read<AttendanceController>()
-                                      .submitAttendance(context,
-                                          date: attendanceData.selectedDate,
-                                          classGrade:
-                                              attendanceData.selectedClass,
-                                          section:
-                                              attendanceData.selectedDivision,
-                                          periodNumber:
-                                              attendanceData.selectedPeriod,
-                                          // recordedBy: 1,
-                                          students: attendanceStatusList,
-                                          subject: attendanceData.subject);
-                                },
-                                widget: value.isloadingTwo
-                                    ? ButtonLoading()
-                                    : Text('Submit'),
-                              );
-                        // CustomButton(
-                        //     text: "Submit",
-                        //     onPressed: () {
-                        //       log(">>>>>>>>>>${value.getStatus(1)}");
-                        //       log(">>>>>>>>>>>>>>>>${attendanceStatusList}");
-                        //       context
-                        //           .read<AttendanceController>()
-                        //           .submitAttendance(context,
-                        //               date: attendanceData.selectedDate,
-                        //               classGrade:
-                        //                   attendanceData.selectedClass,
-                        //               section:
-                        //                   attendanceData.selectedDivision,
-                        //               periodNumber:
-                        //                   attendanceData.selectedPeriod,
-                        //               recordedBy: 1,
-                        //               students: attendanceStatusList);
-                        //     });
-                      }),
-                      SizedBox(
-                        height: Responsive.height * 3,
-                      ),
-                    ],
-                  ),
-                ))
-              ],
-            );
-          }),
-        ),
+              ))
+            ],
+          );
+        }),
       ),
     );
   }

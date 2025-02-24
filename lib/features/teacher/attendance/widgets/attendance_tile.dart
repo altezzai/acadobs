@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:school_app/features/teacher/attendance/controller/attendance_controller.dart';
 
 // Widget representing a tile for taking attendance of a student
-class AttendanceTile extends StatelessWidget {
+class AttendanceTile extends StatefulWidget {
   final int studentId; // Unique ID of the student
   final String studentName; // Name of the student
   final String rollNo;
@@ -17,6 +17,18 @@ class AttendanceTile extends StatelessWidget {
     // this.isAllPresent = false,
   });
 
+  @override
+  State<AttendanceTile> createState() => _AttendanceTileState();
+}
+
+class _AttendanceTileState extends State<AttendanceTile> {
+  String? selectedRemark; // Stores the selected remark
+
+  final List<String> remarksList = [
+    "On Leave",
+    "Medical Leave",
+    "Other",
+  ];
   @override
   Widget build(BuildContext context) {
     // Access the AttendanceController
@@ -41,28 +53,61 @@ class AttendanceTile extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+          Container(
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+                color: Color(0xFFFFFFFF),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(8), topRight: Radius.circular(8))),
             child: Row(
               children: [
                 CircleAvatar(
-                  radius: 15,
-                  backgroundColor: Color(0xFFD9D9D9),
+                  radius: 20,
+                  backgroundColor: Color(0xFFF4F4F4),
                   child: Text(
-                    rollNo,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall!
-                        .copyWith(fontSize: 14, fontWeight: FontWeight.bold),
+                    widget.rollNo,
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF7C7C7C)),
                   ),
                 ),
                 const SizedBox(width: 15),
                 Text(
-                  studentName,
+                  widget.studentName,
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                       fontSize: 16,
                       color: Colors.black,
                       fontWeight: FontWeight.w500),
+                ),
+                Spacer(),
+                // Dropdown for remarks
+                DropdownButton<String>(
+                  value: controller.getSelectedRemark(widget.studentId) ==
+                          "Select Remark"
+                      ? null
+                      : controller.getSelectedRemark(widget.studentId),
+                  hint: Row(
+                    children: [
+                      Text("Remarks",
+                          style: Theme.of(context).textTheme.bodySmall),
+                    ],
+                  ),
+                  underline: const SizedBox(), // Removes the default underline
+                  items: remarksList.map((String remark) {
+                    return DropdownMenuItem<String>(
+                      value: remark,
+                      child: Text(
+                        remark,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    if (newValue != null) {
+                      controller.updateRemark(widget.studentId, newValue);
+                    }
+                  },
                 )
               ],
             ),
@@ -73,23 +118,23 @@ class AttendanceTile extends StatelessWidget {
                 context: context,
                 text: "Present",
                 status: AttendanceStatus.present,
-                currentStatus: controller.getStatus(studentId),
-                studentId: studentId,
+                currentStatus: controller.getStatus(widget.studentId),
+                studentId: widget.studentId,
                 bottomLeftRadius: 8,
               ),
               _attendanceButton(
                 context: context,
                 text: "Late",
                 status: AttendanceStatus.late,
-                currentStatus: controller.getStatus(studentId),
-                studentId: studentId,
+                currentStatus: controller.getStatus(widget.studentId),
+                studentId: widget.studentId,
               ),
               _attendanceButton(
                 context: context,
                 text: "Absent",
                 status: AttendanceStatus.absent,
-                currentStatus: controller.getStatus(studentId),
-                studentId: studentId,
+                currentStatus: controller.getStatus(widget.studentId),
+                studentId: widget.studentId,
                 bottomRightRadius: 8,
               ),
             ],

@@ -302,7 +302,7 @@ class StudentController extends ChangeNotifier {
     required String fatherMotherPhoto,
   }) async {
     _isLoadingTwo = true;
-
+    notifyListeners();
     try {
       final response = await StudentServices().updateStudent(
         studentId: studentId,
@@ -319,10 +319,12 @@ class StudentController extends ChangeNotifier {
       );
       if (response.statusCode == 201 || response.statusCode == 200) {
         await getIndividualStudentDetails(studentId: studentId);
+        await getLatestStudents();
         log(">>>>>>>>>>>>>Student Details updated}");
         log('Response: ${response.data}');
         CustomSnackbar.show(context,
-            message: 'Student Updated successfully!', type: SnackbarType.info);
+            message: 'Student Updated successfully!',
+            type: SnackbarType.success);
         // Navigate to the desired route
         Navigator.pop(context);
       } else {

@@ -38,19 +38,23 @@ class AlreadyTakenTile extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+          Container(
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+                color: Color(0xFFFFFFFF),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(8), topRight: Radius.circular(8))),
             child: Row(
               children: [
                 CircleAvatar(
-                  radius: 15,
-                  backgroundColor: Color(0xFFD9D9D9),
+                  radius: 20,
+                  backgroundColor: Color(0xFFF4F4F4),
                   child: Text(
                     rollNo,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall!
-                        .copyWith(fontSize: 14, fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF7C7C7C)),
                   ),
                 ),
                 const SizedBox(width: 15),

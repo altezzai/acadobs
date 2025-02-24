@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
+import 'package:school_app/base/utils/custom_popup_menu.dart';
 import 'package:school_app/base/utils/responsive.dart';
-import 'package:school_app/core/shared_widgets/custom_appbar.dart';
+import 'package:school_app/base/utils/show_confirmation_dialog.dart';
+import 'package:school_app/core/shared_widgets/common_appbar.dart';
+import 'package:school_app/features/teacher/homework/controller/homework_controller.dart';
 import 'package:school_app/features/teacher/homework/model/homework_model.dart';
 import 'package:school_app/features/teacher/homework/widgets/view_container.dart';
 
@@ -19,17 +23,36 @@ class _WorkViewState extends State<WorkView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CommonAppBar(
+        title: "Homework",
+        isBackButton: true,
+        actions: [
+          Consumer<HomeworkController>(
+            builder: (context, homeworkController, child) {
+              return CustomPopupMenu(
+                  onEdit: () {},
+                  onDelete: () {
+                    showConfirmationDialog(
+                        context: context,
+                        title: "Delete Duty?",
+                        content: "Are you sure you want to delete this duty?",
+                        onConfirm: () {
+                          homeworkController.deleteHomework(
+                              context: context,
+                              homeworkId: widget.work.id ?? 0);
+                        });
+                  });
+            },
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 18),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomAppbar(
-              title: '',
-              isProfileIcon: false,
-              onTap: () {
-                context.pushNamed(AppRouteConst.homeworkRouteName);
-              },
+            SizedBox(
+              height: Responsive.height * 2,
             ),
             const ViewContainer(
               bcolor: Color(0xffFFFCCE),
