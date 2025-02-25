@@ -121,9 +121,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                   context.pushNamed(AppRouteConst.homeworkRouteName);
                 },
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: Responsive.height * 1),
               _customContainer(
                   color: Colors.red,
                   text: 'Leave Request',
@@ -132,9 +130,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                     context.pushNamed(
                         AppRouteConst.TeacherLeaveRequestScreenRouteName);
                   }),
-              SizedBox(
-                height: Responsive.height * 2,
-              ),
+              SizedBox(height: Responsive.height * 1),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -146,6 +142,9 @@ class _TeacherScreenState extends State<TeacherScreen> {
                           extra: UserType.teacher);
                     },
                   ),
+                  SizedBox(
+                    width: 5,
+                  ),
                   CustomNameContainer(
                     // horizontalWidth: 14.2,
                     text: "Parents",
@@ -156,7 +155,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                 ],
               ),
               SizedBox(
-                height: Responsive.height * 2,
+                height: Responsive.height * 1,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -183,35 +182,40 @@ class _TeacherScreenState extends State<TeacherScreen> {
               SizedBox(
                 height: Responsive.height * .5,
               ),
-              Consumer<NoticeController>(
-                  builder: (context, noticeController, child) {
-                if (noticeController.isloading) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+              Consumer<NoticeController>(builder: (context, value, child) {
                 return ListView.builder(
-                    padding: EdgeInsets.zero,
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: noticeController.notices.take(2).length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 4),
+                  padding: EdgeInsets.zero,
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: value.notices.take(2).length,
+                  itemBuilder: (context, index) {
+                    final isFirst = index == 0;
+                    final isLast = index == value.notices.take(2).length - 1;
+                    final topRadius = isFirst ? 16 : 0;
+                    final bottomRadius = isLast ? 16 : 0;
+                    final notice = value.notices[index];
+                    return Padding(
+                        padding: const EdgeInsets.only(bottom: 1.5),
                         child: DutyCard(
-                          title: noticeController.notices[index].title ?? "",
-                          description:
-                              noticeController.notices[index].description ?? "",
+                          bottomRadius: bottomRadius.toDouble(),
+                          topRadius: topRadius.toDouble(),
+                          title: notice.title ?? "",
                           date: DateFormatter.formatDateString(
-                            noticeController.notices[index].date.toString(),
-                          ),
+                              notice.date.toString()),
                           time: TimeFormatter.formatTimeFromString(
-                              noticeController.notices[index].createdAt
-                                  .toString()),
-                          onTap: () {},
-                          bottomRadius: 12,
-                          topRadius: 12,
-                        ),
-                      );
-                    });
+                              notice.createdAt.toString()),
+                          onTap: () {
+                            context.pushNamed(
+                              AppRouteConst.NoticeDetailedPageRouteName,
+                              extra: NoticeDetailArguments(
+                                  notice: notice, userType: UserType.parent),
+                            );
+                          },
+                          description: notice.description ?? "",
+                          // fileUpload: notice.fileUpload ?? "",
+                        ));
+                  },
+                );
               }),
               SizedBox(
                 height: Responsive.height * 1,
@@ -252,7 +256,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                   itemCount: value.events.take(2).length,
                   itemBuilder: (context, index) {
                     return Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
+                      padding: const EdgeInsets.only(bottom: 4),
                       child: EventCard(
                         onTap: () {
                           context.pushNamed(

@@ -117,17 +117,18 @@ class TakeAttendance extends StatelessWidget {
                   children: [
                     Consumer<AttendanceController>(
                         builder: (context, value, child) {
-                      // if (studentController.isloading) {
-                      //   return Center(
-                      //     child: CircularProgressIndicator(),
-                      //   );
-                      // }
+                      if (value.isloading) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
                       final studentsList = value.attendanceList;
                       if (studentsList.isEmpty) {
                         return Center(child: Text("No students found."));
                       }
 
                       return ListView.builder(
+                          padding: EdgeInsets.zero,
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemCount: studentsList.length,

@@ -16,12 +16,32 @@ import 'package:school_app/features/teacher/marks/controller/marks_controller.da
 import 'package:school_app/features/teacher/marks/models/marks_upload_model.dart';
 
 // ignore: must_be_immutable
-class ProgressReport extends StatelessWidget {
+class ProgressReport extends StatefulWidget {
   ProgressReport({super.key});
+
+  @override
+  State<ProgressReport> createState() => _ProgressReportState();
+}
+
+class _ProgressReportState extends State<ProgressReport> {
   final _formKey = GlobalKey<FormState>();
+
   final TextEditingController _dateController = TextEditingController();
+
   final TextEditingController _totalMarkController = TextEditingController();
+
   final TextEditingController _titleController = TextEditingController();
+  late DropdownProvider dropdownProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    dropdownProvider = context.read<DropdownProvider>();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      dropdownProvider.clearSelectedItem('class');
+      dropdownProvider.clearSelectedItem('division');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +52,7 @@ class ProgressReport extends StatelessWidget {
           key: _formKey,
           child: Column(
             children: [
+              SizedBox(height: Responsive.height * 2),
               CustomAppbar(
                 title: "Marks",
                 onTap: () {

@@ -89,7 +89,11 @@ class AdminHomeScreen extends StatelessWidget {
                         extra: UserType.admin);
                   },
                 ),
+                SizedBox(
+                  width: 5,
+                ),
                 CustomNameContainer(
+                  horizontalWidth: 5,
                   text: "Teachers",
                   onPressed: () {
                     context.pushNamed(AppRouteConst.AdminteacherRouteName);

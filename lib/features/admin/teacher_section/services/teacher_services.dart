@@ -92,7 +92,7 @@ class TeacherServices {
 
     // Call the ApiServices.put method with the form data.
     final Response response = await ApiServices.post(
-      "/teachers/$teacherId",
+      "/teachers/?email_address = $email",
       formData,
       isFormData: true,
     );

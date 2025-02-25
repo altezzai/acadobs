@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/controller/student_id_controller.dart';
 import 'package:school_app/base/routes/app_route_config.dart';
@@ -46,7 +47,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
     dropdownProvider = context.read<DropdownProvider>();
     studentIdController = context.read<StudentIdController>();
     filePickerProvider = context.read<FilePickerProvider>();
-
+    _dateController.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
     // Clear dropdown selections when page loads
     WidgetsBinding.instance.addPostFrameCallback((_) {
       dropdownProvider.clearSelectedItem('class');

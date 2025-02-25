@@ -19,7 +19,7 @@ class AttendanceController extends ChangeNotifier {
   bool _isloadingTwo = false;
   bool get isloadingTwo => _isloadingTwo;
   final Map<int, AttendanceStatus> _attendanceStatus = {};
-   Map<int, String> _remarks = {}; // Stores selected remarks
+  Map<int, String> _remarks = {}; // Stores selected remarks
 
   bool isAllPresent = false;
 
@@ -43,22 +43,24 @@ class AttendanceController extends ChangeNotifier {
 // Function to return attendance data with remarks (if provided)
   List<Map<String, dynamic>> get attendanceStatusList {
     return _attendanceStatus.entries.map((entry) {
-      final remark = _remarks[entry.key]; // Fetch remark for the student (if any)
+      final remark =
+          _remarks[entry.key]; // Fetch remark for the student (if any)
       return {
         'student_id': entry.key,
         'attendance_status': _statusToString(entry.value),
-        if (remark != null && remark.isNotEmpty) 'remarks': remark, // Include only if set
+        if (remark != null && remark.isNotEmpty)
+          'remarks': remark, // Include only if set
       };
     }).toList();
   }
-  
+
   // Function to update the remark for a student (called from the dropdown)
   void updateRemark(int studentId, String remark) {
     _remarks[studentId] = remark;
     notifyListeners();
   }
 
-   // Function to get the selected remark for a student
+  // Function to get the selected remark for a student
   String getSelectedRemark(int studentId) {
     return _remarks[studentId] ?? "Select Remark"; // Default value
   }
@@ -117,6 +119,7 @@ class AttendanceController extends ChangeNotifier {
         _alreadyTakenPeriodList = (response.data['completed_periods'] as List)
             .map((e) => e as int)
             .toList();
+        log("Attendance response::::::::::::::::: ${response.data}");
         log(_alreadyTakenPeriodList.toString());
         if (_attendanceList.isNotEmpty) {
           final _teacherId = attendanceList[0].recordedBy;
@@ -148,29 +151,6 @@ class AttendanceController extends ChangeNotifier {
     return _alreadyStatus;
   }
 
-// // **********check attendance already taken**************
-//   Future<void> checkAttendance(BuildContext context,
-//       {required String className,
-//       required String section,
-//       required String date,
-//       required String period,
-//       required AttendanceData attendanceData}) async {
-//     final response = await AttendanceServices().checkAttendance(
-//         className: className, section: section, date: date, period: period);
-//     if (response.statusCode == 200) {
-//       final data = response.data;
-//       if (data[0].length > 2) {
-//         log(">>>>>>>>>>>>>>${response.data}");
-//         CustomSnackbar.show(context,
-//             message: "Attendance Already Taken", type: SnackbarType.warning);
-//       } else {
-//         context.pushNamed(AppRouteConst.attendanceRouteName,
-//             extra: attendanceData);
-//         log("no status>>>>>>>>>>>>>>${response.data}");
-//       }
-//     }
-//   }
-
   //*************** */ submit attendance**************
   final AttendanceServices _attendanceService = AttendanceServices();
   Future<void> submitAttendance(BuildContext context,
@@ -199,6 +179,7 @@ class AttendanceController extends ChangeNotifier {
           await _attendanceService.submitAttendance(attendanceData);
       if (response.statusCode == 201) {
         log("Attendance submitted successfully");
+        log("Attendance response2::::::::::::::::: ${response.data}");
         context.pushReplacementNamed(AppRouteConst.bottomNavRouteName,
             extra: UserType.teacher);
       } else {
