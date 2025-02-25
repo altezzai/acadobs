@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/widgets.dart';
 import 'package:school_app/base/services/secure_storage_services.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
+import 'package:school_app/base/utils/loading_dialog.dart';
 import 'package:school_app/features/admin/duties/model/duty_model.dart';
 import 'package:school_app/features/admin/duties/model/teacherDuty_model.dart';
 // import 'package:school_app/features/admin/duties/model/teacherDuty_model.dart';
@@ -250,6 +251,7 @@ class DutyController extends ChangeNotifier {
   // delete
   Future<void> deleteDuties(BuildContext context, {required int dutyId}) async {
     _isloading = true;
+    LoadingDialog.show(context, message: "Deleting duty...");
     try {
       final response = await DutyServices().deleteDuties(dutyId: dutyId);
       print("***********${response.statusCode}");
@@ -266,6 +268,7 @@ class DutyController extends ChangeNotifier {
     } finally {
       _isloading = false;
       notifyListeners();
+      LoadingDialog.hide(context);
     }
   }
 

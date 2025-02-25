@@ -1,10 +1,12 @@
 import 'dart:developer';
 import 'dart:io';
+
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
+import 'package:school_app/base/utils/loading_dialog.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/admin/notices/models/event_model.dart';
 import 'package:school_app/features/admin/notices/models/notice_model.dart';
@@ -239,6 +241,8 @@ class NoticeController extends ChangeNotifier {
   Future<void> deleteNotices(BuildContext context,
       {required int noticeId}) async {
     _isloading = true;
+    notifyListeners();
+    LoadingDialog.show(context, message: "Deleting notice...");
     try {
       final response = await NoticeServices().deleteNotices(noticeId: noticeId);
       print("***********${response.statusCode}");
@@ -254,6 +258,7 @@ class NoticeController extends ChangeNotifier {
     } finally {
       _isloading = false;
       notifyListeners();
+      LoadingDialog.hide(context);
     }
   }
 
@@ -261,7 +266,8 @@ class NoticeController extends ChangeNotifier {
   Future<void> deleteEvents(BuildContext context,
       {required int eventId}) async {
     _isloading = true;
-    // notifyListeners();
+    notifyListeners();
+    LoadingDialog.show(context, message: "Deleting event...");
     try {
       final response = await NoticeServices().deleteEvents(eventId: eventId);
       print("***********${response.statusCode}");
@@ -277,6 +283,7 @@ class NoticeController extends ChangeNotifier {
     } finally {
       _isloading = false;
       notifyListeners();
+      LoadingDialog.hide(context);
     }
   }
 }

@@ -514,14 +514,22 @@ class Approuter {
         name: AppRouteConst.EventsPageRouteName,
         path: '/eventspage',
         pageBuilder: (context, state) {
-          return MaterialPage(child: EventsPage());
+          final bool forNavbar = state.extra as bool;
+          return MaterialPage(
+              child: EventsPage(
+            forNavbar: forNavbar,
+          ));
         },
       ),
       GoRoute(
         name: AppRouteConst.ParentNoticePageRouteName,
         path: '/parentnoticepage',
         pageBuilder: (context, state) {
-          return MaterialPage(child: NoticePage());
+          final bool forNavbar = state.extra as bool;
+          return MaterialPage(
+              child: NoticePage(
+            forNavbar: forNavbar,
+          ));
         },
       ),
       GoRoute(
@@ -591,12 +599,13 @@ class Approuter {
         },
       ),
       // Edit teacher
-       GoRoute(
+      GoRoute(
         name: AppRouteConst.editTeacherRouteName,
         path: '/editTeacher',
         pageBuilder: (context, state) {
           final teacher = state.extra as Teacher;
-          return MaterialPage(child: EditTeacherScreen(
+          return MaterialPage(
+              child: EditTeacherScreen(
             teacher: teacher,
           ));
         },
@@ -754,65 +763,68 @@ class Approuter {
         },
       ),
       // Edit notice screen
-       GoRoute(
+      GoRoute(
         name: AppRouteConst.editNoticeRouteName,
         path: '/editNotice',
         pageBuilder: (context, state) {
           final notice = state.extra as Notice;
-          return MaterialPage(child: EditNoticeScreen(
-           notice: notice,
+          return MaterialPage(
+              child: EditNoticeScreen(
+            notice: notice,
           ));
         },
       ),
       //  Edit event
-       GoRoute(
+      GoRoute(
         name: AppRouteConst.editEventRouteName,
         path: '/editEvent',
         pageBuilder: (context, state) {
           final event = state.extra as Event;
-          return MaterialPage(child: EditEventScreen(
-           event: event,
+          return MaterialPage(
+              child: EditEventScreen(
+            event: event,
           ));
         },
       ),
       //  Edit event
-       GoRoute(
+      GoRoute(
         name: AppRouteConst.editPaymentRouteName,
         path: '/editPayment',
         pageBuilder: (context, state) {
           final payment = state.extra as Payment;
-          return MaterialPage(child: EditPaymentScreen(
-           payment: payment,
+          return MaterialPage(
+              child: EditPaymentScreen(
+            payment: payment,
           ));
         },
       ),
       //  Edit event
-       GoRoute(
+      GoRoute(
         name: AppRouteConst.editDonationRouteName,
         path: '/editDonation',
         pageBuilder: (context, state) {
           final donation = state.extra as Donation;
-          return MaterialPage(child: EditDonationScreen(
-           donation: donation,
+          return MaterialPage(
+              child: EditDonationScreen(
+            donation: donation,
           ));
         },
       ),
-       //  Edit duty
-       GoRoute(
+      //  Edit duty
+      GoRoute(
         name: AppRouteConst.editDutyRouteName,
         path: '/editDuty',
         pageBuilder: (context, state) {
           final duty = state.extra as Duty;
-          return MaterialPage(child: EditDutyScreen(
-           duty: duty,
+          return MaterialPage(
+              child: EditDutyScreen(
+            duty: duty,
           ));
         },
       ),
     ],
   );
-  
 }
-
 
 class ClassAndDivision {
   String className;

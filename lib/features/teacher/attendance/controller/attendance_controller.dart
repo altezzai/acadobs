@@ -16,36 +16,12 @@ enum AttendanceStatus { present, late, absent, none }
 class AttendanceController extends ChangeNotifier {
   bool _isloading = false;
   bool get isloading => _isloading;
-    bool _isloadingTwo = false;
+  bool _isloadingTwo = false;
   bool get isloadingTwo => _isloadingTwo;
   final Map<int, AttendanceStatus> _attendanceStatus = {};
+   Map<int, String> _remarks = {}; // Stores selected remarks
 
   bool isAllPresent = false;
-
-  // Existing code for storing student statuses...
-
-  // void markAllPresent() {
-  //   isAllPresent = true;
-  //   notifyListeners();
-  // }
-
-  // void resetAllPresent() {
-  //   isAllPresent = false;
-  //   notifyListeners();
-  // }
-
-  // AttendanceStatus getStatus(int studentId) {
-  //   if (isAllPresent && !_attendanceStatus.containsKey(studentId)) {
-  //     return AttendanceStatus.present;
-  //   }
-  //   return _attendanceStatus[studentId] ?? AttendanceStatus.absent;
-  // }
-
-  // void updateStatus(int studentId, AttendanceStatus status) {
-  //   isAllPresent = false;  // Turn off all-present mode once any status is updated
-  //   _attendanceStatus[studentId] = status;
-  //   notifyListeners();
-  // }
 
 // Function for get status
   AttendanceStatus getStatus(int studentId) {
@@ -64,14 +40,27 @@ class AttendanceController extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Function to return a list of attendance data
+// Function to return attendance data with remarks (if provided)
   List<Map<String, dynamic>> get attendanceStatusList {
     return _attendanceStatus.entries.map((entry) {
+      final remark = _remarks[entry.key]; // Fetch remark for the student (if any)
       return {
         'student_id': entry.key,
         'attendance_status': _statusToString(entry.value),
+        if (remark != null && remark.isNotEmpty) 'remarks': remark, // Include only if set
       };
     }).toList();
+  }
+  
+  // Function to update the remark for a student (called from the dropdown)
+  void updateRemark(int studentId, String remark) {
+    _remarks[studentId] = remark;
+    notifyListeners();
+  }
+
+   // Function to get the selected remark for a student
+  String getSelectedRemark(int studentId) {
+    return _remarks[studentId] ?? "Select Remark"; // Default value
   }
 
   // Helper function to convert AttendanceStatus enum to string
@@ -129,23 +118,22 @@ class AttendanceController extends ChangeNotifier {
             .map((e) => e as int)
             .toList();
         log(_alreadyTakenPeriodList.toString());
-       if (_attendanceList.isNotEmpty) {
-  final _teacherId = attendanceList[0].recordedBy;
-  if (_teacherId != null) {
-    CustomSnackbar.show(context,
-        message: "Attendance Already Taken", type: SnackbarType.info);
-    context.pushNamed(AppRouteConst.attendanceRouteName,
-        extra: attendanceData);
-  } else {
-    context.pushNamed(AppRouteConst.attendanceRouteName,
-        extra: attendanceData);
-  }
-} else {
-  CustomSnackbar.show(context,
-      message: "No students found for this class and division.",
-      type: SnackbarType.warning);
-}
-
+        if (_attendanceList.isNotEmpty) {
+          final _teacherId = attendanceList[0].recordedBy;
+          if (_teacherId != null) {
+            CustomSnackbar.show(context,
+                message: "Attendance Already Taken", type: SnackbarType.info);
+            context.pushNamed(AppRouteConst.attendanceRouteName,
+                extra: attendanceData);
+          } else {
+            context.pushNamed(AppRouteConst.attendanceRouteName,
+                extra: attendanceData);
+          }
+        } else {
+          CustomSnackbar.show(context,
+              message: "No students found for this class and division.",
+              type: SnackbarType.warning);
+        }
       }
     } catch (e) {
       log(e.toString());

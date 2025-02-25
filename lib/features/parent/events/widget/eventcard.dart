@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:school_app/base/theme/text_theme.dart';
+import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 
 class EventCard extends StatelessWidget {
@@ -28,76 +29,6 @@ class EventCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      // () {
-      //   context.pushNamed(
-      //     AppRouteConst.EventDetailedPageRouteName,
-      //     extra: {
-      //       'title': eventTitle,
-      //       'description': eventDescription,
-      //       'date': date,
-      //       'imageProvider': imageProvider,
-      //     },
-      //   );
-      // },
-      // child: Card(
-      //   shape:
-      //       RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
-      //   child: ListTile(
-      //     leading: ClipRRect(
-      //       borderRadius: BorderRadius.circular(12.0),
-      //       child: Image(
-      //         image: imageProvider,
-      //         height: 100,
-      //         width: 100,
-      //         fit: BoxFit.cover,
-      //       ),
-      //     ),
-      //     title: Text(
-      //       eventTitle,
-      //       maxLines: 1, // Set max lines to 1 to keep it in a single line
-      //       overflow: TextOverflow
-      //           .ellipsis, // Show ellipsis (...) if the text overflows
-      //       style: TextStyle(
-      //         fontSize: MediaQuery.of(context).size.width *
-      //             0.045, // Responsive font size
-      //         fontWeight: FontWeight.bold,
-      //       ),
-      //     ),
-      //     subtitle: Column(
-      //       children: [
-      //         Text(
-      //           eventDescription,
-      //           maxLines: 2, // Limit description to avoid overflow
-      //           overflow:
-      //               TextOverflow.ellipsis, // Handle overflow with ellipsis
-      //           style: const TextStyle(
-      //             fontSize: 14,
-      //             color: Colors.grey,
-      //           ),
-      //         ),
-      //         Align(
-      //           alignment: Alignment.centerLeft,
-      //           child: Container(
-      //               padding: const EdgeInsets.symmetric(
-      //                   horizontal: 8, vertical: 4),
-      //               decoration: BoxDecoration(
-      //                   borderRadius: BorderRadius.circular(8),
-      //                   color: Colors.orange.withOpacity(0.1)),
-      //               child: Text(date,
-      //                   style: const TextStyle(color: Colors.orange))),
-      //         ),
-      //       ],
-      //     ),
-      //     trailing: Container(
-      //         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      //         decoration: BoxDecoration(
-      //             borderRadius: BorderRadius.circular(8),
-      //             color: Colors.orange.withOpacity(0.1)),
-      //         child:
-      //             Text(time, style: const TextStyle(color: Colors.orange))),
-      //     // trailing: Text(time),
-      //   ),
-      // )
       child: Container(
         padding: EdgeInsets.all(Responsive.height * 1),
         decoration: BoxDecoration(
@@ -137,26 +68,19 @@ class EventCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(eventTitle,
-                      style: textThemeData.bodyMedium!.copyWith(
-                        fontWeight: FontWeight.bold,
-                      )
-                      // const TextStyle(
-                      //   fontWeight: FontWeight.bold,
-                      //   fontSize: 16,
-                      // ),
-                      ),
+                  Text(
+                    capitalizeEachWord(eventTitle),
+                    style: textThemeData.bodyMedium!.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   SizedBox(height: Responsive.height * .5),
                   Text(
-                    eventDescription,
+                    capitalizeFirstLetter(eventDescription),
                     maxLines: 3, // Limit description to avoid overflow
                     overflow:
                         TextOverflow.ellipsis, // Handle overflow with ellipsis
                     style: textThemeData.bodySmall,
-                    // const TextStyle(
-                    //   fontSize: 14,
-                    //   color: Colors.grey,
-                    // ),
                   ),
                   SizedBox(height: Responsive.height * 1),
                   Row(

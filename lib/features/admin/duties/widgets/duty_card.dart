@@ -6,17 +6,17 @@ import 'package:school_app/base/utils/responsive.dart';
 class DutyCard extends StatelessWidget {
   final String title;
   final String description;
-  final String fileUpload;
+  //  String? fileUpload;
   final String date;
   final String time;
   final double bottomRadius;
   final double topRadius;
   final void Function() onTap;
 
-  const DutyCard({
+   DutyCard({
     required this.title,
     required this.description,
-    required this.fileUpload,
+    // this.fileUpload,
     required this.date,
     required this.time,
     required this.onTap,
