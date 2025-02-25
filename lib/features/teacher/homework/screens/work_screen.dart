@@ -29,7 +29,7 @@ class _WorkScreenState extends State<WorkScreen> {
   /// Group homework items by date.
   Map<String, List<T>> groupItemsByDate<T>(
     List<T> items,
-    DateTime Function(T) getDate, // Function to extract the date from the item
+    DateTime Function(T) getDate,
   ) {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
@@ -54,7 +54,6 @@ class _WorkScreenState extends State<WorkScreen> {
       groupedItems[formattedDate]!.add(item);
     }
 
-    // Sort grouped dates with "Today" and "Yesterday" on top.
     List<MapEntry<String, List<T>>> sortedEntries = [];
     if (groupedItems.containsKey('Today')) {
       sortedEntries.add(MapEntry('Today', groupedItems['Today']!));
@@ -107,7 +106,6 @@ class _WorkScreenState extends State<WorkScreen> {
                     );
                   }
 
-                  // Group homework by date
                   final groupedHomework = groupItemsByDate(
                     value.teacherHomework,
                     (homework) =>
@@ -118,7 +116,6 @@ class _WorkScreenState extends State<WorkScreen> {
                   return value.teacherHomework.isEmpty
                       ? Center(
                           child: Column(
-                            // mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SizedBox(
                                 height: Responsive.height * 37,
@@ -130,6 +127,7 @@ class _WorkScreenState extends State<WorkScreen> {
                       : Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: groupedHomework.entries.map((entry) {
+                            final itemCount = entry.value.length;
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -148,20 +146,30 @@ class _WorkScreenState extends State<WorkScreen> {
                                   shrinkWrap: true,
                                   physics: NeverScrollableScrollPhysics(),
                                   padding: EdgeInsets.zero,
-                                  itemCount: entry.value.length,
+                                  itemCount: itemCount,
                                   itemBuilder: (context, index) {
                                     final homework = entry.value[index];
-                                    return WorkContainer(
-                                      icon: Icons.home_work_outlined,
-                                      work: homework.assignmentTitle ??
-                                          "Untitled",
-                                      sub: homework.subject ?? "No Subject",
-                                      onTap: () {
-                                        context.pushNamed(
-                                          AppRouteConst.workviewRouteName,
-                                          extra: homework,
-                                        );
-                                      },
+                                    final isFirst = index == 0;
+                                    final isLast = index == itemCount - 1;
+                                    final topRadius = isFirst ? 16.0 : 0.0;
+                                    final bottomRadius = isLast ? 16.0 : 0.0;
+
+                                    return Padding(
+                                      padding: const EdgeInsets.only(bottom: 1),
+                                      child: WorkContainer(
+                                        topRadius: topRadius,
+                                        bottomRadius: bottomRadius,
+                                        icon: Icons.home_work_outlined,
+                                        work: homework.assignmentTitle ??
+                                            "Untitled",
+                                        sub: homework.subject ?? "",
+                                        onTap: () {
+                                          context.pushNamed(
+                                            AppRouteConst.workviewRouteName,
+                                            extra: homework,
+                                          );
+                                        },
+                                      ),
                                     );
                                   },
                                 ),
