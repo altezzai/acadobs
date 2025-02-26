@@ -1,5 +1,11 @@
+import 'dart:io';
+
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
@@ -8,9 +14,11 @@ import 'package:school_app/base/utils/custom_popup_menu.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_confirmation_dialog.dart';
+import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/shared_widgets/common_appbar.dart';
 import 'package:school_app/features/admin/payments/controller/payment_controller.dart';
 import 'package:school_app/features/admin/payments/model/payment_model.dart';
+import 'package:http/http.dart' as http;
 
 class PaymentView extends StatefulWidget {
   final Payment payment;
@@ -50,6 +58,57 @@ class _PaymentViewState extends State<PaymentView> {
     }
   }
 
+  Future<void> _downloadFile(BuildContext context, String fileName) async {
+    try {
+      // Request storage permission
+      if (await Permission.storage.request().isGranted) {
+        // Construct the full file URL
+        final String baseUrl =
+            'https://schoolmanagement.altezzai.com/admin/monthly_payments/';
+        final String fileUrl = '$baseUrl$fileName';
+
+        // Send an HTTP GET request to download the file
+        final http.Response response = await http.get(Uri.parse(fileUrl));
+
+        if (response.statusCode == 200) {
+          // Get the local downloads directory
+          Directory? downloadsDirectory = await getExternalStorageDirectory();
+          String filePath = '${downloadsDirectory!.path}$fileName';
+          File file = File(filePath);
+
+          // Write the downloaded file to the local storage
+          await file.writeAsBytes(response.bodyBytes);
+
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+              "Successfully downloaded",
+              style: TextStyle(color: Colors.green),
+            ),
+            backgroundColor: Colors.white,
+            shape:
+                BeveledRectangleBorder(borderRadius: BorderRadius.circular(5)),
+          )
+              // SnackBar(content: Text('File downloaded to: $filePath')),
+              );
+          OpenFile.open(filePath);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text('Failed to download file from server')),
+          );
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Storage permission denied')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error downloading file: $e')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,24 +116,21 @@ class _PaymentViewState extends State<PaymentView> {
         title: "Payment",
         isBackButton: true,
         actions: [
-          Consumer<PaymentController>(
-            builder: (context, value, child) {
-              return CustomPopupMenu(onEdit: () {
-                context.pushNamed(AppRouteConst.editPaymentRouteName,
-                    extra: widget.payment);
-              }, onDelete: () {
-                showConfirmationDialog(
-                    context: context,
-                    title: "Delete Payment?",
-                    content: "Are you sure you want to delete this payment?",
-                    onConfirm: () {
-                      value.deletePayment(
-                        context: context,
-                          paymentId: widget.payment.id??0);
-                    });
-              });
-            }
-          )
+          Consumer<PaymentController>(builder: (context, value, child) {
+            return CustomPopupMenu(onEdit: () {
+              context.pushNamed(AppRouteConst.editPaymentRouteName,
+                  extra: widget.payment);
+            }, onDelete: () {
+              showConfirmationDialog(
+                  context: context,
+                  title: "Delete Payment?",
+                  content: "Are you sure you want to delete this payment?",
+                  onConfirm: () {
+                    value.deletePayment(
+                        context: context, paymentId: widget.payment.id ?? 0);
+                  });
+            });
+          })
         ],
       ),
       body: Padding(
@@ -95,7 +151,8 @@ class _PaymentViewState extends State<PaymentView> {
             SizedBox(height: Responsive.height * 2),
             CircleAvatar(
               backgroundImage: widget.payment.studentPhoto != null
-                  ? NetworkImage(widget.payment.studentPhoto)
+                  ? NetworkImage(
+                      "${baseUrl}${Urls.studentPhotos}${widget.payment.studentPhoto}")
                   : AssetImage('assets/child1.png') as ImageProvider,
               radius: 25,
             ),
@@ -119,7 +176,8 @@ class _PaymentViewState extends State<PaymentView> {
                   style: TextStyle(
                     color: Colors.grey.shade500,
                   ),
-                )
+                ),
+                //
               ],
             ),
             SizedBox(height: Responsive.height * 2),
@@ -190,6 +248,35 @@ class _PaymentViewState extends State<PaymentView> {
                   .textTheme
                   .bodySmall!
                   .copyWith(fontWeight: FontWeight.normal),
+            ),
+            SizedBox(height: Responsive.height * 3),
+            ElevatedButton(
+              onPressed: () {
+                _downloadFile(context, widget.payment.fileUpload);
+
+                // Code to download receit goes here
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 50,
+                  vertical: 20,
+                ),
+              ),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.receipt_long_rounded,
+                    color: Colors.white,
+                  ),
+                  SizedBox(width: 10),
+                  Text(
+                    'Download Receipt',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
