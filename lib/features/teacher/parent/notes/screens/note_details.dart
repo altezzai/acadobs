@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/custom_popup_menu.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/base/utils/show_confirmation_dialog.dart';
 import 'package:school_app/base/utils/show_loading.dart';
+import 'package:school_app/core/shared_widgets/common_appbar.dart';
 import 'package:school_app/features/teacher/parent/controller/notes_controller.dart';
 
 class NoteChatDetailPage extends StatefulWidget {
@@ -31,20 +34,25 @@ class _NoteChatDetailPageState extends State<NoteChatDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.chevron_left, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: Text(
-          "Chat Details",
-          style: TextStyle(color: Colors.black),
-        ),
-        centerTitle: true,
+      appBar: CommonAppBar(
+        title: 'Chat Details',
+        isBackButton: true,
+        actions: [
+          Consumer<NotesController>(builder: (context, value, child) {
+            return CustomPopupMenu(onEdit: () {
+              context.pushNamed(AppRouteConst.editNoteRouteName,
+                  extra: value.parentNote);
+            }, onDelete: () {
+              showConfirmationDialog(
+                  context: context,
+                  title: "Delete Note?",
+                  content: "Are you sure you want to delete this note?",
+                  onConfirm: () {
+                    notesController.deleteNotes(context, noteId: widget.noteId);
+                  });
+            });
+          })
+        ],
       ),
       body: Consumer<NotesController>(
         builder: (context, value, child) {
@@ -97,8 +105,22 @@ class _NoteChatDetailPageState extends State<NoteChatDetailPage> {
                             Text(
                               parentNote?.data?.noteTitle ??
                                   "No Title Available",
-                              style:
-                                  TextStyle(fontSize: 14, color: Colors.black),
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            SizedBox(
+                              height: Responsive.height * 1,
+                            ),
+                            Text(
+                              parentNote?.data?.noteContent ?? "",
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w300,
+                              ),
                             ),
                           ],
                         ),
