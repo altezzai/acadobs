@@ -147,15 +147,16 @@ class _TeacherScreenState extends State<TeacherScreen> {
                   ),
                   CustomNameContainer(
                     // horizontalWidth: 14.2,
-                    text: "Parents",
+                    text: "Notes",
                     onPressed: () {
-                      context.pushNamed(AppRouteConst.parentRouteName);
+                      context.pushNamed(AppRouteConst.NotesRouteName);
+                      // context.pushNamed(AppRouteConst.parentRouteName);
                     },
                   ),
                 ],
               ),
               SizedBox(
-                height: Responsive.height * 1,
+                height: Responsive.height * 1.6,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
