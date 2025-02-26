@@ -70,10 +70,8 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
     return Consumer<SubjectController>(
       builder: (context, value, child) {
         if (value.isloading) {
-          return Center(
-            child: Loading(
-              color: Colors.grey,
-            ),
+          return Loading(
+            color: Colors.grey,
           );
         }
         List<Color> subjectColors = [
@@ -102,21 +100,19 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
                 bottom: 1.5,
               ),
               child: SubjectTile(
-                bottomRadius: bottomRadius.toDouble(),
-                topRadius: topRadius.toDouble(),
-                subjectName: subject.subject ?? "",
-                description: subject.description ?? "",
-                iconPath: ('assets/icons/subject_tile_icon.png'),
-                iconColor: color,
-                onEdit: () {
-                  context.pushNamed(AppRouteConst.EditSubjectPageRouteName,
-                      extra: subject);
-                      
-                },
-                onDelete:(){
-                  SubjectController().deleteSubjects(context,subjectid: subject.id);
-                }
-              ),
+                  bottomRadius: bottomRadius.toDouble(),
+                  topRadius: topRadius.toDouble(),
+                  subjectName: subject.subject ?? "",
+                  description: subject.description ?? "",
+                  iconPath: ('assets/icons/subject_tile_icon.png'),
+                  iconColor: color,
+                  onEdit: () {
+                    context.pushNamed(AppRouteConst.EditSubjectPageRouteName,
+                        extra: subject);
+                  },
+                  onDelete: () {
+                    value.deleteSubjects(context, subjectid: subject.id);
+                  }),
             );
           },
         );

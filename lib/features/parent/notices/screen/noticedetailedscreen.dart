@@ -1,14 +1,17 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/custom_popup_menu.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/base/utils/show_confirmation_dialog.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/common_appbar.dart';
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
@@ -117,13 +120,6 @@ class NoticeDetailPage extends StatelessWidget {
     }
     return null;
   }
-  // Future<void> _deleteNotice(BuildContext context) async {
-  //   // Implement delete logic
-  //   ScaffoldMessenger.of(context).showSnackBar(
-  //     SnackBar(content: Text('Notice deleted successfully!')),
-  //   );
-  //   Navigator.pop(context); // Go back after deletion
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -135,12 +131,19 @@ class NoticeDetailPage extends StatelessWidget {
           if (userType == UserType.admin) // Show for admin only
             Consumer<NoticeController>(
               builder: (context, noticeController, child) {
-                return CustomPopupMenu(
-                    onEdit: () {},
-                    onDelete: () {
-                      noticeController.deleteNotices(context,
-                          noticeId: notice.id!); // Pass the duty ID
-                    });
+                return CustomPopupMenu(onEdit: () {
+                  context.pushNamed(AppRouteConst.editNoticeRouteName,
+                      extra: notice);
+                }, onDelete: () {
+                  showConfirmationDialog(
+                      context: context,
+                      title: "Delete Notice?",
+                      content: "Are you sure you want to delete this notice?",
+                      onConfirm: () {
+                        noticeController.deleteNotices(context,
+                            noticeId: notice.id!);
+                      });
+                });
               },
             ),
         ],
@@ -195,8 +198,8 @@ class NoticeDetailPage extends StatelessWidget {
                         const SizedBox(width: 10),
                         Text(
                           (notice.fileUpload?.length ?? 0) > 10
-                              ? '${notice.fileUpload!.substring(notice.fileUpload!.length - 10)}' // Last 10 characters
-                              : notice.fileUpload ?? "",
+                              ? '${notice.fileUpload!.substring(notice.fileUpload!.length - 25)}' // Last 10 characters
+                              : notice.fileUpload ?? "No Documents Found!",
                           style: const TextStyle(
                             color: Colors.black,
                             fontSize: 10,
@@ -204,14 +207,16 @@ class NoticeDetailPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    GestureDetector(
-                      onTap: () =>
-                          _downloadFile(context, notice.fileUpload ?? ""),
-                      child: const Icon(
-                        Icons.download,
-                        color: Colors.black,
-                      ),
-                    ),
+                    notice.fileUpload != null
+                        ? GestureDetector(
+                            onTap: () =>
+                                _downloadFile(context, notice.fileUpload ?? ""),
+                            child: const Icon(
+                              Icons.download,
+                              color: Colors.black,
+                            ),
+                          )
+                        : SizedBox.shrink()
                   ],
                 ),
               ),

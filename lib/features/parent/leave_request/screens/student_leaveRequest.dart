@@ -94,8 +94,7 @@ class _StudentLeaveRequestScreenState extends State<StudentLeaveRequestScreen> {
                       ? Center(
                           child: Text(
                             "No Leave requests found",
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w500),
+                            style: TextStyle(fontWeight: FontWeight.w500),
                           ),
                         )
                       : ListView.separated(

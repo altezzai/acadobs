@@ -2,12 +2,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/controller/student_id_controller.dart';
-
 import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
-
 import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
@@ -22,7 +21,6 @@ import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/custom_filepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/admin/payments/controller/payment_controller.dart';
-
 
 class AddPaymentPage extends StatefulWidget {
   const AddPaymentPage({super.key});
@@ -49,7 +47,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
     dropdownProvider = context.read<DropdownProvider>();
     studentIdController = context.read<StudentIdController>();
     filePickerProvider = context.read<FilePickerProvider>();
-
+    _dateController.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
     // Clear dropdown selections when page loads
     WidgetsBinding.instance.addPostFrameCallback((_) {
       dropdownProvider.clearSelectedItem('class');
@@ -58,6 +56,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
       dropdownProvider.clearSelectedItem('selectedMonth');
       dropdownProvider.clearSelectedItem('paymentStatus');
       dropdownProvider.clearSelectedItem('paymentMethod');
+      filePickerProvider.clearFile('receipt');
       //filePickerProvider.clearFile();
       studentIdController.clearSelection();
     });
@@ -80,10 +79,6 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                   isProfileIcon: false,
                   onTap: () {
                     Navigator.pop(context);
-                    // context.pushNamed(
-                    //   AppRouteConst.bottomNavRouteName,
-                    //   extra: UserType.admin,
-                    // );
                   },
                 ),
                 Row(
@@ -130,70 +125,49 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                 SizedBox(
                   height: Responsive.height * 2,
                 ),
-                 Text("Selected students:"),
-              SizedBox(height: 10),
-              // Select Student
-              InkWell(
-                onTap: () {
-                  final classGrade = context
-                      .read<DropdownProvider>()
-                      .getSelectedItem('class');
-                  final division = context
-                      .read<DropdownProvider>()
-                      .getSelectedItem('division');
-                  final classAndDivision = ClassAndDivision(
-                      className: classGrade, section: division);
-                  context.pushNamed(AppRouteConst.singlestudentselectionRouteName,
-                      extra: classAndDivision);
-                },
-                child: Consumer<StudentIdController>(
-                  builder: (context, value, child) {
-                    final studentId = context
-                            .read<StudentIdController>()
-                            .getSelectedStudentId();
-                 String? selectedStudentName = studentId != null
-    ? value.students
-        .firstWhere(
-          (student) => student['id'] == studentId,
-          orElse: () => {'id': null, 'full_name': null}, // Default student
-        )['full_name']
-    : null;
-
-return TextFormField(
-  decoration: InputDecoration(
-    hintText: selectedStudentName == null
-        ? "Select Students"
-        : capitalizeEachWord(selectedStudentName),
-    enabled: false,
-  ),
-);
-
-
+                Text("Selected Student:"),
+                SizedBox(height: 10),
+                // Select Student
+                InkWell(
+                  onTap: () {
+                    final classGrade = context
+                        .read<DropdownProvider>()
+                        .getSelectedItem('class');
+                    final division = context
+                        .read<DropdownProvider>()
+                        .getSelectedItem('division');
+                    final classAndDivision = ClassAndDivision(
+                        className: classGrade, section: division);
+                    context.pushNamed(
+                        AppRouteConst.singlestudentselectionRouteName,
+                        extra: classAndDivision);
                   },
+                  child: Consumer<StudentIdController>(
+                    builder: (context, value, child) {
+                      final studentId = context
+                          .read<StudentIdController>()
+                          .getSelectedStudentId();
+                      String? selectedStudentName = studentId != null
+                          ? value.students.firstWhere(
+                              (student) => student['id'] == studentId,
+                              orElse: () => {
+                                'id': null,
+                                'full_name': null
+                              }, // Default student
+                            )['full_name']
+                          : null;
+
+                      return TextFormField(
+                        decoration: InputDecoration(
+                          hintText: selectedStudentName == null
+                              ? "Select Student"
+                              : capitalizeEachWord(selectedStudentName),
+                          enabled: false,
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
-                // Text(
-                //   "Select Student",
-                // ),
-                // SizedBox(
-                //   height: Responsive.height * 1,
-                // ),
-                // Consumer<StudentIdController>(builder: (context, value, child) {
-                //   return ListView.builder(
-                //       itemCount: value.students.length,
-                //       shrinkWrap: true,
-                //       padding: EdgeInsets.zero,
-                //       itemBuilder: (context, index) {
-                //         return Padding(
-                //           padding: const EdgeInsets.only(bottom: 4),
-                //           child: StudentListTile(
-                //               rollNumber:
-                //                   (value.students[index]['id'].toString()),
-                //               name: value.students[index]['full_name'],
-                //               index: index),
-                //         );
-                //       });
-                // }),
                 SizedBox(height: Responsive.height * 1),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -244,7 +218,7 @@ return TextFormField(
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: Responsive.height * 1.6),
                     CustomDatePicker(
                       dateController: _dateController,
                       onDateSelected: (selectedDate) {
@@ -254,11 +228,12 @@ return TextFormField(
                       lastDate:
                           DateTime(2100), // Extend to a reasonable future date
                       initialDate: DateTime.now(),
+
                       validator: (value) => FormValidator.validateNotEmpty(
                           value,
                           fieldName: "Payment Date"),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: Responsive.height * 1.6),
                     CustomTextfield(
                       hintText: 'Amount',
                       controller: _amountController,
@@ -268,7 +243,7 @@ return TextFormField(
                           value,
                           fieldName: "Amount"),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: Responsive.height * 1.6),
                     CustomDropdown(
                       dropdownKey: 'paymentMethod',
                       label: 'Payment Method',
@@ -278,7 +253,7 @@ return TextFormField(
                           value,
                           fieldName: "Payment Method"),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: Responsive.height * 1.6),
                     CustomTextfield(
                       hintText: 'Transaction Id',
                       controller: _transactionController,
@@ -288,7 +263,7 @@ return TextFormField(
                           value,
                           fieldName: "Transaction ID"),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: Responsive.height * 1.6),
                     CustomDropdown(
                       dropdownKey: 'paymentStatus',
                       label: 'Payment Status',
@@ -300,14 +275,14 @@ return TextFormField(
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: Responsive.height * 1.6),
                 CustomFilePicker(
-                  label: "Add Receipt",
+                  label: "Add Receipt (Maximum file size: 5MB)",
                   fieldName: 'receipt',
                 ),
-                const SizedBox(height: 45),
+                SizedBox(height: Responsive.height * 1.6),
                 Center(child: Consumer<PaymentController>(
-                        builder: (context, value, child) {
+                    builder: (context, value, child) {
                   return CommonButton(
                       onPressed: () {
                         if (_formKey.currentState?.validate() ?? false) {
@@ -357,41 +332,7 @@ return TextFormField(
                       widget: value.isloadingTwo
                           ? ButtonLoading()
                           : Text('Submit'));
-                })
-                    // CustomButton(
-                    //   text: 'Submit',
-                    //   onPressed: () {
-                    //     final selectedYear = context
-                    //         .read<DropdownProvider>()
-                    //         .getSelectedItem('selectedYear');
-                    //     final selectedMonth = context
-                    //         .read<DropdownProvider>()
-                    //         .getSelectedItem('selectedMonth');
-                    //     final paymentMethod = context
-                    //         .read<DropdownProvider>()
-                    //         .getSelectedItem('paymentMethod');
-                    //     final paymentStatus = context
-                    //         .read<DropdownProvider>()
-                    //         .getSelectedItem('paymentStatus');
-                    //     final studentId = context
-                    //         .read<StudentIdController>()
-                    //         .getSelectedStudentId();
-
-                    //     log(">>>>>>>>>>>>${studentId}");
-                    //     context.read<PaymentController>().addPayment(
-                    //           context,
-                    //           userId: studentId ?? 0,
-                    //           amount_paid: _amountController.text,
-                    //           payment_date: _dateController.text,
-                    //           month: selectedMonth,
-                    //           year: selectedYear,
-                    //           payment_method: paymentMethod,
-                    //           transaction_id: _transactionController.text,
-                    //           payment_status: paymentStatus,
-                    //         );
-                    //   },
-                    // ),
-                    ),
+                })),
               ],
             ),
           ),

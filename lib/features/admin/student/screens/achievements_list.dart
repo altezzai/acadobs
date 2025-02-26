@@ -60,9 +60,7 @@ class AchievementsList extends StatelessWidget {
                         child: Center(
                           child: Text(
                             "No Achievements Found!",
-                            style: TextStyle(
-                              fontSize: 16,
-                            ),
+                            style: TextStyle(),
                           ),
                         ),
                       )

@@ -3,10 +3,9 @@ import 'dart:io';
 
 //import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
-import 'package:go_router/go_router.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/services/secure_storage_services.dart';
-import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+import 'package:school_app/base/utils/custom_snackbar.dart';
+import 'package:school_app/base/utils/loading_dialog.dart';
 import 'package:school_app/features/admin/payments/model/donation_model.dart';
 import 'package:school_app/features/admin/payments/model/payment_model.dart';
 import 'package:school_app/features/admin/payments/services/payment_services.dart';
@@ -261,8 +260,9 @@ class PaymentController extends ChangeNotifier {
       );
       if (response.statusCode == 201) {
         log(">>>>>>${response.statusMessage}");
-        context.pushNamed(AppRouteConst.bottomNavRouteName,
-            extra: UserType.admin);
+        CustomSnackbar.show(context,
+            message: "Payment Added Successfully", type: SnackbarType.success);
+        Navigator.pop(context);
       }
     } catch (e) {
       log(e.toString());
@@ -272,6 +272,53 @@ class PaymentController extends ChangeNotifier {
     }
   }
 
+  // edit payment
+  Future<void> editPayment(
+    BuildContext context, {
+    required int paymentId,
+    required int userId,
+    required String amount_paid,
+    required String payment_date,
+    required String month,
+    required String year,
+    required String payment_method,
+    required String transaction_id,
+    required String payment_status,
+    File? file,
+  }) async {
+    _isloadingTwo = true;
+    notifyListeners();
+    try {
+      final teacherId = await SecureStorageService.getUserId();
+      final response = await PaymentServices().editPayment(
+        context,
+        paymentId: paymentId,
+        userId: userId.toString(),
+        staffId: teacherId,
+        amount_paid: amount_paid,
+        payment_date: payment_date,
+        month: month,
+        year: year,
+        payment_method: payment_method,
+        transaction_id: transaction_id,
+        payment_status: payment_status,
+      );
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        log(">>>>>>${response.statusMessage}");
+        CustomSnackbar.show(context,
+            message: "Payment Edited Successfully", type: SnackbarType.success);
+        Navigator.pop(context);
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      log(e.toString());
+    } finally {
+      _isloadingTwo = false;
+      notifyListeners();
+    }
+  }
+
+  //add donation
   Future<void> addDonation(
     BuildContext context, {
     required int userId,
@@ -298,14 +345,106 @@ class PaymentController extends ChangeNotifier {
           transaction_id: transaction_id);
       if (response.statusCode == 201) {
         log(">>>>>>${response.statusMessage}");
-        context.pushNamed(AppRouteConst.bottomNavRouteName,
-            extra: UserType.admin);
+        CustomSnackbar.show(context,
+            message: "Donation Added Successfully", type: SnackbarType.success);
+        Navigator.pop(context);
       }
     } catch (e) {
       log(e.toString());
     } finally {
       _isloadingTwo = false;
       notifyListeners();
+    }
+  }
+
+  //edit donation
+  Future<void> editDonation(
+    BuildContext context, {
+    required int donationId,
+    required int userId,
+    required String amount_donated,
+    required String donation_date,
+    required String purpose,
+    required String donation_type,
+    required String payment_method,
+    required String transaction_id,
+    File? file,
+  }) async {
+    _isloadingTwo = true;
+    notifyListeners();
+    try {
+      final teacherId = await SecureStorageService.getUserId();
+      final response = await PaymentServices().editDonation(context,
+          donationId: donationId,
+          userId: userId,
+          staffId: teacherId,
+          amount_donated: amount_donated,
+          donation_date: donation_date,
+          purpose: purpose,
+          donation_type: donation_type,
+          payment_method: payment_method,
+          transaction_id: transaction_id);
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        log(">>>>>>${response.statusMessage}");
+        CustomSnackbar.show(context,
+            message: "Donation Edited Successfully",
+            type: SnackbarType.success);
+        Navigator.pop(context);
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      log(e.toString());
+    } finally {
+      _isloadingTwo = false;
+      notifyListeners();
+    }
+  }
+
+  // Delete payment
+  Future<void> deletePayment({ required BuildContext context,required int paymentId}) async {
+    _isloading = true;
+    notifyListeners();
+    LoadingDialog.show(context, message: "Deleting payment...");
+    try {
+      final response = await PaymentServices().deletePayment(paymentId: paymentId);
+      print("***********${response.statusCode}");
+      // print(response.toString());
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        log("Payment deleted successfully.");
+        Navigator.pop(context);
+        CustomSnackbar.show(context,
+            message: 'Deleted Payment successfully', type: SnackbarType.info);
+      }
+    } catch (e) {
+     log("Deleting error: ${e.toString()}");
+    } finally {
+      _isloading = false;
+      notifyListeners();
+      LoadingDialog.hide(context);
+    }
+  }
+
+   // Delete payment
+  Future<void> deleteDoantion({ required BuildContext context,required int donationId}) async {
+    _isloading = true;
+    notifyListeners();
+    LoadingDialog.show(context, message: "Deleting donation...");
+    try {
+      final response = await PaymentServices().deleteDonation(donationId: donationId);
+      print("***********${response.statusCode}");
+      // print(response.toString());
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        log("Donation deleted successfully.");
+        Navigator.pop(context);
+        CustomSnackbar.show(context,
+            message: 'Deleted Donation successfully', type: SnackbarType.info);
+      }
+    } catch (e) {
+     log("Deleting error: ${e.toString()}");
+    } finally {
+      _isloading = false;
+      notifyListeners();
+      LoadingDialog.hide(context);
     }
   }
 }

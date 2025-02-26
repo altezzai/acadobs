@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
+import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/constants.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/responsive.dart';
@@ -247,7 +248,7 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
               );
             },
             description: notice.description ?? "",
-            fileUpload: notice.fileUpload ?? "",
+            // fileUpload: notice.fileUpload ?? "",
           ),
         );
       });
@@ -287,7 +288,7 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen>
             },
             bottomRadius: bottomRadius.toDouble(),
             topRadius: topRadius.toDouble(),
-            eventTitle: event.title ?? "",
+            eventTitle: capitalizeEachWord(event.title ?? ""),
             eventDescription: event.description ?? "",
             date: DateFormatter.formatDateString(event.eventDate.toString()),
             time:

@@ -51,7 +51,9 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
       return [
         HomePage(),
         EventsPage(),
-        NoticePage(),
+        NoticePage(
+          // forNavbar: true,
+        ),
         PaymentSelection(),
         // ParentChatPage()
         Center(

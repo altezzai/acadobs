@@ -76,10 +76,7 @@ class PaymentServices {
     // File? file, // Add file parameter
   }) async {
     final fileUpload = context.read<FilePickerProvider>().getFile('receipt');
-    final fileUploadPath =
-        fileUpload?.path; // Create FormData to pass to the API
-    //final fileProvider =
-    //     Provider.of<FilePickerProvider>(context, listen: false);
+    final fileUploadPath = fileUpload?.path;
     final formData = FormData.fromMap({
       'student_id': userId,
       'recorded_by': staffId,
@@ -93,13 +90,48 @@ class PaymentServices {
       if (fileUploadPath != null)
         'file_upload': await MultipartFile.fromFile(fileUploadPath,
             filename: fileUploadPath.split('/').last),
-      // 'file_upload':
-      //     await MultipartFile.fromFile(fileProvider.selectedFile!.path!)
     });
-
-    // Call the ApiServices post method with FormData and isFormData: true
     final Response response =
         await ApiServices.post("/monthlyPayments", formData, isFormData: true);
+
+    return response;
+  }
+
+  // edit payment
+  Future<Response> editPayment(
+    BuildContext context, {
+    required int paymentId,
+    required String userId,
+    required int staffId,
+    required String amount_paid,
+    required String payment_date,
+    required String month,
+    required String year,
+    required String payment_method,
+    required String transaction_id,
+    required String payment_status,
+    // File? file, // Add file parameter
+  }) async {
+    final fileUpload = context.read<FilePickerProvider>().getFile('receipt');
+    final fileUploadPath = fileUpload?.path;
+    final formData = FormData.fromMap({
+      'student_id': userId,
+      'recorded_by': staffId,
+      'amount_paid': amount_paid,
+      'payment_date': payment_date,
+      'month': month,
+      'year': year,
+      'payment_method': payment_method,
+      'transaction_id': transaction_id,
+      'payment_status': payment_status,
+      '_method': 'put',
+      if (fileUploadPath != null)
+        'file_upload': await MultipartFile.fromFile(fileUploadPath,
+            filename: fileUploadPath.split('/').last),
+    });
+    final Response response = await ApiServices.post(
+        "/monthlyPayments/$paymentId", formData,
+        isFormData: true);
 
     return response;
   }
@@ -115,14 +147,10 @@ class PaymentServices {
     required String donation_type,
     required String payment_method,
     required String transaction_id,
-    // File? file, // Add the file parameter
   }) async {
     final receiptUpload =
         context.read<FilePickerProvider>().getFile('donation receipt');
     final receiptUploadPath = receiptUpload?.path;
-    //final fileProvider =
-    //     Provider.of<FilePickerProvider>(context, listen: false);
-    // Create FormData to pass to the API
     final formData = FormData.fromMap({
       'donor_id': userId,
       'recorded_by': staffId,
@@ -136,11 +164,59 @@ class PaymentServices {
         'receipt_upload': await MultipartFile.fromFile(receiptUploadPath,
             filename: receiptUploadPath.split('/').last),
     });
-
-    // Call the ApiServices post method with FormData and isFormData: true
     final Response response =
         await ApiServices.post("/donations", formData, isFormData: true);
 
     return response;
   }
+
+  // edit donation
+  Future<Response> editDonation(
+    BuildContext context, {
+    required int donationId,
+    required int userId,
+    required int staffId,
+    required String amount_donated,
+    required String donation_date,
+    required String purpose,
+    required String donation_type,
+    required String payment_method,
+    required String transaction_id,
+  }) async {
+    final receiptUpload =
+        context.read<FilePickerProvider>().getFile('donation receipt');
+    final receiptUploadPath = receiptUpload?.path;
+    final formData = FormData.fromMap({
+      'donor_id': userId,
+      'recorded_by': staffId,
+      'amount_donated': amount_donated,
+      'donation_date': donation_date,
+      'purpose': purpose,
+      'donation_type': donation_type,
+      'payment_method': payment_method,
+      'transaction_id': transaction_id,
+      '_method': 'put',
+      if (receiptUploadPath != null)
+        'receipt_upload': await MultipartFile.fromFile(receiptUploadPath,
+            filename: receiptUploadPath.split('/').last),
+    });
+    final Response response = await ApiServices.post(
+        "/donations/$donationId", formData,
+        isFormData: true);
+
+    return response;
+  }
+
+  // Delete payment
+  Future<Response> deletePayment({ required int paymentId}) async {
+    final Response response = await ApiServices.delete("/monthlyPayments/$paymentId");
+    return response;
+}
+
+ // Delete donation
+  Future<Response> deleteDonation({ required int donationId}) async {
+    final Response response = await ApiServices.delete("/donations/$donationId");
+    return response;
+}
+
 }

@@ -8,12 +8,14 @@ import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+import 'package:school_app/core/shared_widgets/custom_appbar.dart';
+import 'package:school_app/features/admin/duties/widgets/duty_card.dart';
 // import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
-import 'package:school_app/features/parent/notices/widget/noticecard.dart';
 
 class NoticePage extends StatefulWidget {
-  const NoticePage({super.key});
+  final bool forNavbar;
+  const NoticePage({super.key, this.forNavbar = false});
 
   @override
   State<NoticePage> createState() => _NoticePageState();
@@ -29,176 +31,211 @@ class _NoticePageState extends State<NoticePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        // leading: IconButton(
-        //   icon: const Icon(Icons.chevron_left, color: Colors.black),
-        //   onPressed: () {
-        //     context.pushNamed(AppRouteConst.bottomNavRouteName,
-        //         extra: UserType.parent);
-        //     // Navigator.pop(context);
-        //   },
-        // ),
-        title: Text(
-          'Notices',
-          style: TextStyle(
-              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.grey.shade200,
-        elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black),
-      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child:
+          child: Column(
+            children: [
+              CustomAppbar(
+                title: "Notices",
+                isBackButton: widget.forNavbar,
+                isProfileIcon: false,
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
               Consumer<NoticeController>(builder: (context, controller, child) {
-            final today = DateTime.now();
+                final today = DateTime.now();
 
-            // Categorize notices into Upcoming, Latest, and Previous
-            final upcomingNotices = controller.notices
-                .where((notice) =>
-                    DateTime.parse(notice.date.toString()).isAfter(today))
-                .toList();
+                // Categorize notices into Upcoming, Latest, and Previous
+                final upcomingNotices = controller.notices
+                    .where((notice) =>
+                        DateTime.parse(notice.date.toString()).isAfter(today))
+                    .toList();
 
-            final latestNotices = controller.notices
-                .where((notice) =>
-                    DateTime.parse(notice.date.toString())
-                        .isAfter(today.subtract(const Duration(days: 1))) &&
-                    DateTime.parse(notice.date.toString()).isBefore(today))
-                .toList();
+                final latestNotices = controller.notices
+                    .where((notice) =>
+                        DateTime.parse(notice.date.toString())
+                            .isAfter(today.subtract(const Duration(days: 1))) &&
+                        DateTime.parse(notice.date.toString()).isBefore(today))
+                    .toList();
 
-            final previousNotices = controller.notices
-                .where((notice) => DateTime.parse(notice.date.toString())
-                    .isBefore(today.subtract(const Duration(days: 1))))
-                .toList();
+                final previousNotices = controller.notices
+                    .where((notice) => DateTime.parse(notice.date.toString())
+                        .isBefore(today.subtract(const Duration(days: 1))))
+                    .toList();
 
-            // Sort notices
-            upcomingNotices.sort((a, b) => DateTime.parse(a.date.toString())
-                .compareTo(DateTime.parse(b.date.toString())));
-            latestNotices.sort((a, b) => DateTime.parse(b.date.toString())
-                .compareTo(DateTime.parse(a.date.toString())));
-            previousNotices.sort((a, b) => DateTime.parse(b.date.toString())
-                .compareTo(DateTime.parse(a.date.toString())));
+                // Sort notices
+                upcomingNotices.sort((a, b) => DateTime.parse(a.date.toString())
+                    .compareTo(DateTime.parse(b.date.toString())));
+                latestNotices.sort((a, b) => DateTime.parse(b.date.toString())
+                    .compareTo(DateTime.parse(a.date.toString())));
+                previousNotices.sort((a, b) => DateTime.parse(b.date.toString())
+                    .compareTo(DateTime.parse(a.date.toString())));
 
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Upcoming Notices Section
-                const Text(
-                  "Upcoming",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                upcomingNotices.isNotEmpty
-                    ? ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: upcomingNotices.length,
-                        itemBuilder: (context, index) {
-                          final notice = upcomingNotices[index];
-                          return NoticeCard(
-                            description: notice.description ?? "",
-                            noticeTitle: notice.title ?? "",
-                            date: DateFormatter.formatDateString(
-                                notice.date.toString()),
-                            time: TimeFormatter.formatTimeFromString(
-                                notice.createdAt.toString()),
-                            fileUpload: notice.fileUpload ?? "",
-                            onTap: () {
-                              context.pushNamed(
-                                  AppRouteConst.NoticeDetailedPageRouteName,
-                                  extra: NoticeDetailArguments(
-                                    notice: notice,
-                                    userType: UserType.parent,
-                                  ));
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Upcoming Notices Section
+                    upcomingNotices.isNotEmpty
+                        ? Padding(
+                            padding: const EdgeInsets.only(bottom: 10),
+                            child: const Text(
+                              "Upcoming",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          )
+                        : SizedBox.shrink(),
+                    // const SizedBox(height: 10),
+                    upcomingNotices.isNotEmpty
+                        ? ListView.builder(
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: upcomingNotices.length,
+                            itemBuilder: (context, index) {
+                              final isFirst = index == 0;
+                              final isLast =
+                                  index == upcomingNotices.length - 1;
+                              final topRadius = isFirst ? 16 : 0;
+                              final bottomRadius = isLast ? 16 : 0;
+                              final notice = upcomingNotices[index];
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 1.5),
+                                child: DutyCard(
+                                  bottomRadius: bottomRadius.toDouble(),
+                                  topRadius: topRadius.toDouble(),
+                                  title: notice.title ?? "",
+                                  date: DateFormatter.formatDateString(
+                                      notice.date.toString()),
+                                  time: TimeFormatter.formatTimeFromString(
+                                      notice.createdAt.toString()),
+                                  onTap: () {
+                                    context.pushNamed(
+                                      AppRouteConst.NoticeDetailedPageRouteName,
+                                      extra: NoticeDetailArguments(
+                                          notice: notice,
+                                          userType: UserType.parent),
+                                    );
+                                  },
+                                  description: notice.description ?? "",
+                                  //  fileUpload: notice.fileUpload ?? "",
+                                ),
+                              );
                             },
-                          );
-                        },
-                      )
-                    : const Text("No upcoming notices available."),
-               SizedBox(height: Responsive.height*2),
+                          )
+                        : SizedBox.shrink(),
+                    SizedBox(height: Responsive.height * 2),
 
-                // Latest Notices Section
-                const Text(
-                  "Latest",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                latestNotices.isNotEmpty
-                    ? ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: latestNotices.length,
-                        itemBuilder: (context, index) {
-                          final notice = latestNotices[index];
-                          return NoticeCard(
-                            description: notice.description ?? "",
-                            noticeTitle: notice.title ?? "",
-                            date: DateFormatter.formatDateString(
-                                notice.date.toString()),
-                            time: TimeFormatter.formatTimeFromString(
-                                notice.createdAt.toString()),
-                            fileUpload: notice.fileUpload ?? "",
-                            onTap: () {
-                              context.pushNamed(
-                                  AppRouteConst.NoticeDetailedPageRouteName,
-                                  extra: NoticeDetailArguments(
-                                    notice: notice,
-                                    userType: UserType.parent,
-                                  ));
-                            },
-                          );
-                        },
-                      )
-                    : const Text("No latest notices available."),
-               SizedBox(height: Responsive.height*2),
+                    // Latest Notices Section
+                    latestNotices.isNotEmpty
+                        ? const Text(
+                            "Latest",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
+                        : SizedBox.shrink(),
+                    const SizedBox(height: 10),
+                    latestNotices.isNotEmpty
+                        ? ListView.builder(
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: latestNotices.length,
+                            itemBuilder: (context, index) {
+                              final notice = latestNotices[index];
+                              final isFirst = index == 0;
+                              final isLast = index == latestNotices.length - 1;
+                              final topRadius = isFirst ? 16 : 0;
+                              final bottomRadius = isLast ? 16 : 0;
 
-                // Previous Notices Section
-                const Text(
-                  "Previous",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                previousNotices.isNotEmpty
-                    ? ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: previousNotices.length,
-                        itemBuilder: (context, index) {
-                          final notice = previousNotices[index];
-                          return NoticeCard(
-                            description: notice.description ?? "",
-                            noticeTitle: notice.title ?? "",
-                            date: DateFormatter.formatDateString(
-                                notice.date.toString()),
-                            time: TimeFormatter.formatTimeFromString(
-                                notice.createdAt.toString()),
-                            fileUpload: notice.fileUpload ?? "",
-                            onTap: () {
-                              context.pushNamed(
-                                  AppRouteConst.NoticeDetailedPageRouteName,
-                                  extra: NoticeDetailArguments(
-                                    notice: notice,
-                                    userType: UserType.parent,
-                                  ));
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 1.5),
+                                child: DutyCard(
+                                  bottomRadius: bottomRadius.toDouble(),
+                                  topRadius: topRadius.toDouble(),
+                                  title: notice.title ?? "",
+                                  date: DateFormatter.formatDateString(
+                                      notice.date.toString()),
+                                  time: TimeFormatter.formatTimeFromString(
+                                      notice.createdAt.toString()),
+                                  onTap: () {
+                                    context.pushNamed(
+                                      AppRouteConst.NoticeDetailedPageRouteName,
+                                      extra: NoticeDetailArguments(
+                                          notice: notice,
+                                          userType: UserType.parent),
+                                    );
+                                  },
+                                  description: notice.description ?? "",
+                                  //  fileUpload: notice.fileUpload ?? "",
+                                ),
+                              );
                             },
-                          );
-                        },
-                      )
-                    : const Text("No previous notices available."),
-              ],
-            );
-          }),
+                          )
+                        : SizedBox.shrink(),
+                    SizedBox(height: Responsive.height * 2),
+
+                    // Previous Notices Section
+                    previousNotices.isNotEmpty
+                        ? const Text(
+                            "Previous",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
+                        : SizedBox.shrink(),
+                    const SizedBox(height: 10),
+                    previousNotices.isNotEmpty
+                        ? ListView.builder(
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: previousNotices.length,
+                            itemBuilder: (context, index) {
+                              final notice = previousNotices[index];
+                              final isFirst = index == 0;
+                              final isLast =
+                                  index == previousNotices.length - 1;
+                              final topRadius = isFirst ? 16 : 0;
+                              final bottomRadius = isLast ? 16 : 0;
+
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 1.5),
+                                child: DutyCard(
+                                  bottomRadius: bottomRadius.toDouble(),
+                                  topRadius: topRadius.toDouble(),
+                                  title: notice.title ?? "",
+                                  date: DateFormatter.formatDateString(
+                                      notice.date.toString()),
+                                  time: TimeFormatter.formatTimeFromString(
+                                      notice.createdAt.toString()),
+                                  onTap: () {
+                                    context.pushNamed(
+                                      AppRouteConst.NoticeDetailedPageRouteName,
+                                      extra: NoticeDetailArguments(
+                                          notice: notice,
+                                          userType: UserType.parent),
+                                    );
+                                  },
+                                  description: notice.description ?? "",
+                                  //  fileUpload: notice.fileUpload ?? "",
+                                ),
+                              );
+                            },
+                          )
+                        : SizedBox.shrink()
+                  ],
+                );
+              }),
+            ],
+          ),
         ),
       ),
     );

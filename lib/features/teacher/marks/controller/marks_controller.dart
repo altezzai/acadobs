@@ -21,6 +21,7 @@ class MarksController extends ChangeNotifier {
     required List<Map<String, dynamic>> students,
   }) async {
     _isloadingTwo = true;
+    notifyListeners();
     try {
       final response = await MarkServices().addMarks(
         date: date,

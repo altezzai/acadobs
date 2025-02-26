@@ -6,7 +6,9 @@ import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
+import 'package:school_app/base/utils/custom_popup_menu.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/base/utils/show_confirmation_dialog.dart';
 import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
@@ -195,14 +197,27 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                                             ),
                                           );
                                         })
-                                      : IconButton(
-                                          onPressed: () {
+                                      : Consumer<StudentController>(
+                                          builder: (context, value, child) {
+                                          return CustomPopupMenu(onEdit: () {
                                             context.pushNamed(
                                                 AppRouteConst
                                                     .UpdateStudentRountName,
                                                 extra: studentDetail);
-                                          },
-                                          icon: Icon(Icons.edit)),
+                                          }, onDelete: () {
+                                            showConfirmationDialog(
+                                                context: context,
+                                                title: "Delete Student?",
+                                                content:
+                                                    "Are you sure you want to delete this student?",
+                                                onConfirm: () {
+                                                  value.deleteStudents(context,
+                                                      studentId:
+                                                          widget.student.id ??
+                                                              0);
+                                                });
+                                          });
+                                        })
                                 ],
                               ),
                               SizedBox(
@@ -243,7 +258,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                                 tabs: const [
                                   Tab(text: "Dashboard"),
                                   Tab(text: "Achievements"),
-                                  Tab(text: "Exam"),
+                                  Tab(text: "Marks"),
                                   Tab(text: "Homework"),
                                   Tab(text: "Leave Request"),
                                 ],
@@ -321,7 +336,19 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
         );
 
         return value.exam.isEmpty
-            ? const Center(child: Text("No Exams Found!"))
+            ? SizedBox(
+                width: double.infinity,
+                height: Responsive.height * 5, // Adjust height as needed
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: Responsive.height * 5), // Moves text lower
+                    const Text(
+                      "No Exams Found!",
+                    ),
+                  ],
+                ),
+              )
             : SingleChildScrollView(
                 child: Column(
                   children: [
