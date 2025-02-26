@@ -79,6 +79,9 @@ class _DutiesScreenState extends State<DutiesScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(
+              height: Responsive.height * 2,
+            ),
             const CustomAppbar(
               title: "Duties",
               isBackButton: false,

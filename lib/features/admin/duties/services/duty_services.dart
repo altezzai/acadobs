@@ -33,6 +33,8 @@ class DutyServices {
     required String description,
     required String status,
     required String remark,
+   required String assignedDate,
+    required String endDate,
     required List<int> teachers,
     String? fileAttachment,
   }) async {
@@ -42,6 +44,8 @@ class DutyServices {
       'description': description,
       'status': status,
       'remark': remark,
+      'assigned_date':assignedDate,
+      'end_date':endDate,
       'teachers[]': teachers,
        if (fileAttachment!= null) // Only include if the photo is provided
         "file_attachment": await MultipartFile.fromFile(fileAttachment,
@@ -62,6 +66,8 @@ class DutyServices {
     required String description,
     required String status,
     required String remark,
+     required String assignedDate,
+    required String endDate,
     required List<int> teachers,
     String? fileAttachment,
   }) async {
@@ -72,6 +78,8 @@ class DutyServices {
       'status': status,
       'remark': remark,
       'teachers[]': teachers,
+       'assigned_date':assignedDate,
+      'end_date':endDate,
       '_method':'put',
        if (fileAttachment!= null) // Only include if the photo is provided
         "file_attachment": await MultipartFile.fromFile(fileAttachment,

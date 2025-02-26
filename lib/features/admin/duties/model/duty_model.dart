@@ -33,13 +33,12 @@ class AssignedTeacher {
     String? fullName;
     String? contactNumber;
     String? emailAddress;
-    dynamic currentDesignation;
-    dynamic subjectsTaught;
-    dynamic classGradeHandling;
-    dynamic administrativeRoles;
+    String? currentDesignation;
+    String? subjectsTaught;
+    String? classGradeHandling;
+    String? administrativeRoles;
     String? profilePhoto;
     String? dutyStatus;
-    DateTime? assignedDate;
 
     AssignedTeacher({
         this.id,
@@ -52,7 +51,6 @@ class AssignedTeacher {
         this.administrativeRoles,
         this.profilePhoto,
         this.dutyStatus,
-        this.assignedDate,
     });
 
     factory AssignedTeacher.fromJson(Map<String, dynamic> json) => AssignedTeacher(
@@ -66,7 +64,6 @@ class AssignedTeacher {
         administrativeRoles: json["administrative_roles"],
         profilePhoto: json["profile_photo"],
         dutyStatus: json["duty_status"],
-        assignedDate: json["assigned_date"] == null ? null : DateTime.parse(json["assigned_date"]),
     );
 
     Map<String, dynamic> toJson() => {
@@ -80,7 +77,6 @@ class AssignedTeacher {
         "administrative_roles": administrativeRoles,
         "profile_photo": profilePhoto,
         "duty_status": dutyStatus,
-        "assigned_date": assignedDate?.toIso8601String(),
     };
 }
 
@@ -89,9 +85,11 @@ class DutyClass {
     String? dutyTitle;
     String? description;
     String? remark;
-    String? fileAttachment;
+    dynamic fileAttachment;
     DateTime? createdAt;
     DateTime? updatedAt;
+    DateTime? assignedDate;
+    dynamic endDate;
 
     DutyClass({
         this.id,
@@ -101,6 +99,8 @@ class DutyClass {
         this.fileAttachment,
         this.createdAt,
         this.updatedAt,
+        this.assignedDate,
+        this.endDate,
     });
 
     factory DutyClass.fromJson(Map<String, dynamic> json) => DutyClass(
@@ -111,6 +111,8 @@ class DutyClass {
         fileAttachment: json["file_attachment"],
         createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
         updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+        assignedDate: json["assigned_date"] == null ? null : DateTime.parse(json["assigned_date"]),
+        endDate: json["end_date"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -121,5 +123,7 @@ class DutyClass {
         "file_attachment": fileAttachment,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
+        "assigned_date": assignedDate?.toIso8601String(),
+        "end_date": endDate,
     };
 }

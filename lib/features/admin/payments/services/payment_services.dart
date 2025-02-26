@@ -101,7 +101,7 @@ class PaymentServices {
   Future<Response> editPayment(
     BuildContext context, {
     required int paymentId,
-    required String userId,
+    required String studentId,
     required int staffId,
     required String amount_paid,
     required String payment_date,
@@ -115,7 +115,7 @@ class PaymentServices {
     final fileUpload = context.read<FilePickerProvider>().getFile('receipt');
     final fileUploadPath = fileUpload?.path;
     final formData = FormData.fromMap({
-      'student_id': userId,
+      'student_id': studentId,
       'recorded_by': staffId,
       'amount_paid': amount_paid,
       'payment_date': payment_date,

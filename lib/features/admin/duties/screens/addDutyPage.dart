@@ -263,6 +263,8 @@ class _AddDutyPageState extends State<AddDutyPage> {
                                       description: _descriptionController.text,
                                       status: status,
                                       remark: _remarkController.text,
+                                      assignedDate: _startDateController.text,
+                                      endDate: _endDateController.text,
                                       teachers: value1.selectedTeacherIds,
                                       fileattachment: dutyfilepath,
                                     );

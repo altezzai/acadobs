@@ -124,6 +124,8 @@ class DutyController extends ChangeNotifier {
       required String status,
       required String remark,
       required List<int> teachers,
+      required String assignedDate,
+    required String endDate,
       String? fileattachment}) async {
     _isloadingTwo = true;
     notifyListeners();
@@ -133,6 +135,8 @@ class DutyController extends ChangeNotifier {
           description: description,
           status: status,
           remark: remark,
+          assignedDate: assignedDate,
+          endDate: endDate,
           teachers: teachers,
           fileAttachment: fileattachment);
       if (response.statusCode == 201 || response.statusCode == 200) {
@@ -157,6 +161,8 @@ class DutyController extends ChangeNotifier {
       required String description,
       required String status,
       required String remark,
+       required String assignedDate,
+    required String endDate,
       required List<int> teachers,
       String? fileattachment}) async {
     _isloadingTwo = true;
@@ -168,6 +174,8 @@ class DutyController extends ChangeNotifier {
           description: description,
           status: status,
           remark: remark,
+          assignedDate: assignedDate,
+          endDate: endDate,
           teachers: teachers,
           fileAttachment: fileattachment);
       if (response.statusCode == 201 || response.statusCode == 200) {

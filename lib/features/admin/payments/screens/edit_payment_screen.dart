@@ -311,7 +311,7 @@ class _EditPaymentScreenState extends State<EditPaymentScreen> {
                       context.read<PaymentController>().editPayment(
                             context,
                             paymentId: widget.payment.id ?? 0,
-                            userId: widget.payment.userId ?? 0,
+                            studentId: widget.payment.userId ?? 0,
                             amount_paid: _amountController.text,
                             payment_date: _dateController.text,
                             month: selectedMonth,

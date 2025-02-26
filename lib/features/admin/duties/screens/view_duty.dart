@@ -5,6 +5,7 @@ import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/custom_popup_menu.dart';
+import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_confirmation_dialog.dart';
 import 'package:school_app/base/utils/urls.dart';
@@ -100,7 +101,57 @@ class _DutyViewState extends State<DutyView> {
                   ),
                 ),
                 SizedBox(
-                  height: Responsive.height * 3,
+                  height: Responsive.height * 1,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          "Start Date:  ",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall!
+                              .copyWith(
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.blue),
+                        ),
+                        Text(
+                          DateFormatter.formatDateString(dutyController
+                              .singleDuty.assignedDate
+                              .toString()),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall!
+                              .copyWith(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "End Date:  ",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall!
+                              .copyWith(
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.red),
+                        ),
+                        Text(
+                          dutyController.singleDuty.endDate ?? "Not Specified",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall!
+                              .copyWith(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: Responsive.height * 2,
                 ),
                 Text(
                   'Teachers Assigned: ',

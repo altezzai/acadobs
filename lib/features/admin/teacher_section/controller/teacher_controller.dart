@@ -1,8 +1,6 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/features/admin/teacher_section/model/activity_model.dart';
 import 'package:school_app/features/admin/teacher_section/model/teacher_model.dart';
@@ -213,33 +211,20 @@ class TeacherController extends ChangeNotifier {
       );
       if (response.statusCode == 201) {
         log("Edited teacher successfully");
-        context.pushNamed(AppRouteConst.AdminteacherRouteName);
+        await getTeacherDetails();
+        CustomSnackbar.show(
+          context,
+          message: " Edited Teacher Successfully",
+          type: SnackbarType.success,
+        );
+        Navigator.pop(context);
+        Navigator.pop(context);
       } else {
-        // final Map<String, dynamic> errors = response.data['message'];
-
-        // // Extract all error messages into a list
-        // List<String> errorMessages = [];
-        // errors.forEach((key, value) {
-        //   if (value is List) {
-        //     errorMessages.addAll(value.map((e) => e.toString()));
-        //   } else if (value is String) {
-        //     errorMessages.add(value);
-        //   }
-        // });
-
-        // // Format the errors with numbering
-        // String formattedErrors = errorMessages
-        //     .asMap()
-        //     .entries
-        //     .map((entry) => "${entry.key + 1}. ${entry.value}")
-        //     .join("\n");
-
-        // // Show error messages in Snackbar
-        // CustomSnackbar.show(
-        //   context,
-        //   message: formattedErrors,
-        //   type: SnackbarType.failure,
-        // );
+        CustomSnackbar.show(
+          context,
+          message: response.data,
+          type: SnackbarType.failure,
+        );
       }
     } catch (e) {
       log(e.toString());

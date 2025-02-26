@@ -52,16 +52,12 @@ class _EditDutyScreenState extends State<EditDutyScreen> {
     _titleController.text = widget.duty.duty?.dutyTitle ?? "";
     _descriptionController.text = widget.duty.duty?.description ?? "";
     _remarkController.text = widget.duty.duty?.remark ?? "";
-    _startDateController.text = widget.duty.duty?.createdAt != null
+    _startDateController.text = widget.duty.duty?.assignedDate != null
         ? DateFormat('yyyy-MM-dd')
-            .format(widget.duty.duty?.createdAt as DateTime)
+            .format(widget.duty.duty?.assignedDate as DateTime)
         : "";
 
-    _endDateController.text =
-        widget.duty.assignedTeachers?[0].assignedDate != null
-            ? DateFormat('yyyy-MM-dd')
-                .format(widget.duty.duty?.createdAt as DateTime)
-            : "";
+    _endDateController.text = widget.duty.duty?.endDate ?? "";
 
     teacherController = Provider.of<TeacherController>(context, listen: false);
     dropdownProvider = context.read<DropdownProvider>();
@@ -277,6 +273,8 @@ class _EditDutyScreenState extends State<EditDutyScreen> {
                                     description: _descriptionController.text,
                                     status: status,
                                     remark: _remarkController.text,
+                                    assignedDate: _startDateController.text,
+                                    endDate: _endDateController.text,
                                     teachers: value1.selectedTeacherIds.isEmpty
                                         ? assignedTeachers
                                             .whereType<int>()

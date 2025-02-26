@@ -276,7 +276,7 @@ class PaymentController extends ChangeNotifier {
   Future<void> editPayment(
     BuildContext context, {
     required int paymentId,
-    required int userId,
+    required int studentId,
     required String amount_paid,
     required String payment_date,
     required String month,
@@ -293,7 +293,7 @@ class PaymentController extends ChangeNotifier {
       final response = await PaymentServices().editPayment(
         context,
         paymentId: paymentId,
-        userId: userId.toString(),
+        studentId: studentId.toString(),
         staffId: teacherId,
         amount_paid: amount_paid,
         payment_date: payment_date,
