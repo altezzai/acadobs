@@ -82,8 +82,10 @@ import 'package:school_app/features/teacher/marks/models/marks_upload_model.dart
 import 'package:school_app/features/teacher/marks/screens/marks.dart';
 import 'package:school_app/features/teacher/marks/screens/student_marklist.dart';
 import 'package:school_app/features/teacher/parent/model/latest_chat_model.dart';
+import 'package:school_app/features/teacher/parent/model/parent_note_model.dart';
 import 'package:school_app/features/teacher/parent/model/parent_note_student_model.dart';
 import 'package:school_app/features/teacher/parent/notes/screens/add_note.dart';
+import 'package:school_app/features/teacher/parent/notes/screens/edit_note.dart';
 import 'package:school_app/features/teacher/parent/notes/screens/note_details.dart';
 import 'package:school_app/features/teacher/parent/notes/screens/notes.dart';
 import 'package:school_app/features/teacher/parent/notes/screens/student_note_selection.dart';
@@ -819,6 +821,18 @@ class Approuter {
           return MaterialPage(
               child: EditDutyScreen(
             duty: duty,
+          ));
+        },
+      ),
+
+      GoRoute(
+        name: AppRouteConst.editNoteRouteName,
+        path: '/editNote',
+        pageBuilder: (context, state) {
+          final note = state.extra as ParentNote;
+          return MaterialPage(
+              child: EditNote(
+            note: note,
           ));
         },
       ),

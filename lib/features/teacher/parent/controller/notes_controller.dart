@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:school_app/base/services/secure_storage_services.dart';
+import 'package:school_app/base/utils/custom_snackbar.dart';
+import 'package:school_app/base/utils/loading_dialog.dart';
 import 'package:school_app/features/teacher/parent/model/latest_chat_model.dart';
 import 'package:school_app/features/teacher/parent/model/parent_chat_model.dart';
 import 'package:school_app/features/teacher/parent/model/parent_note_model.dart';
@@ -456,6 +458,61 @@ class NotesController extends ChangeNotifier {
     } finally {
       _isloading = false;
       notifyListeners(); // Notify UI to stop loading
+    }
+  }
+
+  // ******** Edit note *******
+  Future<void> editNote({
+    required int noteId,
+    required BuildContext context,
+    required List<int> studentId,
+    required String title,
+    required String description,
+  }) async {
+    _isloadingTwo = true;
+    notifyListeners();
+    try {
+      final teacherId = await SecureStorageService.getUserId();
+      final response = await NoteServices().editNote(
+          noteId: noteId,
+          studentId: studentId,
+          teacherId: teacherId,
+          title: title,
+          description: description);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        log("Note Edited Successfully");
+        await getNotesByTeacherId();
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      log(e.toString());
+    } finally {
+      _isloadingTwo = false;
+      notifyListeners();
+    }
+  }
+
+  // delete notes
+  Future<void> deleteNotes(BuildContext context, {required int noteId}) async {
+    _isloading = true;
+    LoadingDialog.show(context, message: "Deleting duty...");
+    try {
+      final response = await NoteServices().deleteNotes(noteId: noteId);
+      print("***********${response.statusCode}");
+      // print(response.toString());
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        log("note deleted successfully.");
+        Navigator.pop(context);
+        CustomSnackbar.show(context,
+            message: 'Deleted successfully', type: SnackbarType.info);
+        await getNotesByTeacherId();
+      }
+    } catch (e) {
+      // print(e);
+    } finally {
+      _isloading = false;
+      notifyListeners();
+      LoadingDialog.hide(context);
     }
   }
 }
