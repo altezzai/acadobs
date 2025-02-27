@@ -33,14 +33,14 @@ class ActivityElement {
     String? classGrade;
     String? section;
     int? periodNumber;
-    String? subject;
+    String? subjectName;
 
     ActivityElement({
         this.date,
         this.classGrade,
         this.section,
         this.periodNumber,
-        this.subject,
+        this.subjectName,
     });
 
     factory ActivityElement.fromJson(Map<String, dynamic> json) => ActivityElement(
@@ -48,7 +48,7 @@ class ActivityElement {
         classGrade: json["class_grade"],
         section: json["section"],
         periodNumber: json["period_number"],
-        subject: json["subject"],
+        subjectName: json["subject_name"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -56,6 +56,6 @@ class ActivityElement {
         "class_grade": classGrade,
         "section": section,
         "period_number": periodNumber,
-        "subject": subject,
+        "subject_name": subjectName,
     };
 }

@@ -20,9 +20,9 @@ class _ActivityTabState extends State<ActivityTab> {
   @override
   void initState() {
     super.initState();
-    context
-        .read<TeacherController>()
-        .getTeacherActivities(teacherId: widget.teacherId);
+    context.read<TeacherController>().getTeacherActivities(
+        teacherId: widget.teacherId,
+        date: DateFormat('yyyy-MM-dd').format(DateTime.now()));
   }
 
   /// Group items by date (Today, Yesterday, Specific Dates)
@@ -132,8 +132,8 @@ class _ActivityTabState extends State<ActivityTab> {
                       ),
                       child: ActivityCard(
                         title: activity.classGrade ?? "",
-
-                        subject: activity.subject ?? "",
+                        section: activity.section ?? "",
+                        subject: activity.subjectName ?? "",
                         period: activity.periodNumber!,
                         iconColor: color,
                         icon: activity.classGrade ?? "",
@@ -208,6 +208,7 @@ class ActivityCard extends StatelessWidget {
   final double topRadius;
   final Color iconColor;
   final String icon;
+  final String section;
 
   const ActivityCard({
     required this.title,
@@ -217,6 +218,7 @@ class ActivityCard extends StatelessWidget {
     required this.period,
     required this.iconColor,
     required this.icon,
+    required this.section,
     this.bottomRadius = 10,
     this.topRadius = 10,
   });
@@ -281,7 +283,7 @@ class ActivityCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${getOrdinal(int.tryParse(title) ?? 0)} Class',
+                  '${getOrdinal(int.tryParse(title) ?? 0)} $section',
                   style: const TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
@@ -316,7 +318,7 @@ class ActivityCard extends StatelessWidget {
           // ],
 
           Text('${getOrdinal(period)} Period',
-              style: TextStyle(fontWeight: FontWeight.w500)),
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12)),
         ],
       ),
     );

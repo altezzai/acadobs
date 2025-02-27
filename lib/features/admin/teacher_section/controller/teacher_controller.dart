@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:school_app/base/services/secure_storage_services.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/features/admin/teacher_section/model/activity_model.dart';
 import 'package:school_app/features/admin/teacher_section/model/teacher_model.dart';
@@ -169,16 +170,37 @@ class TeacherController extends ChangeNotifier {
 
   List<ActivityElement> _activities = [];
   List<ActivityElement> get activities => _activities;
-  Future<void> getTeacherActivities({required int teacherId}) async {
+  Future<void> getTeacherActivities(
+      {int? teacherId,
+      required String date,
+      bool forTeacherLogin = false}) async {
     _isloading = true;
-    // _selectedTeacherIds.clear();
+    _activities.clear();
+    notifyListeners();
     try {
-      final response =
-          await TeacherServices().getActivities(teacherId: teacherId);
+      final teacherLoginId = await SecureStorageService.getUserId();
+      final response = await TeacherServices().getActivities(
+          teacherId: forTeacherLogin ? teacherLoginId : teacherId ?? 0,
+          date: date);
       if (response.statusCode == 200) {
-        _activities = (response.data["activities"] as List<dynamic>)
-            .map((result) => ActivityElement.fromJson(result))
-            .toList();
+        // Convert JSON response to List<ActivityElement>
+        List<ActivityElement> fetchedActivities =
+            (response.data["activities"] as List<dynamic>)
+                .map((result) => ActivityElement.fromJson(result))
+                .toList();
+
+        // Use a Set to remove duplicates
+        Set<String> uniqueKeys = {};
+        _activities = fetchedActivities.where((activity) {
+          String key =
+              "${activity.date}-${activity.classGrade}-${activity.section}-${activity.periodNumber}-${activity.subjectName}";
+          if (uniqueKeys.contains(key)) {
+            return false; // Duplicate, so don't include it
+          } else {
+            uniqueKeys.add(key);
+            return true; // Unique, so include it
+          }
+        }).toList();
       }
     } catch (e) {
       print(e);

@@ -128,9 +128,9 @@ class NoteServices {
       'studentsId[]': studentId,
       'note_title': title,
       'note_content': description,
-      // 'method': 'put,'
+      '_method': 'put'
     };
-    final Response response = await ApiServices.put(
+    final Response response = await ApiServices.post(
         "/parentNotes/$noteId", formData,
         isFormData: true);
     return response;

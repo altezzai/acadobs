@@ -18,6 +18,7 @@ class SubjectController extends ChangeNotifier {
 // **********Get all teachers*****************
   Future<void> getSubjects() async {
     _isloading = true;
+    notifyListeners();
     try {
       final response = await SubjectServices().getsubject();
       print("***********${response.statusCode}");

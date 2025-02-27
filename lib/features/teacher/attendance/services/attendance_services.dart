@@ -21,4 +21,14 @@ class AttendanceServices {
     );
     return response;
   }
+
+  //  Get daily attendance by teacherId
+  Future<Response> getDailyAttendanceByTeacher({
+    required int teacherId,
+    required String date,
+  }) async {
+    final response = await ApiServices.get(
+        "/getTeacherAttendanceRecords/$teacherId?date=$date");
+    return response;
+  }
 }
