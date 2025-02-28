@@ -68,7 +68,10 @@ import 'package:school_app/features/parent/students/screen/studentdetails.dart';
 import 'package:school_app/features/teacher/attendance/model/attendance_data.dart';
 import 'package:school_app/features/teacher/attendance/screens/take_attendance.dart';
 import 'package:school_app/features/teacher/duties/duty_detail.dart';
-import 'package:school_app/features/teacher/homework/model/homework_model.dart';
+import 'package:school_app/features/teacher/homework/model/homework_model.dart'
+    as hw;
+import 'package:school_app/features/teacher/homework/model/homework_student_model.dart';
+import 'package:school_app/features/teacher/homework/screens/edit_homework_screen.dart';
 import 'package:school_app/features/teacher/homework/screens/student_selection_screen.dart';
 import 'package:school_app/features/teacher/homework/screens/subject_selection.dart';
 import 'package:school_app/features/teacher/homework/screens/work.dart';
@@ -179,7 +182,7 @@ class Approuter {
         name: AppRouteConst.workviewRouteName,
         path: '/workview',
         pageBuilder: (context, state) {
-          final work = state.extra as Homework;
+          final work = state.extra as hw.Homework;
           return MaterialPage(
               child: WorkView(
             work: work,
@@ -833,6 +836,17 @@ class Approuter {
           return MaterialPage(
               child: EditNote(
             note: note,
+          ));
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.editHomeworkRouteName,
+        path: '/editHomework',
+        pageBuilder: (context, state) {
+          final homeworkStudent = state.extra as HomeworkWithStudentsModel;
+          return MaterialPage(
+              child: EditHomeworkScreen(
+            homeworkStudent: homeworkStudent,
           ));
         },
       ),
