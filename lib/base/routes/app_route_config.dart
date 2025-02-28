@@ -843,38 +843,38 @@ class Approuter {
       ),
 
       GoRoute(
-        name: AppRouteConst.editHomeworkRouteName,
-        path: '/editHomework',
-        pageBuilder: (context, state) {
-          final homeworkStudent = state.extra as HomeworkWithStudentsModel;
-          return MaterialPage(
-              child: EditHomeworkScreen(
-            homeworkStudent: homeworkStudent,
-)),
+          name: AppRouteConst.editHomeworkRouteName,
+          path: '/editHomework',
+          pageBuilder: (context, state) {
+            final homeworkStudent = state.extra as HomeworkWithStudentsModel;
+            return MaterialPage(
+                child: EditHomeworkScreen(
+              homeworkStudent: homeworkStudent,
+            ));
+          }),
       //Attendance record
       GoRoute(
         name: AppRouteConst.attendanceRecordRouteName,
         path: '/attendanceRecord',
         pageBuilder: (context, state) {
-          final AttendanceRecordArguments args = state.extra as AttendanceRecordArguments;
+          final AttendanceRecordArguments args =
+              state.extra as AttendanceRecordArguments;
           return MaterialPage(
               child: AttendanceRecordScreen(
-                forEditScreen: args.forEditScreen,
+            forEditScreen: args.forEditScreen,
             attendanceRecord: args.attendanceRecord,
-
           ));
         },
       ),
     ],
   );
-
-  
 }
 
 class AttendanceRecordArguments {
   bool forEditScreen;
   AttendanceRecord attendanceRecord;
-  AttendanceRecordArguments({required this.forEditScreen, required this.attendanceRecord});
+  AttendanceRecordArguments(
+      {required this.forEditScreen, required this.attendanceRecord});
 }
 
 class ClassAndDivision {
