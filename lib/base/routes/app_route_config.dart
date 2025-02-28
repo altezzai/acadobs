@@ -66,6 +66,8 @@ import 'package:school_app/features/parent/payment/screen/paymentdetailedscreen.
 import 'package:school_app/features/parent/payment/screen/student_payment_screen.dart';
 import 'package:school_app/features/parent/students/screen/studentdetails.dart';
 import 'package:school_app/features/teacher/attendance/model/attendance_data.dart';
+import 'package:school_app/features/teacher/attendance/model/attendance_record_model.dart';
+import 'package:school_app/features/teacher/attendance/screens/attendance_record_screen.dart';
 import 'package:school_app/features/teacher/attendance/screens/take_attendance.dart';
 import 'package:school_app/features/teacher/duties/duty_detail.dart';
 import 'package:school_app/features/teacher/homework/model/homework_model.dart'
@@ -827,7 +829,7 @@ class Approuter {
           ));
         },
       ),
-
+      // Edit note
       GoRoute(
         name: AppRouteConst.editNoteRouteName,
         path: '/editNote',
@@ -839,6 +841,7 @@ class Approuter {
           ));
         },
       ),
+
       GoRoute(
         name: AppRouteConst.editHomeworkRouteName,
         path: '/editHomework',
@@ -847,11 +850,31 @@ class Approuter {
           return MaterialPage(
               child: EditHomeworkScreen(
             homeworkStudent: homeworkStudent,
+)),
+      //Attendance record
+      GoRoute(
+        name: AppRouteConst.attendanceRecordRouteName,
+        path: '/attendanceRecord',
+        pageBuilder: (context, state) {
+          final AttendanceRecordArguments args = state.extra as AttendanceRecordArguments;
+          return MaterialPage(
+              child: AttendanceRecordScreen(
+                forEditScreen: args.forEditScreen,
+            attendanceRecord: args.attendanceRecord,
+
           ));
         },
       ),
     ],
   );
+
+  
+}
+
+class AttendanceRecordArguments {
+  bool forEditScreen;
+  AttendanceRecord attendanceRecord;
+  AttendanceRecordArguments({required this.forEditScreen, required this.attendanceRecord});
 }
 
 class ClassAndDivision {

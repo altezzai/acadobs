@@ -8,6 +8,8 @@ import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/teacher/attendance/model/attendance_data.dart';
 import 'package:school_app/features/teacher/attendance/model/attendance_model.dart';
+import 'package:school_app/features/teacher/attendance/model/attendance_record_model.dart';
+import 'package:school_app/features/teacher/attendance/model/edit_attendance_request.dart';
 import 'package:school_app/features/teacher/attendance/services/attendance_services.dart';
 
 // Enum to represent attendance status
@@ -182,6 +184,7 @@ class AttendanceController extends ChangeNotifier {
         log("Attendance response2::::::::::::::::: ${response.data}");
         context.pushReplacementNamed(AppRouteConst.bottomNavRouteName,
             extra: UserType.teacher);
+            CustomSnackbar.show(context, message: "Attendance Submitted Successfully", type: SnackbarType.success);
       } else {
         log("Error submitting attendance--Status Code:${response.statusCode}");
       }
@@ -193,4 +196,49 @@ class AttendanceController extends ChangeNotifier {
     notifyListeners(); // Notify listeners when loading ends
     clearAttendanceStatus();
   }
+
+  // Get Attendance record
+  List<AttendanceRecord> _attendanceRecord = [];
+  List<AttendanceRecord> get attendanceRecord => _attendanceRecord;
+  // AttendanceRecord attendanceRecord = AttendanceRecord();
+  Future<void> getTeacherAttendanceRecords({required String date}) async {
+    _isloading = true;
+    _attendanceRecord.clear();
+    notifyListeners(); // Notify listeners when loading starts
+    try {
+      final teacherId = await SecureStorageService.getUserId();
+      final response = await AttendanceServices()
+          .getDailyAttendanceByTeacher(teacherId: teacherId, date: date);
+      if (response.statusCode == 200) {
+        _attendanceRecord =
+            (response.data['attendance_records'] as List<dynamic>)
+                .map((result) => AttendanceRecord.fromJson(result))
+                .toList();
+        // final temp = AttendanceRecord.fromJson(response.data['attendance_records']);
+        // _attendanceRecord.add(temp);
+      }
+    } catch (e) {
+      log(e.toString());
+    } finally {
+      _isloading = false;
+      notifyListeners(); // Notify listeners when loading ends
+    }
+  }
+
+  // Update Attendance
+  Future<void> updateAttendance({required BuildContext context, required List<EditAttendanceRequest> attendanceData}) async {
+    _isloadingTwo = true;
+    notifyListeners();
+    try {
+      final response = await AttendanceServices().updateAttendance(attendanceData);
+      if (response.statusCode == 200) {
+        CustomSnackbar.show(context, message: "Attendance Updated Successfully", type: SnackbarType.success);
+      }
+    } catch (e){
+      log(e.toString());
+    } finally {
+      _isloadingTwo = false;
+      notifyListeners();
+    }
+}
 }
