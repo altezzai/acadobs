@@ -50,7 +50,7 @@ class HomeworkServices {
   // Edit homework
   Future<Response> editHomework(
     BuildContext context, {
-      required int homeworkId,
+    required int homeworkId,
     required int teacherId,
     required String class_grade,
     required String section,
@@ -78,26 +78,34 @@ class HomeworkServices {
       'total_marks': total_marks,
       'status': status,
       'studentsId[]': studentsId,
-      '_method':'put',
+      '_method': 'put',
     };
 
     // Call the ApiServices post method with FormData and isFormData: true
-    final Response response =
-        await ApiServices.post("/homework/$homeworkId", formData, isFormData: true);
+    final Response response = await ApiServices.post(
+        "/homework/$homeworkId", formData,
+        isFormData: true);
 
     return response;
   }
 
   // ********** get homework by teacherid*****************
-   Future<Response> getHomeworkByTeacherId({required String teacherId}) async {
-    final Response response = await ApiServices.get("/getHomeworkByTeacher/$teacherId");
+  Future<Response> getHomeworkByTeacherId({required String teacherId}) async {
+    final Response response =
+        await ApiServices.get("/getHomeworkByTeacher/$teacherId");
+    return response;
+  }
+
+  // ********** get homework with student*****************
+  Future<Response> getHomeworkStudent({required String homeworkId}) async {
+    final Response response =
+        await ApiServices.get("/getHomeworkWithStudents/$homeworkId");
     return response;
   }
 
   // Delete Homework
-   Future<Response> deleteHomework({required int homeworkId}) async {
+  Future<Response> deleteHomework({required int homeworkId}) async {
     final Response response = await ApiServices.delete("/homework/$homeworkId");
     return response;
   }
-
 }

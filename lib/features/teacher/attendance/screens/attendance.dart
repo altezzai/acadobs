@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
@@ -39,6 +40,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   final TextEditingController _subjectController = TextEditingController();
   late SubjectController subjectController;
   late TeacherController teacherController;
+  late AttendanceController attendanceController;
 
   @override
   void initState() {
@@ -51,9 +53,12 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
       final dropdownProvider = context.read<DropdownProvider>();
       subjectController = context.read<SubjectController>();
       teacherController = context.read<TeacherController>();
+      attendanceController = context.read<AttendanceController>();
       teacherController.getTeacherActivities(
           teacherId: 0, //actually not needed
           forTeacherLogin: true,
+          date: DateFormat('yyyy-MM-dd').format(DateTime.now()));
+      attendanceController.getTeacherAttendanceRecords(
           date: DateFormat('yyyy-MM-dd').format(DateTime.now()));
       dropdownProvider.clearSelectedItem('class');
       dropdownProvider.clearSelectedItem('division');
@@ -142,7 +147,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                           ],
                         ),
                         SizedBox(height: Responsive.height * 3),
-                        Consumer<TeacherController>(
+                        Consumer<AttendanceController>(
                           builder: (context, value, child) {
                             DateTime today = DateTime.now();
                             DateTime yesterday =
@@ -181,9 +186,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                                     dateController: _dateControllerForList,
                                     onDateSelected: (selectedDate) {
                                       context
-                                          .read<TeacherController>()
-                                          .getTeacherActivities(
-                                            forTeacherLogin: true,
+                                          .read<AttendanceController>()
+                                          .getTeacherAttendanceRecords(
                                             date: DateFormat('yyyy-MM-dd')
                                                 .format(selectedDate),
                                           );
@@ -201,7 +205,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                           },
                         ),
                         SizedBox(height: Responsive.height * 2),
-                        Consumer<TeacherController>(
+                        Consumer<AttendanceController>(
                             builder: (context, value, child) {
                           if (value.isloading) {
                             return Column(
@@ -213,7 +217,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                               ],
                             );
                           }
-                          if (value.activities.isEmpty) {
+                          if (value.attendanceRecord.isEmpty) {
                             return Column(
                               children: [
                                 SizedBox(
@@ -228,7 +232,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
                               padding: EdgeInsets.zero,
-                              itemCount: value.activities.length,
+                              itemCount: value.attendanceRecord.length,
                               itemBuilder: (context, index) {
                                 List<Color> subjectColors = [
                                   Colors.green,
@@ -239,18 +243,31 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                                   Colors.teal,
                                   Colors.pink,
                                 ];
-                                final activity = value.activities[index];
+                                final attendanceRecord =
+                                    value.attendanceRecord[index];
                                 final color =
                                     subjectColors[index % subjectColors.length];
                                 return Padding(
                                   padding: const EdgeInsets.only(bottom: 4),
-                                  child: ActivityCard(
-                                    title: activity.classGrade ?? "",
-                                    section: activity.section ?? "",
-                                    subject: activity.subjectName ?? "",
-                                    period: activity.periodNumber!,
-                                    iconColor: color,
-                                    icon: activity.classGrade ?? "",
+                                  child: InkWell(
+                                    onTap: () {
+                                      context.pushNamed(
+                                          AppRouteConst
+                                              .attendanceRecordRouteName,
+                                          extra: AttendanceRecordArguments(
+                                              forEditScreen: false,
+                                              attendanceRecord:
+                                                  attendanceRecord));
+                                    },
+                                    child: ActivityCard(
+                                      title: attendanceRecord.classGrade ?? "",
+                                      section: attendanceRecord.section ?? "",
+                                      subject:
+                                          attendanceRecord.subjectName ?? "",
+                                      period: attendanceRecord.periodNumber!,
+                                      iconColor: color,
+                                      icon: attendanceRecord.classGrade ?? "",
+                                    ),
                                   ),
                                 );
                               });

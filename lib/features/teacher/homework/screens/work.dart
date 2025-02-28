@@ -85,7 +85,7 @@ class _HomeWorkState extends State<HomeWork> {
                   title: 'Add Homework',
                   isProfileIcon: false,
                   onTap: () {
-                    context.pushNamed(AppRouteConst.homeworkRouteName);
+                    Navigator.pop(context);
                   },
                 ),
                 Row(
