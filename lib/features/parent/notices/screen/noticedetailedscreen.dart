@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/custom_popup_menu.dart';
+import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_confirmation_dialog.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
@@ -175,6 +176,24 @@ class NoticeDetailPage extends StatelessWidget {
                   fontSize: 16,
                   color: Colors.grey,
                 ),
+              ),
+              SizedBox(height: Responsive.height * 1),
+              Row(
+                children: [
+                  Text(
+                    "Date: ",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall!
+                        .copyWith(fontWeight: FontWeight.normal),
+                  ),
+                  Text(
+                      "${DateFormatter.formatDateString(notice.date.toString())}",
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall!
+                          .copyWith(fontWeight: FontWeight.bold)),
+                ],
               ),
               SizedBox(height: Responsive.height * 2),
               Container(

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:open_file/open_file.dart';
@@ -60,23 +59,29 @@ class _PaymentViewState extends State<PaymentView> {
 
   Future<void> _downloadFile(BuildContext context, String fileName) async {
     try {
-      // Request storage permission
-      if (await Permission.storage.request().isGranted) {
-        // Construct the full file URL
+      // Check and request storage permission
+      if (await _requestPermission()) {
         final String baseUrl =
             'https://schoolmanagement.altezzai.com/admin/monthly_payments/';
         final String fileUrl = '$baseUrl$fileName';
 
-        // Send an HTTP GET request to download the file
-        final http.Response response = await http.get(Uri.parse(fileUrl));
-
+        final response = await http.get(Uri.parse(fileUrl));
         if (response.statusCode == 200) {
-          // Get the local downloads directory
-          Directory? downloadsDirectory = await getExternalStorageDirectory();
-          String filePath = '${downloadsDirectory!.path}$fileName';
+          Directory? downloadsDirectory;
+
+          if (Platform.isAndroid || Platform.isIOS) {
+            downloadsDirectory = await getExternalStorageDirectory();
+          } else if (Platform.isWindows ||
+              Platform.isLinux ||
+              Platform.isMacOS) {
+            downloadsDirectory = await getDownloadsDirectory();
+          } else {
+            downloadsDirectory = await getTemporaryDirectory();
+          }
+
+          String filePath = '${downloadsDirectory!.path}/$fileName';
           File file = File(filePath);
 
-          // Write the downloaded file to the local storage
           await file.writeAsBytes(response.bodyBytes);
 
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -85,12 +90,16 @@ class _PaymentViewState extends State<PaymentView> {
               style: TextStyle(color: Colors.green),
             ),
             backgroundColor: Colors.white,
-            shape:
-                BeveledRectangleBorder(borderRadius: BorderRadius.circular(5)),
-          )
-              // SnackBar(content: Text('File downloaded to: $filePath')),
-              );
-          OpenFile.open(filePath);
+          ));
+
+          final result = await OpenFile.open(filePath);
+          if (result.type != ResultType.done) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Failed to open the file: ${result.message}'),
+              ),
+            );
+          }
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -107,6 +116,39 @@ class _PaymentViewState extends State<PaymentView> {
         SnackBar(content: Text('Error downloading file: $e')),
       );
     }
+  }
+
+  Future<bool> _requestPermission() async {
+    if (await Permission.storage.isGranted) {
+      return true;
+    }
+
+    if (await Permission.manageExternalStorage.isGranted) {
+      return true;
+    }
+
+    if (await Permission.manageExternalStorage.request().isGranted ||
+        await Permission.storage.request().isGranted) {
+      return true;
+    }
+
+    return false;
+  }
+
+  Future<Directory?> getDownloadDirectory() async {
+    if (Platform.isAndroid) {
+      Directory? directory = await getExternalStorageDirectory();
+      String path = directory!.path.split("Android")[0] + "Download";
+      directory = Directory(path);
+
+      if (!await directory.exists()) {
+        await directory.create(recursive: true);
+      }
+      return directory;
+    } else if (Platform.isIOS) {
+      return await getApplicationDocumentsDirectory();
+    }
+    return null;
   }
 
   @override
@@ -250,31 +292,47 @@ class _PaymentViewState extends State<PaymentView> {
                   .copyWith(fontWeight: FontWeight.normal),
             ),
             SizedBox(height: Responsive.height * 3),
-            ElevatedButton(
-              onPressed: () {
-                _downloadFile(context, widget.payment.fileUpload);
-
-                // Code to download receit goes here
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 50,
-                  vertical: 20,
-                ),
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(20.0),
               ),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 12.0,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(
-                    Icons.receipt_long_rounded,
-                    color: Colors.white,
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.file_copy_outlined,
+                        color: Colors.black,
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        (widget.payment.fileUpload?.length ?? 0) > 25
+                            ? '${widget.payment.fileUpload!.substring(widget.payment.fileUpload!.length - 25)}' // Last 10 characters
+                            : widget.payment.fileUpload ??
+                                "No Documents Found!",
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 10,
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(width: 10),
-                  Text(
-                    'Download Receipt',
-                    style: TextStyle(fontSize: 18, color: Colors.white),
-                  ),
+                  widget.payment.fileUpload != null
+                      ? GestureDetector(
+                          onTap: () => _downloadFile(
+                              context, widget.payment.fileUpload ?? ""),
+                          child: const Icon(
+                            Icons.download,
+                            color: Colors.black,
+                          ),
+                        )
+                      : SizedBox.shrink()
                 ],
               ),
             ),

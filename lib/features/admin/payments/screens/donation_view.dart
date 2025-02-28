@@ -1,5 +1,10 @@
+import 'dart:io';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
@@ -22,6 +27,100 @@ class DonationView extends StatefulWidget {
 }
 
 class _DonationViewState extends State<DonationView> {
+  Future<void> _downloadFile(BuildContext context, String fileName) async {
+    try {
+      // Check and request storage permission
+      if (await _requestPermission()) {
+        final String baseUrl =
+            'https://schoolmanagement.altezzai.com/admin/donations/';
+        final String fileUrl = '$baseUrl$fileName';
+
+        final response = await http.get(Uri.parse(fileUrl));
+        if (response.statusCode == 200) {
+          Directory? downloadsDirectory;
+
+          if (Platform.isAndroid || Platform.isIOS) {
+            downloadsDirectory = await getExternalStorageDirectory();
+          } else if (Platform.isWindows ||
+              Platform.isLinux ||
+              Platform.isMacOS) {
+            downloadsDirectory = await getDownloadsDirectory();
+          } else {
+            downloadsDirectory = await getTemporaryDirectory();
+          }
+
+          String filePath = '${downloadsDirectory!.path}/$fileName';
+          File file = File(filePath);
+
+          await file.writeAsBytes(response.bodyBytes);
+
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+              "Successfully downloaded",
+              style: TextStyle(color: Colors.green),
+            ),
+            backgroundColor: Colors.white,
+          ));
+
+          final result = await OpenFile.open(filePath);
+          if (result.type != ResultType.done) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Failed to open the file: ${result.message}'),
+              ),
+            );
+          }
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text('Failed to download file from server')),
+          );
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Storage permission denied')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error downloading file: $e')),
+      );
+    }
+  }
+
+  Future<bool> _requestPermission() async {
+    if (await Permission.storage.isGranted) {
+      return true;
+    }
+
+    if (await Permission.manageExternalStorage.isGranted) {
+      return true;
+    }
+
+    if (await Permission.manageExternalStorage.request().isGranted ||
+        await Permission.storage.request().isGranted) {
+      return true;
+    }
+
+    return false;
+  }
+
+  Future<Directory?> getDownloadDirectory() async {
+    if (Platform.isAndroid) {
+      Directory? directory = await getExternalStorageDirectory();
+      String path = directory!.path.split("Android")[0] + "Download";
+      directory = Directory(path);
+
+      if (!await directory.exists()) {
+        await directory.create(recursive: true);
+      }
+      return directory;
+    } else if (Platform.isIOS) {
+      return await getApplicationDocumentsDirectory();
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -133,6 +232,52 @@ class _DonationViewState extends State<DonationView> {
                 widget.donation.createdAt.toString(),
               )}',
             ),
+            SizedBox(height: Responsive.height * 3),
+
+            // Container(
+            //   decoration: BoxDecoration(
+            //     border: Border.all(color: Colors.grey),
+            //     borderRadius: BorderRadius.circular(20.0),
+            //   ),
+            //   padding: const EdgeInsets.symmetric(
+            //     horizontal: 16.0,
+            //     vertical: 12.0,
+            //   ),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children: [
+            //       Row(
+            //         children: [
+            //           const Icon(
+            //             Icons.file_copy_outlined,
+            //             color: Colors.black,
+            //           ),
+            //           const SizedBox(width: 10),
+            //           Text(
+            //             (widget.donation.receiptUpload?.length ?? 0) > 25
+            //                 ? '${widget.donation.receiptUpload!.substring(widget.donation.receiptUpload!.length - 25)}' // Last 10 characters
+            //                 : widget.donation.receiptUpload ??
+            //                     "No Documents Found!",
+            //             style: const TextStyle(
+            //               color: Colors.black,
+            //               fontSize: 10,
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //       widget.donation.receiptUpload != null
+            //           ? GestureDetector(
+            //               onTap: () => _downloadFile(
+            //                   context, widget.donation.receiptUpload ?? ""),
+            //               child: const Icon(
+            //                 Icons.download,
+            //                 color: Colors.black,
+            //               ),
+            //             )
+            //           : SizedBox.shrink()
+            //     ],
+            //   ),
+            // ),
           ],
         ),
       ),
