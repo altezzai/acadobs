@@ -98,5 +98,6 @@ class AppRouteConst {
   static const String editDonationRouteName = 'editDonation';
   static const String editDutyRouteName = 'editDuty';
   static const String editNoteRouteName = 'editNote';
+  static const String editHomeworkRouteName = 'editHomework';
   static const String attendanceRecordRouteName = 'attendanceRecord';
 }

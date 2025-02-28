@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:school_app/base/services/secure_storage_services.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/base/utils/loading_dialog.dart';
-import 'package:school_app/features/teacher/homework/model/homework_model.dart';
+import 'package:school_app/features/teacher/homework/model/homework_model.dart'
+    as hw;
+import 'package:school_app/features/teacher/homework/model/homework_student_model.dart';
 import 'package:school_app/features/teacher/homework/services/homework_service.dart';
 
 class HomeworkController extends ChangeNotifier {
@@ -12,11 +14,11 @@ class HomeworkController extends ChangeNotifier {
   bool get isloading => _isloading;
   bool _isloadingTwo = false;
   bool get isloadingTwo => _isloadingTwo;
-  List<Homework> _homework = [];
-  List<Homework> get homework => _homework;
+  List<hw.Homework> _homework = [];
+  List<hw.Homework> get homework => _homework;
 
-  List<Homework> _teacherHomework = [];
-  List<Homework> get teacherHomework => _teacherHomework;
+  List<hw.Homework> _teacherHomework = [];
+  List<hw.Homework> get teacherHomework => _teacherHomework;
 
 // ************** get all homework*************
   Future<void> getHomework() async {
@@ -27,7 +29,7 @@ class HomeworkController extends ChangeNotifier {
       // print(response.toString());
       if (response.statusCode == 200) {
         _homework = (response.data as List<dynamic>)
-            .map((result) => Homework.fromJson(result))
+            .map((result) => hw.Homework.fromJson(result))
             .toList();
       }
     } catch (e) {
@@ -49,8 +51,27 @@ class HomeworkController extends ChangeNotifier {
       if (response.statusCode == 200) {
         _teacherHomework.clear();
         _teacherHomework = (response.data['homework'] as List<dynamic>)
-            .map((result) => Homework.fromJson(result))
+            .map((result) => hw.Homework.fromJson(result))
             .toList();
+      }
+    } catch (e) {
+      // print(e);
+    }
+    _isloading = false;
+    notifyListeners();
+  }
+
+  // ************** get homework by students*************
+  HomeworkWithStudentsModel homeworkWithStudent = HomeworkWithStudentsModel();
+  Future<void> getHomeworkStudent({required String homeworkId}) async {
+    _isloading = true;
+    try {
+      final response =
+          await HomeworkServices().getHomeworkStudent(homeworkId: homeworkId);
+      print("***********${response.statusCode}");
+      if (response.statusCode == 200) {
+        final temp = HomeworkWithStudentsModel.fromJson(response.data);
+        homeworkWithStudent = temp;
       }
     } catch (e) {
       // print(e);
@@ -108,7 +129,7 @@ class HomeworkController extends ChangeNotifier {
     }
   }
 
-  // add homework
+  // Edit homework
   Future<void> editHomework(
     BuildContext context, {
     required int homeworkId,
@@ -125,6 +146,7 @@ class HomeworkController extends ChangeNotifier {
     required List<int> studentsId,
   }) async {
     _isloadingTwo = true;
+    notifyListeners();
     try {
       final teacherId = await SecureStorageService.getUserId();
       log("${teacherId.toString}");
