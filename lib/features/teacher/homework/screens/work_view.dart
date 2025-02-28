@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
+import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/custom_popup_menu.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/responsive.dart';
@@ -100,14 +101,14 @@ class _WorkViewState extends State<WorkView> {
                     'Assigned Date : ${DateFormatter.formatDateString(widget.work.assignedDate.toString())}',
                     style: textThemeData.bodySmall!.copyWith(
                       color: Colors.black54,
-                      fontSize: 14,
+                      fontSize: 12,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   Text(
                     'Due Date : ${DateFormatter.formatDateString(widget.work.dueDate.toString())}',
                     style: textThemeData.bodySmall!.copyWith(
-                      fontSize: 14,
+                      fontSize: 12,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -117,11 +118,12 @@ class _WorkViewState extends State<WorkView> {
                 height: Responsive.height * 1,
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Subject : ${widget.work.subject}',
+                    'Subject : ${capitalizeEachWord(widget.work.subject ?? "")}',
                     style: textThemeData.bodySmall!.copyWith(
-                      fontSize: 14,
+                      fontSize: 12,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -132,7 +134,7 @@ class _WorkViewState extends State<WorkView> {
                     'Total Marks : ${widget.work.totalMarks}',
                     style: textThemeData.bodySmall!.copyWith(
                       color: Colors.black54,
-                      fontSize: 14,
+                      fontSize: 12,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -145,7 +147,7 @@ class _WorkViewState extends State<WorkView> {
                 'Status : ${widget.work.status}',
                 style: textThemeData.bodySmall!.copyWith(
                   color: Colors.black54,
-                  fontSize: 14,
+                  fontSize: 12,
                   fontWeight: FontWeight.w600,
                 ),
               ),

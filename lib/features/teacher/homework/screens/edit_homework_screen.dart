@@ -10,7 +10,6 @@ import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
-import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/base/utils/form_validators.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
@@ -322,50 +321,38 @@ class _EditHomeWorkScreenState extends State<EditHomeworkScreen> {
                     builder: (context, value1, value2, child) {
                   return CommonButton(
                     onPressed: () {
-                      if (_formKey.currentState?.validate() ?? false) {
-                        try {
-                          final classGrade = context
-                              .read<DropdownProvider>()
-                              .getSelectedItem('classGrade');
-                          final division = context
-                              .read<DropdownProvider>()
-                              .getSelectedItem('division');
-                          final submissionType = context
-                              .read<DropdownProvider>()
-                              .getSelectedItem('submissionType');
-                          final status = context
-                              .read<DropdownProvider>()
-                              .getSelectedItem('status');
-                          final studentIds = value1.selectedStudentIds;
-                          final selectedSubjectId =
-                              Provider.of<SubjectController>(context,
-                                      listen: false)
-                                  .selectedSubjectId;
+                      final classGrade = context
+                          .read<DropdownProvider>()
+                          .getSelectedItem('classGrade');
+                      final division = context
+                          .read<DropdownProvider>()
+                          .getSelectedItem('division');
+                      final submissionType = context
+                          .read<DropdownProvider>()
+                          .getSelectedItem('submissionType');
+                      final status = context
+                          .read<DropdownProvider>()
+                          .getSelectedItem('status');
+                      final studentIds = value1.selectedStudentIds;
+                      final selectedSubjectId =
+                          Provider.of<SubjectController>(context, listen: false)
+                              .selectedSubjectId;
+                      
 
-                          log(">>>>>>>>>>>>${studentIds.toString()}");
-                          context.read<HomeworkController>().editHomework(
-                              context,
-                              homeworkId:
-                                  widget.homeworkStudent.homework?.id ?? 0,
-                              class_grade: classGrade,
-                              section: division,
-                              subjectId: selectedSubjectId ?? 0,
-                              assignment_title: _titleController.text,
-                              description: _descriptionController.text,
-                              assigned_date: _startDateController.text,
-                              due_date: _endDateController.text,
-                              submission_type: submissionType,
-                              total_marks: _markController.text,
-                              status: status,
-                              studentsId: studentIds);
-                        } catch (e) {
-                          // Handle any errors and show an error message
-                          CustomSnackbar.show(context,
-                              message:
-                                  "Failed to edit Homework.Please try again",
-                              type: SnackbarType.failure);
-                        }
-                      }
+                      log(">>>>>>>>>>>>${studentIds.toString()}");
+                      context.read<HomeworkController>().editHomework(context,
+                          homeworkId: widget.homeworkStudent.homework?.id ?? 0,
+                          class_grade: classGrade,
+                          section: division,
+                          subjectId: selectedSubjectId ?? 0,
+                          assignment_title: _titleController.text,
+                          description: _descriptionController.text,
+                          assigned_date: _startDateController.text,
+                          due_date: _endDateController.text,
+                          submission_type: submissionType,
+                          total_marks: _markController.text,
+                          status: status,
+                          studentsId: studentIds);
                     },
                     widget:
                         value2.isloadingTwo ? ButtonLoading() : Text('Submit'),

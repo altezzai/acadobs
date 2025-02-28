@@ -197,8 +197,8 @@ class _EditNoteState extends State<EditNote> {
                           noteId: widget.note.data?.id ?? 0,
                           context: context,
                           studentId: studentIds,
-                          title: widget.note.data?.noteTitle ?? "",
-                          description: widget.note.data?.noteContent ?? "",
+                          title: _titleController.text,
+                          description: _descriptionController.text,
                         );
                   },
                   widget:
