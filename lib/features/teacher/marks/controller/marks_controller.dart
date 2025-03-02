@@ -23,6 +23,7 @@ class MarksController extends ChangeNotifier {
     _isloadingTwo = true;
     notifyListeners();
     try {
+      final teacherId = await SecureStorageService.getUserId();
       final response = await MarkServices().addMarks(
         date: date,
         className: className,
@@ -30,7 +31,7 @@ class MarksController extends ChangeNotifier {
         section: section,
         title: title,
         totalMarks: totalMarks,
-        recordedBy: 1, // teacher id
+        recordedBy: teacherId, // teacher id
         students: students,
       );
       if (response.statusCode == 201) {
@@ -57,14 +58,15 @@ class MarksController extends ChangeNotifier {
       final response =
           await MarkServices().getTeacherMarks(teacherId: teacherId);
 
-      print("Response Status Code: ${response.statusCode}");
-      print("Response Data: ${response.data}");
+      log("Response Status Code: ${response.statusCode}");
+      // log("Response Data: ${response.data}");
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         _teacheraddedmarks = List.from(
           (response.data as List<dynamic>)
               .map((result) => TeacherAddedMarks.fromJson(result)),
         );
+        log("Teacher Added Marks:::::::::::::${_teacheraddedmarks.toString()}");
       } else {
         _teacheraddedmarks = []; // Ensure an empty list if response is invalid
       }
