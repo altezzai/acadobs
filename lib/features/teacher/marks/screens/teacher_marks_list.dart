@@ -96,15 +96,20 @@ class _TeacherMarksListState extends State<TeacherMarksList> {
             final color = subjectColors[index % subjectColors.length];
             return Padding(
               padding: const EdgeInsets.only(bottom: 4),
-              child: ActivityCard(
-                title:
-                    "${mark.classGrade ?? ""}th ${mark.section ?? ""} - ${capitalizeEachWord(mark.title ?? "")}",
-                subject: mark.subject ?? "",
-                section: mark.section ?? "",
-                iconColor: color,
-                icon: mark.classGrade ?? "",
-                forMarks: true,
-                text: DateFormatter.formatDateString(mark.date.toString()),
+              child: InkWell(
+                onTap: (){
+                  // Navigate to mark details page
+                },
+                child: ActivityCard(
+                  title:
+                      "${mark.classGrade ?? ""}th ${mark.section ?? ""} - ${capitalizeEachWord(mark.title ?? "")}",
+                  subject: mark.subject ?? "",
+                  section: mark.section ?? "",
+                  iconColor: color,
+                  icon: mark.classGrade ?? "",
+                  forMarks: true,
+                  text: DateFormatter.formatDateString(mark.date.toString()),
+                ),
               ),
             );
           },

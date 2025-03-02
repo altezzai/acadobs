@@ -482,7 +482,10 @@ class NotesController extends ChangeNotifier {
       if (response.statusCode == 200 || response.statusCode == 201) {
         log("Note Edited Successfully");
         await getNotesByTeacherId();
-        // Navigator.pop(context);
+        CustomSnackbar.show(context,
+            message: 'Note Edited successfully', type: SnackbarType.success);
+        Navigator.pop(context);
+        Navigator.pop(context);
       }
     } catch (e) {
       log(e.toString());

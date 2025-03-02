@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -64,8 +65,14 @@ class _EditEventScreenState extends State<EditEventScreen> {
               SizedBox(height: 12),
               Consumer<NoticeController>(
                 builder: (context, noticeController, _) {
-                  final newImages = noticeController.chosenFiles;
-                  final existingImages = noticeController.singleevent[0].images;
+                  // Check if singleevent is empty or null
+                  if (noticeController.singleevent.isEmpty) {
+                    return Center(child: Text("No event data available"));
+                  }
+
+                  final newImages = noticeController.chosenFiles ?? [];
+                  final existingImages =
+                      noticeController.singleevent[0].images ?? [];
 
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,7 +81,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                         spacing: 8,
                         runSpacing: 8,
                         children: [
-                          ...existingImages!.asMap().entries.map((entry) {
+                          ...existingImages.asMap().entries.map((entry) {
                             String imageUrl =
                                 "${baseUrl}${Urls.eventPhotos}${entry.value.imagePath}";
                             return _buildSmallImageTile(
@@ -94,7 +101,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                                           0),
                             );
                           }).toList(),
-                          ...newImages!.asMap().entries.map((entry) {
+                          ...newImages.asMap().entries.map((entry) {
                             File file = File(entry.value.path);
                             return _buildSmallImageTile(
                               image: Image.file(file, fit: BoxFit.cover),
