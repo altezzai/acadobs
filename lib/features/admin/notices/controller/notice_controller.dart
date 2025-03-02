@@ -62,6 +62,27 @@ class NoticeController extends ChangeNotifier {
     notifyListeners();
   }
 
+  List<Event> _singleevent = [];
+  List<Event> get singleevent => _singleevent;
+  Future<void> getSingleEvent({required int eventId}) async {
+    _isloading = true;
+    // notifyListeners();
+    try {
+      final response = await NoticeServices().getSingleEvent(eventId: eventId);
+      print("***********${response.statusCode}");
+      // print(response.toString());
+      if (response.statusCode == 200) {
+        _singleevent = (response.data as List<dynamic>)
+            .map((result) => Event.fromJson(result))
+            .toList();
+      }
+    } catch (e) {
+      // print(e);
+    }
+    _isloading = false;
+    notifyListeners();
+  }
+
   // add notice
   Future<void> addNotice(
     BuildContext context, {
@@ -226,10 +247,19 @@ class NoticeController extends ChangeNotifier {
 
   void removeImage(int index) {
     if (index >= 0 && index < _chosenFiles.length) {
+      print("Before remove: ${_chosenFiles.length} images");
       _chosenFiles.removeAt(index);
       notifyListeners();
+      print("After remove: ${_chosenFiles.length} images");
     }
   }
+
+  // void removeChosenImage(int index) {
+  //   if (index >= 0 && index < chosenFiles!.length) {
+  //     chosenFiles!.removeAt(index);
+  //     notifyListeners(); // Ensures UI updates properly
+  //   }
+  // }
 
   // Optional: Clear selected images
   void clearSelectedImages() {
@@ -284,6 +314,30 @@ class NoticeController extends ChangeNotifier {
       _isloading = false;
       notifyListeners();
       LoadingDialog.hide(context);
+    }
+  }
+
+  // delete event images
+  Future<void> deleteEventImage(BuildContext context,
+      {required int imageId, required int eventId}) async {
+    _isloading = true;
+    notifyListeners();
+    // LoadingDialog.show(context, message: "Deleting event image...");
+    try {
+      final response =
+          await NoticeServices().deleteEventImage(imageId: imageId);
+      print("***********${response.statusCode}");
+      // print(response.toString());
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        await getSingleEvent(eventId: eventId);
+        log("event image deleted successfully.");
+      }
+    } catch (e) {
+      // print(e);
+    } finally {
+      _isloading = false;
+      notifyListeners();
+      // LoadingDialog.hide(context);
     }
   }
 }

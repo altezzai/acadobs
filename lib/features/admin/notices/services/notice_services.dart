@@ -20,6 +20,12 @@ class NoticeServices {
     return response;
   }
 
+  // Get single events
+  Future<Response> getSingleEvent({required int eventId}) async {
+    final Response response = await ApiServices.get("/events/$eventId");
+    return response;
+  }
+
   // Add Notices
   Future<Response> addNotice(
     BuildContext context, {
@@ -115,9 +121,8 @@ class NoticeServices {
 
   // Edit event
   Future<Response> editEvent(
-      {
-        required int eventId,
-        required String title,
+      {required int eventId,
+      required String title,
       required String description,
       required String date,
       required List<XFile> images}) async {
@@ -150,6 +155,13 @@ class NoticeServices {
   // Delete events
   Future<Response> deleteEvents({required int eventId}) async {
     final Response response = await ApiServices.delete("/events/$eventId");
+    return response;
+  }
+
+  // Delete event images
+  Future<Response> deleteEventImage({required int imageId}) async {
+    final Response response =
+        await ApiServices.delete("/deleteEventImage/$imageId");
     return response;
   }
 }
