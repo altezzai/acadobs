@@ -129,7 +129,7 @@ class _NoteChatDetailPageState extends State<NoteChatDetailPage> {
 
                       // Replies Section
                       Text(
-                        "Replies",
+                        "Assigned Students",
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold),
                       ),
@@ -137,53 +137,55 @@ class _NoteChatDetailPageState extends State<NoteChatDetailPage> {
 
                       // Latest Chat Messages
                       value.isloadingForChats
-                          ? Center(
-                              child: Loading(color: Colors.grey),
-                            )
-                          : ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: value.latestChats.length,
-                              itemBuilder: (context, index) {
-                                final chat =
-                                    value.latestChats[index]; // `Datum` object
-                                return Padding(
-                                  padding: const EdgeInsets.only(bottom: 8.0),
-                                  child: InkWell(
-                                    onTap: () {
-                                      context.pushNamed(
-                                        AppRouteConst.teacherChatRouteName,
-                                        extra: chat,
-                                      );
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 12, vertical: 14),
-                                      decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.grey),
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            chat.message ??
-                                                "No message available",
-                                            style: TextStyle(fontSize: 14),
-                                          ),
-                                          SizedBox(height: 8),
-                                          Text(
-                                            "Sent by: ${chat.senderRole ?? "Unknown"}",
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                color: Colors.grey[700]),
-                                          ),
-                                        ],
+                          ? Center(child: Loading(color: Colors.grey))
+                          : Expanded(
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: value.parentNote?.data
+                                        ?.ParentNoteStudents?.length ??
+                                    0,
+                                itemBuilder: (context, index) {
+                                  // Safe access to ParentNoteStudents
+                                  final student = value.parentNote?.data
+                                      ?.ParentNoteStudents?[index].student;
+                                  final studentName =
+                                      student?.fullName ?? "Unknown Student";
+
+                                  return Padding(
+                                    padding: const EdgeInsets.only(bottom: 8.0),
+                                    child: InkWell(
+                                      onTap: () {
+                                        if (index < value.latestChats.length) {
+                                          context.pushNamed(
+                                            AppRouteConst.teacherChatRouteName,
+                                            extra: value.latestChats[index],
+                                          );
+                                        }
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 12, vertical: 14),
+                                        decoration: BoxDecoration(
+                                          border:
+                                              Border.all(color: Colors.grey),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              studentName,
+                                              style: TextStyle(fontSize: 15),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              },
+                                  );
+                                },
+                              ),
                             ),
                     ],
                   ),
