@@ -50,20 +50,6 @@ class SubjectController extends ChangeNotifier {
     _isloadingTwo = true;
     notifyListeners();
 
-    // Check if the subject already exists
-    // final subjectExists =
-    //     _subjects.any((s) => s.subject?.toLowerCase() == subject.toLowerCase());
-
-    // if (subjectExists) {
-    //   // Show error message for duplicate subject
-    //   CustomSnackbar.show(context,
-    //       message: 'Subject already exists. Please try a different name.',
-    //       type: SnackbarType.info);
-    //   _isloadingTwo = false;
-    //   notifyListeners();
-    //   return;
-    // }
-
     try {
       final response = await SubjectServices().addNewSubject(
         subject: subject,
@@ -73,19 +59,9 @@ class SubjectController extends ChangeNotifier {
       if (response.statusCode == 201) {
         log('Subject added successfully.');
 
-        // Add the new subject to the list and notify listeners
-        // _subjects.add(Subject(
-        //   id: response.data['id'],
-        //   subject: subject,
-        //   description: description,
-        //   trash: 0,
-        //   createdAt: DateTime.now(),
-        //   updatedAt: DateTime.now(),
-        // ));
-
         // Show success message
         CustomSnackbar.show(context,
-            message: 'Subject added successfully!', type: SnackbarType.info);
+            message: 'Subject added successfully!', type: SnackbarType.success);
 
         // Navigate to the subjects page
         context.pushNamed(AppRouteConst.SubjectsPageRouteName);

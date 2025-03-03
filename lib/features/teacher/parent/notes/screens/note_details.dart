@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/custom_popup_menu.dart';
+import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_confirmation_dialog.dart';
 import 'package:school_app/base/utils/show_loading.dart';
@@ -94,7 +95,9 @@ class _NoteChatDetailPageState extends State<NoteChatDetailPage> {
                                         size: 14, color: Colors.grey),
                                     SizedBox(width: 5),
                                     Text(
-                                      '09/01/2001',
+                                      DateFormatter.formatDateTime(
+                                          parentNote?.data?.createdAt ??
+                                              DateTime.now()),
                                       style: TextStyle(color: Colors.grey),
                                     ),
                                   ],

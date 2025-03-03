@@ -98,6 +98,7 @@ class TeacherLeaveRequestController extends ChangeNotifier {
     required String reasonForLeave,
   }) async {
     _isloadingTwo = true;
+    notifyListeners();
     try {
       //  _isloading = false;
       final teacherId = await SecureStorageService.getUserId();
@@ -112,9 +113,10 @@ class TeacherLeaveRequestController extends ChangeNotifier {
       if (response.statusCode == 201 || response.statusCode == 200) {
         log(">>>>>>>>>>>>>Teacher Leave Request Added}");
         // Show success message using Snackbar
-         CustomSnackbar.show(context,
-            message: "Leave request submitted successfully!", type: SnackbarType.success);
-       
+        CustomSnackbar.show(context,
+            message: "Leave request submitted successfully!",
+            type: SnackbarType.success);
+
         await getIndividualTeacherLeaverequests();
         // Navigate to the desired route
         context.pushNamed(AppRouteConst.bottomNavRouteName,
@@ -122,7 +124,9 @@ class TeacherLeaveRequestController extends ChangeNotifier {
       } else {
         // Handle failure case here if needed
         CustomSnackbar.show(context,
-            message: "Failed to submit leave request. Please try again", type: SnackbarType.failure); ScaffoldMessenger.of(context).showSnackBar(
+            message: "Failed to submit leave request. Please try again",
+            type: SnackbarType.failure);
+        ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Failed to submit leave request. Please try again.'),
             backgroundColor: Colors.red, // Set color for error
@@ -139,24 +143,24 @@ class TeacherLeaveRequestController extends ChangeNotifier {
 
   Future<void> approveLeaveRequest(
       BuildContext context, int leaveRequestId) async {
-        _isloadingTwo = true;
+    _isloadingTwo = true;
     try {
       final response = await TeacherLeaveRequestServices()
           .approveLeaveRequest(leaveRequestId);
       if (response.statusCode == 200) {
         log("Leave request approved successfully!");
         // Show success message
-         CustomSnackbar.show(context,
-            message: "Leave request approved successfully", type: SnackbarType.success);
+        CustomSnackbar.show(context,
+            message: "Leave request approved successfully",
+            type: SnackbarType.success);
         Navigator.pop(context);
-       
-      } 
+      }
     } catch (e) {
       log(e.toString());
       CustomSnackbar.show(context,
-            message: "Failed to approve leave request", type: SnackbarType.failure);
-    }
-    finally {
+          message: "Failed to approve leave request",
+          type: SnackbarType.failure);
+    } finally {
       _isloadingTwo = false;
       notifyListeners();
     }
@@ -164,25 +168,24 @@ class TeacherLeaveRequestController extends ChangeNotifier {
 
   Future<void> rejectLeaveRequest(
       BuildContext context, int leaveRequestId) async {
-        _isloadingTwo = true;
+    _isloadingTwo = true;
     try {
       final response = await TeacherLeaveRequestServices()
           .rejectLeaveRequest(leaveRequestId);
       if (response.statusCode == 200) {
         log("Leave request rejected successfully!");
         // Show success message
-         CustomSnackbar.show(context,
-            message: "Leave request rejected successfully", type: SnackbarType.success);
+        CustomSnackbar.show(context,
+            message: "Leave request rejected successfully",
+            type: SnackbarType.success);
         Navigator.pop(context);
-        
-      } 
+      }
     } catch (e) {
       log(e.toString());
-       CustomSnackbar.show(context,
-            message: "Failed to reject leave request", type: SnackbarType.failure);
-     
-    }
-    finally {
+      CustomSnackbar.show(context,
+          message: "Failed to reject leave request",
+          type: SnackbarType.failure);
+    } finally {
       _isloadingTwo = false;
       notifyListeners();
     }

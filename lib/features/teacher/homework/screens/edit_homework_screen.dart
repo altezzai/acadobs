@@ -71,10 +71,13 @@ class _EditHomeWorkScreenState extends State<EditHomeworkScreen> {
     dropdownProvider = context.read<DropdownProvider>();
     studentIdController = context.read<StudentIdController>();
     subjectController = context.read<SubjectController>();
-    dropdownProvider.setSelectedItem("submissionType", "Online");
-    dropdownProvider.setSelectedItem("status", "Pending");
+    // dropdownProvider.setSelectedItem("submissionType", "Online");
+    // dropdownProvider.setSelectedItem("status", "Pending");
+
     // Clear dropdown selections when page loads
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      // dropdownProvider.clearSelectedItem('submissionType');
+      // dropdownProvider.clearSelectedItem('status');
       studentIdController.clearStudentIdsSelection();
       subjectController.clearSelection();
       if (studentIdController.selectedStudentIds.isNotEmpty) {
@@ -296,24 +299,24 @@ class _EditHomeWorkScreenState extends State<EditHomeworkScreen> {
                   minLines: 4,
                   maxLines: null,
                 ),
-                // SizedBox(
-                //   height: Responsive.height * 1,
-                // ),
-                // CustomDropdown(
-                //   dropdownKey: 'submissionType',
-                //   label: 'Submission Type',
-                //   items: ['Online', 'In-Class', 'Physical Copy'],
-                //   icon: Icons.offline_pin_outlined,
-                // ),
-                // SizedBox(
-                //   height: Responsive.height * 1,
-                // ),
-                // CustomDropdown(
-                //   dropdownKey: 'status',
-                //   label: 'Status',
-                //   items: ['Pending', 'Completed', 'Graded'],
-                //   icon: Icons.checklist,
-                // ),
+                SizedBox(
+                  height: Responsive.height * 1,
+                ),
+                CustomDropdown(
+                  dropdownKey: 'submissionType',
+                  label: 'Submission Type',
+                  items: ['Online', 'In-Class', 'Physical Copy'],
+                  icon: Icons.offline_pin_outlined,
+                ),
+                SizedBox(
+                  height: Responsive.height * 1,
+                ),
+                CustomDropdown(
+                  dropdownKey: 'status',
+                  label: 'Status',
+                  items: ['Pending', 'Completed', 'Graded'],
+                  icon: Icons.checklist,
+                ),
                 SizedBox(
                   height: Responsive.height * 1.6,
                 ),
@@ -337,7 +340,6 @@ class _EditHomeWorkScreenState extends State<EditHomeworkScreen> {
                       final selectedSubjectId =
                           Provider.of<SubjectController>(context, listen: false)
                               .selectedSubjectId;
-                      
 
                       log(">>>>>>>>>>>>${studentIds.toString()}");
                       context.read<HomeworkController>().editHomework(context,

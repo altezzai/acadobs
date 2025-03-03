@@ -51,14 +51,14 @@ class _HomeWorkState extends State<HomeWork> {
     dropdownProvider = context.read<DropdownProvider>();
     studentIdController = context.read<StudentIdController>();
     subjectController = context.read<SubjectController>();
-    dropdownProvider.setSelectedItem("submissionType", "Online");
-    dropdownProvider.setSelectedItem("status", "Pending");
+    // dropdownProvider.setSelectedItem("submissionType", "Online");
+    // dropdownProvider.setSelectedItem("status", "Pending");
     // Clear dropdown selections when page loads
     WidgetsBinding.instance.addPostFrameCallback((_) {
       dropdownProvider.clearSelectedItem('classGrade');
       dropdownProvider.clearSelectedItem('division');
-      // dropdownProvider.clearSelectedItem('submissionType');
-      // dropdownProvider.clearSelectedItem('status');
+      dropdownProvider.clearSelectedItem('submissionType');
+      dropdownProvider.clearSelectedItem('status');
       studentIdController.clearStudentIdsSelection();
       subjectController.clearSelection();
       if (studentIdController.selectedStudentIds.isNotEmpty) {
