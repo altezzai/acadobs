@@ -4,79 +4,74 @@
 
 import 'dart:convert';
 
-List<TeacherAddedMarks> teacherAddedMarksFromJson(String str) =>
-    List<TeacherAddedMarks>.from(
-        json.decode(str).map((x) => TeacherAddedMarks.fromJson(x)));
+List<TeacherAddedMarks> teacherAddedMarksFromJson(String str) => List<TeacherAddedMarks>.from(json.decode(str).map((x) => TeacherAddedMarks.fromJson(x)));
 
-String teacherAddedMarksToJson(List<TeacherAddedMarks> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String teacherAddedMarksToJson(List<TeacherAddedMarks> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class TeacherAddedMarks {
-  int? id;
-  int? studentId;
-  DateTime? date;
-  String? classGrade;
-  String? section;
-  String? title;
-  String? subject;
-  int? totalMarks;
-  int? marks;
-  String? attendanceStatus;
-  int? recordedBy;
-  DateTime? createdAt;
-  DateTime? updatedAt;
+    DateTime? date;
+    String? classGrade;
+    String? section;
+    String? subject;
+    String? title;
+    int? totalMarks;
+    List<StudentMarks>? students;
 
-  TeacherAddedMarks({
-    this.id,
-    this.studentId,
-    this.date,
-    this.classGrade,
-    this.section,
-    this.title,
-    this.subject,
-    this.totalMarks,
-    this.marks,
-    this.attendanceStatus,
-    this.recordedBy,
-    this.createdAt,
-    this.updatedAt,
-  });
+    TeacherAddedMarks({
+        this.date,
+        this.classGrade,
+        this.section,
+        this.subject,
+        this.title,
+        this.totalMarks,
+        this.students,
+    });
 
-  factory TeacherAddedMarks.fromJson(Map<String, dynamic> json) =>
-      TeacherAddedMarks(
-        id: json["id"],
-        studentId: json["student_id"],
+    factory TeacherAddedMarks.fromJson(Map<String, dynamic> json) => TeacherAddedMarks(
         date: json["date"] == null ? null : DateTime.parse(json["date"]),
         classGrade: json["class_grade"],
         section: json["section"],
-        title: json["title"],
         subject: json["subject"],
+        title: json["title"],
         totalMarks: json["total_marks"],
-        marks: json["marks"],
-        attendanceStatus: json["attendance_status"],
-        recordedBy: json["recorded_by"],
-        createdAt: json["created_at"] == null
-            ? null
-            : DateTime.parse(json["created_at"]),
-        updatedAt: json["updated_at"] == null
-            ? null
-            : DateTime.parse(json["updated_at"]),
-      );
+        students: json["students"] == null ? [] : List<StudentMarks>.from(json["students"]!.map((x) => StudentMarks.fromJson(x))),
+    );
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "student_id": studentId,
-        "date":
-            "${date!.year.toString().padLeft(4, '0')}-${date!.month.toString().padLeft(2, '0')}-${date!.day.toString().padLeft(2, '0')}",
+    Map<String, dynamic> toJson() => {
+        "date": "${date!.year.toString().padLeft(4, '0')}-${date!.month.toString().padLeft(2, '0')}-${date!.day.toString().padLeft(2, '0')}",
         "class_grade": classGrade,
         "section": section,
-        "title": title,
         "subject": subject,
+        "title": title,
         "total_marks": totalMarks,
-        "marks": marks,
+        "students": students == null ? [] : List<dynamic>.from(students!.map((x) => x.toJson())),
+    };
+}
+
+class StudentMarks {
+    int? studentId;
+    dynamic studentName;
+    String? attendanceStatus;
+    int? marks;
+
+    StudentMarks({
+        this.studentId,
+        this.studentName,
+        this.attendanceStatus,
+        this.marks,
+    });
+
+    factory StudentMarks.fromJson(Map<String, dynamic> json) => StudentMarks(
+        studentId: json["student_id"],
+        studentName: json["student_name"],
+        attendanceStatus: json["attendance_status"],
+        marks: json["marks"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "student_id": studentId,
+        "student_name": studentName,
         "attendance_status": attendanceStatus,
-        "recorded_by": recordedBy,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-      };
+        "marks": marks,
+    };
 }

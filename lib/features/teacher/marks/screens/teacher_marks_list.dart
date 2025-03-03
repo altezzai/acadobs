@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
+import 'package:school_app/features/admin/teacher_section/widgets/activity_tab.dart';
 import 'package:school_app/features/teacher/marks/controller/marks_controller.dart';
 
 class TeacherMarksList extends StatefulWidget {
@@ -79,22 +81,34 @@ class _TeacherMarksListState extends State<TeacherMarksList> {
 
         return ListView.builder(
           itemCount: value.teacheraddedmarks.length,
+          padding: EdgeInsets.zero,
           itemBuilder: (context, index) {
             final mark = value.teacheraddedmarks[index];
-
-            return Card(
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              child: ListTile(
-                title: Text(mark.title ?? "No Title"),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                        "📅 Date: ${DateFormatter.formatDateString(mark.date.toString())}"),
-                    Text("🏫 Class: ${mark.classGrade ?? "N/A"}"),
-                    Text("📖 Subject: ${mark.subject ?? "N/A"}"),
-                    Text("📝 Total Marks: ${mark.totalMarks ?? 0}"),
-                  ],
+            List<Color> subjectColors = [
+              Colors.green,
+              Colors.blue,
+              Colors.red,
+              Colors.orange,
+              Colors.purple,
+              Colors.teal,
+              Colors.pink,
+            ];
+            final color = subjectColors[index % subjectColors.length];
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 4),
+              child: InkWell(
+                onTap: (){
+                  // Navigate to mark details page
+                },
+                child: ActivityCard(
+                  title:
+                      "${mark.classGrade ?? ""}th ${mark.section ?? ""} - ${capitalizeEachWord(mark.title ?? "")}",
+                  subject: mark.subject ?? "",
+                  section: mark.section ?? "",
+                  iconColor: color,
+                  icon: mark.classGrade ?? "",
+                  forMarks: true,
+                  text: DateFormatter.formatDateString(mark.date.toString()),
                 ),
               ),
             );

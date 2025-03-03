@@ -55,7 +55,7 @@ class _EditNoteState extends State<EditNote> {
       dropdownProvider.clearSelectedItem('division');
       fileprovider.clearFile('note document');
       if (studentIdController.selectedStudentIds.isNotEmpty) {
-        studentIdController.clearSelection();
+        studentIdController.clearStudentIdsSelection();
       }
     });
   }
@@ -67,6 +67,7 @@ class _EditNoteState extends State<EditNote> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
                 height: Responsive.height * 2,
@@ -148,6 +149,9 @@ class _EditNoteState extends State<EditNote> {
                     );
                   },
                 ),
+              ),
+              SizedBox(
+                height: Responsive.height * 2,
               ),
               const Align(
                 alignment: Alignment.centerLeft, // Aligns the text to the left

@@ -203,25 +203,28 @@ class ActivityCard extends StatelessWidget {
   final String? date;
   final String? time;
   final String subject;
-  final int period;
+  final int? period;
   final double bottomRadius;
   final double topRadius;
-  final Color iconColor;
-  final String icon;
+  final Color? iconColor;
+  final String? icon;
   final String section;
+  final String? text;
+  final bool forMarks;
 
-  const ActivityCard({
-    required this.title,
-    this.date,
-    this.time,
-    required this.subject,
-    required this.period,
-    required this.iconColor,
-    required this.icon,
-    required this.section,
-    this.bottomRadius = 10,
-    this.topRadius = 10,
-  });
+  const ActivityCard(
+      {required this.title,
+      this.date,
+      this.time,
+      required this.subject,
+      this.period,
+      this.iconColor,
+      this.icon,
+      required this.section,
+      this.bottomRadius = 10,
+      this.topRadius = 10,
+      this.forMarks = false,
+      this.text});
   String getOrdinal(int number) {
     if (number >= 11 && number <= 13) {
       return '${number}th';
@@ -256,7 +259,7 @@ class ActivityCard extends StatelessWidget {
             height: 40,
             width: 40,
             decoration: BoxDecoration(
-              color: iconColor.withOpacity(0.2),
+              color: iconColor?.withOpacity(0.2),
               shape: BoxShape.circle,
             ),
             alignment: Alignment.center, // Ensure text stays in the center
@@ -265,7 +268,7 @@ class ActivityCard extends StatelessWidget {
               width: 20, // Fixed width for the icon text
               child: Center(
                 child: Text(
-                  icon, // Display classGrade inside the circle
+                  icon ?? "", // Display classGrade inside the circle
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: iconColor,
@@ -283,11 +286,14 @@ class ActivityCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${getOrdinal(int.tryParse(title) ?? 0)} $section',
+                  forMarks
+                      ? title
+                      : '${getOrdinal(int.tryParse(title) ?? 0)} $section',
                   style: const TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
                   ),
+                  overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -316,9 +322,11 @@ class ActivityCard extends StatelessWidget {
           //     ],
           //   ),
           // ],
-
-          Text('${getOrdinal(period)} Period',
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12)),
+          forMarks
+              ? Text(text ?? "",
+                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10))
+              : Text('${getOrdinal(period ?? 0)} Period',
+                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12)),
         ],
       ),
     );
