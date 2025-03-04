@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/services/secure_storage_services.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
@@ -184,7 +185,9 @@ class AttendanceController extends ChangeNotifier {
         log("Attendance response2::::::::::::::::: ${response.data}");
         context.pushReplacementNamed(AppRouteConst.bottomNavRouteName,
             extra: UserType.teacher);
-            CustomSnackbar.show(context, message: "Attendance Submitted Successfully", type: SnackbarType.success);
+        CustomSnackbar.show(context,
+            message: "Attendance Submitted Successfully",
+            type: SnackbarType.success);
       } else {
         log("Error submitting attendance--Status Code:${response.statusCode}");
       }
@@ -226,19 +229,28 @@ class AttendanceController extends ChangeNotifier {
   }
 
   // Update Attendance
-  Future<void> updateAttendance({required BuildContext context, required List<EditAttendanceRequest> attendanceData}) async {
+  Future<void> updateAttendance(
+      {required BuildContext context,
+      required List<EditAttendanceRequest> attendanceData,
+      required String date}) async {
     _isloadingTwo = true;
     notifyListeners();
     try {
-      final response = await AttendanceServices().updateAttendance(attendanceData);
+      final response =
+          await AttendanceServices().updateAttendance(attendanceData);
       if (response.statusCode == 200) {
-        CustomSnackbar.show(context, message: "Attendance Updated Successfully", type: SnackbarType.success);
+        await getTeacherAttendanceRecords(
+            date: DateFormat('yyyy-MM-dd').format(DateTime.now()));
+        CustomSnackbar.show(context,
+            message: "Attendance Updated Successfully",
+            type: SnackbarType.success);
+        context.pushNamed(AppRouteConst.bottomNavRouteName, extra: UserType.teacher);
       }
-    } catch (e){
+    } catch (e) {
       log(e.toString());
     } finally {
       _isloadingTwo = false;
       notifyListeners();
     }
-}
+  }
 }

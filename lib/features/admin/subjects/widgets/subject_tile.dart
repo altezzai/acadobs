@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
-import 'package:school_app/base/utils/show_confirmation_dialog.dart';
 
 class SubjectTile extends StatelessWidget {
   final String subjectName;
@@ -8,7 +7,7 @@ class SubjectTile extends StatelessWidget {
   final String iconPath;
   final Color iconColor;
   final VoidCallback onEdit;
-  final VoidCallback onDelete;
+  // final VoidCallback onDelete;
   final double topRadius;
   final double bottomRadius;
 
@@ -19,7 +18,7 @@ class SubjectTile extends StatelessWidget {
     required this.iconPath,
     required this.iconColor,
     required this.onEdit,
-    required this.onDelete,
+    // required this.onDelete,
     this.topRadius = 10,
     this.bottomRadius = 10,
   }) : super(key: key);
@@ -92,14 +91,15 @@ class SubjectTile extends StatelessWidget {
             onSelected: (value) {
               if (value == 'edit') {
                 onEdit();
-              } else if (value == 'delete') {
-                showConfirmationDialog(
-                  context: context,
-                  title: "Delete Subject",
-                  content: "Are you sure you want to delete this subject?",
-                  onConfirm: onDelete,
-                );
               }
+              // else if (value == 'delete') {
+              //   showConfirmationDialog(
+              //     context: context,
+              //     title: "Delete Subject",
+              //     content: "Are you sure you want to delete this subject?",
+              //     onConfirm: onDelete,
+              //   );
+              // }
             },
             itemBuilder: (context) => [
               PopupMenuItem(
@@ -112,16 +112,16 @@ class SubjectTile extends StatelessWidget {
                   ],
                 ),
               ),
-              PopupMenuItem(
-                value: 'delete',
-                child: Row(
-                  children: const [
-                    Icon(Icons.delete, size: 18, color: Colors.redAccent),
-                    SizedBox(width: 8),
-                    Text('Delete', style: TextStyle(fontSize: 14)),
-                  ],
-                ),
-              ),
+              // PopupMenuItem(
+              //   value: 'delete',
+              //   child: Row(
+              //     children: const [
+              //       Icon(Icons.delete, size: 18, color: Colors.redAccent),
+              //       SizedBox(width: 8),
+              //       Text('Delete', style: TextStyle(fontSize: 14)),
+              //     ],
+              //   ),
+              // ),
             ],
             icon: const Icon(Icons.more_vert, color: Colors.black54),
           )

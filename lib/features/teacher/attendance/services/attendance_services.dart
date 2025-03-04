@@ -34,8 +34,10 @@ class AttendanceServices {
   }
 
   // Update Attendance
-  Future<Response> updateAttendance(List<EditAttendanceRequest> attendanceData) async {
-    final response = await ApiServices.post("/updateAttendance", {"attendance":attendanceData});
+  Future<Response> updateAttendance(
+      List<EditAttendanceRequest> attendanceData) async {
+    final response = await ApiServices.post(
+        "/updateAttendance", {"attendances": attendanceData});
     return response;
-}
+  }
 }
