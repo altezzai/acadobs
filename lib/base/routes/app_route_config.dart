@@ -85,7 +85,7 @@ import 'package:school_app/features/teacher/leave_request/screens/teacher_leaver
 import 'package:school_app/features/teacher/mark_work/screens/mark_star.dart';
 import 'package:school_app/features/teacher/marks/models/marks_upload_model.dart';
 import 'package:school_app/features/teacher/marks/models/teacher_added_marks.dart';
-import 'package:school_app/features/teacher/marks/screens/MarkDetailsScreen.dart';
+import 'package:school_app/features/teacher/marks/screens/mark_details_screen.dart';
 import 'package:school_app/features/teacher/marks/screens/marks.dart';
 import 'package:school_app/features/teacher/marks/screens/student_marklist.dart';
 import 'package:school_app/features/teacher/parent/model/latest_chat_model.dart';

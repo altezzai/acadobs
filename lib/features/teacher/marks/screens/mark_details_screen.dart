@@ -9,7 +9,6 @@ import 'package:school_app/features/teacher/marks/controller/marks_controller.da
 import 'package:school_app/features/teacher/marks/models/teacher_added_marks.dart';
 import 'package:school_app/features/teacher/marks/widgets/MarkDetailsTile.dart';
 
-
 class Markdetailsscreen extends StatefulWidget {
   final TeacherAddedMarks teacherAddedMarksModel;
   const Markdetailsscreen({super.key, required this.teacherAddedMarksModel});
@@ -55,6 +54,7 @@ class _MarkdetailsscreenState extends State<Markdetailsscreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              SizedBox(height: Responsive.height * 2),
               CustomAppbar(
                 title: widget.teacherAddedMarksModel.title ?? "",
                 isProfileIcon: false,
