@@ -84,6 +84,8 @@ import 'package:school_app/features/teacher/leave_request/screens/add_teacher_le
 import 'package:school_app/features/teacher/leave_request/screens/teacher_leaverequestpage.dart';
 import 'package:school_app/features/teacher/mark_work/screens/mark_star.dart';
 import 'package:school_app/features/teacher/marks/models/marks_upload_model.dart';
+import 'package:school_app/features/teacher/marks/models/teacher_added_marks.dart';
+import 'package:school_app/features/teacher/marks/screens/MarkDetailsScreen.dart';
 import 'package:school_app/features/teacher/marks/screens/marks.dart';
 import 'package:school_app/features/teacher/marks/screens/student_marklist.dart';
 import 'package:school_app/features/teacher/parent/model/latest_chat_model.dart';
@@ -158,6 +160,18 @@ class Approuter {
           return MaterialPage(
               child: StudentMarklist(
             marksUploadModel: marksModel,
+          ));
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.MarkDetailsRouteName,
+        path: '/markdetailsscreen',
+        pageBuilder: (context, state) {
+          final TeacherAddedMarks teacherAddedMarksModel =
+              state.extra as TeacherAddedMarks;
+          return MaterialPage(
+              child: Markdetailsscreen(
+            teacherAddedMarksModel: teacherAddedMarksModel,
           ));
         },
       ),
