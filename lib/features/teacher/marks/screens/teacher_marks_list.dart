@@ -97,8 +97,11 @@ class _TeacherMarksListState extends State<TeacherMarksList> {
             return Padding(
               padding: const EdgeInsets.only(bottom: 4),
               child: InkWell(
-                onTap: (){
-                  // Navigate to mark details page
+                onTap: () {
+                  context.pushNamed(
+                    AppRouteConst.MarkDetailsRouteName,
+                    extra: value.teacheraddedmarks[index],
+                  ); // Navigate to mark details page
                 },
                 child: ActivityCard(
                   title:
