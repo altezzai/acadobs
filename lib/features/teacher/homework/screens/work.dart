@@ -44,9 +44,9 @@ class _HomeWorkState extends State<HomeWork> {
   @override
   void initState() {
     super.initState();
-    _titleController.text = "Activity ";
-    _markController.text = "20";
-    _descriptionController.text = "One page essay";
+    // _titleController.text = "Activity ";
+    // _markController.text = "20";
+    // _descriptionController.text = "One page essay";
 
     dropdownProvider = context.read<DropdownProvider>();
     studentIdController = context.read<StudentIdController>();

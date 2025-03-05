@@ -38,61 +38,56 @@ class _AddStudentPageState extends State<AddStudentPage> {
       text: DateFormat('yyyy-MM-dd').format(DateTime.now()));
 
   final TextEditingController _dateOfBirthController =
-      TextEditingController(text: '2000-01-01');
+      TextEditingController();
 
   final TextEditingController _fullNameController =
-      TextEditingController(text: 'John Doe');
+      TextEditingController();
 
   final TextEditingController _rollNumberController =
-      TextEditingController(text: '15');
+      TextEditingController();
 
   final TextEditingController _admissionNumberController =
-      TextEditingController(text: '721');
+      TextEditingController();
 
   final TextEditingController _aadhaarNumberController =
-      TextEditingController(text: '1234 5678 9012');
+      TextEditingController();
 
   final TextEditingController _addressController =
-      TextEditingController(text: '123, Street Name, City');
+      TextEditingController();
 
   final TextEditingController _emailController =
-      TextEditingController(text: 'example@email.com');
+      TextEditingController();
 
   final TextEditingController _previousSchoolController =
-      TextEditingController(text: 'ABC High School');
+      TextEditingController();
 
   final TextEditingController _fatherFullNameController =
-      TextEditingController(text: 'Robert Doe');
+      TextEditingController();
 
   final TextEditingController _motherFullNameController =
-      TextEditingController(text: 'Jane Doe');
+      TextEditingController();
 
   final TextEditingController _guardianNameController =
-      TextEditingController(text: 'Uncle Sam');
+      TextEditingController();
 
   final TextEditingController parentEmailController =
-      TextEditingController(text: 'parent@email.com');
+      TextEditingController();
 
   final TextEditingController _fatherContactNumberController =
-      TextEditingController(text: '9876543210');
+      TextEditingController();
 
   final TextEditingController _motherContactNumberController =
-      TextEditingController(text: '9876543211');
+      TextEditingController();
 
   final TextEditingController _occupationController =
-      TextEditingController(text: 'Engineer');
+      TextEditingController();
 
-  final TextEditingController _motherAadharNumberController =
-      TextEditingController(text: '2345 6789 0123');
-
-  final TextEditingController _fatherAadharNumberController =
-      TextEditingController(text: '3456 7890 1234');
 
   final TextEditingController _alternateNumberController =
-      TextEditingController(text: '9123456789');
+      TextEditingController();
 
   final TextEditingController _siblingNameController =
-      TextEditingController(text: 'Emily Doe');
+      TextEditingController();
 
   late DropdownProvider dropdownProvider;
 
@@ -172,7 +167,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
 
                 // Name Input
                 CustomTextfield(
-                    hintText: 'Student Name',
+                    label: 'Student Name',
                     controller: _fullNameController,
                     iconData: Icon(Icons.person),
                     validator: (value) => FormValidator.validateNotEmpty(value,
@@ -181,7 +176,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
 
                 // Roll Number Input
                 CustomTextfield(
-                  hintText: 'Roll Number',
+                  label: 'Roll Number',
                   keyBoardtype: TextInputType.number,
                   controller: _rollNumberController,
                   iconData: Icon(Icons.badge),
@@ -269,7 +264,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
 
                 // Date of Birth Input
                 CustomDatePicker(
-                  // hintText: "Date of Birth",
+                  // label: "Date of Birth",
                   label: "Date of Birth",
                   firstDate: DateTime(1995),
                   lastDate: DateTime(2020),
@@ -290,7 +285,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
 
                 // Address Input
                 CustomTextfield(
-                  hintText: 'Address',
+                  label: 'Address',
                   controller: _addressController,
                   iconData: Icon(Icons.location_on),
                   keyBoardtype: TextInputType.streetAddress,
@@ -305,7 +300,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
 
                 // Admission Number and Aadhar Number Input
                 CustomTextfield(
-                  hintText: 'Admission Number',
+                  label: 'Admission Number',
                   controller: _admissionNumberController,
                   iconData: Icon(Icons.credit_card),
                   validator: (value) {
@@ -317,7 +312,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 ),
                 SizedBox(height: Responsive.height * 2),
                 // CustomTextfield(
-                //   hintText: 'Aadhar Number',
+                //   label: 'Aadhar Number',
                 //   controller: _aadhaarNumberController,
                 //   keyBoardtype: TextInputType.number,
                 //   iconData: Icon(Icons.account_box_outlined),
@@ -346,13 +341,13 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 SizedBox(height: Responsive.height * 2),
                 // ******EMAIL VALIDATION************//
                 CustomTextfield(
-                    hintText: 'Email',
+                    label: 'Email',
                     controller: _emailController,
                     iconData: Icon(Icons.email),
                     validator: (value) => FormValidator.validateEmail(value)),
                 SizedBox(height: Responsive.height * 2),
                 CustomTextfield(
-                  hintText: 'Previous School',
+                  label: 'Previous School',
                   controller: _previousSchoolController,
                   iconData: Icon(Icons.school_rounded),
                 ),
@@ -362,7 +357,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 SizedBox(height: 10),
                 CustomTextfield(
                   controller: parentEmailController,
-                  hintText: 'Parent Email',
+                  label: 'Parent Email',
                   iconData: Icon(Icons.email),
                   validator: (value) => FormValidator.validateEmail(value),
                 ),
@@ -396,10 +391,6 @@ class _AddStudentPageState extends State<AddStudentPage> {
                           studentParentData.parentEmail ?? '';
                       _occupationController.text =
                           studentParentData.occupation ?? '';
-                      _motherAadharNumberController.text =
-                          studentParentData.motherAadhaarNumber ?? '';
-                      _fatherAadharNumberController.text =
-                          studentParentData.fatherAadhaarNumber ?? '';
                       _alternateNumberController.text =
                           studentParentData.alternateEmergencyContact ?? '';
 
@@ -455,7 +446,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
 
                 SizedBox(height: Responsive.height * 2),
                 CustomTextfield(
-                  hintText: 'Father\'s Name',
+                  label: 'Father\'s Name',
                   controller: _fatherFullNameController,
                   iconData: Icon(Icons.person_outline),
                   validator: (value) {
@@ -468,7 +459,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 SizedBox(height: Responsive.height * 2),
                 // **********PHONE NUMBER VALIDATION************//
                 CustomTextfield(
-                  hintText: 'Father\'s Phone Number',
+                  label: 'Father\'s Phone Number',
                   controller: _fatherContactNumberController,
                   iconData: Icon(Icons.phone),
                   validator: (value) => FormValidator.validatePassword(value),
@@ -476,7 +467,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 ),
                 SizedBox(height: Responsive.height * 2),
                 CustomTextfield(
-                  hintText: 'Mother\'s Name',
+                  label: 'Mother\'s Name',
                   controller: _motherFullNameController,
                   iconData: Icon(Icons.person_outline),
                   validator: (value) {
@@ -488,7 +479,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 ),
                 SizedBox(height: Responsive.height * 2),
                 CustomTextfield(
-                  hintText: 'Mother\'s Phone Number',
+                  label: 'Mother\'s Phone Number',
                   iconData: Icon(Icons.phone),
                   controller: _motherContactNumberController,
                   validator: (value) {
@@ -503,7 +494,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
 
                 // Guardian, Parent Email, Occupation Inputs
                 CustomTextfield(
-                  hintText: 'Guardian Fullname',
+                  label: 'Guardian Fullname',
                   controller: _guardianNameController,
                   iconData: Icon(Icons.person_2_outlined),
                   validator: (value) {
@@ -516,7 +507,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 SizedBox(height: Responsive.height * 2),
 
                 CustomTextfield(
-                  hintText: 'Occupation',
+                  label: 'Occupation',
                   iconData: Icon(Icons.work),
                   controller: _occupationController,
                 ),
@@ -533,7 +524,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 SizedBox(height: Responsive.height * 2),
 
                 CustomTextfield(
-                  hintText: 'Siblings Name',
+                  label: 'Siblings Name',
                   controller: _siblingNameController,
                   iconData: Icon(Icons.group),
                 ),
@@ -679,7 +670,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
           );
 
       // Clear the form fields upon success
-      _clearFormFields();
+      // _clearFormFields();
       // }
       //catch (e) {
       //   // Handle any errors and show an error message
@@ -725,17 +716,4 @@ class _AddStudentPageState extends State<AddStudentPage> {
       ),
     );
   }
-
-  // Helper to create consistent input decoration
-  // InputDecoration _inputDecoration(String hint, IconData icon) {
-  //   return InputDecoration(
-  //     contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 15.0),
-  //     border: OutlineInputBorder(
-  //       borderRadius: BorderRadius.circular(8),
-  //       borderSide: BorderSide(color: Colors.grey),
-  //     ),
-  //     hintText: hint,
-  //     prefixIcon: Icon(icon),
-  //   );
-  // }
 }

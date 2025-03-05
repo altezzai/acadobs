@@ -79,7 +79,7 @@ class _EditTeacherScreenState extends State<EditTeacherScreen> {
               SizedBox(height: Responsive.height * 2),
               CustomTextfield(
                 controller: _nameController,
-                hintText: 'Name',
+                label: 'Name',
                 iconData: const Icon(Icons.person),
               ),
               SizedBox(height: Responsive.height * 1),
@@ -90,14 +90,14 @@ class _EditTeacherScreenState extends State<EditTeacherScreen> {
               SizedBox(height: Responsive.height * 1),
               CustomTextfield(
                 controller: _addressController,
-                hintText: 'Address',
+                label: 'Address',
                 iconData: const Icon(Icons.location_on),
                 keyBoardtype: TextInputType.streetAddress,
               ),
               SizedBox(height: Responsive.height * 1),
               CustomTextfield(
                 controller: _phoneController,
-                hintText: 'Phone Number',
+                label: 'Phone Number',
                 iconData: const Icon(Icons.phone),
                 keyBoardtype: TextInputType.phone,
               ),

@@ -28,14 +28,14 @@ class _AddTeacherState extends State<AddTeacher> {
 
   // textediting controllers
   final TextEditingController _nameController =
-      TextEditingController(text: "Mini");
+      TextEditingController();
   final TextEditingController _dateOfBirthController = TextEditingController();
   final TextEditingController _addressController =
-      TextEditingController(text: "Kannur");
+      TextEditingController();
   final TextEditingController _phoneController =
-      TextEditingController(text: "9639639639");
+      TextEditingController();
   final TextEditingController _emailController =
-      TextEditingController(text: "teacher@email.com");
+      TextEditingController();
 
   late DropdownProvider dropdownProvider;
   late FilePickerProvider filePickerProvider;
@@ -91,7 +91,8 @@ class _AddTeacherState extends State<AddTeacher> {
                 ),
                 CustomTextfield(
                   controller: _nameController,
-                  hintText: 'Name',
+                  label: "Name",
+                  // hintText: 'Name',
                   iconData: Icon(Icons.person),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -141,7 +142,7 @@ class _AddTeacherState extends State<AddTeacher> {
                 ),
                 CustomTextfield(
                   controller: _addressController, //Add controller
-                  hintText: 'Address',
+                  label: 'Address',
                   iconData: Icon(Icons.location_on),
                   keyBoardtype: TextInputType.streetAddress,
                   validator: (value) {
@@ -156,7 +157,7 @@ class _AddTeacherState extends State<AddTeacher> {
                 ),
                 CustomTextfield(
                   controller: _phoneController, //Add controller
-                  hintText: 'Phone Number',
+                  label: 'Phone Number',
                   iconData: Icon(Icons.phone),
                   keyBoardtype: TextInputType.phone,
                   validator: (value) {
@@ -171,7 +172,7 @@ class _AddTeacherState extends State<AddTeacher> {
                 ),
                 CustomTextfield(
                   controller: _emailController, //Add controller
-                  hintText: 'Email',
+                  label: 'Email',
                   iconData: Icon(Icons.email),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
