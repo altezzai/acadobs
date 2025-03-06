@@ -4,34 +4,53 @@ import 'package:archive/archive_io.dart'; // For zipping PDFs
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
 class FilePickerProvider with ChangeNotifier {
   final Map<String, PlatformFile?> _files = {};
 
   PlatformFile? getFile(String fieldName) => _files[fieldName];
+  
 
-  Future<void> pickFile(String fieldName) async {
-    final result = await FilePicker.platform.pickFiles();
+    /// Pick a **single file** or a **single image** based on the flag
+  Future<void> pickFile(String fieldName, {bool imagesOnly = false}) async {
+    if (imagesOnly) {
+      try {
+        final ImagePicker picker = ImagePicker();
+        final XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
-    if (result != null) {
-      PlatformFile selectedFile = result.files.first;
-      File file = File(selectedFile.path!);
-
-      if (_isImage(file.path)) {
-        File? compressedFile = await _compressImage(file);
-        _storeFile(fieldName, compressedFile ?? file);
-      } else if (_isPDF(file.path)) {
-        File? compressedPDF = await _compressPDF(file);
-        _storeFile(fieldName, compressedPDF ?? file);
-      } else {
-        _storeFile(fieldName, file);
+        if (image != null) {
+          File file = File(image.path);
+          File? compressedFile = await _compressImage(file);
+          _storeFile(fieldName, compressedFile ?? file);
+          notifyListeners();
+        }
+      } catch (e) {
+        print("Error picking image: $e");
       }
+    } else {
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.any,
+      );
 
-      notifyListeners();
+      if (result != null && result.files.isNotEmpty) {
+        PlatformFile selectedFile = result.files.first;
+        File file = File(selectedFile.path!);
+
+        if (_isImage(file.path)) {
+          File? compressedFile = await _compressImage(file);
+          _storeFile(fieldName, compressedFile ?? file);
+        } else if (_isPDF(file.path)) {
+          File? compressedPDF = await _compressPDF(file);
+          _storeFile(fieldName, compressedPDF ?? file);
+        } else {
+          _storeFile(fieldName, file);
+        }
+        notifyListeners();
+      }
     }
   }
-
   void clearFile(String fieldName) {
     _files.remove(fieldName);
     notifyListeners();
@@ -93,3 +112,5 @@ class FilePickerProvider with ChangeNotifier {
     }
   }
 }
+
+

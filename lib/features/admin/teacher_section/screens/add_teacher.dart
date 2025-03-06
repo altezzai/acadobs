@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -27,15 +28,11 @@ class _AddTeacherState extends State<AddTeacher> {
   String? selectedGender;
 
   // textediting controllers
-  final TextEditingController _nameController =
-      TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _dateOfBirthController = TextEditingController();
-  final TextEditingController _addressController =
-      TextEditingController();
-  final TextEditingController _phoneController =
-      TextEditingController();
-  final TextEditingController _emailController =
-      TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
   late DropdownProvider dropdownProvider;
   late FilePickerProvider filePickerProvider;
@@ -193,6 +190,7 @@ class _AddTeacherState extends State<AddTeacher> {
                 CustomFilePicker(
                   label: 'Teacher Photo',
                   fieldName: 'profile photo',
+                  isImagePicker: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'This field is required';

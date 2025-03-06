@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/core/controller/file_picker_provider.dart';
@@ -6,11 +7,13 @@ class CustomFilePicker extends StatelessWidget {
   final String label;
   final String fieldName;
   final String? Function(String?)? validator; // Added validator parameter
+  final bool isImagePicker; 
 
   CustomFilePicker({
     required this.label,
     required this.fieldName,
     this.validator, // Accept validator in the constructor
+    this.isImagePicker = false, // Default to all files
   });
 
   @override
@@ -31,7 +34,8 @@ class CustomFilePicker extends StatelessWidget {
             const SizedBox(height: 8),
             GestureDetector(
               onTap: () async {
-                await fileProvider.pickFile(fieldName);
+                 // Restrict to images if `isImagePicker` is true
+                await fileProvider.pickFile(fieldName, imagesOnly: isImagePicker);
                 state.didChange(fileProvider.getFile(fieldName)?.path);
               },
               child: Container(
