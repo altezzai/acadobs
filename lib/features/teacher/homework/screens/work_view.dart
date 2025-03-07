@@ -188,9 +188,7 @@ class _WorkViewState extends State<WorkView> {
                               '${value.homeworkWithStudent.assignedStudents?[index].assignedStudentClass ?? ""} ${value.homeworkWithStudent.assignedStudents?[index].section ?? ""}',
                           imageUrl:
                               "${baseUrl}${Urls.studentPhotos}${value.homeworkWithStudent.assignedStudents?[index].studentPhoto}",
-                          // suffixText: value.homeworkWithStudent
-                          //         .assignedStudents?[index].section ??
-                          //     "",
+                          suffixText:"",
                         ),
                       );
                     });
