@@ -181,7 +181,7 @@ class NoticeController extends ChangeNotifier {
         log(">>>>>>${response.statusMessage}");
         log("Images to upload: ${chosenFiles?.map((e) => e.path).toList()}");
         CustomSnackbar.show(context,
-            message: 'Event Edited successfully', type: SnackbarType.success);
+            message: 'Event Added successfully', type: SnackbarType.success);
         Navigator.pop(context);
       }
     } catch (e) {

@@ -37,14 +37,11 @@ class _AddStudentPageState extends State<AddStudentPage> {
   final TextEditingController _dateOfJoiningController = TextEditingController(
       text: DateFormat('yyyy-MM-dd').format(DateTime.now()));
 
-  final TextEditingController _dateOfBirthController =
-      TextEditingController();
+  final TextEditingController _dateOfBirthController = TextEditingController();
 
-  final TextEditingController _fullNameController =
-      TextEditingController();
+  final TextEditingController _fullNameController = TextEditingController();
 
-  final TextEditingController _rollNumberController =
-      TextEditingController();
+  final TextEditingController _rollNumberController = TextEditingController();
 
   final TextEditingController _admissionNumberController =
       TextEditingController();
@@ -52,11 +49,9 @@ class _AddStudentPageState extends State<AddStudentPage> {
   final TextEditingController _aadhaarNumberController =
       TextEditingController();
 
-  final TextEditingController _addressController =
-      TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
 
-  final TextEditingController _emailController =
-      TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
   final TextEditingController _previousSchoolController =
       TextEditingController();
@@ -67,11 +62,9 @@ class _AddStudentPageState extends State<AddStudentPage> {
   final TextEditingController _motherFullNameController =
       TextEditingController();
 
-  final TextEditingController _guardianNameController =
-      TextEditingController();
+  final TextEditingController _guardianNameController = TextEditingController();
 
-  final TextEditingController parentEmailController =
-      TextEditingController();
+  final TextEditingController parentEmailController = TextEditingController();
 
   final TextEditingController _fatherContactNumberController =
       TextEditingController();
@@ -79,15 +72,12 @@ class _AddStudentPageState extends State<AddStudentPage> {
   final TextEditingController _motherContactNumberController =
       TextEditingController();
 
-  final TextEditingController _occupationController =
-      TextEditingController();
-
+  final TextEditingController _occupationController = TextEditingController();
 
   final TextEditingController _alternateNumberController =
       TextEditingController();
 
-  final TextEditingController _siblingNameController =
-      TextEditingController();
+  final TextEditingController _siblingNameController = TextEditingController();
 
   late DropdownProvider dropdownProvider;
 
@@ -375,8 +365,8 @@ class _AddStudentPageState extends State<AddStudentPage> {
                           .parentEmailCheckData!.previousStudentData![0];
 
                       // Autofill fields with the data
-                      _fullNameController.text =
-                          studentParentData.studentName ?? '';
+                      // _fullNameController.text =
+                      //     studentParentData.studentName ?? '';
                       _fatherFullNameController.text =
                           studentParentData.fatherFullName ?? '';
                       _motherFullNameController.text =
@@ -553,6 +543,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 CustomFilePicker(
                   label: 'Student Photo',
                   fieldName: 'student photo',
+                  isImagePicker: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'This field is required';
@@ -572,6 +563,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 CustomFilePicker(
                   label: 'Parent Photo',
                   fieldName: 'parent photo',
+                  isImagePicker: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'This field is required';
