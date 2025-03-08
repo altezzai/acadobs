@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/app_constants.dart';
 import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/base/utils/form_validators.dart';
@@ -67,8 +68,8 @@ class _ProgressReportState extends State<ProgressReport> {
                     child: CustomDropdown(
                       dropdownKey: 'class',
                       icon: Icons.school_outlined,
-                      label: "Select Class",
-                      items: ["6", "7", "8", "9", "10"],
+                      label: "Class*",
+                      items: AppConstants.classNames,
                       validator: (value) => FormValidator.validateNotEmpty(
                           value,
                           fieldName: "Class"),
@@ -79,8 +80,8 @@ class _ProgressReportState extends State<ProgressReport> {
                     child: CustomDropdown(
                       dropdownKey: 'division',
                       icon: Icons.access_time,
-                      label: "Select Division",
-                      items: ["A", "B", "C", "D", "E"],
+                      label: "Division*",
+                      items: AppConstants.divisions,
                       validator: (value) => FormValidator.validateNotEmpty(
                           value,
                           fieldName: "Division"),
@@ -91,7 +92,7 @@ class _ProgressReportState extends State<ProgressReport> {
               SizedBox(height: Responsive.height * 1),
               CustomTextfield(
                 controller: _titleController,
-                hintText: "Exam",
+                hintText: "Exam*",
                 iconData: Icon(Icons.text_fields),
                 validator: (value) =>
                     FormValidator.validateNotEmpty(value, fieldName: "Title"),
@@ -100,7 +101,7 @@ class _ProgressReportState extends State<ProgressReport> {
               CustomDropdown(
                 dropdownKey: 'subject',
                 icon: Icons.access_time,
-                label: "Select Subject",
+                label: "Select Subject*",
                 items: ["Physics", "Chemistry", "Mathematics"],
                 validator: (value) =>
                     FormValidator.validateNotEmpty(value, fieldName: "Subject"),
@@ -118,7 +119,7 @@ class _ProgressReportState extends State<ProgressReport> {
               SizedBox(height: Responsive.height * 1),
               CustomTextfield(
                 controller: _totalMarkController,
-                hintText: "Total Mark",
+                hintText: "Total Mark*",
                 iconData: Icon(Icons.book),
                 validator: (value) => FormValidator.validateNotEmpty(value,
                     fieldName: "Total Mark"),

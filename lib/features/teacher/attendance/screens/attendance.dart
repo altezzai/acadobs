@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/app_constants.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
@@ -118,7 +119,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                                                           .selectedSubjectId)
                                                   .subject ??
                                               "") // Fetch the selected subject name
-                                          : "Select Subject", // Default hint text when no subject is selected
+                                          : "Select Subject*", // Default hint text when no subject is selected
                                     ),
                                     enabled:
                                         false, // Prevent editing as it's controlled by selection
@@ -292,8 +293,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
           child: CustomDropdown(
             dropdownKey: 'class',
             icon: Icons.school_outlined,
-            label: "Select Class",
-            items: ["6", "7", "8", "9", "10"],
+            label: "Select Class*",
+            items: AppConstants.classNames,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return "Please select a class";
@@ -307,8 +308,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
           child: CustomDropdown(
             dropdownKey: 'division',
             icon: Icons.access_time,
-            label: "Select Division",
-            items: ["A", "B", "C", "D", "E"],
+            label: "Select Division*",
+            items: AppConstants.divisions,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return "Please select a division";
@@ -327,7 +328,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
       children: [
         Expanded(
           child: CustomDatePicker(
-            label: "Date",
+            label: "Date*",
             dateController: _dateController,
             onDateSelected: (selectedDate) {
               print("Date selected: $selectedDate");
@@ -345,8 +346,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
           child: CustomDropdown(
             dropdownKey: 'period',
             icon: Icons.group_outlined,
-            label: "Select Period",
-            items: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+            label: "Select Period*",
+            items: AppConstants.classPeriods,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return "Please select a period";

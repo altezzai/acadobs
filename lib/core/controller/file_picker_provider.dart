@@ -11,14 +11,14 @@ class FilePickerProvider with ChangeNotifier {
   final Map<String, PlatformFile?> _files = {};
 
   PlatformFile? getFile(String fieldName) => _files[fieldName];
-  
 
-    /// Pick a **single file** or a **single image** based on the flag
+  /// Pick a **single file** or a **single image** based on the flag
   Future<void> pickFile(String fieldName, {bool imagesOnly = false}) async {
     if (imagesOnly) {
       try {
         final ImagePicker picker = ImagePicker();
-        final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+        final XFile? image =
+            await picker.pickImage(source: ImageSource.gallery);
 
         if (image != null) {
           File file = File(image.path);
@@ -41,9 +41,9 @@ class FilePickerProvider with ChangeNotifier {
         if (_isImage(file.path)) {
           File? compressedFile = await _compressImage(file);
           _storeFile(fieldName, compressedFile ?? file);
-        } else if (_isPDF(file.path)) {
-          File? compressedPDF = await _compressPDF(file);
-          _storeFile(fieldName, compressedPDF ?? file);
+          // } else if (_isPDF(file.path)) {
+          //   File? compressedPDF = await _compressPDF(file);
+          //   _storeFile(fieldName, compressedPDF ?? file);
         } else {
           _storeFile(fieldName, file);
         }
@@ -51,6 +51,7 @@ class FilePickerProvider with ChangeNotifier {
       }
     }
   }
+
   void clearFile(String fieldName) {
     _files.remove(fieldName);
     notifyListeners();

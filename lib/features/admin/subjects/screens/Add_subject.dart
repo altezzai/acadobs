@@ -54,7 +54,7 @@ class _AddSubjectState extends State<AddSubject> {
               CustomTextfield(
                 iconData: Icon(Icons.title),
                 // hintText: 'Subject Name',
-                label: "Subject Name",
+                label: "Subject Name*",
                 controller: _subjectNameController,
                 validator: (value) =>
                     FormValidator.validateNotEmpty(value, fieldName: "Name"),
@@ -63,7 +63,7 @@ class _AddSubjectState extends State<AddSubject> {
               CustomTextfield(
                 iconData: Icon(Icons.title),
                 // hintText: 'Description',
-                label: "Description",
+                label: "Description*",
                 controller: _subjectDescriptionController,
               ),
               SizedBox(height: Responsive.height * 2),

@@ -103,7 +103,7 @@ class _EditTeacherScreenState extends State<EditTeacherScreen> {
               ),
               SizedBox(height: Responsive.height * 1),
               CustomFilePicker(
-                label: 'Teacher Photo',
+                label: 'Teacher Photo (Maximum image size: 5MB)',
                 fieldName: 'profile photo',
               ),
               SizedBox(height: Responsive.height * 10),

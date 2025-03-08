@@ -151,7 +151,7 @@ class _AddEventPageState extends State<AddEventPage> {
                 // Title Input (styled similar to Add Notice)
                 CustomTextfield(
                   controller: _titleController,
-                  label: 'Title',
+                  label: 'Title*',
                   iconData: Icon(Icons.title),
                   validator: (value) =>
                       FormValidator.validateNotEmpty(value, fieldName: "Title"),
@@ -164,7 +164,7 @@ class _AddEventPageState extends State<AddEventPage> {
                   maxLines: 4,
                   decoration: InputDecoration(
                     hintText: 'Write here....',
-                    labelText: 'Description',
+                    labelText: 'Description*',
                     labelStyle: TextStyle(
                       color: Colors.grey, // Change label text color here
                     ),
@@ -186,7 +186,7 @@ class _AddEventPageState extends State<AddEventPage> {
 
                 // Date Picker (styled similar to Add Notice)
                 CustomDatePicker(
-                  label: "dd-mm-yyyy",
+                  label: "Date*",
                   lastDate: DateTime(2026),
                   dateController: _dateController,
                   onDateSelected: (selectedDate) {

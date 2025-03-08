@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:school_app/base/controller/student_id_controller.dart';
 import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/app_constants.dart';
 import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
@@ -87,8 +88,8 @@ class _AddDonationPageState extends State<AddDonationPage> {
                     Expanded(
                       child: CustomDropdown(
                         dropdownKey: 'class',
-                        label: 'Class',
-                        items: ['8', '9', '10'],
+                        label: 'Class*',
+                        items: AppConstants.classNames,
                         icon: Icons.school,
                         onChanged: (selectedClass) {
                           final selectedDivision = context
@@ -106,8 +107,8 @@ class _AddDonationPageState extends State<AddDonationPage> {
                     Expanded(
                       child: CustomDropdown(
                         dropdownKey: 'division',
-                        label: 'Division',
-                        items: ['A', 'B', 'C'],
+                        label: 'Division*',
+                        items: AppConstants.divisions,
                         icon: Icons.group,
                         onChanged: (selectedDivision) {
                           final selectedClass = context
@@ -160,7 +161,7 @@ class _AddDonationPageState extends State<AddDonationPage> {
                       return TextFormField(
                         decoration: InputDecoration(
                           hintText: selectedStudentName == null
-                              ? "Select Student"
+                              ? "Select Student*"
                               : capitalizeEachWord(selectedStudentName),
                           enabled: false,
                         ),
@@ -184,7 +185,7 @@ class _AddDonationPageState extends State<AddDonationPage> {
                     ),
                     const SizedBox(height: 8),
                     CustomTextfield(
-                      hintText: 'Title',
+                      label: 'Title*',
                       controller: _purposeController,
                       iconData: const Icon(Icons.title),
                       validator: (value) => FormValidator.validateNotEmpty(
@@ -193,7 +194,7 @@ class _AddDonationPageState extends State<AddDonationPage> {
                     ),
                     SizedBox(height: Responsive.height * 1.6),
                     CustomTextfield(
-                      hintText: 'Amount',
+                      label: 'Amount*',
                       controller: _amountController,
                       iconData: const Icon(Icons.currency_rupee),
                       keyBoardtype: TextInputType.number,
@@ -209,7 +210,7 @@ class _AddDonationPageState extends State<AddDonationPage> {
                           "End Date selected: $selectedDate",
                         );
                       },
-                      label: 'Donation Date',
+                      label: 'Donation Date*',
                       validator: (value) => FormValidator.validateNotEmpty(
                           value,
                           fieldName: "Donation Date"),
@@ -217,21 +218,15 @@ class _AddDonationPageState extends State<AddDonationPage> {
                     SizedBox(height: Responsive.height * 1.6),
                     CustomDropdown(
                       dropdownKey: 'donationType',
-                      label: 'Donation Type',
+                      label: 'Donation Type*',
                       items: ['One-time', 'Recurring', 'Event-based'],
                       icon: Icons.category,
                     ),
                     SizedBox(height: Responsive.height * 1.6),
                     CustomDropdown(
                       dropdownKey: 'paymentMethod',
-                      label: 'Payment Method',
-                      items: [
-                        'Bank Transfer',
-                        'Cash',
-                        'Cheque',
-                        'Credit Card',
-                        'UPI'
-                      ],
+                      label: 'Payment Method*',
+                      items: AppConstants.paymentMethods,
                       icon: Icons.currency_rupee,
                       validator: (value) => FormValidator.validateNotEmpty(
                           value,
@@ -242,9 +237,9 @@ class _AddDonationPageState extends State<AddDonationPage> {
                       hintText: 'Transaction Id',
                       controller: _transactionController,
                       iconData: const Icon(Icons.currency_rupee),
-                      validator: (value) => FormValidator.validateNotEmpty(
-                          value,
-                          fieldName: "Transaction Id"),
+                      // validator: (value) => FormValidator.validateNotEmpty(
+                      //     value,
+                      //     fieldName: "Transaction Id"),
                     ),
                   ],
                 ),

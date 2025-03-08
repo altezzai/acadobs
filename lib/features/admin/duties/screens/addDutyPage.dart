@@ -85,7 +85,7 @@ class _AddDutyPageState extends State<AddDutyPage> {
 
                     // Title Input
                     CustomTextfield(
-                      label: 'Title',
+                      label: 'Title*',
                       controller: _titleController,
                       iconData: Icon(Icons.title),
                       hintStyle: TextStyle(fontSize: Responsive.text * 1.8),
@@ -97,7 +97,7 @@ class _AddDutyPageState extends State<AddDutyPage> {
 
                     // Description Input
                     CustomTextfield(
-                      label: 'Description',
+                      label: 'Description*',
                       controller: _descriptionController,
                       iconData: Icon(Icons.description),
                       keyBoardtype: TextInputType.multiline,
@@ -115,9 +115,9 @@ class _AddDutyPageState extends State<AddDutyPage> {
                       iconData: Icon(Icons.description),
                       keyBoardtype: TextInputType.multiline,
                       hintStyle: TextStyle(fontSize: Responsive.text * 1.8),
-                      validator: (value) => FormValidator.validateNotEmpty(
-                          value,
-                          fieldName: "Remark"),
+                      // validator: (value) => FormValidator.validateNotEmpty(
+                      //     value,
+                      //     fieldName: "Remark"),
                     ),
                     SizedBox(height: Responsive.height * 2),
 
@@ -127,7 +127,7 @@ class _AddDutyPageState extends State<AddDutyPage> {
                         // Start Date Field
                         Expanded(
                           child: CustomDatePicker(
-                            label: "Start Date",
+                            label: "Start Date*",
                             dateController: _startDateController,
                             firstDate: DateTime.now(), // Earliest date is today
                             lastDate: DateTime(
@@ -146,7 +146,7 @@ class _AddDutyPageState extends State<AddDutyPage> {
                         // End Date Field
                         Expanded(
                           child: CustomDatePicker(
-                            label: "End Date",
+                            label: "End Date*",
                             dateController: _endDateController,
                             firstDate:
                                 DateTime.now(), // Ensure it's today or later
@@ -196,7 +196,7 @@ class _AddDutyPageState extends State<AddDutyPage> {
                         return TextFormField(
                           decoration: InputDecoration(
                             hintText: value.selectedTeacherIds.isEmpty
-                                ? "Select Staffs"
+                                ? "Select Staffs*"
                                 : capitalizeEachWord(selectedTeacherNames),
                             enabled: false,
                           ),
@@ -247,10 +247,10 @@ class _AddDutyPageState extends State<AddDutyPage> {
                                 // Log selected teacher ids
                                 log("List of teacher ids selected: ==== ${value1.selectedTeacherIds.toString()}");
 
-                                // Retrieve selected status and duty file
-                                final status = context
-                                    .read<DropdownProvider>()
-                                    .getSelectedItem('status');
+                                // // Retrieve selected status and duty file
+                                // final status = context
+                                //     .read<DropdownProvider>()
+                                //     .getSelectedItem('status');
                                 final dutyfile = context
                                     .read<FilePickerProvider>()
                                     .getFile('duty file');
@@ -261,7 +261,7 @@ class _AddDutyPageState extends State<AddDutyPage> {
                                       context,
                                       duty_title: _titleController.text,
                                       description: _descriptionController.text,
-                                      status: status,
+                                      status: "Pending",
                                       remark: _remarkController.text,
                                       assignedDate: _startDateController.text,
                                       endDate: _endDateController.text,

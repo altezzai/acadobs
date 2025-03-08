@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/utils/app_constants.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
@@ -62,8 +63,8 @@ class _StudentReportState extends State<StudentReport> {
             Expanded(
               child: CustomDropdown(
                 dropdownKey: 'class',
-                label: 'Class',
-                items: ['5', '6', '7', '8', '9', '10'],
+                label: 'Class*',
+                items: AppConstants.classNames,
                 icon: Icons.school,
                 onChanged: (selectedClass) {
                   final selectedDivision = context
@@ -82,8 +83,8 @@ class _StudentReportState extends State<StudentReport> {
             Expanded(
               child: CustomDropdown(
                 dropdownKey: 'division',
-                label: 'Division',
-                items: ['A', 'B', 'C'],
+                label: 'Division*',
+                items: AppConstants.divisions,
                 icon: Icons.group,
                 onChanged: (selectedDivision) {
                   final selectedClass =

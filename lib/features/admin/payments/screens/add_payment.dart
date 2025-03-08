@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:school_app/base/controller/student_id_controller.dart';
 import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/app_constants.dart';
 import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
@@ -86,8 +87,8 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                     Expanded(
                       child: CustomDropdown(
                         dropdownKey: 'class',
-                        label: 'Class',
-                        items: ['8', '9', '10'],
+                        label: 'Class*',
+                        items: AppConstants.classNames,
                         icon: Icons.school,
                         onChanged: (selectedClass) {
                           final selectedDivision = context
@@ -105,8 +106,8 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                     Expanded(
                       child: CustomDropdown(
                         dropdownKey: 'division',
-                        label: 'Division',
-                        items: ['A', 'B', 'C'],
+                        label: 'Division*',
+                        items: AppConstants.divisions,
                         icon: Icons.group,
                         onChanged: (selectedDivision) {
                           final selectedClass = context
@@ -160,7 +161,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                       return TextFormField(
                         decoration: InputDecoration(
                           hintText: selectedStudentName == null
-                              ? "Select Student"
+                              ? "Select Student*"
                               : capitalizeEachWord(selectedStudentName),
                           enabled: false,
                         ),
@@ -183,9 +184,9 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                         Expanded(
                           child: CustomDropdown(
                             dropdownKey: 'selectedYear',
-                            label: 'Year',
+                            label: 'Year*',
                             icon: Icons.calendar_month,
-                            items: ['2023', '2024', '2025'],
+                            items: AppConstants.years,
                             validator: (value) =>
                                 FormValidator.validateNotEmpty(value,
                                     fieldName: "Year"),
@@ -195,22 +196,9 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                         Expanded(
                           child: CustomDropdown(
                             dropdownKey: 'selectedMonth',
-                            label: 'Month',
+                            label: 'Month*',
                             icon: Icons.calendar_month,
-                            items: [
-                              'January',
-                              'February',
-                              'March',
-                              'April',
-                              'May',
-                              'June',
-                              'July',
-                              'August',
-                              'September',
-                              'October',
-                              'November',
-                              'December'
-                            ],
+                            items: AppConstants.months,
                             validator: (value) =>
                                 FormValidator.validateNotEmpty(value,
                                     fieldName: "Month"),
@@ -224,7 +212,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                       onDateSelected: (selectedDate) {
                         print("End Date selected: $selectedDate");
                       },
-                      label: 'Payment Date',
+                      label: 'Payment Date*',
                       lastDate:
                           DateTime(2100), // Extend to a reasonable future date
                       initialDate: DateTime.now(),
@@ -235,7 +223,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                     ),
                     SizedBox(height: Responsive.height * 1.6),
                     CustomTextfield(
-                      hintText: 'Amount',
+                      label: 'Amount*',
                       controller: _amountController,
                       iconData: const Icon(Icons.currency_rupee),
                       keyBoardtype: TextInputType.number,
@@ -246,7 +234,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                     SizedBox(height: Responsive.height * 1.6),
                     CustomDropdown(
                       dropdownKey: 'paymentMethod',
-                      label: 'Payment Method',
+                      label: 'Payment Method*',
                       icon: Icons.payment,
                       items: ['Cash', 'Bank Transfer', 'Credit Card', 'UPI'],
                       validator: (value) => FormValidator.validateNotEmpty(
@@ -259,14 +247,14 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                       controller: _transactionController,
                       iconData: const Icon(Icons.confirmation_number),
                       keyBoardtype: TextInputType.text,
-                      validator: (value) => FormValidator.validateNotEmpty(
-                          value,
-                          fieldName: "Transaction ID"),
+                      // validator: (value) => FormValidator.validateNotEmpty(
+                      //     value,
+                      //     fieldName: "Transaction ID"),
                     ),
                     SizedBox(height: Responsive.height * 1.6),
                     CustomDropdown(
                       dropdownKey: 'paymentStatus',
-                      label: 'Payment Status',
+                      label: 'Payment Status*',
                       icon: Icons.check_circle,
                       items: ['Pending', 'Completed', 'Failed'],
                       validator: (value) => FormValidator.validateNotEmpty(

@@ -8,6 +8,7 @@ import 'package:school_app/base/controller/student_id_controller.dart';
 import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
+import 'package:school_app/base/utils/app_constants.dart';
 import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/form_validators.dart';
@@ -124,7 +125,7 @@ class _EditHomeWorkScreenState extends State<EditHomeworkScreen> {
                       child: CustomDropdown(
                         dropdownKey: 'classGrade',
                         label: 'Class',
-                        items: ['8', '9', '10'],
+                        items: AppConstants.classNames,
                         icon: Icons.school,
                         onChanged: (selectedClass) {
                           final selectedDivision = context
@@ -143,7 +144,7 @@ class _EditHomeWorkScreenState extends State<EditHomeworkScreen> {
                       child: CustomDropdown(
                         dropdownKey: 'division',
                         label: 'Division',
-                        items: ['A', 'B', 'C'],
+                        items: AppConstants.divisions,
                         icon: Icons.group,
                         onChanged: (selectedDivision) {
                           final selectedClass = context

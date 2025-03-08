@@ -125,7 +125,7 @@ class DutyController extends ChangeNotifier {
       required String remark,
       required List<int> teachers,
       required String assignedDate,
-    required String endDate,
+      required String endDate,
       String? fileattachment}) async {
     _isloadingTwo = true;
     notifyListeners();
@@ -141,6 +141,7 @@ class DutyController extends ChangeNotifier {
           fileAttachment: fileattachment);
       if (response.statusCode == 201 || response.statusCode == 200) {
         log(">>>>>>${response.statusMessage}");
+        await getDuties();
         CustomSnackbar.show(context,
             message: "Duty added successfully!", type: SnackbarType.success);
 
@@ -161,8 +162,8 @@ class DutyController extends ChangeNotifier {
       required String description,
       required String status,
       required String remark,
-       required String assignedDate,
-    required String endDate,
+      required String assignedDate,
+      required String endDate,
       required List<int> teachers,
       String? fileattachment}) async {
     _isloadingTwo = true;

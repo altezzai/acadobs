@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/utils/app_constants.dart';
 import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/base/utils/form_validators.dart';
@@ -157,7 +158,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
 
                 // Name Input
                 CustomTextfield(
-                    label: 'Student Name',
+                    label: 'Student Name*',
                     controller: _fullNameController,
                     iconData: Icon(Icons.person),
                     validator: (value) => FormValidator.validateNotEmpty(value,
@@ -166,7 +167,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
 
                 // Roll Number Input
                 CustomTextfield(
-                  label: 'Roll Number',
+                  label: 'Roll Number*',
                   keyBoardtype: TextInputType.number,
                   controller: _rollNumberController,
                   iconData: Icon(Icons.badge),
@@ -181,7 +182,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
 
                 CustomDropdown(
                   dropdownKey: 'gender',
-                  label: 'Gender',
+                  label: 'Gender*',
                   icon: Icons.person_2_outlined,
                   items: ['Male', 'Female', 'Other'],
                   validator: (value) {
@@ -199,8 +200,8 @@ class _AddStudentPageState extends State<AddStudentPage> {
                     Expanded(
                       child: CustomDropdown(
                         dropdownKey: 'class',
-                        label: 'Class',
-                        items: ['5', '6', '7', '8', '9', '10'],
+                        label: 'Class*',
+                        items: AppConstants.classNames,
                         icon: Icons.school,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -216,8 +217,8 @@ class _AddStudentPageState extends State<AddStudentPage> {
                     Expanded(
                       child: CustomDropdown(
                         dropdownKey: 'division',
-                        label: 'Division',
-                        items: ['A', 'B', 'C'],
+                        label: 'Division*',
+                        items: AppConstants.divisions,
                         icon: Icons.group,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -232,30 +233,10 @@ class _AddStudentPageState extends State<AddStudentPage> {
 
                 SizedBox(height: Responsive.height * 2),
 
-                // Date of Joining Input
-                // CustomDatePicker(
-                //   lastDate: DateTime.now(),
-                //   firstDate: DateTime(2022),
-                //   label: "Date of Joining",
-                //   dateController:
-                //       _dateOfJoiningController, // Unique controller for end date
-                //   onDateSelected: (selectedDate) {
-                //     print("End Date selected: $selectedDate");
-                //   },
-                //   validator: (value) {
-                //     if (value == null || value.isEmpty) {
-                //       return 'This field is required';
-                //     }
-                //     return null;
-                //   },
-                // ),
-
-                // SizedBox(height: Responsive.height * 2),
-
                 // Date of Birth Input
                 CustomDatePicker(
                   // label: "Date of Birth",
-                  label: "Date of Birth",
+                  label: "Date of Birth*",
                   firstDate: DateTime(1995),
                   lastDate: DateTime(2020),
                   // initialDate: DateTime.now(),
@@ -275,7 +256,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
 
                 // Address Input
                 CustomTextfield(
-                  label: 'Address',
+                  label: 'Address*',
                   controller: _addressController,
                   iconData: Icon(Icons.location_on),
                   keyBoardtype: TextInputType.streetAddress,
@@ -290,7 +271,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
 
                 // Admission Number and Aadhar Number Input
                 CustomTextfield(
-                  label: 'Admission Number',
+                  label: 'Admission Number*',
                   controller: _admissionNumberController,
                   iconData: Icon(Icons.credit_card),
                   validator: (value) {
@@ -321,23 +302,23 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   label: 'Blood Group',
                   items: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
                   icon: Icons.bloodtype,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'This field is required';
-                    }
-                    return null;
-                  },
+                  // validator: (value) {
+                  //   if (value == null || value.isEmpty) {
+                  //     return 'This field is required';
+                  //   }
+                  //   return null;
+                  // },
                 ),
                 SizedBox(height: Responsive.height * 2),
                 // ******EMAIL VALIDATION************//
                 CustomTextfield(
-                    label: 'Email',
+                    label: 'Email*',
                     controller: _emailController,
                     iconData: Icon(Icons.email),
                     validator: (value) => FormValidator.validateEmail(value)),
                 SizedBox(height: Responsive.height * 2),
                 CustomTextfield(
-                  label: 'Previous School',
+                  label: 'Previous School*',
                   controller: _previousSchoolController,
                   iconData: Icon(Icons.school_rounded),
                 ),
@@ -347,7 +328,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 SizedBox(height: 10),
                 CustomTextfield(
                   controller: parentEmailController,
-                  label: 'Parent Email',
+                  label: 'Parent Email*',
                   iconData: Icon(Icons.email),
                   validator: (value) => FormValidator.validateEmail(value),
                 ),
@@ -436,7 +417,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
 
                 SizedBox(height: Responsive.height * 2),
                 CustomTextfield(
-                  label: 'Father\'s Name',
+                  label: 'Father\'s Name*',
                   controller: _fatherFullNameController,
                   iconData: Icon(Icons.person_outline),
                   validator: (value) {
@@ -449,7 +430,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 SizedBox(height: Responsive.height * 2),
                 // **********PHONE NUMBER VALIDATION************//
                 CustomTextfield(
-                  label: 'Father\'s Phone Number',
+                  label: 'Father\'s Phone Number*',
                   controller: _fatherContactNumberController,
                   iconData: Icon(Icons.phone),
                   validator: (value) => FormValidator.validatePassword(value),
@@ -457,7 +438,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 ),
                 SizedBox(height: Responsive.height * 2),
                 CustomTextfield(
-                  label: 'Mother\'s Name',
+                  label: 'Mother\'s Name*',
                   controller: _motherFullNameController,
                   iconData: Icon(Icons.person_outline),
                   validator: (value) {
@@ -469,7 +450,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 ),
                 SizedBox(height: Responsive.height * 2),
                 CustomTextfield(
-                  label: 'Mother\'s Phone Number',
+                  label: 'Mother\'s Phone Number*',
                   iconData: Icon(Icons.phone),
                   controller: _motherContactNumberController,
                   validator: (value) {
@@ -484,7 +465,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
 
                 // Guardian, Parent Email, Occupation Inputs
                 CustomTextfield(
-                  label: 'Guardian Fullname',
+                  label: 'Guardian Fullname*',
                   controller: _guardianNameController,
                   iconData: Icon(Icons.person_2_outlined),
                   validator: (value) {
@@ -497,7 +478,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 SizedBox(height: Responsive.height * 2),
 
                 CustomTextfield(
-                  label: 'Occupation',
+                  label: 'Occupation*',
                   iconData: Icon(Icons.work),
                   controller: _occupationController,
                 ),
@@ -541,7 +522,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 SizedBox(height: 10),
 
                 CustomFilePicker(
-                  label: 'Student Photo',
+                  label: 'Student Photo (Maximum image size: 5MB)*',
                   fieldName: 'student photo',
                   isImagePicker: true,
                   validator: (value) {
@@ -561,7 +542,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 SizedBox(height: Responsive.height * 2),
 
                 CustomFilePicker(
-                  label: 'Parent Photo',
+                  label: 'Parent Photo (Maximum image size: 5MB)*',
                   fieldName: 'parent photo',
                   isImagePicker: true,
                   validator: (value) {

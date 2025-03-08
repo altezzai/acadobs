@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/controller/student_id_controller.dart';
+import 'package:school_app/base/utils/app_constants.dart';
 import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
@@ -112,7 +113,7 @@ class _EditPaymentScreenState extends State<EditPaymentScreen> {
                     child: CustomDropdown(
                       dropdownKey: 'class',
                       label: 'Class',
-                      items: ['8', '9', '10'],
+                      items: AppConstants.classNames,
                       icon: Icons.school,
                       onChanged: (selectedClass) {
                         final selectedDivision = context
@@ -131,7 +132,7 @@ class _EditPaymentScreenState extends State<EditPaymentScreen> {
                     child: CustomDropdown(
                       dropdownKey: 'division',
                       label: 'Division',
-                      items: ['A', 'B', 'C'],
+                      items: AppConstants.divisions,
                       icon: Icons.group,
                       onChanged: (selectedDivision) {
                         final selectedClass = context
@@ -214,7 +215,7 @@ class _EditPaymentScreenState extends State<EditPaymentScreen> {
                         dropdownKey: 'selectedYear',
                         label: 'Year',
                         icon: Icons.calendar_month,
-                        items: ['2023', '2024', '2025'],
+                        items: AppConstants.years,
                       )),
                       const SizedBox(width: 16),
                       Expanded(
@@ -222,20 +223,7 @@ class _EditPaymentScreenState extends State<EditPaymentScreen> {
                           dropdownKey: 'selectedMonth',
                           label: 'Month',
                           icon: Icons.calendar_month,
-                          items: [
-                            'January',
-                            'February',
-                            'March',
-                            'April',
-                            'May',
-                            'June',
-                            'July',
-                            'August',
-                            'September',
-                            'October',
-                            'November',
-                            'December'
-                          ],
+                          items: AppConstants.months,
                         ),
                       ),
                     ],

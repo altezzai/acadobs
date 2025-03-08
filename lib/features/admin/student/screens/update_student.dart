@@ -156,7 +156,7 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
               ),
               SizedBox(height: Responsive.height * 2),
               CustomFilePicker(
-                label: 'Student Photo',
+                label: 'Student Photo (Maximum image size: 5MB)',
                 fieldName: 'student photo',
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -167,7 +167,7 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
               ),
               SizedBox(height: Responsive.height * 2),
               CustomFilePicker(
-                label: 'Parent Photo',
+                label: 'Parent Photo (Maximum image size: 5MB)',
                 fieldName: 'parent photo',
                 validator: (value) {
                   if (value == null || value.isEmpty) {

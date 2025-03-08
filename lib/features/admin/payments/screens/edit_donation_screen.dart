@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/controller/student_id_controller.dart';
+import 'package:school_app/base/utils/app_constants.dart';
 import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
@@ -101,7 +102,7 @@ class _EditDonationScreenState extends State<EditDonationScreen> {
                     child: CustomDropdown(
                       dropdownKey: 'class',
                       label: 'Class',
-                      items: ['8', '9', '10'],
+                      items: AppConstants.classNames,
                       icon: Icons.school,
                       onChanged: (selectedClass) {
                         final selectedDivision = context
@@ -120,7 +121,7 @@ class _EditDonationScreenState extends State<EditDonationScreen> {
                     child: CustomDropdown(
                       dropdownKey: 'division',
                       label: 'Division',
-                      items: ['A', 'B', 'C'],
+                      items: AppConstants.divisions,
                       icon: Icons.group,
                       onChanged: (selectedDivision) {
                         final selectedClass = context
@@ -234,13 +235,7 @@ class _EditDonationScreenState extends State<EditDonationScreen> {
                   CustomDropdown(
                     dropdownKey: 'paymentMethod',
                     label: 'Payment Method',
-                    items: [
-                      'Bank Transfer',
-                      'Cash',
-                      'Cheque',
-                      'Credit Card',
-                      'UPI'
-                    ],
+                    items: AppConstants.paymentMethods,
                     icon: Icons.currency_rupee,
                   ),
                   SizedBox(height: Responsive.height * 1.6),

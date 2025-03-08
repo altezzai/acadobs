@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/utils/app_constants.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
@@ -114,9 +115,9 @@ class _EditNoticeScreenState extends State<EditNoticeScreen> {
                         Expanded(
                           child: CustomDropdown(
                             dropdownKey: 'class',
-                            label: 'Select Class',
+                            label: 'Class',
                             icon: Icons.school,
-                            items: ['7', '8', '9', '10'],
+                            items: AppConstants.classNames,
                           ),
                         ),
                         SizedBox(width: 16), // Space between the dropdowns
@@ -124,9 +125,9 @@ class _EditNoticeScreenState extends State<EditNoticeScreen> {
                         Expanded(
                           child: CustomDropdown(
                             dropdownKey: 'division',
-                            label: 'Select Division',
+                            label: 'Division',
                             icon: Icons.group,
-                            items: ['A', 'B', 'C'],
+                            items: AppConstants.divisions,
                           ),
                         ),
                       ],
@@ -135,7 +136,7 @@ class _EditNoticeScreenState extends State<EditNoticeScreen> {
             SizedBox(height: 16),
             // Date Picker
             CustomDatePicker(
-              label: "yyyy-mm-dd",
+              label: "Date",
               dateController: _dateController, // Unique controller for end date
               lastDate: DateTime(2026),
               onDateSelected: (selectedDate) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/utils/app_constants.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/base/utils/form_validators.dart';
 import 'package:school_app/base/utils/responsive.dart';
@@ -75,7 +76,7 @@ class _AddNoticePageState extends State<AddNoticePage> {
               // Target Audience Dropdown
               CustomDropdown(
                 dropdownKey: 'targetAudience',
-                label: 'Select Audience',
+                label: 'Select Audience*',
                 icon: Icons.school,
                 items: ['All', 'Specific Class'],
                 validator: (value) => FormValidator.validateNotEmpty(value,
@@ -93,9 +94,9 @@ class _AddNoticePageState extends State<AddNoticePage> {
                           Expanded(
                             child: CustomDropdown(
                               dropdownKey: 'class',
-                              label: 'Select Class',
+                              label: 'Class*',
                               icon: Icons.school,
-                              items: ['8', '9', '10'],
+                              items: AppConstants.classNames,
                               validator: (value) =>
                                   FormValidator.validateNotEmpty(value,
                                       fieldName: "Class"),
@@ -106,9 +107,9 @@ class _AddNoticePageState extends State<AddNoticePage> {
                           Expanded(
                             child: CustomDropdown(
                               dropdownKey: 'division',
-                              label: 'Select Division',
+                              label: 'Division*',
                               icon: Icons.group,
-                              items: ['A', 'B', 'C'],
+                              items: AppConstants.divisions,
                               validator: (value) =>
                                   FormValidator.validateNotEmpty(value,
                                       fieldName: "Division"),
@@ -120,7 +121,7 @@ class _AddNoticePageState extends State<AddNoticePage> {
               SizedBox(height: 16),
               // Date Picker
               CustomDatePicker(
-                label: "dd-mm-yyyy",
+                label: "Date*",
                 dateController:
                     _dateController, // Unique controller for end date
                 lastDate: DateTime(2026),
@@ -143,7 +144,7 @@ class _AddNoticePageState extends State<AddNoticePage> {
               CustomTextfield(
                 controller: _titleController,
                 // hintText: 'Title',
-                label: 'Title',
+                label: 'Title*',
                 iconData: Icon(Icons.title),
                 validator: (value) =>
                     FormValidator.validateNotEmpty(value, fieldName: "Title"),
@@ -156,7 +157,7 @@ class _AddNoticePageState extends State<AddNoticePage> {
                 maxLines: 4,
                 decoration: InputDecoration(
                   hintText: 'Write here....',
-                  labelText: 'Description',
+                  labelText: 'Description*',
                   labelStyle: TextStyle(
                     color: Colors.grey, // Change label text color here
                   ),

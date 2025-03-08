@@ -7,6 +7,7 @@ import 'package:school_app/base/controller/student_id_controller.dart';
 import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/theme/text_theme.dart';
+import 'package:school_app/base/utils/app_constants.dart';
 import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
@@ -93,8 +94,8 @@ class _HomeWorkState extends State<HomeWork> {
                     Expanded(
                       child: CustomDropdown(
                         dropdownKey: 'classGrade',
-                        label: 'Class',
-                        items: ['8', '9', '10'],
+                        label: 'Class*',
+                        items: AppConstants.classNames,
                         icon: Icons.school,
                         onChanged: (selectedClass) {
                           final selectedDivision = context
@@ -115,8 +116,8 @@ class _HomeWorkState extends State<HomeWork> {
                     Expanded(
                       child: CustomDropdown(
                         dropdownKey: 'division',
-                        label: 'Division',
-                        items: ['A', 'B', 'C'],
+                        label: 'Division*',
+                        items: AppConstants.divisions,
                         icon: Icons.group,
                         onChanged: (selectedDivision) {
                           final selectedClass = context
@@ -163,7 +164,7 @@ class _HomeWorkState extends State<HomeWork> {
                       return TextFormField(
                         decoration: InputDecoration(
                           hintText: value.selectedStudentIds.isEmpty
-                              ? "Select Students"
+                              ? "Select Students*"
                               : capitalizeEachWord(
                                   selectedStudentNames), // Display selected names or placeholder
                           enabled: false,
@@ -180,7 +181,7 @@ class _HomeWorkState extends State<HomeWork> {
                     // Start Date Field
                     Expanded(
                       child: CustomDatePicker(
-                        label: "Start Date",
+                        label: "Start Date*",
                         dateController: _startDateController,
                         lastDate: DateTime(
                             2100), // Extend to a reasonable future date
@@ -198,7 +199,7 @@ class _HomeWorkState extends State<HomeWork> {
                     // End Date Field
                     Expanded(
                       child: CustomDatePicker(
-                        label: "End Date",
+                        label: "End Date*",
                         dateController: _endDateController,
                         lastDate: DateTime(
                             2100), // Extend to a reasonable future date
@@ -232,7 +233,7 @@ class _HomeWorkState extends State<HomeWork> {
                                           subjectProvider.selectedSubjectId)
                                       .subject ??
                                   "") // Fetch the selected subject name
-                              : "Select Subject", // Default hint text when no subject is selected
+                              : "Select Subject*", // Default hint text when no subject is selected
                         ),
                         enabled:
                             false, // Prevent editing as it's controlled by selection
@@ -245,7 +246,7 @@ class _HomeWorkState extends State<HomeWork> {
                 ),
                 SizedBox(height: Responsive.height * 1),
                 CustomTextfield(
-                  hintText: "Total Mark",
+                  hintText: "Total Mark*",
                   controller: _markController,
                   iconData: const Icon(Icons.book),
                   validator: (value) => FormValidator.validateNotEmpty(value,
@@ -262,7 +263,7 @@ class _HomeWorkState extends State<HomeWork> {
                   height: Responsive.height * 1,
                 ),
                 CustomTextfield(
-                  hintText: "Title",
+                  hintText: "Title*",
                   controller: _titleController,
                   iconData: const Icon(Icons.text_fields),
                   validator: (value) =>
@@ -274,7 +275,7 @@ class _HomeWorkState extends State<HomeWork> {
                 TextFormField(
                   controller: _descriptionController,
                   decoration: const InputDecoration(
-                    hintText: "Description",
+                    hintText: "Description*",
                   ),
                   validator: (value) => FormValidator.validateNotEmpty(value,
                       fieldName: "Description"),
@@ -288,7 +289,7 @@ class _HomeWorkState extends State<HomeWork> {
                 ),
                 CustomDropdown(
                   dropdownKey: 'submissionType',
-                  label: 'Submission Type',
+                  label: 'Submission Type*',
                   items: ['Online', 'In-Class', 'Physical Copy'],
                   icon: Icons.offline_pin_outlined,
                   validator: (value) => FormValidator.validateNotEmpty(value,
@@ -299,7 +300,7 @@ class _HomeWorkState extends State<HomeWork> {
                 ),
                 CustomDropdown(
                   dropdownKey: 'status',
-                  label: 'Status',
+                  label: 'Status*',
                   items: ['Pending', 'Completed', 'Graded'],
                   icon: Icons.checklist,
                   validator: (value) => FormValidator.validateNotEmpty(value,

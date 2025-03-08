@@ -88,7 +88,7 @@ class _AddTeacherState extends State<AddTeacher> {
                 ),
                 CustomTextfield(
                   controller: _nameController,
-                  label: "Name",
+                  label: "Name*",
                   // hintText: 'Name',
                   iconData: Icon(Icons.person),
                   validator: (value) {
@@ -103,10 +103,10 @@ class _AddTeacherState extends State<AddTeacher> {
                 ),
                 CustomDatePicker(
                   // hintText: "Date of Birth",
-                  label: "Date of Birth",
-                  firstDate: DateTime(1995),
+                  label: "Date of Birth*",
+                  firstDate: DateTime(1960),
                   lastDate: DateTime(2010),
-                  // initialDate: DateTime.now(),
+                  initialDate: DateTime(1995),
                   dateController:
                       _dateOfBirthController, // Unique controller for end date
                   onDateSelected: (selectedDate) {
@@ -124,7 +124,7 @@ class _AddTeacherState extends State<AddTeacher> {
                 ),
                 CustomDropdown(
                   dropdownKey: 'gender',
-                  label: 'Gender',
+                  label: 'Gender*',
                   icon: Icons.person_2_outlined,
                   items: ['Male', 'Female', 'Other'],
                   validator: (value) {
@@ -139,7 +139,7 @@ class _AddTeacherState extends State<AddTeacher> {
                 ),
                 CustomTextfield(
                   controller: _addressController, //Add controller
-                  label: 'Address',
+                  label: 'Address*',
                   iconData: Icon(Icons.location_on),
                   keyBoardtype: TextInputType.streetAddress,
                   validator: (value) {
@@ -154,7 +154,7 @@ class _AddTeacherState extends State<AddTeacher> {
                 ),
                 CustomTextfield(
                   controller: _phoneController, //Add controller
-                  label: 'Phone Number',
+                  label: 'Phone Number*',
                   iconData: Icon(Icons.phone),
                   keyBoardtype: TextInputType.phone,
                   validator: (value) {
@@ -169,7 +169,7 @@ class _AddTeacherState extends State<AddTeacher> {
                 ),
                 CustomTextfield(
                   controller: _emailController, //Add controller
-                  label: 'Email',
+                  label: 'Email*',
                   iconData: Icon(Icons.email),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -188,7 +188,7 @@ class _AddTeacherState extends State<AddTeacher> {
                   height: Responsive.height * 1,
                 ),
                 CustomFilePicker(
-                  label: 'Teacher Photo',
+                  label: 'Teacher Photo (Maximum image size: 5MB)*',
                   fieldName: 'profile photo',
                   isImagePicker: true,
                   validator: (value) {
