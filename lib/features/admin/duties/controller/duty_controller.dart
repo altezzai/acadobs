@@ -1,11 +1,9 @@
 import 'dart:developer';
 
 import 'package:flutter/widgets.dart';
-import 'package:go_router/go_router.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/services/secure_storage_services.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
-import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+import 'package:school_app/base/utils/loading_dialog.dart';
 import 'package:school_app/features/admin/duties/model/duty_model.dart';
 import 'package:school_app/features/admin/duties/model/teacherDuty_model.dart';
 // import 'package:school_app/features/admin/duties/model/teacherDuty_model.dart';
@@ -126,10 +124,9 @@ class DutyController extends ChangeNotifier {
       required String status,
       required String remark,
       required List<int> teachers,
+      required String assignedDate,
+      required String endDate,
       String? fileattachment}) async {
-    // final loadingProvider =
-    //     Provider.of<LoadingProvider>(context, listen: false); //loading provider
-    // loadingProvider.setLoading(true); //start loader
     _isloadingTwo = true;
     notifyListeners();
     try {
@@ -138,15 +135,58 @@ class DutyController extends ChangeNotifier {
           description: description,
           status: status,
           remark: remark,
+          assignedDate: assignedDate,
+          endDate: endDate,
           teachers: teachers,
           fileAttachment: fileattachment);
       if (response.statusCode == 201 || response.statusCode == 200) {
         log(">>>>>>${response.statusMessage}");
-         CustomSnackbar.show(context,
+        await getDuties();
+        CustomSnackbar.show(context,
             message: "Duty added successfully!", type: SnackbarType.success);
-       
-        context.pushNamed(AppRouteConst.bottomNavRouteName,
-            extra: UserType.admin);
+
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      log(e.toString());
+    } finally {
+      _isloadingTwo = false; // End loader
+      notifyListeners();
+    }
+  }
+
+  // ******** Edit Duty *******
+  Future<void> editDuty(BuildContext context,
+      {required int dutyId,
+      required String duty_title,
+      required String description,
+      required String status,
+      required String remark,
+      required String assignedDate,
+      required String endDate,
+      required List<int> teachers,
+      String? fileattachment}) async {
+    _isloadingTwo = true;
+    notifyListeners();
+    try {
+      final response = await DutyServices().editDuty(
+          dutyId: dutyId,
+          duty_title: duty_title,
+          description: description,
+          status: status,
+          remark: remark,
+          assignedDate: assignedDate,
+          endDate: endDate,
+          teachers: teachers,
+          fileAttachment: fileattachment);
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        log(">>>>>>${response.statusMessage}");
+        await getDuties();
+        CustomSnackbar.show(context,
+            message: "Duty Edited successfully!", type: SnackbarType.success);
+
+        Navigator.pop(context);
+        Navigator.pop(context);
       }
     } catch (e) {
       log(e.toString());
@@ -216,10 +256,11 @@ class DutyController extends ChangeNotifier {
     _isloading = false;
     notifyListeners();
   }
-  // delete 
-  Future<void> deleteDuties(BuildContext context,
-      {required int dutyId}) async {
+
+  // delete
+  Future<void> deleteDuties(BuildContext context, {required int dutyId}) async {
     _isloading = true;
+    LoadingDialog.show(context, message: "Deleting duty...");
     try {
       final response = await DutyServices().deleteDuties(dutyId: dutyId);
       print("***********${response.statusCode}");
@@ -229,10 +270,35 @@ class DutyController extends ChangeNotifier {
         Navigator.pop(context);
         CustomSnackbar.show(context,
             message: 'Deleted successfully', type: SnackbarType.info);
-            await getDuties();
+        await getDuties();
       }
     } catch (e) {
       // print(e);
+    } finally {
+      _isloading = false;
+      notifyListeners();
+      LoadingDialog.hide(context);
+    }
+  }
+
+  Duty dutyFullDetail = Duty();
+  DutyClass singleDuty = DutyClass();
+
+  Future<void> getSingleDuty({required int dutyId}) async {
+    _isloading = true;
+    try {
+      final response = await DutyServices().getSingleDuty(dutyId: dutyId);
+      log("Single Duty response :${response.data.toString()}");
+      if (response.statusCode == 200) {
+        final temp1 = Duty.fromJson(response.data);
+        dutyFullDetail = temp1;
+        final temp2 = DutyClass.fromJson(response.data["duty"]);
+        singleDuty = temp2;
+        log("Single Duty: ${singleDuty.toString()}");
+        notifyListeners(); // Ensure UI updates
+      }
+    } catch (e) {
+      log(e.toString());
     } finally {
       _isloading = false;
       notifyListeners();

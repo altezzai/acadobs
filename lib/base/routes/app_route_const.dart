@@ -91,4 +91,18 @@ class AppRouteConst {
   static const String singlestudentselectionRouteName =
       'singlestudentselection';
   static const String progressreportRouteName = 'progressReport';
+  static const String editTeacherRouteName = 'editTeacher';
+  static const String editNoticeRouteName = 'editNotice';
+  static const String editEventRouteName = 'editEvent';
+  static const String editPaymentRouteName = 'editPayment';
+  static const String editDonationRouteName = 'editDonation';
+  static const String editDutyRouteName = 'editDuty';
+  static const String editNoteRouteName = 'editNote';
+  static const String editHomeworkRouteName = 'editHomework';
+  static const String attendanceRecordRouteName = 'attendanceRecord';
+
+  static const String MarkDetailsRouteName = 'markdetailsscreen';
+
+  static const String profileRouteName = 'profilescreen';
+  static const String personalinfoRouteName = 'personalinfoscreen';
 }

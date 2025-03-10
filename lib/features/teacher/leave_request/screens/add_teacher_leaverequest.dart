@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/services/secure_storage_services.dart';
+import 'package:school_app/base/utils/app_constants.dart';
 import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/base/utils/form_validators.dart';
@@ -88,9 +89,9 @@ class _AddTeacherLeaveRequestState extends State<AddTeacherLeaveRequest> {
                 // ),
                 CustomDropdown(
                   dropdownKey: 'leaveType',
-                  label: 'Leave Type',
+                  label: 'Leave Type*',
                   icon: Icons.person_2_outlined,
-                  items: ['Sick Leave', 'Casual Leave', 'Other'],
+                  items: AppConstants.leaveTypes,
                   validator: (value) => FormValidator.validateNotEmpty(value,
                       fieldName: "Leave Type"),
                 ),
@@ -98,7 +99,7 @@ class _AddTeacherLeaveRequestState extends State<AddTeacherLeaveRequest> {
                   height: Responsive.height * 1,
                 ),
                 CustomDatePicker(
-                  label: "Start Date",
+                  label: "Start Date*",
                   dateController: _startDateController,
                   onDateSelected: (selectedDate) {
                     print("Start Date selected: $selectedDate");
@@ -114,7 +115,7 @@ class _AddTeacherLeaveRequestState extends State<AddTeacherLeaveRequest> {
                   height: Responsive.height * 1,
                 ),
                 CustomDatePicker(
-                  label: "End Date",
+                  label: "End Date*",
                   dateController: _endDateController,
                   onDateSelected: (selectedDate) {
                     print("End Date selected: $selectedDate");
@@ -131,7 +132,7 @@ class _AddTeacherLeaveRequestState extends State<AddTeacherLeaveRequest> {
                 ),
                 CustomTextfield(
                   controller: _reasonForLeaveController, //Add controller
-                  hintText: 'Reason For Leave',
+                  hintText: 'Reason For Leave*',
                   iconData: Icon(Icons.question_mark_rounded),
                   validator: (value) => FormValidator.validateNotEmpty(value,
                       fieldName: "Reason "),
@@ -178,25 +179,6 @@ class _AddTeacherLeaveRequestState extends State<AddTeacherLeaveRequest> {
                         value.isloadingTwo ? ButtonLoading() : Text('Submit'),
                   );
                 }),
-                // CustomButton(
-                //     text: 'Submit',
-                //     onPressed: () {
-                //       final selectedLeaveType = context
-                //           .read<DropdownProvider>()
-                //           .getSelectedItem('leaveType');
-                //       // final int? teacherId = int.tryParse(_teacherIdController.text);
-
-                //       context
-                //           .read<TeacherLeaveRequestController>()
-                //           .addNewTeacherLeaveRequest(
-                //             context,
-                //             teacherId: _teacherIdController.text,
-                //             leaveType: selectedLeaveType,
-                //             startDate: _startDateController.text,
-                //             endDate: _endDateController.text,
-                //             reasonForLeave: _reasonForLeaveController.text,
-                //           );
-                //     }),
               ],
             ),
           ),

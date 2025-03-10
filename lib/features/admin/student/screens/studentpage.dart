@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/app_constants.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
@@ -70,7 +71,7 @@ class _StudentsPageState extends State<StudentsPage> {
                       child: CustomDropdown(
                         dropdownKey: 'class',
                         label: 'Class',
-                        items: ['5', '6', '7', '8', '9', '10'],
+                        items: AppConstants.classNames,
                         icon: Icons.school,
                         onChanged: (selectedClass) {
                           final selectedDivision = context
@@ -88,7 +89,7 @@ class _StudentsPageState extends State<StudentsPage> {
                       child: CustomDropdown(
                         dropdownKey: 'division',
                         label: 'Division',
-                        items: ['A', 'B', 'C'],
+                        items: AppConstants.divisions,
                         icon: Icons.group,
                         onChanged: (selectedDivision) {
                           final selectedClass = context
@@ -102,6 +103,9 @@ class _StudentsPageState extends State<StudentsPage> {
                       ),
                     ),
                   ],
+                ),
+                SizedBox(
+                  height: Responsive.height * 2,
                 ),
                 Expanded(
                   child: studentController.isloading
@@ -146,6 +150,7 @@ class _StudentsPageState extends State<StudentsPage> {
       );
     }
     return ListView.builder(
+      padding: EdgeInsets.only(bottom: Responsive.height * 12),
       itemCount: students.length,
       itemBuilder: (context, index) {
         final student = students[index];

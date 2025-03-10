@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -14,6 +16,7 @@ class CustomInterceptor extends Interceptor {
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
     final String? token = await UserCredentials.getAccessToken();
+
 
     if (token != null) {
       options.headers['Authorization'] = 'Bearer $token';

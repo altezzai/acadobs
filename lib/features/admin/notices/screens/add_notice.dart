@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/app_constants.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/base/utils/form_validators.dart';
-import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/controller/file_picker_provider.dart';
-import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
@@ -31,7 +29,7 @@ class _AddNoticePageState extends State<AddNoticePage> {
   // final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _dateController = TextEditingController();
-  final TextEditingController classController = TextEditingController();
+  // final TextEditingController classController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 
@@ -65,8 +63,7 @@ class _AddNoticePageState extends State<AddNoticePage> {
                 title: "Add Notice",
                 isProfileIcon: false,
                 onTap: () {
-                  context.pushNamed(AppRouteConst.bottomNavRouteName,
-                      extra: UserType.admin);
+                  Navigator.pop(context);
                 },
               ),
               Text(
@@ -79,7 +76,7 @@ class _AddNoticePageState extends State<AddNoticePage> {
               // Target Audience Dropdown
               CustomDropdown(
                 dropdownKey: 'targetAudience',
-                label: 'Select Audience',
+                label: 'Select Audience*',
                 icon: Icons.school,
                 items: ['All', 'Specific Class'],
                 validator: (value) => FormValidator.validateNotEmpty(value,
@@ -97,9 +94,9 @@ class _AddNoticePageState extends State<AddNoticePage> {
                           Expanded(
                             child: CustomDropdown(
                               dropdownKey: 'class',
-                              label: 'Select Class',
+                              label: 'Class*',
                               icon: Icons.school,
-                              items: ['8', '9', '10'],
+                              items: AppConstants.classNames,
                               validator: (value) =>
                                   FormValidator.validateNotEmpty(value,
                                       fieldName: "Class"),
@@ -110,9 +107,9 @@ class _AddNoticePageState extends State<AddNoticePage> {
                           Expanded(
                             child: CustomDropdown(
                               dropdownKey: 'division',
-                              label: 'Select Division',
+                              label: 'Division*',
                               icon: Icons.group,
-                              items: ['A', 'B', 'C'],
+                              items: AppConstants.divisions,
                               validator: (value) =>
                                   FormValidator.validateNotEmpty(value,
                                       fieldName: "Division"),
@@ -124,7 +121,7 @@ class _AddNoticePageState extends State<AddNoticePage> {
               SizedBox(height: 16),
               // Date Picker
               CustomDatePicker(
-                label: "dd-mm-yyyy",
+                label: "Date*",
                 dateController:
                     _dateController, // Unique controller for end date
                 lastDate: DateTime(2026),
@@ -147,7 +144,7 @@ class _AddNoticePageState extends State<AddNoticePage> {
               CustomTextfield(
                 controller: _titleController,
                 // hintText: 'Title',
-                label: 'Title',
+                label: 'Title*',
                 iconData: Icon(Icons.title),
                 validator: (value) =>
                     FormValidator.validateNotEmpty(value, fieldName: "Title"),
@@ -160,7 +157,7 @@ class _AddNoticePageState extends State<AddNoticePage> {
                 maxLines: 4,
                 decoration: InputDecoration(
                   hintText: 'Write here....',
-                  labelText: 'Description',
+                  labelText: 'Description*',
                   labelStyle: TextStyle(
                     color: Colors.grey, // Change label text color here
                   ),
@@ -180,7 +177,7 @@ class _AddNoticePageState extends State<AddNoticePage> {
 
               SizedBox(height: 16),
               CustomFilePicker(
-                label: "Add Receipt",
+                label: 'Add Receipt (Maximum file size: 5MB)',
                 fieldName: 'notice file',
               ),
               SizedBox(height: 40),
@@ -221,28 +218,6 @@ class _AddNoticePageState extends State<AddNoticePage> {
                   widget: value.isloadingTwo ? Loading() : Text('Submit'),
                 );
               }),
-              // Center(
-              //   child: CustomButton(
-              //     text: 'Submit',
-              //     onPressed: () {
-              //       final selected_Audience = context
-              //           .read<DropdownProvider>()
-              //           .getSelectedItem('targetAudience');
-              //       String selectedClass =
-              //           context.read<DropdownProvider>().getSelectedItem('class');
-              //       String selectedDivision = context
-              //           .read<DropdownProvider>()
-              //           .getSelectedItem('division');
-              //       context.read<NoticeController>().addNotice(context,
-              //           className: selectedClass,
-              //           division: selectedDivision,
-              //           audience_type: selected_Audience,
-              //           title: _titleController.text,
-              //           description: _descriptionController.text,
-              //           date: _dateController.text);
-              //     },
-              //   ),
-              // ),
             ],
           ),
         ),

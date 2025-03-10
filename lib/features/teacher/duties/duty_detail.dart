@@ -55,6 +55,9 @@ class _DutyDetailScreenState extends State<DutyDetailScreen> {
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      SizedBox(
+                        height: Responsive.height * 2,
+                      ),
                       CustomAppbar(
                         title: widget.teacherDuty.dutyTitle ?? "",
                         isProfileIcon: false,

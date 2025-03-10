@@ -8,6 +8,7 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 
 class PaymentDetailPage extends StatefulWidget {
   final String amount;
@@ -82,21 +83,21 @@ class _PaymentDetailPageState extends State<PaymentDetailPage> {
   Widget build(BuildContext context) {
     String desc = widget.description;
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.chevron_left, color: Colors.black),
-          onPressed: () {
-            context.pushNamed(
-              AppRouteConst.ParentPaymentPageRouteName,
-            );
-          },
-        ),
-        title: const Text('Payments'),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black),
-      ),
+      // appBar: AppBar(
+      //   leading: IconButton(
+      //     icon: const Icon(Icons.chevron_left, color: Colors.black),
+      //     onPressed: () {
+      //       context.pushNamed(
+      //         AppRouteConst.ParentPaymentPageRouteName,
+      //       );
+      //     },
+      //   ),
+      //   title: const Text('Payments'),
+      //   centerTitle: true,
+      //   backgroundColor: Colors.white,
+      //   elevation: 0,
+      //   iconTheme: const IconThemeData(color: Colors.black),
+      // ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -104,6 +105,16 @@ class _PaymentDetailPageState extends State<PaymentDetailPage> {
             // mainAxisAlignment: MainAxisAlignment.center,
             // crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+               CustomAppbar(
+              title: "Payments",
+              isBackButton: true,
+              isProfileIcon: false,
+              onTap: () {
+               context.pushNamed(
+              AppRouteConst.ParentPaymentPageRouteName,
+            );
+              },
+             ),
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),

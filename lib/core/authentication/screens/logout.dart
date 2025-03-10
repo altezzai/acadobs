@@ -208,8 +208,7 @@ class _LogoutScreenState extends State<LogoutScreen> {
                     onTap: () async {
                       // context.read<AuthController>().logout(context: context);
                       await SecureStorageService.clearSecureStorage();
-                      context
-                          .pushReplacementNamed(AppRouteConst.loginRouteName);
+                      context.goNamed(AppRouteConst.loginRouteName);
                     },
                   ),
                 ],

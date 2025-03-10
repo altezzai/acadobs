@@ -1,14 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/base/utils/form_validators.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
-import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
@@ -54,12 +51,11 @@ class _AddEventPageState extends State<AddEventPage> {
                   title: "Add Event",
                   isProfileIcon: false,
                   onTap: () {
-                    context.pushNamed(AppRouteConst.bottomNavRouteName,
-                        extra: UserType.admin);
+                    Navigator.pop(context);
                   },
                 ),
                 SizedBox(height: Responsive.height * 2),
-            
+
                 // Event Details Heading
                 Text(
                   'Event Details',
@@ -68,10 +64,9 @@ class _AddEventPageState extends State<AddEventPage> {
                   ),
                 ),
                 SizedBox(height: 12),
-            
+
                 // Add Cover Photo
                 GestureDetector(
-                  
                   onTap: () {
                     context.read<NoticeController>().pickMultipleImages();
                   },
@@ -85,7 +80,6 @@ class _AddEventPageState extends State<AddEventPage> {
                           border: Border.all(color: Colors.grey),
                           borderRadius: BorderRadius.circular(30),
                         ),
-                        
                         child: files != null && files.isNotEmpty
                             ? ListView.builder(
                                 scrollDirection:
@@ -99,7 +93,8 @@ class _AddEventPageState extends State<AddEventPage> {
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 8.0),
                                         child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(10),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
                                           child: Image.file(
                                             File(files[index].path),
                                             fit: BoxFit.cover,
@@ -128,11 +123,8 @@ class _AddEventPageState extends State<AddEventPage> {
                                             ),
                                           ),
                                         ),
-                                        
                                       ),
-                                      
                                     ],
-                                    
                                   );
                                 },
                               )
@@ -145,7 +137,6 @@ class _AddEventPageState extends State<AddEventPage> {
                                     Text(
                                       'Add Event images',
                                       style: TextStyle(fontSize: 16),
-                                      
                                     ),
                                   ],
                                 ),
@@ -154,25 +145,26 @@ class _AddEventPageState extends State<AddEventPage> {
                     },
                   ),
                 ),
-            
+
                 SizedBox(height: Responsive.height * 2),
-            
+
                 // Title Input (styled similar to Add Notice)
                 CustomTextfield(
                   controller: _titleController,
-                  label: 'Title',
+                  label: 'Title*',
                   iconData: Icon(Icons.title),
-                  validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Title"),
+                  validator: (value) =>
+                      FormValidator.validateNotEmpty(value, fieldName: "Title"),
                 ),
                 SizedBox(height: 16),
-            
+
                 // Description Input
                 TextFormField(
                   controller: _descriptionController,
                   maxLines: 4,
                   decoration: InputDecoration(
                     hintText: 'Write here....',
-                    labelText: 'Description',
+                    labelText: 'Description*',
                     labelStyle: TextStyle(
                       color: Colors.grey, // Change label text color here
                     ),
@@ -186,44 +178,48 @@ class _AddEventPageState extends State<AddEventPage> {
                     ),
                     // floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
-                  validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Description"),
+                  validator: (value) => FormValidator.validateNotEmpty(value,
+                      fieldName: "Description"),
                 ),
-            
+
                 SizedBox(height: 16),
-            
+
                 // Date Picker (styled similar to Add Notice)
                 CustomDatePicker(
-                  label: "dd-mm-yyyy",
+                  label: "Date*",
                   lastDate: DateTime(2026),
                   dateController: _dateController,
                   onDateSelected: (selectedDate) {
                     print("Event Date selected: $selectedDate");
                   },
-                  validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Date"),
+                  validator: (value) =>
+                      FormValidator.validateNotEmpty(value, fieldName: "Date"),
                 ),
                 SizedBox(height: 16),
-            
+
                 // Submit Button
                 Consumer<NoticeController>(builder: (context, value, child) {
                   return CommonButton(
                     onPressed: () {
-                      if(_formKey.currentState?.validate()?? false){
-                      try{
-                      context.read<NoticeController>().addEvent(
-                            context,
-                            title: _titleController.text,
-                            description: _descriptionController.text,
-                            date: _dateController.text,
-                          );
-                     } catch (e) {
+                      if (_formKey.currentState?.validate() ?? false) {
+                        try {
+                          context.read<NoticeController>().addEvent(
+                                context,
+                                title: _titleController.text,
+                                description: _descriptionController.text,
+                                date: _dateController.text,
+                              );
+                        } catch (e) {
                           // Handle any errors and show an error message
                           CustomSnackbar.show(context,
-            message: "Failed to add event.Please try again", type: SnackbarType.failure);
+                              message: "Failed to add event.Please try again",
+                              type: SnackbarType.failure);
                         }
                       } else {
                         // Highlight missing fields if the form is invalid
                         CustomSnackbar.show(context,
-            message: "Please complete all required fields", type: SnackbarType.warning);
+                            message: "Please complete all required fields",
+                            type: SnackbarType.warning);
                       }
                     },
                     widget: value.isloadingTwo ? Loading() : Text('Submit'),

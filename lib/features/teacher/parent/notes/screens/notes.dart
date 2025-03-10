@@ -150,7 +150,8 @@ import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
-import 'package:school_app/core/shared_widgets/common_button.dart';
+import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+import 'package:school_app/core/shared_widgets/common_floating_action_button.dart';
 //import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
@@ -176,170 +177,158 @@ class _NotesScreenState extends State<NotesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          children: [
-            SizedBox(
-              height: Responsive.height * 2,
-            ),
-            CustomAppbar(
-              title: "Notes",
-              isProfileIcon: false,
-              onTap: () {
-                context.pushNamed(AppRouteConst.parentRouteName);
-              },
-            ),
-
-            Expanded(
-              child: Consumer<NotesController>(
-                builder: (context, value, child) {
-                  if (value.isloading) {
-                    return const Center(
-                      child: Loading(
-                        color: Colors.grey,
-                      ),
-                    );
-                  } else if (value.notesByTeacher.isEmpty) {
-                    return Center(
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            children: [
+              SizedBox(
+                height: Responsive.height * 2,
+              ),
+              CustomAppbar(
+                title: "Notes",
+                isProfileIcon: false,
+                onTap: () {
+                  context.pushNamed(AppRouteConst.bottomNavRouteName, extra: UserType.teacher);
+                  // Navigator.pop(context);
+                },
+              ),
+              Expanded(
+                child: Consumer<NotesController>(
+                  builder: (context, value, child) {
+                    if (value.isloading) {
+                      return const Center(
+                        child: Loading(
+                          color: Colors.grey,
+                        ),
+                      );
+                    } else if (value.notesByTeacher.isEmpty) {
+                      return Center(
+                        child: Column(
+                          children: [
+                            Image.asset(
+                              'assets/empty.png',
+                              height: Responsive.height * 45,
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                    return SingleChildScrollView(
+                      padding: EdgeInsets.zero, // Removes any default padding
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Image.asset(
-                            'assets/empty.png',
-                            height: Responsive.height * 45,
+                          ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            padding: EdgeInsets
+                                .zero, // Removes any extra padding at the top
+                            itemCount: value.notesByTeacher.length,
+                            itemBuilder: (context, index) {
+                              final note = value.notesByTeacher[index];
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 6.0),
+                                child: InkWell(
+                                  onTap: () {
+                                    context.pushNamed(
+                                      AppRouteConst.NoteDetailsRouteName,
+                                      extra: note['id'],
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(16),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(12),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.2),
+                                          spreadRadius: 2,
+                                          blurRadius: 5,
+                                          offset: Offset(0,
+                                              3), // changes position of shadow
+                                        ),
+                                      ],
+                                      border: Border.all(
+                                        color: Colors.grey.shade300,
+                                      ),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        // Add an icon or avatar for a visual element
+                                        CircleAvatar(
+                                          radius: 24,
+                                          backgroundColor: Colors.black26,
+                                          child: Icon(
+                                            Icons.notes,
+                                            color: Colors.black54,
+                                            size: 24,
+                                          ),
+                                        ),
+                                        SizedBox(width: 16),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                note['title'],
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium
+                                                    ?.copyWith(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                              ),
+                                              SizedBox(height: 4),
+                                              Text(
+                                                "Note Id: ${note['id']}",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodySmall
+                                                    ?.copyWith(
+                                                      color: Colors.grey,
+                                                    ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Icon(
+                                          Icons.arrow_forward_ios,
+                                          size: 16,
+                                          color: Colors.grey.shade400,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                          SizedBox(
+                            height: Responsive.height * 12,
                           ),
                         ],
                       ),
                     );
-                  }
-                  return SingleChildScrollView(
-                    padding: EdgeInsets.zero, // Removes any default padding
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          padding: EdgeInsets
-                              .zero, // Removes any extra padding at the top
-                          itemCount: value.notesByTeacher.length,
-                          itemBuilder: (context, index) {
-                            final note = value.notesByTeacher[index];
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 6.0),
-                              child: InkWell(
-                                onTap: () {
-                                  context.pushNamed(
-                                    AppRouteConst.NoteDetailsRouteName,
-                                    extra: note['id'],
-                                  );
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.all(16),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(12),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.2),
-                                        spreadRadius: 2,
-                                        blurRadius: 5,
-                                        offset: Offset(
-                                            0, 3), // changes position of shadow
-                                      ),
-                                    ],
-                                    border: Border.all(
-                                      color: Colors.grey.shade300,
-                                    ),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      // Add an icon or avatar for a visual element
-                                      CircleAvatar(
-                                        radius: 24,
-                                        backgroundColor: Colors.black26,
-                                        child: Icon(
-                                          Icons.notes,
-                                          color: Colors.black54,
-                                          size: 24,
-                                        ),
-                                      ),
-                                      SizedBox(width: 16),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              note['title'],
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyMedium
-                                                  ?.copyWith(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                            ),
-                                            SizedBox(height: 4),
-                                            Text(
-                                              "Note Id: ${note['id']}",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodySmall
-                                                  ?.copyWith(
-                                                    color: Colors.grey,
-                                                  ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Icon(
-                                        Icons.arrow_forward_ios,
-                                        size: 16,
-                                        color: Colors.grey.shade400,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                        SizedBox(
-                          height: Responsive.height * 7.5,
-                        ),
-                      ],
-                    ),
-                  );
-                },
+                  },
+                ),
               ),
-            ),
-            //      FloatingActionButton.extended(
-            //   onPressed: () {
-            //     context.pushNamed(AppRouteConst.StudentNoteSelectionRouteName);
-            //   },
-            //   label: Text('Add New Note'),
-            //   icon: Icon(Icons.add),
-            //   backgroundColor: Colors.black,
-            //   foregroundColor: Colors.white,
-            // ),
-            SizedBox(
-              height: Responsive.height * 1,
-            ),
-          ],
+              // SizedBox(
+              //   height: Responsive.height * 4,
+              // ),
+            ],
+          ),
         ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.all(16),
-        child: CommonButton(
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: CommonFloatingActionButton(
             onPressed: () {
               context.pushNamed(AppRouteConst.AddNoteRouteName);
             },
-            widget: Text("Add New Note")),
-      ),
-    );
+            text: "Add New Note"));
   }
 
   Widget _buildParentTile(BuildContext context, {int notificationCount = 0}) {

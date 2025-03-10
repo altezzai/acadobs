@@ -15,20 +15,22 @@ class CustomNameContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton(
-      onPressed: onPressed,
-      style: OutlinedButton.styleFrom(
-        padding: EdgeInsets.symmetric(
-          vertical: Responsive.height * 3,
-          horizontal: Responsive.width * horizontalWidth,
+    return Expanded(
+      child: OutlinedButton(
+        onPressed: onPressed,
+        style: OutlinedButton.styleFrom(
+          padding: EdgeInsets.symmetric(
+            vertical: Responsive.height * 3,
+            horizontal: Responsive.width * horizontalWidth,
+          ),
         ),
-      ),
-      child: Text(
-        text,
-        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-              color: const Color(0xff555556),
-              fontWeight: FontWeight.w700,
-            ),
+        child: Text(
+          text,
+          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                color: const Color(0xff555556),
+                fontWeight: FontWeight.w700,
+              ),
+        ),
       ),
     );
   }

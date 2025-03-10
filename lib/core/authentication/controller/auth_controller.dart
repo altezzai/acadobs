@@ -48,6 +48,14 @@ class AuthController extends ChangeNotifier {
         } else {
           log("Error ===No user type specified");
         }
+      } else {
+        final String error = response.data['error'];
+
+        CustomSnackbar.show(
+          context,
+          message: error,
+          type: SnackbarType.failure,
+        );
       }
     } catch (e) {
       log(e.toString());
@@ -60,7 +68,7 @@ class AuthController extends ChangeNotifier {
     }
   }
   // *****************Refresh Token*****************
-  
+
   // *****************Logout ***********************
   Future<void> logout({required BuildContext context}) async {
     _isloading = true;

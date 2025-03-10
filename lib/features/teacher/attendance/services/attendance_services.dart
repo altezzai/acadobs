@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:school_app/base/services/api_services.dart';
+import 'package:school_app/features/teacher/attendance/model/edit_attendance_request.dart';
 
 class AttendanceServices {
   // check attendance
@@ -19,6 +20,24 @@ class AttendanceServices {
       '/attendance',
       attendanceData,
     );
+    return response;
+  }
+
+  //  Get daily attendance by teacherId
+  Future<Response> getDailyAttendanceByTeacher({
+    required int teacherId,
+    required String date,
+  }) async {
+    final response = await ApiServices.get(
+        "/getTeacherAttendanceRecords/$teacherId?date=$date");
+    return response;
+  }
+
+  // Update Attendance
+  Future<Response> updateAttendance(
+      List<EditAttendanceRequest> attendanceData) async {
+    final response = await ApiServices.post(
+        "/updateAttendance", {"attendances": attendanceData});
     return response;
   }
 }

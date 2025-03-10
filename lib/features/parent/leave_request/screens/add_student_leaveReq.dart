@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/utils/app_constants.dart';
 import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/base/utils/form_validators.dart';
@@ -86,16 +87,16 @@ class _AddStudentLeaveRequestState extends State<AddStudentLeaveRequest> {
                 // ),
                 CustomDropdown(
                   dropdownKey: 'leaveType',
-                  label: 'Leave Type',
+                  label: 'Leave Type*',
                   icon: Icons.person_2_outlined,
-                  items: ['Sick Leave', 'Casual Leave', 'Other'],
+                  items: AppConstants.leaveTypes,
                   validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Leave Type"),
                 ),
                 SizedBox(
                   height: Responsive.height * 2,
                 ),
                 CustomDatePicker(
-                  label: "Start Date",
+                  label: "Start Date*",
                   dateController: _startDateController,
                   onDateSelected: (selectedDate) {
                     print("Start Date selected: $selectedDate");
@@ -106,7 +107,7 @@ class _AddStudentLeaveRequestState extends State<AddStudentLeaveRequest> {
                   height: Responsive.height * 2,
                 ),
                 CustomDatePicker(
-                  label: "End Date",
+                  label: "End Date*",
                   dateController: _endDateController,
                   onDateSelected: (selectedDate) {
                     print("End Date selected: $selectedDate");
@@ -118,7 +119,7 @@ class _AddStudentLeaveRequestState extends State<AddStudentLeaveRequest> {
                 ),
                 CustomTextfield(
                   controller: _reasonForLeaveController, //Add controller
-                  hintText: 'Reason For Leave',
+                  hintText: 'Reason For Leave*',
                   iconData: Icon(Icons.question_mark_rounded),
                   validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Reason"),
                 ),

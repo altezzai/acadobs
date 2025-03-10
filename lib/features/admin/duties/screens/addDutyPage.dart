@@ -1,4 +1,5 @@
 import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -12,11 +13,11 @@ import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
-
 import 'package:school_app/core/shared_widgets/custom_filepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/admin/duties/controller/duty_controller.dart';
 import 'package:school_app/features/admin/teacher_section/controller/teacher_controller.dart';
+
 import '../../../../base/utils/form_validators.dart';
 
 class AddDutyPage extends StatefulWidget {
@@ -71,6 +72,7 @@ class _AddDutyPageState extends State<AddDutyPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    SizedBox(height: Responsive.height * 1),
                     CustomAppbar(
                       title: "Add Duty",
                       isProfileIcon: false,
@@ -83,7 +85,7 @@ class _AddDutyPageState extends State<AddDutyPage> {
 
                     // Title Input
                     CustomTextfield(
-                      hintText: 'Title',
+                      label: 'Title*',
                       controller: _titleController,
                       iconData: Icon(Icons.title),
                       hintStyle: TextStyle(fontSize: Responsive.text * 1.8),
@@ -95,7 +97,7 @@ class _AddDutyPageState extends State<AddDutyPage> {
 
                     // Description Input
                     CustomTextfield(
-                      hintText: 'Description',
+                      label: 'Description*',
                       controller: _descriptionController,
                       iconData: Icon(Icons.description),
                       keyBoardtype: TextInputType.multiline,
@@ -108,14 +110,14 @@ class _AddDutyPageState extends State<AddDutyPage> {
 
                     // Remark Input
                     CustomTextfield(
-                      hintText: 'Remark',
+                      label: 'Remark',
                       controller: _remarkController,
                       iconData: Icon(Icons.description),
                       keyBoardtype: TextInputType.multiline,
                       hintStyle: TextStyle(fontSize: Responsive.text * 1.8),
-                      validator: (value) => FormValidator.validateNotEmpty(
-                          value,
-                          fieldName: "Remark"),
+                      // validator: (value) => FormValidator.validateNotEmpty(
+                      //     value,
+                      //     fieldName: "Remark"),
                     ),
                     SizedBox(height: Responsive.height * 2),
 
@@ -125,7 +127,7 @@ class _AddDutyPageState extends State<AddDutyPage> {
                         // Start Date Field
                         Expanded(
                           child: CustomDatePicker(
-                            label: "Start Date",
+                            label: "Start Date*",
                             dateController: _startDateController,
                             firstDate: DateTime.now(), // Earliest date is today
                             lastDate: DateTime(
@@ -144,7 +146,7 @@ class _AddDutyPageState extends State<AddDutyPage> {
                         // End Date Field
                         Expanded(
                           child: CustomDatePicker(
-                            label: "End Date",
+                            label: "End Date*",
                             dateController: _endDateController,
                             firstDate:
                                 DateTime.now(), // Ensure it's today or later
@@ -164,24 +166,12 @@ class _AddDutyPageState extends State<AddDutyPage> {
                     ),
                     SizedBox(height: Responsive.height * 2),
 
-                    // Status Dropdown
-                    // CustomDropdown(
-                    //   dropdownKey: 'status',
-                    //   label: 'Status',
-                    //   items: ['Pending', 'In Progress', 'Completed'],
-                    //   icon: Icons.pending_actions,
-                    //   validator: (value) => FormValidator.validateNotEmpty(
-                    //       value,
-                    //       fieldName: "Status"),
-                    // ),
-                    // SizedBox(height: Responsive.height * 2),
-
                     CustomFilePicker(
-                      label: 'Document',
+                      label: 'Document (Maximum file size: 5MB)',
                       fieldName: 'duty file',
-                      validator: (value) => FormValidator.validateNotEmpty(
-                          value,
-                          fieldName: "Document"),
+                      // validator: (value) => FormValidator.validateNotEmpty(
+                      //     value,
+                      //     fieldName: "Document"),
                     ),
                     SizedBox(height: Responsive.height * 2),
 
@@ -206,7 +196,7 @@ class _AddDutyPageState extends State<AddDutyPage> {
                         return TextFormField(
                           decoration: InputDecoration(
                             hintText: value.selectedTeacherIds.isEmpty
-                                ? "Select Staffs"
+                                ? "Select Staffs*"
                                 : capitalizeEachWord(selectedTeacherNames),
                             enabled: false,
                           ),
@@ -257,10 +247,10 @@ class _AddDutyPageState extends State<AddDutyPage> {
                                 // Log selected teacher ids
                                 log("List of teacher ids selected: ==== ${value1.selectedTeacherIds.toString()}");
 
-                                // Retrieve selected status and duty file
-                                final status = context
-                                    .read<DropdownProvider>()
-                                    .getSelectedItem('status');
+                                // // Retrieve selected status and duty file
+                                // final status = context
+                                //     .read<DropdownProvider>()
+                                //     .getSelectedItem('status');
                                 final dutyfile = context
                                     .read<FilePickerProvider>()
                                     .getFile('duty file');
@@ -271,8 +261,10 @@ class _AddDutyPageState extends State<AddDutyPage> {
                                       context,
                                       duty_title: _titleController.text,
                                       description: _descriptionController.text,
-                                      status: status,
+                                      status: "Pending",
                                       remark: _remarkController.text,
+                                      assignedDate: _startDateController.text,
+                                      endDate: _endDateController.text,
                                       teachers: value1.selectedTeacherIds,
                                       fileattachment: dutyfilepath,
                                     );

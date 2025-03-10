@@ -8,6 +8,7 @@ import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/admin/duties/model/duty_model.dart';
 import 'package:school_app/features/admin/duties/model/teacherDuty_model.dart';
 import 'package:school_app/features/admin/duties/screens/addDutyPage.dart';
+import 'package:school_app/features/admin/duties/screens/edit_duty_screen.dart';
 import 'package:school_app/features/admin/duties/screens/teacher_selection_screen.dart';
 import 'package:school_app/features/admin/duties/screens/view_duty.dart';
 import 'package:school_app/features/admin/leave_request/screens/leaveRequest_page.dart';
@@ -17,13 +18,19 @@ import 'package:school_app/features/admin/notices/models/event_model.dart';
 import 'package:school_app/features/admin/notices/models/notice_model.dart';
 import 'package:school_app/features/admin/notices/screens/add_event.dart';
 import 'package:school_app/features/admin/notices/screens/add_notice.dart';
+import 'package:school_app/features/admin/notices/screens/edit_event_screen.dart';
+import 'package:school_app/features/admin/notices/screens/edit_notice_screen.dart';
 import 'package:school_app/features/admin/payments/model/donation_model.dart';
 import 'package:school_app/features/admin/payments/model/payment_model.dart';
 import 'package:school_app/features/admin/payments/screens/add_donation.dart';
 import 'package:school_app/features/admin/payments/screens/add_payment.dart';
 import 'package:school_app/features/admin/payments/screens/donation_view.dart';
+import 'package:school_app/features/admin/payments/screens/edit_donation_screen.dart';
+import 'package:school_app/features/admin/payments/screens/edit_payment_screen.dart';
 import 'package:school_app/features/admin/payments/screens/payment_view.dart';
 import 'package:school_app/features/admin/payments/screens/single_student_selection_page.dart';
+import 'package:school_app/features/admin/profile/personal_info.dart';
+import 'package:school_app/features/admin/profile/profile_screen.dart';
 import 'package:school_app/features/admin/reports/screens/donation_report.dart';
 import 'package:school_app/features/admin/reports/screens/payment.dart';
 import 'package:school_app/features/admin/reports/screens/student_report.dart';
@@ -44,6 +51,7 @@ import 'package:school_app/features/admin/subjects/screens/edit_subject.dart';
 import 'package:school_app/features/admin/subjects/screens/subjects.dart';
 import 'package:school_app/features/admin/teacher_section/model/teacher_model.dart';
 import 'package:school_app/features/admin/teacher_section/screens/add_teacher.dart';
+import 'package:school_app/features/admin/teacher_section/screens/edit_teacher_screen.dart';
 import 'package:school_app/features/admin/teacher_section/screens/teacherdetails.dart';
 import 'package:school_app/features/admin/teacher_section/screens/teachers_page.dart';
 import 'package:school_app/features/parent/chat/screen/parentchatdetailedscreen.dart';
@@ -60,9 +68,14 @@ import 'package:school_app/features/parent/payment/screen/paymentdetailedscreen.
 import 'package:school_app/features/parent/payment/screen/student_payment_screen.dart';
 import 'package:school_app/features/parent/students/screen/studentdetails.dart';
 import 'package:school_app/features/teacher/attendance/model/attendance_data.dart';
+import 'package:school_app/features/teacher/attendance/model/attendance_record_model.dart';
+import 'package:school_app/features/teacher/attendance/screens/attendance_record_screen.dart';
 import 'package:school_app/features/teacher/attendance/screens/take_attendance.dart';
 import 'package:school_app/features/teacher/duties/duty_detail.dart';
-import 'package:school_app/features/teacher/homework/model/homework_model.dart';
+import 'package:school_app/features/teacher/homework/model/homework_model.dart'
+    as hw;
+import 'package:school_app/features/teacher/homework/model/homework_student_model.dart';
+import 'package:school_app/features/teacher/homework/screens/edit_homework_screen.dart';
 import 'package:school_app/features/teacher/homework/screens/student_selection_screen.dart';
 import 'package:school_app/features/teacher/homework/screens/subject_selection.dart';
 import 'package:school_app/features/teacher/homework/screens/work.dart';
@@ -73,11 +86,15 @@ import 'package:school_app/features/teacher/leave_request/screens/add_teacher_le
 import 'package:school_app/features/teacher/leave_request/screens/teacher_leaverequestpage.dart';
 import 'package:school_app/features/teacher/mark_work/screens/mark_star.dart';
 import 'package:school_app/features/teacher/marks/models/marks_upload_model.dart';
+import 'package:school_app/features/teacher/marks/models/teacher_added_marks.dart';
+import 'package:school_app/features/teacher/marks/screens/mark_details_screen.dart';
 import 'package:school_app/features/teacher/marks/screens/marks.dart';
 import 'package:school_app/features/teacher/marks/screens/student_marklist.dart';
 import 'package:school_app/features/teacher/parent/model/latest_chat_model.dart';
+import 'package:school_app/features/teacher/parent/model/parent_note_model.dart';
 import 'package:school_app/features/teacher/parent/model/parent_note_student_model.dart';
 import 'package:school_app/features/teacher/parent/notes/screens/add_note.dart';
+import 'package:school_app/features/teacher/parent/notes/screens/edit_note.dart';
 import 'package:school_app/features/teacher/parent/notes/screens/note_details.dart';
 import 'package:school_app/features/teacher/parent/notes/screens/notes.dart';
 import 'package:school_app/features/teacher/parent/notes/screens/student_note_selection.dart';
@@ -93,7 +110,7 @@ class Approuter {
         name: AppRouteConst.splashRouteName,
         path: '/',
         pageBuilder: (context, state) {
-          return MaterialPage(child: SplashScreen());
+          return MaterialPage(child: ProfileScreen());
         },
       ),
       GoRoute(
@@ -112,6 +129,13 @@ class Approuter {
           return LogoutScreen(
               userType:
                   userType); // Pass the extracted userType to the LogoutScreen
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.personalinfoRouteName,
+        path: '/personalinfo',
+        builder: (context, state) {
+          return PersonalInfo();
         },
       ),
 
@@ -149,6 +173,18 @@ class Approuter {
         },
       ),
       GoRoute(
+        name: AppRouteConst.MarkDetailsRouteName,
+        path: '/markdetailsscreen',
+        pageBuilder: (context, state) {
+          final TeacherAddedMarks teacherAddedMarksModel =
+              state.extra as TeacherAddedMarks;
+          return MaterialPage(
+              child: Markdetailsscreen(
+            teacherAddedMarksModel: teacherAddedMarksModel,
+          ));
+        },
+      ),
+      GoRoute(
         name: AppRouteConst.dutiesRouteName,
         path: '/duties',
         pageBuilder: (context, state) {
@@ -171,7 +207,7 @@ class Approuter {
         name: AppRouteConst.workviewRouteName,
         path: '/workview',
         pageBuilder: (context, state) {
-          final work = state.extra as Homework;
+          final work = state.extra as hw.Homework;
           return MaterialPage(
               child: WorkView(
             work: work,
@@ -363,7 +399,7 @@ class Approuter {
           final args = state.extra as AdminDutyDetailArguments;
           return MaterialPage(
               child: DutyView(
-            duty: args.duty,
+            dutyId: args.dutyId,
             userType: args.userType,
           ));
         },
@@ -508,14 +544,22 @@ class Approuter {
         name: AppRouteConst.EventsPageRouteName,
         path: '/eventspage',
         pageBuilder: (context, state) {
-          return MaterialPage(child: EventsPage());
+          final bool forNavbar = state.extra as bool;
+          return MaterialPage(
+              child: EventsPage(
+            forNavbar: forNavbar,
+          ));
         },
       ),
       GoRoute(
         name: AppRouteConst.ParentNoticePageRouteName,
         path: '/parentnoticepage',
         pageBuilder: (context, state) {
-          return MaterialPage(child: NoticePage());
+          final bool forNavbar = state.extra as bool;
+          return MaterialPage(
+              child: NoticePage(
+            forNavbar: forNavbar,
+          ));
         },
       ),
       GoRoute(
@@ -577,24 +621,23 @@ class Approuter {
         },
       ),
 
-      // GoRoute(
-      //   name: AppRouteConst.TeacherPaymentScreenRouteName,
-      //   path: '/teacherpaymentscreen',
-      //   pageBuilder: (context, state) {
-      //     final int recordId = state.extra as int;
-      //     return MaterialPage(
-      //       child: TeacherPaymentScreen(
-      //         recordId: recordId,
-      //       ),
-      //     );
-      //   },
-      // ),
-
       GoRoute(
         name: AppRouteConst.AddTeacherRouteName,
         path: '/addteacher',
         pageBuilder: (context, state) {
           return MaterialPage(child: AddTeacher());
+        },
+      ),
+      // Edit teacher
+      GoRoute(
+        name: AppRouteConst.editTeacherRouteName,
+        path: '/editTeacher',
+        pageBuilder: (context, state) {
+          final teacher = state.extra as Teacher;
+          return MaterialPage(
+              child: EditTeacherScreen(
+            teacher: teacher,
+          ));
         },
       ),
       GoRoute(
@@ -749,8 +792,112 @@ class Approuter {
           return MaterialPage(child: ProgressReport());
         },
       ),
+      // Edit notice screen
+      GoRoute(
+        name: AppRouteConst.editNoticeRouteName,
+        path: '/editNotice',
+        pageBuilder: (context, state) {
+          final notice = state.extra as Notice;
+          return MaterialPage(
+              child: EditNoticeScreen(
+            notice: notice,
+          ));
+        },
+      ),
+      //  Edit event
+      GoRoute(
+        name: AppRouteConst.editEventRouteName,
+        path: '/editEvent',
+        pageBuilder: (context, state) {
+          final event = state.extra as Event;
+          return MaterialPage(
+              child: EditEventScreen(
+            event: event,
+          ));
+        },
+      ),
+      //  Edit event
+      GoRoute(
+        name: AppRouteConst.editPaymentRouteName,
+        path: '/editPayment',
+        pageBuilder: (context, state) {
+          final payment = state.extra as Payment;
+          return MaterialPage(
+              child: EditPaymentScreen(
+            payment: payment,
+          ));
+        },
+      ),
+      //  Edit event
+      GoRoute(
+        name: AppRouteConst.editDonationRouteName,
+        path: '/editDonation',
+        pageBuilder: (context, state) {
+          final donation = state.extra as Donation;
+          return MaterialPage(
+              child: EditDonationScreen(
+            donation: donation,
+          ));
+        },
+      ),
+      //  Edit duty
+      GoRoute(
+        name: AppRouteConst.editDutyRouteName,
+        path: '/editDuty',
+        pageBuilder: (context, state) {
+          final duty = state.extra as Duty;
+          return MaterialPage(
+              child: EditDutyScreen(
+            duty: duty,
+          ));
+        },
+      ),
+      // Edit note
+      GoRoute(
+        name: AppRouteConst.editNoteRouteName,
+        path: '/editNote',
+        pageBuilder: (context, state) {
+          final note = state.extra as ParentNote;
+          return MaterialPage(
+              child: EditNote(
+            note: note,
+          ));
+        },
+      ),
+
+      GoRoute(
+          name: AppRouteConst.editHomeworkRouteName,
+          path: '/editHomework',
+          pageBuilder: (context, state) {
+            final homeworkStudent = state.extra as HomeworkWithStudentsModel;
+            return MaterialPage(
+                child: EditHomeworkScreen(
+              homeworkStudent: homeworkStudent,
+            ));
+          }),
+      //Attendance record
+      GoRoute(
+        name: AppRouteConst.attendanceRecordRouteName,
+        path: '/attendanceRecord',
+        pageBuilder: (context, state) {
+          final AttendanceRecordArguments args =
+              state.extra as AttendanceRecordArguments;
+          return MaterialPage(
+              child: AttendanceRecordScreen(
+            forEditScreen: args.forEditScreen,
+            attendanceRecord: args.attendanceRecord,
+          ));
+        },
+      ),
     ],
   );
+}
+
+class AttendanceRecordArguments {
+  bool forEditScreen;
+  AttendanceRecord attendanceRecord;
+  AttendanceRecordArguments(
+      {required this.forEditScreen, required this.attendanceRecord});
 }
 
 class ClassAndDivision {
@@ -766,9 +913,9 @@ class DutyDetailArguments {
 }
 
 class AdminDutyDetailArguments {
-  DutyClass duty;
+  int dutyId;
   UserType userType;
-  AdminDutyDetailArguments({required this.duty, required this.userType});
+  AdminDutyDetailArguments({required this.dutyId, required this.userType});
 }
 
 class StudentDetailArguments {

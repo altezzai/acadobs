@@ -49,7 +49,7 @@ class Payment {
 
   factory Payment.fromJson(Map<String, dynamic> json) => Payment(
         id: json["id"],
-        userId: json["user_id"],
+        userId: json["student_id"],
         amountPaid: json["amount_paid"],
         paymentDate: json["payment_date"] == null
             ? null

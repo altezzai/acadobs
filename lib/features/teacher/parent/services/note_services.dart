@@ -114,4 +114,31 @@ class NoteServices {
         "/countUnviewedMessagesByParentNoteldAndStudentld/$parentNoteId/$studentId");
     return response;
   }
+
+  // Edit note
+  Future<Response> editNote({
+    required int noteId,
+    required List<int> studentId,
+    required int teacherId,
+    required String title,
+    required String description,
+  }) async {
+    final formData = {
+      'teacher_id': teacherId,
+      'studentsId[]': studentId,
+      'note_title': title,
+      'note_content': description,
+      '_method': 'put'
+    };
+    final Response response = await ApiServices.post(
+        "/parentNotes/$noteId", formData,
+        isFormData: true);
+    return response;
+  }
+
+  // Delete notes
+  Future<Response> deleteNotes({required int noteId}) async {
+    final Response response = await ApiServices.delete("/parentNotes/$noteId");
+    return response;
+  }
 }

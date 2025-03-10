@@ -76,7 +76,7 @@ class _TeacherReportState extends State<TeacherReport> {
           children: [
             Expanded(
               child: CustomDatePicker(
-                label: "Start Date",
+                label: "Start Date*",
                 lastDate: DateTime.now(),
                 initialDate: DateTime.now(),
                 dateController: _startDateController,
@@ -86,7 +86,7 @@ class _TeacherReportState extends State<TeacherReport> {
             const SizedBox(width: 8),
             Expanded(
               child: CustomDatePicker(
-                label: "End Date",
+                label: "End Date*",
                 lastDate: DateTime.now(),
                 initialDate: DateTime.now(),
                 dateController: _endDateController,

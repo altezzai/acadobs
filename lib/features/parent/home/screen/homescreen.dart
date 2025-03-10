@@ -12,91 +12,10 @@ import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/profile_tile.dart';
+import 'package:school_app/features/admin/duties/widgets/duty_card.dart';
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
 import 'package:school_app/features/admin/student/controller/student_controller.dart';
 import 'package:school_app/features/parent/events/widget/eventcard.dart';
-import 'package:school_app/features/parent/notices/widget/noticecard.dart';
-// import 'package:school_app/features/admin/student/model/student_data.dart';
-// import 'package:school_app/features/parent/chat/screen/parentchatscreen.dart';
-// import 'package:school_app/features/parent/events/screen/eventscreen.dart';
-// import 'package:school_app/features/parent/events/widget/eventcard.dart';
-// import 'package:school_app/features/parent/notices/screen/noticescreen.dart';
-// import 'package:school_app/features/parent/notices/widget/noticecard.dart';
-// import 'package:school_app/features/parent/payment/screen/payment_selection.dart';
-
-// class ParentHomeScreen extends StatefulWidget {
-//   const ParentHomeScreen({super.key});
-
-//   @override
-//   State<ParentHomeScreen> createState() => _ParentHomeScreenState();
-// }
-
-// class _ParentHomeScreenState extends State<ParentHomeScreen> {
-//   @override
-//   void initState() {
-//     context.read<NoticeController>().getEvents();
-//     context.read<NoticeController>().getNotices();
-//     // context.read<StudentController>().getIndividualStudentDetails();
-//     context.read<StudentController>().getStudentsByParentEmail();
-//     super.initState();
-//   }
-
-//   int _currentIndex = 0;
-
-//   final List<Widget> _pages = [
-//     const HomePage(),
-//     // const Text("Reports Page"),
-//     const EventsPage(),
-//     const NoticePage(),
-//     // const PaymentPage(),
-//     const PaymentSelection(),
-//     ParentChatPage()
-//   ];
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: _pages[_currentIndex],
-//       bottomNavigationBar: BottomNavigationBar(
-//         currentIndex: _currentIndex,
-//         type: BottomNavigationBarType.fixed,
-//         selectedItemColor: Colors.blue,
-//         unselectedItemColor: Colors.grey,
-//         onTap: (index) {
-//           setState(() {
-//             _currentIndex = index;
-//           });
-//         },
-//         items: const [
-//           BottomNavigationBarItem(
-//             icon: Icon(Icons.home),
-//             label: 'Home',
-//           ),
-//           // BottomNavigationBarItem(
-//           //   icon: Icon(Icons.article),
-//           //   label: 'Reports',
-//           // ),
-//           BottomNavigationBarItem(
-//             icon: Icon(Icons.event),
-//             label: 'Events',
-//           ),
-//           BottomNavigationBarItem(
-//             icon: Icon(Icons.notifications),
-//             label: 'Notice',
-//           ),
-//           BottomNavigationBarItem(
-//             icon: Icon(Icons.payment),
-//             label: 'Payments',
-//           ),
-//           BottomNavigationBarItem(
-//             icon: Icon(Icons.chat),
-//             label: 'chat',
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -247,34 +166,6 @@ class _HomePageState extends State<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(height: Responsive.height * 1),
-                            // Center(
-                            //   child: Consumer<StudentController>(
-                            //       builder: (context, value, child) {
-                            //     return ElevatedButton(
-                            //       onPressed: () {
-                            //         context.pushNamed(
-                            //             AppRouteConst.StudentLeaveRequestViewRouteName,
-                            //             extra: value.studentIds);
-                            //       },
-                            //       style: ElevatedButton.styleFrom(
-                            //           backgroundColor: Colors.black,
-                            //           padding: EdgeInsets.symmetric(
-                            //             horizontal:
-                            //                 MediaQuery.of(context).size.width * 0.25, //
-                            //             vertical:
-                            //                 MediaQuery.of(context).size.height * 0.025,
-                            //           ),
-                            //           shape: RoundedRectangleBorder(
-                            //               borderRadius: BorderRadius.circular(12))),
-                            //       child: const Text(
-                            //         'Leave Request',
-                            //         style: TextStyle(fontSize: 18, color: Colors.white),
-                            //       ),
-                            //     );
-                            //   }),
-                            // ),
-                            // const SizedBox(height: Responsive.height*2),
-
                             const Text(
                               "My Children",
                               style: TextStyle(
@@ -283,7 +174,6 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             const SizedBox(height: 10),
-
                             Consumer<StudentController>(
                                 builder: (context, value, child) {
                               return ListView.builder(
@@ -315,39 +205,7 @@ class _HomePageState extends State<HomePage> {
                                 },
                               );
                             }),
-                            // Consumer<StudentController>(
-                            //     builder: (context, value, child) {
-                            //   return value.isloading
-                            //       ? Loading(
-                            //           color: Colors.grey,
-                            //         )
-                            //       : ProfileTile(
-                            //           name: capitalizeEachWord(
-                            //               value.individualStudent!.fullName ?? ""),
-                            //           description:
-                            //               value.individualStudent!.studentClass ?? "",
-                            //           imageUrl:
-                            //               "${baseUrl}${Urls.studentPhotos}${value.individualStudent!.studentPhoto}",
-                            //           onPressed: () {
-                            //             context.pushNamed(
-                            //                 AppRouteConst.AdminstudentdetailsRouteName,
-                            //                 extra: StudentDetailArguments(
-                            //                     student: value.individualStudent!,
-                            //                     userType: UserType.parent));
-                            //           },
-                            //         );
-                            // }),
-                            // const ChildCard(
-                            //   childName: "Muhammed Rafsal N",
-                            //   className: "XIII",
-                            //   imageProvider: AssetImage('assets/child1.png'),
-                            // ),
-                            // const ChildCard(
-                            //   childName: "Livia Kenter",
-                            //   className: "XIII",
-                            //   imageProvider: AssetImage('assets/child2.png'),
-                            // ),
-                           SizedBox(height: Responsive.height*2),
+                            SizedBox(height: Responsive.height * 2),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -361,8 +219,8 @@ class _HomePageState extends State<HomePage> {
                                 TextButton(
                                   onPressed: () {
                                     context.pushNamed(
-                                      AppRouteConst.ParentNoticePageRouteName,
-                                    );
+                                        AppRouteConst.ParentNoticePageRouteName,
+                                        extra: true);
                                   },
                                   child: const Text(
                                     "View",
@@ -380,43 +238,40 @@ class _HomePageState extends State<HomePage> {
                                 shrinkWrap: true,
                                 itemCount: value.notices.take(2).length,
                                 itemBuilder: (context, index) {
-                                  return NoticeCard(
-                                    description:
-                                        value.notices[index].description ?? "",
-                                    noticeTitle:
-                                        value.notices[index].title ?? "",
-                                    date: DateFormatter.formatDateString(
-                                        value.notices[index].date.toString()),
-                                    time: TimeFormatter.formatTimeFromString(
-                                        value.notices[index].createdAt
-                                            .toString()),
-                                    fileUpload:
-                                        value.notices[index].fileUpload ?? "",
-                                    onTap: () {
-                                      context.pushNamed(
-                                          AppRouteConst
-                                              .NoticeDetailedPageRouteName,
-                                          extra: NoticeDetailArguments(
-                                            notice: value.notices[index],
-                                            userType: UserType.parent,
-                                          ));
-                                    },
-                                  );
+                                  final isFirst = index == 0;
+                                  final isLast =
+                                      index == value.notices.take(2).length - 1;
+                                  final topRadius = isFirst ? 16 : 0;
+                                  final bottomRadius = isLast ? 16 : 0;
+                                  final notice = value.notices[index];
+                                  return Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 1.5),
+                                      child: DutyCard(
+                                        bottomRadius: bottomRadius.toDouble(),
+                                        topRadius: topRadius.toDouble(),
+                                        title: notice.title ?? "",
+                                        date: DateFormatter.formatDateString(
+                                            notice.date.toString()),
+                                        time:
+                                            TimeFormatter.formatTimeFromString(
+                                                notice.createdAt.toString()),
+                                        onTap: () {
+                                          context.pushNamed(
+                                            AppRouteConst
+                                                .NoticeDetailedPageRouteName,
+                                            extra: NoticeDetailArguments(
+                                                notice: notice,
+                                                userType: UserType.parent),
+                                          );
+                                        },
+                                        description: notice.description ?? "",
+                                        // fileUpload: notice.fileUpload ?? "",
+                                      ));
                                 },
                               );
                             }),
-                            // const NoticeCard(
-                            //   noticeTitle: "PTA meeting class 09",
-                            //   date: "15 - 06 - 24",
-                            //   description: "",
-                            //   time: "09:00 am",
-                            // ),
-                            // const NoticeCard(
-                            //   noticeTitle: "PTA meeting class 02",
-                            //   date: "15 - 06 - 24",
-                            //   time: "09:00 am",
-                            // ),
-                           SizedBox(height: Responsive.height*2),
+                            SizedBox(height: Responsive.height * 2),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -430,8 +285,8 @@ class _HomePageState extends State<HomePage> {
                                 TextButton(
                                   onPressed: () {
                                     context.pushNamed(
-                                      AppRouteConst.EventsPageRouteName,
-                                    );
+                                        AppRouteConst.EventsPageRouteName,
+                                        extra: true);
                                   },
                                   child: const Text(
                                     "View",
@@ -480,14 +335,6 @@ class _HomePageState extends State<HomePage> {
                                 },
                               );
                             }),
-                            // const event_card.EventCard(
-                            //   eventTitle: "Sports day",
-                            //   eventDescription:
-                            //       "National sports day will be conducted\n in our school...",
-                            //   date: "15 - 06 - 24",
-                            //   imageProvider: AssetImage("assets/event.png"),
-                            //   time: '',
-                            // ),
                           ],
                         ),
                       );

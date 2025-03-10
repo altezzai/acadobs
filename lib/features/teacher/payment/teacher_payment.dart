@@ -68,9 +68,20 @@ class _TeacherPaymentScreenState extends State<TeacherPaymentScreen>
             ),
             SizedBox(height: Responsive.height * 2),
             TabBar(
-              controller: _tabController,
+              labelPadding:
+                  EdgeInsets.symmetric(horizontal: Responsive.width * 4),
+              dividerHeight: 3,
+              indicatorWeight: 3,
+              dividerColor: Colors.grey,
+              // indicatorPadding: EdgeInsets.symmetric(horizontal: 1),
+              tabAlignment: TabAlignment.center,
               indicatorColor: Colors.black,
-              labelColor: Colors.black,
+              unselectedLabelColor: Color(0xFF757575),
+              unselectedLabelStyle: TextStyle(fontSize: 14),
+              indicatorSize: TabBarIndicatorSize.tab,
+              controller: _tabController,
+              labelStyle: textThemeData.bodyMedium
+                  ?.copyWith(fontSize: 14, fontWeight: FontWeight.bold),
               tabs: [
                 Tab(text: 'Payments'),
                 Tab(text: 'Donations'),

@@ -70,10 +70,8 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
     return Consumer<SubjectController>(
       builder: (context, value, child) {
         if (value.isloading) {
-          return Center(
-            child: Loading(
-              color: Colors.grey,
-            ),
+          return Loading(
+            color: Colors.grey,
           );
         }
         List<Color> subjectColors = [
@@ -111,11 +109,10 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
                 onEdit: () {
                   context.pushNamed(AppRouteConst.EditSubjectPageRouteName,
                       extra: subject);
-                      
                 },
-                onDelete:(){
-                  SubjectController().deleteSubjects(context,subjectid: subject.id);
-                }
+                // onDelete: () {
+                // value.deleteSubjects(context, subjectid: subject.id);
+                // }
               ),
             );
           },

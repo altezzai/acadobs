@@ -2,12 +2,15 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/services/secure_storage_services.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/teacher/attendance/model/attendance_data.dart';
 import 'package:school_app/features/teacher/attendance/model/attendance_model.dart';
+import 'package:school_app/features/teacher/attendance/model/attendance_record_model.dart';
+import 'package:school_app/features/teacher/attendance/model/edit_attendance_request.dart';
 import 'package:school_app/features/teacher/attendance/services/attendance_services.dart';
 
 // Enum to represent attendance status
@@ -16,36 +19,12 @@ enum AttendanceStatus { present, late, absent, none }
 class AttendanceController extends ChangeNotifier {
   bool _isloading = false;
   bool get isloading => _isloading;
-    bool _isloadingTwo = false;
+  bool _isloadingTwo = false;
   bool get isloadingTwo => _isloadingTwo;
   final Map<int, AttendanceStatus> _attendanceStatus = {};
+  Map<int, String> _remarks = {}; // Stores selected remarks
 
   bool isAllPresent = false;
-
-  // Existing code for storing student statuses...
-
-  // void markAllPresent() {
-  //   isAllPresent = true;
-  //   notifyListeners();
-  // }
-
-  // void resetAllPresent() {
-  //   isAllPresent = false;
-  //   notifyListeners();
-  // }
-
-  // AttendanceStatus getStatus(int studentId) {
-  //   if (isAllPresent && !_attendanceStatus.containsKey(studentId)) {
-  //     return AttendanceStatus.present;
-  //   }
-  //   return _attendanceStatus[studentId] ?? AttendanceStatus.absent;
-  // }
-
-  // void updateStatus(int studentId, AttendanceStatus status) {
-  //   isAllPresent = false;  // Turn off all-present mode once any status is updated
-  //   _attendanceStatus[studentId] = status;
-  //   notifyListeners();
-  // }
 
 // Function for get status
   AttendanceStatus getStatus(int studentId) {
@@ -64,14 +43,29 @@ class AttendanceController extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Function to return a list of attendance data
+// Function to return attendance data with remarks (if provided)
   List<Map<String, dynamic>> get attendanceStatusList {
     return _attendanceStatus.entries.map((entry) {
+      final remark =
+          _remarks[entry.key]; // Fetch remark for the student (if any)
       return {
         'student_id': entry.key,
         'attendance_status': _statusToString(entry.value),
+        if (remark != null && remark.isNotEmpty)
+          'remarks': remark, // Include only if set
       };
     }).toList();
+  }
+
+  // Function to update the remark for a student (called from the dropdown)
+  void updateRemark(int studentId, String remark) {
+    _remarks[studentId] = remark;
+    notifyListeners();
+  }
+
+  // Function to get the selected remark for a student
+  String getSelectedRemark(int studentId) {
+    return _remarks[studentId] ?? "Select Remark"; // Default value
   }
 
   // Helper function to convert AttendanceStatus enum to string
@@ -128,24 +122,24 @@ class AttendanceController extends ChangeNotifier {
         _alreadyTakenPeriodList = (response.data['completed_periods'] as List)
             .map((e) => e as int)
             .toList();
+        log("Attendance response::::::::::::::::: ${response.data}");
         log(_alreadyTakenPeriodList.toString());
-       if (_attendanceList.isNotEmpty) {
-  final _teacherId = attendanceList[0].recordedBy;
-  if (_teacherId != null) {
-    CustomSnackbar.show(context,
-        message: "Attendance Already Taken", type: SnackbarType.info);
-    context.pushNamed(AppRouteConst.attendanceRouteName,
-        extra: attendanceData);
-  } else {
-    context.pushNamed(AppRouteConst.attendanceRouteName,
-        extra: attendanceData);
-  }
-} else {
-  CustomSnackbar.show(context,
-      message: "No students found for this class and division.",
-      type: SnackbarType.warning);
-}
-
+        if (_attendanceList.isNotEmpty) {
+          final _teacherId = attendanceList[0].recordedBy;
+          if (_teacherId != null) {
+            CustomSnackbar.show(context,
+                message: "Attendance Already Taken", type: SnackbarType.info);
+            context.pushNamed(AppRouteConst.attendanceRouteName,
+                extra: attendanceData);
+          } else {
+            context.pushNamed(AppRouteConst.attendanceRouteName,
+                extra: attendanceData);
+          }
+        } else {
+          CustomSnackbar.show(context,
+              message: "No students found for this class and division.",
+              type: SnackbarType.warning);
+        }
       }
     } catch (e) {
       log(e.toString());
@@ -159,29 +153,6 @@ class AttendanceController extends ChangeNotifier {
         _stringToStatus(_attendanceList[index].attendanceStatus ?? "");
     return _alreadyStatus;
   }
-
-// // **********check attendance already taken**************
-//   Future<void> checkAttendance(BuildContext context,
-//       {required String className,
-//       required String section,
-//       required String date,
-//       required String period,
-//       required AttendanceData attendanceData}) async {
-//     final response = await AttendanceServices().checkAttendance(
-//         className: className, section: section, date: date, period: period);
-//     if (response.statusCode == 200) {
-//       final data = response.data;
-//       if (data[0].length > 2) {
-//         log(">>>>>>>>>>>>>>${response.data}");
-//         CustomSnackbar.show(context,
-//             message: "Attendance Already Taken", type: SnackbarType.warning);
-//       } else {
-//         context.pushNamed(AppRouteConst.attendanceRouteName,
-//             extra: attendanceData);
-//         log("no status>>>>>>>>>>>>>>${response.data}");
-//       }
-//     }
-//   }
 
   //*************** */ submit attendance**************
   final AttendanceServices _attendanceService = AttendanceServices();
@@ -211,8 +182,12 @@ class AttendanceController extends ChangeNotifier {
           await _attendanceService.submitAttendance(attendanceData);
       if (response.statusCode == 201) {
         log("Attendance submitted successfully");
+        log("Attendance response2::::::::::::::::: ${response.data}");
         context.pushReplacementNamed(AppRouteConst.bottomNavRouteName,
             extra: UserType.teacher);
+        CustomSnackbar.show(context,
+            message: "Attendance Submitted Successfully",
+            type: SnackbarType.success);
       } else {
         log("Error submitting attendance--Status Code:${response.statusCode}");
       }
@@ -223,5 +198,59 @@ class AttendanceController extends ChangeNotifier {
     _isloadingTwo = false;
     notifyListeners(); // Notify listeners when loading ends
     clearAttendanceStatus();
+  }
+
+  // Get Attendance record
+  List<AttendanceRecord> _attendanceRecord = [];
+  List<AttendanceRecord> get attendanceRecord => _attendanceRecord;
+  // AttendanceRecord attendanceRecord = AttendanceRecord();
+  Future<void> getTeacherAttendanceRecords({required String date}) async {
+    _isloading = true;
+    _attendanceRecord.clear();
+    notifyListeners(); // Notify listeners when loading starts
+    try {
+      final teacherId = await SecureStorageService.getUserId();
+      final response = await AttendanceServices()
+          .getDailyAttendanceByTeacher(teacherId: teacherId, date: date);
+      if (response.statusCode == 200) {
+        _attendanceRecord =
+            (response.data['attendance_records'] as List<dynamic>)
+                .map((result) => AttendanceRecord.fromJson(result))
+                .toList();
+        // final temp = AttendanceRecord.fromJson(response.data['attendance_records']);
+        // _attendanceRecord.add(temp);
+      }
+    } catch (e) {
+      log(e.toString());
+    } finally {
+      _isloading = false;
+      notifyListeners(); // Notify listeners when loading ends
+    }
+  }
+
+  // Update Attendance
+  Future<void> updateAttendance(
+      {required BuildContext context,
+      required List<EditAttendanceRequest> attendanceData,
+      required String date}) async {
+    _isloadingTwo = true;
+    notifyListeners();
+    try {
+      final response =
+          await AttendanceServices().updateAttendance(attendanceData);
+      if (response.statusCode == 200) {
+        await getTeacherAttendanceRecords(
+            date: DateFormat('yyyy-MM-dd').format(DateTime.now()));
+        CustomSnackbar.show(context,
+            message: "Attendance Updated Successfully",
+            type: SnackbarType.success);
+        context.pushNamed(AppRouteConst.bottomNavRouteName, extra: UserType.teacher);
+      }
+    } catch (e) {
+      log(e.toString());
+    } finally {
+      _isloadingTwo = false;
+      notifyListeners();
+    }
   }
 }

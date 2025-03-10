@@ -93,7 +93,7 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
             SizedBox(height: 16),
 
             CustomTextfield(
-              hintText: 'Title',
+              label: 'Title',
               controller: _titleController,
               iconData: Icon(Icons.title),
             ),
@@ -103,7 +103,7 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
               maxLines: 4,
               decoration: InputDecoration(
                 hintText: 'Description',
-                labelText: 'Description',
+                labelText: 'Description*',
                 labelStyle: TextStyle(
                   color: Colors.grey, // Change label text color here
                 ),
@@ -121,7 +121,7 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
             SizedBox(height: 16),
             CustomDropdown(
               dropdownKey: 'category',
-              label: 'Category',
+              label: 'Category*',
               items: [
                 'Academic',
                 'Extracurricular',
@@ -135,7 +135,7 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
             SizedBox(height: 16),
             CustomDropdown(
               dropdownKey: 'level',
-              label: 'Level',
+              label: 'Level*',
               items: [
                 'Class',
                 'School',
@@ -149,7 +149,7 @@ class _AddAchievementPageState extends State<AddAchievementPage> {
             SizedBox(height: 16),
 
             CustomTextfield(
-              hintText: 'Awarding Body',
+              label: 'Awarding Body',
               controller: _awardController,
               iconData: Icon(Icons.add_moderator_outlined),
             ),

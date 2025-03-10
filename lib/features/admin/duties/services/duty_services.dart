@@ -27,11 +27,14 @@ class DutyServices {
     return response;
   }
 
+// Add Duty
   Future<Response> addDuty({
     required String duty_title,
     required String description,
     required String status,
     required String remark,
+   required String assignedDate,
+    required String endDate,
     required List<int> teachers,
     String? fileAttachment,
   }) async {
@@ -41,6 +44,8 @@ class DutyServices {
       'description': description,
       'status': status,
       'remark': remark,
+      'assigned_date':assignedDate,
+      'end_date':endDate,
       'teachers[]': teachers,
        if (fileAttachment!= null) // Only include if the photo is provided
         "file_attachment": await MultipartFile.fromFile(fileAttachment,
@@ -54,13 +59,42 @@ class DutyServices {
     return response;
   }
 
+  // Edit Duty
+  Future<Response> editDuty({
+    required int dutyId,
+    required String duty_title,
+    required String description,
+    required String status,
+    required String remark,
+     required String assignedDate,
+    required String endDate,
+    required List<int> teachers,
+    String? fileAttachment,
+  }) async {
+    // Create the form data to pass to the API
+    final formData = {
+      'duty_title': duty_title,
+      'description': description,
+      'status': status,
+      'remark': remark,
+      'teachers[]': teachers,
+       'assigned_date':assignedDate,
+      'end_date':endDate,
+      '_method':'put',
+       if (fileAttachment!= null) // Only include if the photo is provided
+        "file_attachment": await MultipartFile.fromFile(fileAttachment,
+            filename: fileAttachment.split('/').last)
+    };
+    final Response response =
+        await ApiServices.post("/duties/$dutyId", formData, isFormData: true);
+
+    return response;
+  }
+
   Future<Response> progressDuty({
     required int duty_id,
   }) async {
-    // Create the form data to pass to the API
     final formData = {'duty_id': duty_id};
-
-    // Call the ApiServices post method with formData and isFormData: true
     final Response response = await ApiServices.post(
         "/inProgressTeacherDuty/$duty_id", formData,
         isFormData: true);
@@ -84,6 +118,11 @@ class DutyServices {
    // Delete Duties
   Future<Response> deleteDuties({required int dutyId}) async {
     final Response response = await ApiServices.delete("/duties/$dutyId");
+    return response;
+  }
+
+  Future<Response> getSingleDuty({required int dutyId}) async {
+     final Response response = await ApiServices.get("/duties/$dutyId");
     return response;
   }
 }

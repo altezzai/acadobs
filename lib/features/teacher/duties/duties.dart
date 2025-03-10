@@ -4,13 +4,12 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
-import 'package:school_app/base/utils/constants.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/features/admin/duties/controller/duty_controller.dart';
-import 'package:school_app/features/teacher/homework/widgets/work_container.dart';
+import 'package:school_app/features/admin/duties/widgets/duty_card.dart';
 
 class DutiesScreen extends StatefulWidget {
   const DutiesScreen({super.key});
@@ -79,6 +78,9 @@ class _DutiesScreenState extends State<DutiesScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(
+              height: Responsive.height * 2,
+            ),
             const CustomAppbar(
               title: "Duties",
               isBackButton: false,
@@ -112,6 +114,7 @@ class _DutiesScreenState extends State<DutiesScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: groupedDuties.entries.map((entry) {
+                        final itemCount = entry.value.length;
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -132,18 +135,20 @@ class _DutiesScreenState extends State<DutiesScreen> {
                             ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
-                              itemCount: entry.value.length,
+                              itemCount: itemCount,
                               itemBuilder: (context, index) {
                                 final duty = entry.value[index];
-                                return WorkContainer(
-                                  bcolor: const Color(0xffCEFFD3),
-                                  icolor: whiteColor,
-                                  icon: Icons.done,
-                                  work: duty.dutyTitle ?? "",
-                                  sub: DateFormatter.formatDateString(
+                                final isFirst = index == 0;
+                                final isLast = index == itemCount - 1;
+                                final topRadius = isFirst ? 16.0 : 0.0;
+                                final bottomRadius = isLast ? 16.0 : 0.0;
+                                return DutyCard(
+                                  title: duty.dutyTitle ?? "",
+                                  description: duty.description ?? "",
+                                  date: DateFormatter.formatDateString(
                                       duty.createdAt.toString()),
-                                  prefixText: duty.status ?? "",
-                                  prefixColor: Colors.red,
+                                  time: TimeFormatter.formatTimeFromString(
+                                      duty.createdAt.toString()),
                                   onTap: () {
                                     context.pushNamed(
                                       AppRouteConst.dutiesRouteName,
@@ -151,6 +156,8 @@ class _DutiesScreenState extends State<DutiesScreen> {
                                           dutyItem: duty, index: index),
                                     );
                                   },
+                                  bottomRadius: bottomRadius,
+                                  topRadius: topRadius,
                                 );
                               },
                             ),
@@ -166,11 +173,5 @@ class _DutiesScreenState extends State<DutiesScreen> {
         ),
       ),
     );
-  }
-}
-
-extension DateOnlyCompare on DateTime {
-  bool isAtSameMomentAs(DateTime other) {
-    return year == other.year && month == other.month && day == other.day;
   }
 }

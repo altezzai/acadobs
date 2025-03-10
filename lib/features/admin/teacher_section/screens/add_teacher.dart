@@ -1,3 +1,4 @@
+//import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +35,6 @@ class _AddTeacherState extends State<AddTeacher> {
   final TextEditingController _emailController = TextEditingController();
 
   late DropdownProvider dropdownProvider;
-
   late FilePickerProvider filePickerProvider;
   @override
   void initState() {
@@ -88,7 +88,8 @@ class _AddTeacherState extends State<AddTeacher> {
                 ),
                 CustomTextfield(
                   controller: _nameController,
-                  hintText: 'Name',
+                  label: "Name*",
+                  // hintText: 'Name',
                   iconData: Icon(Icons.person),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -102,10 +103,10 @@ class _AddTeacherState extends State<AddTeacher> {
                 ),
                 CustomDatePicker(
                   // hintText: "Date of Birth",
-                  label: "Date of Birth",
-                  firstDate: DateTime(1995),
+                  label: "Date of Birth*",
+                  firstDate: DateTime(1960),
                   lastDate: DateTime(2010),
-                  // initialDate: DateTime.now(),
+                  initialDate: DateTime(1995),
                   dateController:
                       _dateOfBirthController, // Unique controller for end date
                   onDateSelected: (selectedDate) {
@@ -123,7 +124,7 @@ class _AddTeacherState extends State<AddTeacher> {
                 ),
                 CustomDropdown(
                   dropdownKey: 'gender',
-                  label: 'Gender',
+                  label: 'Gender*',
                   icon: Icons.person_2_outlined,
                   items: ['Male', 'Female', 'Other'],
                   validator: (value) {
@@ -138,7 +139,7 @@ class _AddTeacherState extends State<AddTeacher> {
                 ),
                 CustomTextfield(
                   controller: _addressController, //Add controller
-                  hintText: 'Address',
+                  label: 'Address*',
                   iconData: Icon(Icons.location_on),
                   keyBoardtype: TextInputType.streetAddress,
                   validator: (value) {
@@ -153,7 +154,7 @@ class _AddTeacherState extends State<AddTeacher> {
                 ),
                 CustomTextfield(
                   controller: _phoneController, //Add controller
-                  hintText: 'Phone Number',
+                  label: 'Phone Number*',
                   iconData: Icon(Icons.phone),
                   keyBoardtype: TextInputType.phone,
                   validator: (value) {
@@ -168,7 +169,7 @@ class _AddTeacherState extends State<AddTeacher> {
                 ),
                 CustomTextfield(
                   controller: _emailController, //Add controller
-                  hintText: 'Email',
+                  label: 'Email*',
                   iconData: Icon(Icons.email),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -187,8 +188,9 @@ class _AddTeacherState extends State<AddTeacher> {
                   height: Responsive.height * 1,
                 ),
                 CustomFilePicker(
-                  label: 'Teacher Photo',
+                  label: 'Teacher Photo (Maximum image size: 5MB)*',
                   fieldName: 'profile photo',
+                  isImagePicker: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'This field is required';
@@ -197,7 +199,7 @@ class _AddTeacherState extends State<AddTeacher> {
                   },
                 ),
                 SizedBox(
-                  height: Responsive.height * 22,
+                  height: Responsive.height * 10,
                 ),
                 Consumer<TeacherController>(builder: (context, value, child) {
                   return CommonButton(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/app_constants.dart';
 import 'package:school_app/base/utils/button_loading.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/base/utils/form_validators.dart';
@@ -16,12 +17,32 @@ import 'package:school_app/features/teacher/marks/controller/marks_controller.da
 import 'package:school_app/features/teacher/marks/models/marks_upload_model.dart';
 
 // ignore: must_be_immutable
-class ProgressReport extends StatelessWidget {
+class ProgressReport extends StatefulWidget {
   ProgressReport({super.key});
+
+  @override
+  State<ProgressReport> createState() => _ProgressReportState();
+}
+
+class _ProgressReportState extends State<ProgressReport> {
   final _formKey = GlobalKey<FormState>();
+
   final TextEditingController _dateController = TextEditingController();
+
   final TextEditingController _totalMarkController = TextEditingController();
+
   final TextEditingController _titleController = TextEditingController();
+  late DropdownProvider dropdownProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    dropdownProvider = context.read<DropdownProvider>();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      dropdownProvider.clearSelectedItem('class');
+      dropdownProvider.clearSelectedItem('division');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +53,9 @@ class ProgressReport extends StatelessWidget {
           key: _formKey,
           child: Column(
             children: [
+              SizedBox(height: Responsive.height * 2),
               CustomAppbar(
-                title: "Progress Report",
+                title: "Marks",
                 onTap: () {
                   Navigator.pop(context);
                 },
@@ -46,8 +68,8 @@ class ProgressReport extends StatelessWidget {
                     child: CustomDropdown(
                       dropdownKey: 'class',
                       icon: Icons.school_outlined,
-                      label: "Select Class",
-                      items: ["6", "7", "8", "9", "10"],
+                      label: "Class*",
+                      items: AppConstants.classNames,
                       validator: (value) => FormValidator.validateNotEmpty(
                           value,
                           fieldName: "Class"),
@@ -58,8 +80,8 @@ class ProgressReport extends StatelessWidget {
                     child: CustomDropdown(
                       dropdownKey: 'division',
                       icon: Icons.access_time,
-                      label: "Select Division",
-                      items: ["A", "B", "C", "D", "E"],
+                      label: "Division*",
+                      items: AppConstants.divisions,
                       validator: (value) => FormValidator.validateNotEmpty(
                           value,
                           fieldName: "Division"),
@@ -70,7 +92,7 @@ class ProgressReport extends StatelessWidget {
               SizedBox(height: Responsive.height * 1),
               CustomTextfield(
                 controller: _titleController,
-                hintText: "Exam",
+                hintText: "Exam*",
                 iconData: Icon(Icons.text_fields),
                 validator: (value) =>
                     FormValidator.validateNotEmpty(value, fieldName: "Title"),
@@ -79,7 +101,7 @@ class ProgressReport extends StatelessWidget {
               CustomDropdown(
                 dropdownKey: 'subject',
                 icon: Icons.access_time,
-                label: "Select Subject",
+                label: "Select Subject*",
                 items: ["Physics", "Chemistry", "Mathematics"],
                 validator: (value) =>
                     FormValidator.validateNotEmpty(value, fieldName: "Subject"),
@@ -97,7 +119,7 @@ class ProgressReport extends StatelessWidget {
               SizedBox(height: Responsive.height * 1),
               CustomTextfield(
                 controller: _totalMarkController,
-                hintText: "Total Mark",
+                hintText: "Total Mark*",
                 iconData: Icon(Icons.book),
                 validator: (value) => FormValidator.validateNotEmpty(value,
                     fieldName: "Total Mark"),
