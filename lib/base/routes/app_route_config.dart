@@ -29,6 +29,8 @@ import 'package:school_app/features/admin/payments/screens/edit_donation_screen.
 import 'package:school_app/features/admin/payments/screens/edit_payment_screen.dart';
 import 'package:school_app/features/admin/payments/screens/payment_view.dart';
 import 'package:school_app/features/admin/payments/screens/single_student_selection_page.dart';
+import 'package:school_app/features/admin/profile/personal_info.dart';
+import 'package:school_app/features/admin/profile/profile_screen.dart';
 import 'package:school_app/features/admin/reports/screens/donation_report.dart';
 import 'package:school_app/features/admin/reports/screens/payment.dart';
 import 'package:school_app/features/admin/reports/screens/student_report.dart';
@@ -108,7 +110,7 @@ class Approuter {
         name: AppRouteConst.splashRouteName,
         path: '/',
         pageBuilder: (context, state) {
-          return MaterialPage(child: SplashScreen());
+          return MaterialPage(child: ProfileScreen());
         },
       ),
       GoRoute(
@@ -127,6 +129,13 @@ class Approuter {
           return LogoutScreen(
               userType:
                   userType); // Pass the extracted userType to the LogoutScreen
+        },
+      ),
+      GoRoute(
+        name: AppRouteConst.personalinfoRouteName,
+        path: '/personalinfo',
+        builder: (context, state) {
+          return PersonalInfo();
         },
       ),
 

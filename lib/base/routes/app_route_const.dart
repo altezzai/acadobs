@@ -101,7 +101,8 @@ class AppRouteConst {
   static const String editHomeworkRouteName = 'editHomework';
   static const String attendanceRecordRouteName = 'attendanceRecord';
 
-   static const String MarkDetailsRouteName = 'markdetailsscreen';
+  static const String MarkDetailsRouteName = 'markdetailsscreen';
 
-
+  static const String profileRouteName = 'profilescreen';
+  static const String personalinfoRouteName = 'personalinfoscreen';
 }
