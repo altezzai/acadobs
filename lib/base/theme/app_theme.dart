@@ -13,7 +13,7 @@ class AppTheme {
       fontFamily: GoogleFonts.poppins().fontFamily,
       primarySwatch: primaryMaterialColor,
       primaryColor: blackColor,
-      scaffoldBackgroundColor: Colors.grey.shade200,
+      scaffoldBackgroundColor: Color(0xFFEAEAEA),
       iconTheme: const IconThemeData(color: blackColor),
       // textTheme: textThemeData,
       elevatedButtonTheme: elevatedButtonThemeData,
