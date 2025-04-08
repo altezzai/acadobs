@@ -25,6 +25,7 @@ class _DutyPageState extends State<DutyPage> {
   int _rating = 3; // Initial rating value
 
   // Build the star rating widget
+  // ignore: unused_element - need to use this in future
   Widget _buildRatingStars() {
     return Row(
       mainAxisSize: MainAxisSize.min,

@@ -660,23 +660,23 @@ class _AddStudentPageState extends State<AddStudentPage> {
   }
 
 // Optional: Method to clear form fields after successful submission
-  void _clearFormFields() {
-    _fullNameController.clear();
-    _dateOfBirthController.clear();
-    _dateOfJoiningController.clear();
-    _rollNumberController.clear();
-    _admissionNumberController.clear();
-    _aadhaarNumberController.clear();
-    _addressController.clear();
-    // _contactNumberController.clear();
-    _emailController.clear();
-    _fatherFullNameController.clear();
-    _motherFullNameController.clear();
-    _fatherContactNumberController.clear();
-    _motherContactNumberController.clear();
-    _siblingNameController.clear();
-    context.read<DropdownProvider>().clearAllDropdowns();
-  }
+  // void _clearFormFields() {
+  //   _fullNameController.clear();
+  //   _dateOfBirthController.clear();
+  //   _dateOfJoiningController.clear();
+  //   _rollNumberController.clear();
+  //   _admissionNumberController.clear();
+  //   _aadhaarNumberController.clear();
+  //   _addressController.clear();
+  //   // _contactNumberController.clear();
+  //   _emailController.clear();
+  //   _fatherFullNameController.clear();
+  //   _motherFullNameController.clear();
+  //   _fatherContactNumberController.clear();
+  //   _motherContactNumberController.clear();
+  //   _siblingNameController.clear();
+  //   context.read<DropdownProvider>().clearAllDropdowns();
+  // }
 
   // Helper to create section titles
   Widget _sectionTitle(String title) {

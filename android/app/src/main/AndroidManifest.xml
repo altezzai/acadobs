@@ -8,7 +8,7 @@
     
     <!-- Scoped Storage Request for API 30+ -->
     <application
-        android:label="school_app"
+        android:label="AcadObs"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:requestLegacyExternalStorage="true">

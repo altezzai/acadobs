@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:archive/archive_io.dart'; // For zipping PDFs
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
@@ -77,9 +76,9 @@ class FilePickerProvider with ChangeNotifier {
         filePath.endsWith('.gif');
   }
 
-  bool _isPDF(String filePath) {
-    return filePath.endsWith('.pdf');
-  }
+  // bool _isPDF(String filePath) {
+  //   return filePath.endsWith('.pdf');
+  // }
 
   Future<File?> _compressImage(File file) async {
     final dir = await getTemporaryDirectory();
@@ -95,23 +94,23 @@ class FilePickerProvider with ChangeNotifier {
     return compressedFile != null ? File(compressedFile.path) : null;
   }
 
-  Future<File?> _compressPDF(File file) async {
-    try {
-      final dir = await getTemporaryDirectory();
-      String zipPath = '${dir.path}/${file.path.split('/').last}.zip';
+  // Future<File?> _compressPDF(File file) async {
+  //   try {
+  //     final dir = await getTemporaryDirectory();
+  //     String zipPath = '${dir.path}/${file.path.split('/').last}.zip';
 
-      final zipFile = File(zipPath);
-      final archive = Archive()
-        ..addFile(ArchiveFile(file.path.split('/').last, file.lengthSync(),
-            await file.readAsBytes()));
+  //     final zipFile = File(zipPath);
+  //     final archive = Archive()
+  //       ..addFile(ArchiveFile(file.path.split('/').last, file.lengthSync(),
+  //           await file.readAsBytes()));
 
-      await zipFile.writeAsBytes(ZipEncoder().encode(archive));
-      return zipFile;
-    } catch (e) {
-      print("PDF Compression Error: $e");
-      return null;
-    }
-  }
+  //     await zipFile.writeAsBytes(ZipEncoder().encode(archive));
+  //     return zipFile;
+  //   } catch (e) {
+  //     print("PDF Compression Error: $e");
+  //     return null;
+  //   }
+  // }
 }
 // import 'dart:io';
 
@@ -208,7 +207,3 @@ class FilePickerProvider with ChangeNotifier {
 //     }
 //   }
 // }
-
-
-
-
