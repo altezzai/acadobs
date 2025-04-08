@@ -149,14 +149,10 @@ import 'package:school_app/base/routes/app_route_const.dart';
 //import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
-import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/common_floating_action_button.dart';
 //import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
-import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
-//import 'package:school_app/core/shared_widgets/profile_tile.dart';
-import 'package:school_app/features/admin/student/controller/student_controller.dart';
 import 'package:school_app/features/teacher/parent/controller/notes_controller.dart';
 
 class NotesScreen extends StatefulWidget {
@@ -188,7 +184,8 @@ class _NotesScreenState extends State<NotesScreen> {
                 title: "Notes",
                 isProfileIcon: false,
                 onTap: () {
-                  context.pushNamed(AppRouteConst.bottomNavRouteName, extra: UserType.teacher);
+                  context.pushNamed(AppRouteConst.bottomNavRouteName,
+                      extra: UserType.teacher);
                   // Navigator.pop(context);
                 },
               ),
