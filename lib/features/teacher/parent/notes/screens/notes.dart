@@ -331,49 +331,49 @@ class _NotesScreenState extends State<NotesScreen> {
             text: "Add New Note"));
   }
 
-  Widget _buildParentTile(BuildContext context, {int notificationCount = 0}) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            Expanded(
-              child: CustomDropdown(
-                dropdownKey: 'class',
-                label: 'Class',
-                items: ['8', '9', '10'],
-                icon: Icons.school,
-                onChanged: (selectedClass) {
-                  // Automatically fetch students when division is selected
-                  final selectedDivision = context
-                      .read<DropdownProvider>()
-                      .getSelectedItem(
-                          'division'); // Get the currently selected class
-                  context.read<StudentController>().getParentByClassAndDivision(
-                      classname: selectedClass, section: selectedDivision);
-                },
-              ),
-            ),
-            const SizedBox(width: 5),
-            Expanded(
-              child: CustomDropdown(
-                dropdownKey: 'division',
-                label: 'Division',
-                items: ['A', 'B', 'C'],
-                icon: Icons.group,
-                onChanged: (selectedDivision) {
-                  // Automatically fetch students when division is selected
-                  final selectedClass = context
-                      .read<DropdownProvider>()
-                      .getSelectedItem(
-                          'class'); // Get the currently selected class
-                  context.read<StudentController>().getParentByClassAndDivision(
-                      classname: selectedClass, section: selectedDivision);
-                },
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
+  // Widget _buildParentTile(BuildContext context, {int notificationCount = 0}) {
+  //   return Column(
+  //     children: [
+  //       Row(
+  //         children: [
+  //           Expanded(
+  //             child: CustomDropdown(
+  //               dropdownKey: 'class',
+  //               label: 'Class',
+  //               items: ['8', '9', '10'],
+  //               icon: Icons.school,
+  //               onChanged: (selectedClass) {
+  //                 // Automatically fetch students when division is selected
+  //                 final selectedDivision = context
+  //                     .read<DropdownProvider>()
+  //                     .getSelectedItem(
+  //                         'division'); // Get the currently selected class
+  //                 context.read<StudentController>().getParentByClassAndDivision(
+  //                     classname: selectedClass, section: selectedDivision);
+  //               },
+  //             ),
+  //           ),
+  //           const SizedBox(width: 5),
+  //           Expanded(
+  //             child: CustomDropdown(
+  //               dropdownKey: 'division',
+  //               label: 'Division',
+  //               items: ['A', 'B', 'C'],
+  //               icon: Icons.group,
+  //               onChanged: (selectedDivision) {
+  //                 // Automatically fetch students when division is selected
+  //                 final selectedClass = context
+  //                     .read<DropdownProvider>()
+  //                     .getSelectedItem(
+  //                         'class'); // Get the currently selected class
+  //                 context.read<StudentController>().getParentByClassAndDivision(
+  //                     classname: selectedClass, section: selectedDivision);
+  //               },
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //     ],
+  //   );
+  // }
 }

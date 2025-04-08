@@ -105,7 +105,7 @@ class FilePickerProvider with ChangeNotifier {
         ..addFile(ArchiveFile(file.path.split('/').last, file.lengthSync(),
             await file.readAsBytes()));
 
-      await zipFile.writeAsBytes(ZipEncoder().encode(archive)!);
+      await zipFile.writeAsBytes(ZipEncoder().encode(archive));
       return zipFile;
     } catch (e) {
       print("PDF Compression Error: $e");
