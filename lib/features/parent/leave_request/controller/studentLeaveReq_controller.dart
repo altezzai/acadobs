@@ -93,6 +93,7 @@ class StudentLeaveRequestController extends ChangeNotifier {
     required String reasonForLeave,
   }) async {
     _isloadingTwo = true;
+    notifyListeners();
     try {
       //  _isloading = false;
       final response =

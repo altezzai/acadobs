@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/services/secure_storage_services.dart';
 import 'package:school_app/base/theme/text_theme.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
@@ -19,19 +20,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: Responsive.width * 6),
+        padding: EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(
+              height: Responsive.height * 2,
+            ),
             CustomAppbar(
               title: 'Profile',
               isProfileIcon: false,
+              onTap: () {
+                Navigator.pop(context);
+              },
             ),
             Row(
               children: [
                 CircleAvatar(
+                  backgroundColor: Colors.white,
                   radius: 45,
-                  backgroundImage: AssetImage('assets/icons/admin.png'),
+                  child: Icon(
+                    Icons.person_outline_sharp,
+                    size: 50,
+                  ),
                 ),
                 SizedBox(
                   width: Responsive.width * 5,
@@ -39,16 +50,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Admin',
-                      style: textThemeData.bodyLarge,
+                    FutureBuilder<String?>(
+                      future: SecureStorageService.getUserName(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Text('Loading...',
+                              style: textThemeData.bodyLarge);
+                        } else if (snapshot.hasError || snapshot.data == null) {
+                          return Text('Unknown',
+                              style: textThemeData.bodyLarge);
+                        }
+                        return Text(snapshot.data!,
+                            style: textThemeData.bodyLarge);
+                      },
                     ),
-                    Text(
-                      'admin@example.com',
-                      style: textThemeData.labelMedium,
+                    FutureBuilder<String?>(
+                      future: SecureStorageService.getUserEmail(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Text('Loading...',
+                              style: textThemeData.labelMedium);
+                        } else if (snapshot.hasError || snapshot.data == null) {
+                          return Text('Unknown',
+                              style: textThemeData.labelMedium);
+                        }
+                        return Text(snapshot.data!,
+                            style: textThemeData.labelMedium);
+                      },
                     ),
                   ],
-                ),
+                )
               ],
             ),
             SizedBox(
@@ -69,10 +102,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        setState(() {
-                          _showExtraButton =
-                              !_showExtraButton; // Toggle visibility
-                        });
+                        // setState(() {
+                        //   _showExtraButton =
+                        //       !_showExtraButton; // Toggle visibility
+                        // });
                       },
                       child: Text(
                         'Account Settings',
@@ -86,38 +119,42 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       height: Responsive.height * 2,
                     ),
                     if (_showExtraButton) // Show extra button if state is true
-                      Padding(
-                        padding: EdgeInsets.only(
-                          bottom: Responsive.height * 2,
-                        ),
-                        child: Row(
-                          children: [
-                            CircleAvatar(
-                                backgroundColor: Color(0xffF4F4F4),
-                                child: Icon(Icons.person_2_outlined)),
-                            SizedBox(
-                              width: Responsive.width * 4,
-                            ),
-                            Text(
-                              'Personal Informations',
-                              style: textThemeData.bodyMedium,
-                            ),
-                            SizedBox(
-                              width: Responsive.width * 14,
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.keyboard_arrow_right),
-                              onPressed: () {
-                                context.pushNamed(
-                                    AppRouteConst.personalinfoRouteName);
-                              },
-                              color: Color(0xffAFAFAF),
-                            )
-                          ],
+                      GestureDetector(
+                        onTap: () {
+                          // context
+                          //     .pushNamed(AppRouteConst.personalinfoRouteName);
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            bottom: Responsive.height * 2,
+                          ),
+                          child: Row(
+                            children: [
+                              CircleAvatar(
+                                  backgroundColor: Color(0xffF4F4F4),
+                                  child: Icon(Icons.person_2_outlined)),
+                              SizedBox(
+                                width: Responsive.width * 4,
+                              ),
+                              Text(
+                                'Personal Informations',
+                                style: textThemeData.bodyMedium,
+                              ),
+                              Spacer(),
+                              Icon(
+                                Icons.keyboard_arrow_right,
+                                color: Color(0xffAFAFAF),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        // context.read<AuthController>().logout(context: context);
+                        await SecureStorageService.clearSecureStorage();
+                        context.goNamed(AppRouteConst.loginRouteName);
+                      },
                       child: Text(
                         'Logout',
                         style: TextStyle(

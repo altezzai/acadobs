@@ -168,14 +168,15 @@ class _StudentNoteSelectionPageState extends State<StudentNoteSelectionPage> {
                             final student = value.filteredstudents[index];
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 4),
-                              child: ProfileTile(
+                              child:
+                               ProfileTile(
                                 suffixText: "Select",
                                 imageUrl:
                                     "${baseUrl}${Urls.studentPhotos}${student.studentPhoto}",
                                 name: capitalizeFirstLetter(
                                     student.fullName ?? ""),
-                                description:
-                                    "${student.studentClass} ${student.section}",
+                                description:"",
+                                    // "${student.studentClass} ${student.section}",
                                 onPressed: () {
                                   context.pushNamed(
                                       AppRouteConst.AddNoteRouteName,

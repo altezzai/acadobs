@@ -204,7 +204,7 @@ class _PaymentViewState extends State<PaymentView> {
               style: textThemeData.bodyMedium,
             ),
             SizedBox(height: Responsive.height * .8),
-            Text('${widget.payment.paymentClass} ${widget.payment.section}'),
+            Text('${widget.payment.datumClass} ${widget.payment.section}'),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

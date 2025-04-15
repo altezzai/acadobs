@@ -36,7 +36,7 @@ class _NoteChatDetailPageState extends State<NoteChatDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CommonAppBar(
-        title: 'Chat Details',
+        title: 'Note Details',
         isBackButton: true,
         actions: [
           Consumer<NotesController>(builder: (context, value, child) {

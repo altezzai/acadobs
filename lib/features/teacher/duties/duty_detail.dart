@@ -103,7 +103,7 @@ class _DutyDetailScreenState extends State<DutyDetailScreen> {
                                 ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor:
-                                        Colors.orange.withOpacity(0.6),
+                                        Colors.orange,
                                   ),
                                   onPressed: () {
                                     context.read<DutyController>().progressDuty(

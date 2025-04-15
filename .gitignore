@@ -42,8 +42,10 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-
 # Ignore Gradle caches and generated files
 /android/gradle/wrapper/gradle-wrapper.properties
 /android/app/build.gradle
 /android/settings.gradle
+
+# FVM Version Cache
+.fvm/

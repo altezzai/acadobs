@@ -12,6 +12,7 @@ import 'package:school_app/features/admin/student/model/day_attendance_status.da
 import 'package:school_app/features/admin/student/model/parent_email_check.dart';
 import 'package:school_app/features/admin/student/model/student_data.dart';
 import 'package:school_app/features/admin/student/model/student_homework.dart';
+import 'package:school_app/features/admin/student/model/students_by_class_and_division.dart';
 import 'package:school_app/features/admin/student/services/studentservice.dart';
 
 class StudentController extends ChangeNotifier {
@@ -23,8 +24,11 @@ class StudentController extends ChangeNotifier {
 
   List<Student> _students = [];
   List<Student> get students => _students;
-  List<Student> _filteredstudents = [];
-  List<Student> get filteredstudents => _filteredstudents;
+  StudentsByClassAndDivision studentsByClassDivision =
+      StudentsByClassAndDivision();
+
+  List<StudentProfile> _filteredstudents = [];
+  List<StudentProfile> get filteredstudents => _filteredstudents;
 
   List<Student> _parents = [];
   List<Student> get parents => _parents;
@@ -55,8 +59,8 @@ class StudentController extends ChangeNotifier {
   }
 
   // Latest students (GET request)
-  List<Student> _lateststudents = [];
-  List<Student> get lateststudents => _lateststudents;
+  List<StudentProfile> _lateststudents = [];
+  List<StudentProfile> get lateststudents => _lateststudents;
   Future<void> getLatestStudents() async {
     _isloading = true;
     notifyListeners(); // Notify listeners before the API call starts
@@ -65,7 +69,7 @@ class StudentController extends ChangeNotifier {
       final response = await StudentServices().getLatestStudents();
       if (response.statusCode == 200) {
         _lateststudents = (response.data as List<dynamic>)
-            .map((result) => Student.fromJson(result))
+            .map((result) => StudentProfile.fromJson(result))
             .toList();
       }
     } catch (e) {
@@ -342,46 +346,59 @@ class StudentController extends ChangeNotifier {
   }
 
   // Fetch student class and division details (GET request)
+  int currentPage = 1;
+  bool hasMoreData = true;
+
   Future<void> getStudentsClassAndDivision({
-    required String classname,
-    required String section,
-  }) async {
-    _isloading = true; // Set loading state to true
-    _isFiltered = false;
-    notifyListeners(); // Notify listeners to update the UI
+  required String classname,
+  required String section,
+  bool isRefresh = false, // For pull-to-refresh
+}) async {
+  if (_isloading || (!hasMoreData && !isRefresh)) return; // Prevent multiple calls
+  
+  _isloading = true;
+  notifyListeners();
 
-    try {
-      // Call the API to fetch student data
-      final response = await StudentServices().getStudentsClassAndDivision(
-        classname: classname,
-        section: section,
-      );
-
-      // Log the response for debugging purposes
-      print("Response Status Code: ${response.statusCode}");
-      print("Response Body: ${response.data}");
-
-      if (response.statusCode == 200 && response.data is List) {
-        // Successfully received data, map and update the filtered students list
-        _filteredstudents = (response.data as List<dynamic>)
-            .map((student) => Student.fromJson(student))
-            .toList();
-      } else {
-        // Handle unexpected response format or status
-        _filteredstudents.clear(); // Clear the list if response is invalid
-        print("Unexpected response: ${response.statusCode}");
-      }
-    } catch (e) {
-      // Log the error and clear the student list on failure
-      print("Error fetching student data: $e");
-      _filteredstudents.clear();
-    } finally {
-      // Reset the loading state and notify listeners
-      _isloading = false;
-      _isFiltered = true;
-      notifyListeners();
-    }
+  if (isRefresh) {
+    currentPage = 1;
+    hasMoreData = true;
+    _filteredstudents.clear();
+    studentsByClassDivision = StudentsByClassAndDivision();
   }
+
+  try {
+    final response = await StudentServices().getStudentsClassAndDivision(
+      pageNo: currentPage.toString(),
+      classname: classname,
+      section: section,
+    );
+
+    if (response.statusCode == 200) {
+      final temp = StudentsByClassAndDivision.fromJson(response.data);
+      final newStudents = (response.data['students']['data'] as List<dynamic>)
+          .map((student) => StudentProfile.fromJson(student))
+          .toList();
+
+      if (currentPage == 1) {
+        studentsByClassDivision = temp;
+        _filteredstudents = newStudents;
+      } else {
+        _filteredstudents.addAll(newStudents); // Append new data
+      }
+
+      int lastPage = response.data['students']['last_page'];
+      hasMoreData = currentPage < lastPage;
+      if (hasMoreData) currentPage++;
+    }
+  } catch (e) {
+    print("Error fetching student data: $e");
+  } finally {
+    _isloading = false;
+    _isFiltered = true;
+    notifyListeners();
+  }
+}
+
 
 // Clear the filtered students list
   void clearStudentList() {

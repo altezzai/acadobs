@@ -22,9 +22,13 @@ class PaymentsHomeScreen extends StatefulWidget {
 class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-
+  late PaymentController paymentController;
+  final ScrollController scrollController = ScrollController();
   @override
   void initState() {
+    paymentController = context.read<PaymentController>();
+    paymentController.getPayments();
+    scrollController.addListener(paymentController.paymentScrollListner);
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
   }
@@ -121,6 +125,23 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
             child: TabBarView(
               controller: _tabController,
               children: [
+                // Consumer<PaymentController>(builder: (context, value, index) {
+                //   return ListView.builder(
+                //     controller: value.scrollController,
+                //     itemCount:value.isLoadingMore? value.payments.length + 1 :value.payments.length,
+                //     itemBuilder: (context, index) {
+                //       if(index<value.payments.length){
+                //           final payment = value.payments[index];
+                //       return ListTile(
+                //         title: Text(payment.fullName ?? ""),
+                //       );
+                //       }
+                //     else{
+                //       return Center(child: CircularProgressIndicator());
+                //     }
+                //     },
+                //   );
+                // }),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 16,
@@ -191,12 +212,10 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
   }
 
   Widget _buildPaymentsList() {
-    context.read<PaymentController>().getPayments();
+    // context.read<PaymentController>().getPayments();
     return Consumer<PaymentController>(builder: (context, value, child) {
       if (value.isloading) {
-        return Loading(
-          color: Colors.grey,
-        );
+        return Loading();
       }
 
       final groupedPayments = groupItemsByDate(
@@ -286,12 +305,12 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
   Widget _buildGroupedList<T>(Map<String, List<T>> groupedItems,
       Widget Function(T, int, int) buildItem) {
     return SingleChildScrollView(
+      controller: paymentController.scrollController,
       padding: EdgeInsets.only(bottom: Responsive.height * 2),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: groupedItems.entries.map((entry) {
           final itemCount = entry.value.length;
-
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -305,10 +324,6 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
                   return buildItem(entry.value[index], index, itemCount);
                 },
               ),
-              // SizedBox(height: 2,),
-              // SizedBox(
-              //   height: Responsive.height * 2,
-              // )
             ],
           );
         }).toList(),
@@ -319,8 +334,8 @@ class _PaymentsHomeScreenState extends State<PaymentsHomeScreen>
   Widget _buildDateHeader(String date) {
     return Padding(
       padding: EdgeInsets.only(
-        top: Responsive.height * 2, // 20px equivalent
-        bottom: Responsive.height * 1, // 10px equivalent
+        top: Responsive.height * 2,
+        bottom: Responsive.height * 1,
       ),
       child: Text(
         date,

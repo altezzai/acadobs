@@ -152,35 +152,40 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                   //     child: Image.asset('assets/dori.png'),
                   //   ),
                   // ),
-                  Container(
-                    padding:
-                        EdgeInsets.only(top: 4, bottom: 4, left: 10, right: 4),
-                    height: Responsive.height * 4.2,
-                    width: Responsive.width * 22,
-                    decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 221, 219, 219),
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Profile",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall!
-                              .copyWith(color: Color(0xFF555555)),
-                        ),
-                        Container(
-                          padding: EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                              color: Colors.white, shape: BoxShape.circle),
-                          child: Image.asset(
-                            'assets/icons/profile_icon.png',
-                            height: 30,
+                  GestureDetector(
+                    onTap: () {
+                      context.pushNamed(AppRouteConst.profileRouteName);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.only(
+                          top: 4, bottom: 4, left: 10, right: 4),
+                      height: Responsive.height * 4.2,
+                      width: Responsive.width * 22,
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 221, 219, 219),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Profile",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall!
+                                .copyWith(color: Color(0xFF555555)),
                           ),
-                        )
-                      ],
+                          Container(
+                            padding: EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                                color: Colors.white, shape: BoxShape.circle),
+                            child: Image.asset(
+                              'assets/icons/profile_icon.png',
+                              height: 30,
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   )
                 ],

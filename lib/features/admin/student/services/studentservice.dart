@@ -115,10 +115,10 @@ class StudentServices {
 
   // student by class division
   Future<Response> getStudentsClassAndDivision(
-      {required String classname, required String section}) async {
+      {required String classname, required String section, required String pageNo}) async {
     try {
       final Response response = await ApiServices.get(
-          '/studentsByClassDivision?class=$classname&section=$section');
+          '/studentsByClassDivision?page=$pageNo&class=$classname&section=$section');
       return response;
     } on DioException catch (e) {
       throw Exception('Failed to load data: $e');
@@ -135,7 +135,7 @@ class StudentServices {
     }
   }
 
-  // student by class division
+  // parents by class division
   Future<Response> getParentByClassAndDivision(
       {required String classname, required String section}) async {
     try {

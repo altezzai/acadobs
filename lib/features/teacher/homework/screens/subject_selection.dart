@@ -58,19 +58,28 @@ class _SubjectSelectionPageState extends State<SubjectSelectionPage> {
                         itemCount: subjectProvider.subjects.length,
                         itemBuilder: (context, index) {
                           final subject = subjectProvider.subjects[index];
-                          return SubjectSelectionCard(
-                            subjectName:
-                                capitalizeEachWord(subject.subject ?? ""),
-                            subjectId: subject.id ?? 0,
-                            isSelected:
-                                subjectProvider.selectedSubjectId == subject.id,
-                            onSelect: (bool? selected) {
-                              if (selected == true) {
-                                subjectProvider.selectSubject(subject.id ?? 0);
-                                widget.subjectTextEditingController.text =
-                                    subject.subject ?? "";
-                              }
-                            },
+                          return Padding(
+                            padding: EdgeInsets.only(
+                              bottom:
+                                  index == subjectProvider.subjects.length - 1
+                                      ? 80.0
+                                      : 0.0, // Extra space for last item
+                            ),
+                            child: SubjectSelectionCard(
+                              subjectName:
+                                  capitalizeEachWord(subject.subject ?? ""),
+                              subjectId: subject.id ?? 0,
+                              isSelected: subjectProvider.selectedSubjectId ==
+                                  subject.id,
+                              onSelect: (bool? selected) {
+                                if (selected == true) {
+                                  subjectProvider
+                                      .selectSubject(subject.id ?? 0);
+                                  widget.subjectTextEditingController.text =
+                                      subject.subject ?? "";
+                                }
+                              },
+                            ),
                           );
                         },
                       );

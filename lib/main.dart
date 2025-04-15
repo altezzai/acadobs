@@ -5,11 +5,6 @@ import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/theme/app_theme.dart';
 import 'package:school_app/base/utils/responsive.dart';
 
-// void main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-
-//   runApp(const MyApp());
-// }
 void main() {
   Approuter appRouter = Approuter();
   runApp(MyApp(

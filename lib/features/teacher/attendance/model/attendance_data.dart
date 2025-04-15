@@ -1,4 +1,4 @@
-import 'package:school_app/features/teacher/attendance/screens/attendance.dart';
+import 'package:school_app/features/teacher/attendance/utils/attendance_action.dart';
 
 class AttendanceData {
   final String selectedClass;
@@ -9,13 +9,12 @@ class AttendanceData {
   final AttendanceAction action;
   final List<int>? completedPeriods;
 
-  AttendanceData({
-    required this.selectedClass,
-    required this.selectedPeriod,
-    required this.selectedDivision,
-    required this.selectedDate,
-    required this.action,
-    required this.subject,
-    this.completedPeriods
-  });
+  AttendanceData(
+      {required this.selectedClass,
+      required this.selectedPeriod,
+      required this.selectedDivision,
+      required this.selectedDate,
+      required this.action,
+      required this.subject,
+      this.completedPeriods});
 }

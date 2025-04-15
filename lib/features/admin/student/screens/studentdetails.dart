@@ -17,7 +17,6 @@ import 'package:school_app/core/shared_widgets/profile_container.dart';
 import 'package:school_app/features/admin/student/controller/achievement_controller.dart';
 import 'package:school_app/features/admin/student/controller/exam_controller.dart';
 import 'package:school_app/features/admin/student/controller/student_controller.dart';
-import 'package:school_app/features/admin/student/model/student_data.dart';
 import 'package:school_app/features/admin/student/screens/achievements_list.dart';
 import 'package:school_app/features/admin/student/screens/homework_list.dart';
 import 'package:school_app/features/admin/student/widgets/daily_attendance_container.dart';
@@ -27,11 +26,11 @@ import 'package:school_app/features/teacher/parent/controller/notes_controller.d
 // import 'package:school_app/features/teacher/homework/widgets/work_container.dart';
 
 class StudentDetailPage extends StatefulWidget {
-  final Student student;
+  final int studentId;
   final UserType userType;
 
   const StudentDetailPage(
-      {super.key, required this.student, required this.userType});
+      {super.key, required this.studentId, required this.userType});
 
   @override
   State<StudentDetailPage> createState() => _StudentDetailPageState();
@@ -52,22 +51,22 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final studentController = context.read<StudentController>();
       studentController.getDayAttendance(
-          studentId: widget.student.id.toString(), forBuildScreen: true);
+          studentId: widget.studentId.toString(), forBuildScreen: true);
       studentController.updateDate(
           DateTime(
             DateTime.now().year,
             DateTime.now().month,
             DateTime.now().day,
           ),
-          studentId: widget.student.id.toString());
-      achievementController.getAchievements(studentId: widget.student.id ?? 0);
-      studentController.getStudentHomework(studentId: widget.student.id ?? 0);
-      examController.getExamMarks(studentId: widget.student.id ?? 0);
+          studentId: widget.studentId.toString());
+      achievementController.getAchievements(studentId: widget.studentId);
+      studentController.getStudentHomework(studentId: widget.studentId);
+      examController.getExamMarks(studentId: widget.studentId);
       noteController.fetchUnviewedNotesCountByStudentId(
-          studentId: widget.student.id ?? 0);
-      noteController.getNotesByStudentId(studentId: widget.student.id ?? 0);
+          studentId: widget.studentId);
+      noteController.getNotesByStudentId(studentId: widget.studentId);
       studentController.getIndividualStudentDetails(
-          studentId: widget.student.id ?? 0);
+          studentId: widget.studentId);
     });
     super.initState();
   }
@@ -91,7 +90,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
     if (pickedDate != null) {
       await context
           .read<StudentController>()
-          .updateDate(pickedDate, studentId: widget.student.id.toString());
+          .updateDate(pickedDate, studentId: widget.studentId.toString());
     }
   }
 
@@ -151,7 +150,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                                               context.pushNamed(
                                                 AppRouteConst
                                                     .parentNoteRouteName,
-                                                extra: studentDetail.id,
+                                                extra: studentDetail?.id,
                                               );
                                             },
                                             child: Stack(
@@ -213,8 +212,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                                                 onConfirm: () {
                                                   value.deleteStudents(context,
                                                       studentId:
-                                                          widget.student.id ??
-                                                              0);
+                                                          widget.studentId);
                                                 });
                                           });
                                         })
@@ -225,11 +223,11 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                               ),
                               ProfileContainer(
                                 imagePath:
-                                    "${baseUrl}${Urls.studentPhotos}${studentDetail.studentPhoto}",
+                                    "${baseUrl}${Urls.studentPhotos}${studentDetail?.studentPhoto}",
                                 name: capitalizeFirstLetter(
-                                    studentDetail.fullName ?? ""),
+                                    studentDetail?.fullName ?? ""),
                                 description:
-                                    "${studentDetail.studentClass} ${studentDetail.section}",
+                                    "${studentDetail?.studentClass} ${studentDetail?.section}",
                                 present: "25",
                                 absent: "2",
                                 late: "3",
@@ -277,18 +275,18 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                           onPressed: () {
                             context.pushNamed(
                                 AppRouteConst.AddAchivementsRouteName,
-                                extra: studentDetail!.id);
+                                extra: studentDetail?.id);
                           },
                         ),
                         _buildExamContent(),
                         HomeworkList(),
                         StudentLeaveRequestScreen(
-                          studentId: studentDetail!.id ?? 0,
+                          studentId: studentDetail?.id ?? 0,
                           userType: widget.userType,
                           onPressed: () {
                             context.pushNamed(
                                 AppRouteConst.AddStudentLeaveRequestRouteName,
-                                extra: studentDetail.id ?? 0);
+                                extra: studentDetail?.id ?? 0);
                           },
                         )
                       ],
@@ -311,7 +309,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
           value.isloading
               ? DailyAttendanceShimmer()
               : DailyAttendanceContainer(
-                  studentId: widget.student.id.toString(),
+                  studentId: widget.studentId.toString(),
                   onSelectDate: () => _selectDate(context),
                 ),
           SizedBox(height: Responsive.height * 3),
@@ -501,7 +499,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                   children: [
                     Expanded(
                       flex: 2,
-                      child: Text(subject["subject"]!,
+                      child: Text(subject["subject"]??"",
                           style: const TextStyle(
                               color: Colors.black,
                               fontSize: 12,
@@ -509,7 +507,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                     ),
                     Expanded(
                       flex: 1,
-                      child: Text(subject["mark"]!,
+                      child: Text(subject["mark"]??"",
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 12,
@@ -518,7 +516,7 @@ class _StudentDetailPageState extends State<StudentDetailPage> {
                     ),
                     Expanded(
                       flex: 1,
-                      child: Text(subject["total"]!,
+                      child: Text(subject["total"]??"",
                           style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,

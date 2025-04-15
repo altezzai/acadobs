@@ -107,7 +107,7 @@ class _StudentLeaveRequestDetailsPageState
                     context.pushNamed(
                         AppRouteConst.AdminstudentdetailsRouteName,
                         extra: StudentDetailArguments(
-                            student: value.individualStudent!,
+                            studentId: value.individualStudent?.id??0,
                             userType: widget.userType));
                   },
                 );

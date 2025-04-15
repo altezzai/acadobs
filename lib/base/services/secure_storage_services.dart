@@ -69,6 +69,12 @@ class SecureStorageService {
     return user?['email'];
   }
 
+  // Get username
+  static Future<String?> getUserName() async {
+    final user = await getUser();
+    return user?['name'];
+  }
+
 // Get usertype
   static Future<String?> getUserType() async {
     final user = await getUser();

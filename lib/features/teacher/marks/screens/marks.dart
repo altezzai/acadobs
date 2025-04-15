@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/app_constants.dart';
 import 'package:school_app/base/utils/button_loading.dart';
+import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/base/utils/form_validators.dart';
 import 'package:school_app/base/utils/responsive.dart';
@@ -13,6 +14,7 @@ import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
+import 'package:school_app/features/admin/subjects/controller/subject_controller.dart';
 import 'package:school_app/features/teacher/marks/controller/marks_controller.dart';
 import 'package:school_app/features/teacher/marks/models/marks_upload_model.dart';
 
@@ -32,6 +34,7 @@ class _ProgressReportState extends State<ProgressReport> {
   final TextEditingController _totalMarkController = TextEditingController();
 
   final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _subjectController = TextEditingController();
   late DropdownProvider dropdownProvider;
 
   @override
@@ -98,13 +101,31 @@ class _ProgressReportState extends State<ProgressReport> {
                     FormValidator.validateNotEmpty(value, fieldName: "Title"),
               ),
               SizedBox(height: Responsive.height * 1),
-              CustomDropdown(
-                dropdownKey: 'subject',
-                icon: Icons.access_time,
-                label: "Select Subject*",
-                items: ["Physics", "Chemistry", "Mathematics"],
-                validator: (value) =>
-                    FormValidator.validateNotEmpty(value, fieldName: "Subject"),
+              Consumer<SubjectController>(
+                builder: (context, subjectProvider, child) {
+                  return InkWell(
+                    onTap: () {
+                      context.pushNamed(
+                        AppRouteConst.subjectSelectionRouteName,
+                        extra: _subjectController,
+                      );
+                    },
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        hintText: subjectProvider.selectedSubjectId != null
+                            ? capitalizeEachWord(subjectProvider.subjects
+                                    .firstWhere((subject) =>
+                                        subject.id ==
+                                        subjectProvider.selectedSubjectId)
+                                    .subject ??
+                                "") // Fetch the selected subject name
+                            : "Select Subject*", // Default hint text when no subject is selected
+                      ),
+                      enabled:
+                          false, // Prevent editing as it's controlled by selection
+                    ),
+                  );
+                },
               ),
               SizedBox(height: Responsive.height * 1),
               CustomDatePicker(
@@ -136,9 +157,13 @@ class _ProgressReportState extends State<ProgressReport> {
                         final selectedDivision = context
                             .read<DropdownProvider>()
                             .getSelectedItem('division');
-                        final selectedSubject = context
-                            .read<DropdownProvider>()
-                            .getSelectedItem('subject');
+                        // final selectedSubject = context
+                        //     .read<DropdownProvider>()
+                        //     .getSelectedItem('subject');
+                        final selectedSubjectId =
+                            Provider.of<SubjectController>(context,
+                                    listen: false)
+                                .selectedSubjectId;
 
                         // Adding to model
                         final marksModel = MarksUploadModel(
@@ -146,7 +171,7 @@ class _ProgressReportState extends State<ProgressReport> {
                           section: selectedDivision,
                           title: _titleController.text,
                           date: _dateController.text,
-                          subject: selectedSubject,
+                          subject: selectedSubjectId.toString(),
                           totalMarks: int.parse(_totalMarkController.text),
                         );
 
@@ -158,6 +183,7 @@ class _ProgressReportState extends State<ProgressReport> {
                         _titleController.clear();
                         _dateController.clear();
                         _totalMarkController.clear();
+                        _subjectController.clear();
                         context
                             .read<DropdownProvider>()
                             .clearSelectedItem('class');

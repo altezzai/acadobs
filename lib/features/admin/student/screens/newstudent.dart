@@ -75,8 +75,8 @@ class _AddStudentPageState extends State<AddStudentPage> {
 
   final TextEditingController _occupationController = TextEditingController();
 
-  final TextEditingController _alternateNumberController =
-      TextEditingController();
+  // final TextEditingController _alternateNumberController =
+  //     TextEditingController();
 
   final TextEditingController _siblingNameController = TextEditingController();
 
@@ -103,7 +103,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
       dropdownProvider.clearSelectedItem('category');
       dropdownProvider.clearSelectedItem('transportation');
       dropdownProvider.clearSelectedItem('hostel');
-      context.read<StudentController>().resetParentEmailCheckData();
+      // context.read<StudentController>().resetParentEmailCheckData();
     });
   }
 
@@ -333,88 +333,90 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   validator: (value) => FormValidator.validateEmail(value),
                 ),
                 SizedBox(height: 10),
-                Consumer<StudentController>(
-                  builder: (context, studentController, child) {
-                    // Check if email check data is available
-                    if (studentController.parentEmailCheckData != null &&
-                        studentController
-                                .parentEmailCheckData!.previousStudentData !=
-                            null &&
-                        studentController.parentEmailCheckData!
-                            .previousStudentData!.isNotEmpty) {
-                      var studentParentData = studentController
-                          .parentEmailCheckData!.previousStudentData![0];
 
-                      // Autofill fields with the data
-                      // _fullNameController.text =
-                      //     studentParentData.studentName ?? '';
-                      _fatherFullNameController.text =
-                          studentParentData.fatherFullName ?? '';
-                      _motherFullNameController.text =
-                          studentParentData.motherFullName ?? '';
-                      _guardianNameController.text =
-                          studentParentData.guardianFullName ?? '';
-                      _fatherContactNumberController.text =
-                          studentParentData.fatherContactNumber ?? '';
-                      _motherContactNumberController.text =
-                          studentParentData.motherContactNumber ?? '';
-                      parentEmailController.text =
-                          studentParentData.parentEmail ?? '';
-                      _occupationController.text =
-                          studentParentData.occupation ?? '';
-                      _alternateNumberController.text =
-                          studentParentData.alternateEmergencyContact ?? '';
+                // ************Check Email Function ************************
+                // Consumer<StudentController>(
+                //   builder: (context, studentController, child) {
+                //     // Check if email check data is available
+                //     if (studentController.parentEmailCheckData != null &&
+                //         studentController
+                //                 .parentEmailCheckData!.previousStudentData !=
+                //             null &&
+                //         studentController.parentEmailCheckData!
+                //             .previousStudentData!.isNotEmpty) {
+                //       var studentParentData = studentController
+                //           .parentEmailCheckData!.previousStudentData![0];
 
-                      // Other fields...
-                    }
+                //       // Autofill fields with the data
+                //       // _fullNameController.text =
+                //       //     studentParentData.studentName ?? '';
+                //       _fatherFullNameController.text =
+                //           studentParentData.fatherFullName ?? '';
+                //       _motherFullNameController.text =
+                //           studentParentData.motherFullName ?? '';
+                //       _guardianNameController.text =
+                //           studentParentData.guardianFullName ?? '';
+                //       _fatherContactNumberController.text =
+                //           studentParentData.fatherContactNumber ?? '';
+                //       _motherContactNumberController.text =
+                //           studentParentData.motherContactNumber ?? '';
+                //       parentEmailController.text =
+                //           studentParentData.parentEmail ?? '';
+                //       _occupationController.text =
+                //           studentParentData.occupation ?? '';
+                //       _alternateNumberController.text =
+                //           studentParentData.alternateEmergencyContact ?? '';
 
-                    return Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            if (parentEmailController.text.isNotEmpty) {
-                              context
-                                  .read<StudentController>()
-                                  .checkParentEmailUsage(
-                                      email: parentEmailController.text);
-                            }
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Colors.blue,
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            child: Text(
-                              "Check Email",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Expanded(
-                          child: Text(
-                            parentEmailController.text.isEmpty
-                                ? "Please enter a valid email"
-                                : (studentController
-                                        .parentEmailCheckData?.message ??
-                                    ""),
-                            style: TextStyle(
-                              color: parentEmailController.text.isEmpty
-                                  ? Colors.red
-                                  : Colors.black,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
+                //       // Other fields...
+                //     }
 
+                //     return Row(
+                //       children: [
+                //         GestureDetector(
+                //           onTap: () {
+                //             if (parentEmailController.text.isNotEmpty) {
+                //               context
+                //                   .read<StudentController>()
+                //                   .checkParentEmailUsage(
+                //                       email: parentEmailController.text);
+                //             }
+                //           },
+                //           child: Container(
+                //             padding: EdgeInsets.all(8),
+                //             decoration: BoxDecoration(
+                //               color: Colors.blue,
+                //               borderRadius: BorderRadius.circular(4),
+                //             ),
+                //             child: Text(
+                //               "Check Email",
+                //               style: TextStyle(
+                //                 color: Colors.white,
+                //                 fontWeight: FontWeight.bold,
+                //               ),
+                //             ),
+                //           ),
+                //         ),
+                //         SizedBox(width: 10),
+                //         Expanded(
+                //           child: Text(
+                //             parentEmailController.text.isEmpty
+                //                 ? ""
+                //                 : (studentController
+                //                         .parentEmailCheckData?.message ??
+                //                     ""),
+                //             style: TextStyle(
+                //               color: parentEmailController.text.isEmpty
+                //                   ? Colors.red
+                //                   : Colors.black,
+                //             ),
+                //             overflow: TextOverflow.ellipsis,
+                //           ),
+                //         ),
+                //       ],
+                //     );
+                //   },
+                // ),
+                // ************Check Email Function ************************
                 SizedBox(height: Responsive.height * 2),
                 CustomTextfield(
                   label: 'Father\'s Name*',
@@ -660,23 +662,24 @@ class _AddStudentPageState extends State<AddStudentPage> {
   }
 
 // Optional: Method to clear form fields after successful submission
-  // void _clearFormFields() {
-  //   _fullNameController.clear();
-  //   _dateOfBirthController.clear();
-  //   _dateOfJoiningController.clear();
-  //   _rollNumberController.clear();
-  //   _admissionNumberController.clear();
-  //   _aadhaarNumberController.clear();
-  //   _addressController.clear();
-  //   // _contactNumberController.clear();
-  //   _emailController.clear();
-  //   _fatherFullNameController.clear();
-  //   _motherFullNameController.clear();
-  //   _fatherContactNumberController.clear();
-  //   _motherContactNumberController.clear();
-  //   _siblingNameController.clear();
-  //   context.read<DropdownProvider>().clearAllDropdowns();
-  // }
+  // ignore: unused_element
+  void _clearFormFields() {
+    _fullNameController.clear();
+    _dateOfBirthController.clear();
+    _dateOfJoiningController.clear();
+    _rollNumberController.clear();
+    _admissionNumberController.clear();
+    _aadhaarNumberController.clear();
+    _addressController.clear();
+    // _contactNumberController.clear();
+    _emailController.clear();
+    _fatherFullNameController.clear();
+    _motherFullNameController.clear();
+    _fatherContactNumberController.clear();
+    _motherContactNumberController.clear();
+    _siblingNameController.clear();
+    context.read<DropdownProvider>().clearAllDropdowns();
+  }
 
   // Helper to create section titles
   Widget _sectionTitle(String title) {

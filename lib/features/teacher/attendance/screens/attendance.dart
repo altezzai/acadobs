@@ -18,6 +18,8 @@ import 'package:school_app/features/admin/teacher_section/controller/teacher_con
 import 'package:school_app/features/admin/teacher_section/widgets/activity_tab.dart';
 import 'package:school_app/features/teacher/attendance/controller/attendance_controller.dart';
 import 'package:school_app/features/teacher/attendance/model/attendance_data.dart';
+import 'package:school_app/features/teacher/attendance/utils/attendance_action.dart';
+
 
 class AttendanceScreen extends StatefulWidget {
   AttendanceScreen({Key? key}) : super(key: key);
@@ -387,4 +389,4 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   }
 }
 
-enum AttendanceAction { checkAttendance, markAllPresent, markAttendance }
+

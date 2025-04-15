@@ -6,8 +6,8 @@ import 'package:school_app/core/controller/file_picker_provider.dart';
 
 class PaymentServices {
   // Get payments
-  Future<Response> getPayments() async {
-    final Response response = await ApiServices.get("/monthlyPayments");
+  Future<Response> getPayments({required int pageNo}) async {
+    final Response response = await ApiServices.get("/monthlyPayments?page=$pageNo");
     return response;
   }
 

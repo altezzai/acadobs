@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/base/utils/urls.dart';
@@ -23,12 +24,10 @@ class _ParentNoteScreenState extends State<ParentNoteScreen> {
   late NotesController notesController;
   @override
   void initState() {
-    
     WidgetsBinding.instance.addPostFrameCallback((_) {
-     notesController =context
-          .read<NotesController>();
-         notesController.getNotesByStudentId(studentId: widget.studentId);
-        //  notesController.getLatestParentChats(parentNoteId: parentNoteId)
+      notesController = context.read<NotesController>();
+      notesController.getNotesByStudentId(studentId: widget.studentId);
+      //  notesController.getLatestParentChats(parentNoteId: parentNoteId)
     });
     super.initState();
   }
@@ -36,7 +35,6 @@ class _ParentNoteScreenState extends State<ParentNoteScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       // AppBar(
       //   backgroundColor: Colors.grey.shade200,
       //   elevation: 0,
@@ -57,17 +55,17 @@ class _ParentNoteScreenState extends State<ParentNoteScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
           children: [
-             SizedBox(height: Responsive.height * 2),
- CustomAppbar(
-              title: "Chat",
+            SizedBox(height: Responsive.height * 2),
+            CustomAppbar(
+              title: "Notes",
               isBackButton: true,
               isProfileIcon: false,
               onTap: () {
-               Navigator.pop(context);
+                Navigator.pop(context);
               },
-             ),
-            SizedBox(height: Responsive.height * 2),
-            _buildSearchBar(),
+            ),
+            // SizedBox(height: Responsive.height * 2),
+            // _buildSearchBar(),
             Expanded(
               child:
                   Consumer<NotesController>(builder: (context, controller, _) {
@@ -82,6 +80,7 @@ class _ParentNoteScreenState extends State<ParentNoteScreen> {
     );
   }
 
+  // ignore: unused_element
   Widget _buildSearchBar() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
@@ -102,6 +101,7 @@ class _ParentNoteScreenState extends State<ParentNoteScreen> {
 
   Widget _buildNotesList(NotesController controller) {
     return ListView.builder(
+      padding: EdgeInsets.zero,
       itemCount: controller.parentNoteStudent.length,
       itemBuilder: (context, index) {
         final teacherNote = controller.parentNoteStudent[index];
@@ -109,7 +109,7 @@ class _ParentNoteScreenState extends State<ParentNoteScreen> {
           context,
           isNewMessage: teacherNote.viewed == 0,
           name: teacherNote.teacherName ?? "",
-          subject: "Parent Note Id: ${teacherNote.id.toString()}",
+          subject: " ${capitalizeEachWord(teacherNote.noteTitle ?? "")}",
           imageUrl:
               "${baseUrl}${Urls.teacherPhotos}${teacherNote.teacherProfilePhoto}",
           onTap: () {
@@ -146,13 +146,14 @@ class _ParentNoteScreenState extends State<ParentNoteScreen> {
           child: CachedNetworkImage(
             imageUrl: imageUrl,
             placeholder: (context, url) => const CircularProgressIndicator(),
-            errorWidget: (context, url, error) => const Icon(Icons.error),
+            errorWidget: (context, url, error) =>
+                Image.asset('assets/icons/avatar.png'),
             fit: BoxFit.cover,
           ),
         ),
       ),
       title: Text(
-        name,
+        capitalizeEachWord(name),
         style: const TextStyle(fontWeight: FontWeight.bold),
       ),
       subtitle: Text(subject),

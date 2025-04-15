@@ -4,12 +4,13 @@ import 'package:school_app/base/services/student_id_services.dart';
 class StudentIdController extends ChangeNotifier {
   bool _isloading = false;
   bool get isloading => _isloading;
-  List<Map<String, dynamic>> _students = [];
-  List<Map<String, dynamic>> get students => _students;
 
-    // List to store selected teacher IDs
-  List<int> _selectedStudentIds = [];
-  List<int> get selectedStudentIds => _selectedStudentIds;
+  List<Map<String, dynamic>> _students = [];
+  List<Map<String, dynamic>> get students => List.unmodifiable(_students);
+
+  // List to store selected student IDs
+  final List<int> _selectedStudentIds = [];
+  List<int> get selectedStudentIds => List.unmodifiable(_selectedStudentIds);
 
   String? selectedStudentId;
 
@@ -18,24 +19,26 @@ class StudentIdController extends ChangeNotifier {
     required String section,
   }) async {
     _isloading = true;
+    notifyListeners(); // Ensure UI updates immediately
+
     try {
       final response = await StudentIdServices()
           .getStudentsFromClassAndDivision(
               className: className, section: section);
       if (response.statusCode == 200) {
-        _students.clear();
         _students = (response.data as List<dynamic>).map((student) {
           return {
             'full_name': student['full_name'],
             'id': student['id'],
           };
         }).toList();
-        notifyListeners();
       }
     } catch (e) {
       print(e.toString());
     }
+
     _isloading = false;
+    notifyListeners();
   }
 
   void setSelectedStudentId(String? studentId) {
@@ -43,9 +46,8 @@ class StudentIdController extends ChangeNotifier {
     notifyListeners();
   }
 
-  // selection student
+  // Single student selection logic
   int? _selectedStudentIndex;
-
   bool isSelected(int index) => _selectedStudentIndex == index;
 
   void toggleSelection(int index) {
@@ -67,28 +69,36 @@ class StudentIdController extends ChangeNotifier {
   // Clear all selections
   void clearSelection() {
     _selectedStudentIndex = null;
-    _students.clear();
+    _selectedStudentIds.clear();
     notifyListeners();
   }
 
-  // multiple students selection for homework assigning
-   void toggleStudentSelection(int studentId) {
+  // **Fixed selectAllStudents()**
+  void selectAllStudents() {
+    _selectedStudentIds.clear(); // Clear previous selections
+    _selectedStudentIds
+        .addAll(_students.map((student) => student['id'] as int));
+    notifyListeners();
+  }
+
+  // Multiple student selection for homework assigning
+  void toggleStudentSelection(int studentId) {
     if (_selectedStudentIds.contains(studentId)) {
       _selectedStudentIds.remove(studentId);
     } else {
-      selectedStudentIds.add(studentId);
+      _selectedStudentIds.add(studentId);
     }
     notifyListeners();
   }
 
   // Check if a student is selected
   bool isStudentSelected(int studentId) {
-    return selectedStudentIds.contains(studentId);
+    return _selectedStudentIds.contains(studentId);
   }
 
-  // Clear the selection
+  // Clear selected student IDs
   void clearStudentIdsSelection() {
-    selectedStudentIds.clear();
+    _selectedStudentIds.clear();
     notifyListeners();
   }
 }

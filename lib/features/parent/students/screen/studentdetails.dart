@@ -579,7 +579,7 @@ Widget _buildHomeworkItem(String title, String subject) {
         ),
         trailing: TextButton(
           onPressed: () {
-            // TODO: Implement view functionality
+            
           },
           child: Text(
             'View',

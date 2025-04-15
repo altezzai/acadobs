@@ -36,6 +36,8 @@ class MarksController extends ChangeNotifier {
       );
       if (response.statusCode == 201) {
         log("Marks uploaded successfully");
+        await getTeacherMarks();
+        Navigator.pop(context);
         Navigator.pop(context);
       }
     } catch (e) {

@@ -30,6 +30,7 @@ import 'package:school_app/features/admin/payments/screens/edit_payment_screen.d
 import 'package:school_app/features/admin/payments/screens/payment_view.dart';
 import 'package:school_app/features/admin/payments/screens/single_student_selection_page.dart';
 import 'package:school_app/features/admin/profile/personal_info.dart';
+import 'package:school_app/features/admin/profile/profile_screen.dart';
 import 'package:school_app/features/admin/reports/screens/donation_report.dart';
 import 'package:school_app/features/admin/reports/screens/payment.dart';
 import 'package:school_app/features/admin/reports/screens/student_report.dart';
@@ -312,7 +313,7 @@ class Approuter {
           // final studentData = state.extra as Map<String, dynamic>;
           return MaterialPage(
             child: StudentDetailPage(
-              student: studentArgs.student,
+              studentId: studentArgs.studentId,
               userType: studentArgs.userType,
             ),
           );
@@ -888,6 +889,13 @@ class Approuter {
           ));
         },
       ),
+      GoRoute(
+        name: AppRouteConst.profileRouteName,
+        path: '/profilescreen',
+        pageBuilder: (context, state) {
+          return MaterialPage(child: ProfileScreen());
+        },
+      ),
     ],
   );
 }
@@ -918,9 +926,9 @@ class AdminDutyDetailArguments {
 }
 
 class StudentDetailArguments {
-  Student student;
+  int studentId;
   UserType userType;
-  StudentDetailArguments({required this.student, required this.userType});
+  StudentDetailArguments({required this.studentId, required this.userType});
 }
 
 class StudentLeaveRequestDetailArguments {

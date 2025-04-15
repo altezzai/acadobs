@@ -16,14 +16,17 @@ import 'package:school_app/features/parent/leave_request/controller/studentLeave
 
 class AddStudentLeaveRequest extends StatefulWidget {
   final int studentId;
-  const AddStudentLeaveRequest({super.key, required this.studentId, });
+  const AddStudentLeaveRequest({
+    super.key,
+    required this.studentId,
+  });
 
   @override
   State<AddStudentLeaveRequest> createState() => _AddStudentLeaveRequestState();
 }
 
 class _AddStudentLeaveRequestState extends State<AddStudentLeaveRequest> {
-   final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   String? selectedLeaveType;
 
   // textediting controllers
@@ -90,7 +93,8 @@ class _AddStudentLeaveRequestState extends State<AddStudentLeaveRequest> {
                   label: 'Leave Type*',
                   icon: Icons.person_2_outlined,
                   items: AppConstants.leaveTypes,
-                  validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Leave Type"),
+                  validator: (value) => FormValidator.validateNotEmpty(value,
+                      fieldName: "Leave Type"),
                 ),
                 SizedBox(
                   height: Responsive.height * 2,
@@ -101,7 +105,12 @@ class _AddStudentLeaveRequestState extends State<AddStudentLeaveRequest> {
                   onDateSelected: (selectedDate) {
                     print("Start Date selected: $selectedDate");
                   },
-                  validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Start Date"),
+                  firstDate: DateTime.now(), // Earliest date is today
+                  lastDate:
+                      DateTime(2100), // Extend to a reasonable future date
+                  initialDate: DateTime.now(),
+                  validator: (value) => FormValidator.validateNotEmpty(value,
+                      fieldName: "Start Date"),
                 ),
                 SizedBox(
                   height: Responsive.height * 2,
@@ -112,7 +121,12 @@ class _AddStudentLeaveRequestState extends State<AddStudentLeaveRequest> {
                   onDateSelected: (selectedDate) {
                     print("End Date selected: $selectedDate");
                   },
-                  validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "End Date"),
+                  firstDate: DateTime.now(), // Earliest date is today
+                  lastDate:
+                      DateTime(2100), // Extend to a reasonable future date
+                  initialDate: DateTime.now(),
+                  validator: (value) => FormValidator.validateNotEmpty(value,
+                      fieldName: "End Date"),
                 ),
                 SizedBox(
                   height: Responsive.height * 2,
@@ -121,47 +135,54 @@ class _AddStudentLeaveRequestState extends State<AddStudentLeaveRequest> {
                   controller: _reasonForLeaveController, //Add controller
                   hintText: 'Reason For Leave*',
                   iconData: Icon(Icons.question_mark_rounded),
-                  validator: (value) => FormValidator.validateNotEmpty(value,fieldName: "Reason"),
+                  validator: (value) => FormValidator.validateNotEmpty(value,
+                      fieldName: "Reason"),
                 ),
                 SizedBox(
                   height: Responsive.height * 2,
                 ),
                 Padding(
-                   padding: const EdgeInsets.only(top: 45),
-                   child: Consumer<StudentLeaveRequestController>(
+                    padding: const EdgeInsets.only(top: 45),
+                    child: Consumer<StudentLeaveRequestController>(
                         builder: (context, value, child) {
-                      return 
-                   CommonButton(
-                      
-                      onPressed: () {
-                         if (_formKey.currentState?.validate() ?? false) {
-                          try {
-                        final selectedLeaveType = context
-                            .read<DropdownProvider>()
-                            .getSelectedItem('leaveType');
-                              
-                        context
-                            .read<StudentLeaveRequestController>()
-                            .addNewStudentLeaveRequest(
-                              context,
-                              studentId: widget.studentId.toString(),
-                              leaveType: selectedLeaveType,
-                              startDate: _startDateController.text,
-                              endDate: _endDateController.text,
-                              reasonForLeave: _reasonForLeaveController.text,
-                            );
-                       } catch (e) {
-                          // Handle any errors and show an error message
-                          CustomSnackbar.show(context,
-            message: "Failed to add leave request.Please try again", type: SnackbarType.failure);
-                        }
-                      } else {
-                        // Highlight missing fields if the form is invalid
-                       CustomSnackbar.show(context,
-            message: "Please complete all required fields", type: SnackbarType.warning);
-                      }
-                    }, widget: value.isloadingTwo ? ButtonLoading() : Text('Submit'),);})
-                ),
+                      return CommonButton(
+                        onPressed: () {
+                          if (_formKey.currentState?.validate() ?? false) {
+                            try {
+                              final selectedLeaveType = context
+                                  .read<DropdownProvider>()
+                                  .getSelectedItem('leaveType');
+
+                              context
+                                  .read<StudentLeaveRequestController>()
+                                  .addNewStudentLeaveRequest(
+                                    context,
+                                    studentId: widget.studentId.toString(),
+                                    leaveType: selectedLeaveType,
+                                    startDate: _startDateController.text,
+                                    endDate: _endDateController.text,
+                                    reasonForLeave:
+                                        _reasonForLeaveController.text,
+                                  );
+                            } catch (e) {
+                              // Handle any errors and show an error message
+                              CustomSnackbar.show(context,
+                                  message:
+                                      "Failed to add leave request.Please try again",
+                                  type: SnackbarType.failure);
+                            }
+                          } else {
+                            // Highlight missing fields if the form is invalid
+                            CustomSnackbar.show(context,
+                                message: "Please complete all required fields",
+                                type: SnackbarType.warning);
+                          }
+                        },
+                        widget: value.isloadingTwo
+                            ? ButtonLoading()
+                            : Text('Submit'),
+                      );
+                    })),
               ],
             ),
           ),

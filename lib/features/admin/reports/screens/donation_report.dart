@@ -55,7 +55,7 @@ class _DonationReportState extends State<DonationReport> {
                 );
               },
             ),
-            const SizedBox(height: 16),
+            // const SizedBox(height: 16),
             // Use Flexible instead of Expanded
             _buildClassDivisionPayment(context: context),
           ],
@@ -65,154 +65,159 @@ class _DonationReportState extends State<DonationReport> {
   }
 
   Widget _buildClassDivisionPayment({required BuildContext context}) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: CustomDropdown(
-                  dropdownKey: 'class',
-                  label: 'Class*',
-                  items: AppConstants.classNames,
-                  icon: Icons.school,
-                  onChanged: (selectedClass) {
-                    final selectedDivision = context
-                        .read<DropdownProvider>()
-                        .getSelectedItem('division');
-                    context
-                        .read<PaymentController>()
-                        .getDonationsByClassAndDivision(
-                          className: selectedClass,
-                          section: selectedDivision,
-                        );
-                  },
+    return Expanded(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: CustomDropdown(
+                    dropdownKey: 'class',
+                    label: 'Class*',
+                    items: AppConstants.classNames,
+                    icon: Icons.school,
+                    onChanged: (selectedClass) {
+                      final selectedDivision = context
+                          .read<DropdownProvider>()
+                          .getSelectedItem('division');
+                      context
+                          .read<PaymentController>()
+                          .getDonationsByClassAndDivision(
+                            className: selectedClass,
+                            section: selectedDivision,
+                          );
+                    },
+                  ),
                 ),
-              ),
-              const SizedBox(width: 5),
-              Expanded(
-                child: CustomDropdown(
-                  dropdownKey: 'division',
-                  label: 'Division*',
-                  items: AppConstants.divisions,
-                  icon: Icons.group,
-                  onChanged: (selectedDivision) {
-                    final selectedClass = context
-                        .read<DropdownProvider>()
-                        .getSelectedItem('class');
-                    context
-                        .read<PaymentController>()
-                        .getDonationsByClassAndDivision(
-                          className: selectedClass,
-                          section: selectedDivision,
-                        );
-                  },
+                const SizedBox(width: 5),
+                Expanded(
+                  child: CustomDropdown(
+                    dropdownKey: 'division',
+                    label: 'Division*',
+                    items: AppConstants.divisions,
+                    icon: Icons.group,
+                    onChanged: (selectedDivision) {
+                      final selectedClass = context
+                          .read<DropdownProvider>()
+                          .getSelectedItem('class');
+                      context
+                          .read<PaymentController>()
+                          .getDonationsByClassAndDivision(
+                            className: selectedClass,
+                            section: selectedDivision,
+                          );
+                    },
+                  ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          // Use SizedBox instead of Expanded
-          Consumer<PaymentController>(
-            builder: (context, value, child) {
-              if (value.isloading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (!value.isFiltered) {
-                return Center(
-                  child: Column(
+              ],
+            ),
+            const SizedBox(height: 10),
+            // Use SizedBox instead of Expanded
+            Consumer<PaymentController>(
+              builder: (context, value, child) {
+                if (value.isloading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (!value.isFiltered) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/money.png',
+                          height: Responsive.height * 45,
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          'No filter applied. Please select a class and division.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ],
+                    ),
+                  );
+                } else if (value.isFiltered &&
+                    value.filtereddonations.isEmpty) {
+                  return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset(
-                        'assets/money.png',
-                        height: Responsive.height * 45,
+                      SizedBox(
+                        height: Responsive.height * 30,
                       ),
-                      const SizedBox(height: 16),
                       Text(
-                        'No filter applied. Please select a class and division.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 16),
+                        'No Reports Found',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                     ],
-                  ),
-                );
-              } else if (value.isFiltered && value.filtereddonations.isEmpty) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: Responsive.height * 30,
-                    ),
-                    Text(
-                      'No Reports Found',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                );
-              } else {
-                return SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: Responsive.height * 4),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: DataTable(
-                          headingRowColor:
-                              WidgetStatePropertyAll(Colors.grey.shade400),
-                          border: TableBorder(
-                            borderRadius: BorderRadius.circular(20),
+                  );
+                } else {
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: Responsive.height * 4),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: DataTable(
+                            headingRowColor:
+                                WidgetStatePropertyAll(Colors.grey.shade400),
+                            border: TableBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            columns: [
+                              DataColumn(
+                                  label: Text("ID",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold))),
+                              DataColumn(
+                                  label: Text("Name",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold))),
+                              DataColumn(
+                                  label: Text("Amount Donated",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold))),
+                              DataColumn(
+                                  label: Text("Purpose",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold))),
+                              DataColumn(
+                                  label: Text("Date",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold))),
+                            ],
+                            rows: value.filtereddonations.map((donation) {
+                              return DataRow(
+                                cells: [
+                                  DataCell(Center(
+                                      child: Text(donation.id.toString()))),
+                                  DataCell(Text(donation.fullName ?? "")),
+                                  DataCell(Center(
+                                      child:
+                                          Text(donation.amountDonated ?? ""))),
+                                  DataCell(Center(
+                                      child: Text(donation.purpose ?? ""))),
+                                  DataCell(Center(
+                                      child: Text(
+                                          DateFormatter.formatDateString(
+                                              donation.createdAt.toString())))),
+                                ],
+                              );
+                            }).toList(),
                           ),
-                          columns: [
-                            DataColumn(
-                                label: Text("ID",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold))),
-                            DataColumn(
-                                label: Text("Name",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold))),
-                            DataColumn(
-                                label: Text("Amount Donated",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold))),
-                            DataColumn(
-                                label: Text("Purpose",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold))),
-                            DataColumn(
-                                label: Text("Date",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold))),
-                          ],
-                          rows: value.filtereddonations.map((donation) {
-                            return DataRow(
-                              cells: [
-                                DataCell(Center(
-                                    child: Text(donation.id.toString()))),
-                                DataCell(Text(donation.fullName ?? "")),
-                                DataCell(Center(
-                                    child: Text(donation.amountDonated ?? ""))),
-                                DataCell(Center(
-                                    child: Text(donation.purpose ?? ""))),
-                                DataCell(Center(
-                                    child: Text(DateFormatter.formatDateString(
-                                        donation.createdAt.toString())))),
-                              ],
-                            );
-                          }).toList(),
                         ),
-                      ),
-                    ],
-                  ),
-                );
-              }
-            },
-          ),
-        ],
+                      ],
+                    ),
+                  );
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

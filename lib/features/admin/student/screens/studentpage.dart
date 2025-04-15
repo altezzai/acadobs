@@ -15,7 +15,7 @@ import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/profile_tile.dart';
 import 'package:school_app/features/admin/student/controller/student_controller.dart';
-import 'package:school_app/features/admin/student/model/student_data.dart';
+import 'package:school_app/features/admin/student/model/students_by_class_and_division.dart';
 
 class StudentsPage extends StatefulWidget {
   final UserType userType;
@@ -28,17 +28,33 @@ class StudentsPage extends StatefulWidget {
 
 class _StudentsPageState extends State<StudentsPage> {
   late DropdownProvider dropdownProvider;
+  final ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     dropdownProvider = context.read<DropdownProvider>();
-
+    final studentController = context.read<StudentController>();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       dropdownProvider.clearSelectedItem('class');
       dropdownProvider.clearSelectedItem('division');
 
-      final studentController = context.read<StudentController>();
+      // Attach Scroll Listener for Pagination
+      scrollController.addListener(() {
+        if (scrollController.position.pixels >=
+            scrollController.position.maxScrollExtent - 100) {
+          if (!studentController.isloading && studentController.hasMoreData) {
+            final selectedClass = dropdownProvider.getSelectedItem('class');
+            final selectedDivision =
+                dropdownProvider.getSelectedItem('division');
+            studentController.getStudentsClassAndDivision(
+              classname: selectedClass,
+              section: selectedDivision,
+            );
+          }
+        }
+      });
+
       studentController.clearStudentList();
       studentController.resetFilter();
       studentController.getLatestStudents(); // Fetch latest students
@@ -78,9 +94,9 @@ class _StudentsPageState extends State<StudentsPage> {
                               .read<DropdownProvider>()
                               .getSelectedItem('division');
                           studentController.getStudentsClassAndDivision(
-                            classname: selectedClass,
-                            section: selectedDivision,
-                          );
+                              classname: selectedClass,
+                              section: selectedDivision,
+                              isRefresh: true);
                         },
                       ),
                     ),
@@ -96,9 +112,9 @@ class _StudentsPageState extends State<StudentsPage> {
                               .read<DropdownProvider>()
                               .getSelectedItem('class');
                           studentController.getStudentsClassAndDivision(
-                            classname: selectedClass,
-                            section: selectedDivision,
-                          );
+                              classname: selectedClass,
+                              section: selectedDivision,
+                              isRefresh: true);
                         },
                       ),
                     ),
@@ -115,6 +131,7 @@ class _StudentsPageState extends State<StudentsPage> {
                               studentController.filteredstudents, context)
                           : _buildStudentList(
                               studentController.lateststudents, context),
+                  // studentController.filteredstudents, context)
                 ),
               ],
             ),
@@ -132,7 +149,8 @@ class _StudentsPageState extends State<StudentsPage> {
     );
   }
 
-  Widget _buildStudentList(List<Student> students, BuildContext context) {
+  Widget _buildStudentList(
+      List<StudentProfile> students, BuildContext context) {
     if (students.isEmpty) {
       return Center(
         child: Column(
@@ -149,22 +167,39 @@ class _StudentsPageState extends State<StudentsPage> {
         ),
       );
     }
+
+    // Check if filtering is applied; disable pagination for latest students
+    bool isPaginationEnabled = context.read<StudentController>().isFiltered;
+
     return ListView.builder(
       padding: EdgeInsets.only(bottom: Responsive.height * 12),
-      itemCount: students.length,
+      physics: AlwaysScrollableScrollPhysics(),
+      controller: isPaginationEnabled
+          ? scrollController
+          : null, // Disable scrolling for latest students
+      itemCount: isPaginationEnabled
+          ? students.length + 1
+          : students.length, // Add +1 only if pagination is enabled
       itemBuilder: (context, index) {
+        if (isPaginationEnabled && index == students.length) {
+          return context.read<StudentController>().hasMoreData
+              ? const Center(
+                  child: CircularProgressIndicator()) // Show pagination loader
+              : const SizedBox();
+        }
+
         final student = students[index];
         return Padding(
           padding: const EdgeInsets.only(bottom: 4),
           child: ProfileTile(
             imageUrl: "${baseUrl}${Urls.studentPhotos}${student.studentPhoto}",
             name: capitalizeFirstLetter(student.fullName ?? ""),
-            description: "${student.studentClass} ${student.section}",
+            description: "${student.className} ${student.section}",
             onPressed: () {
               context.pushNamed(
                 AppRouteConst.AdminstudentdetailsRouteName,
                 extra: StudentDetailArguments(
-                  student: student,
+                  studentId: student.id ?? 0,
                   userType: widget.userType,
                 ),
               );

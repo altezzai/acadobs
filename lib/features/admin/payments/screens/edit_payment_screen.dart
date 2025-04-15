@@ -53,14 +53,14 @@ class _EditPaymentScreenState extends State<EditPaymentScreen> {
     filePickerProvider = context.read<FilePickerProvider>();
 
     // Initialize dropdown selections if values exist in the notice
-    if (widget.payment.paymentClass != null) {
-      dropdownProvider.setSelectedItem('class', widget.payment.paymentClass!);
+    if (widget.payment.datumClass != null) {
+      dropdownProvider.setSelectedItem('class', widget.payment.datumClass!);
     }
     if (widget.payment.section != null) {
       dropdownProvider.setSelectedItem('division', widget.payment.section!);
     }
-    if (widget.payment.paymentClass != null) {
-      dropdownProvider.setSelectedItem('class', widget.payment.paymentClass!);
+    if (widget.payment.datumClass != null) {
+      dropdownProvider.setSelectedItem('class', widget.payment.datumClass!);
     }
     if (widget.payment.year != null) {
       dropdownProvider.setSelectedItem('selectedYear', widget.payment.year!);
@@ -76,7 +76,7 @@ class _EditPaymentScreenState extends State<EditPaymentScreen> {
       dropdownProvider.setSelectedItem(
           'paymentMethod', widget.payment.paymentMethod!);
     }
-    log("++++++++++++++Student id: ${widget.payment.userId}");
+    log("++++++++++++++Student id: ${widget.payment.studentId}");
     // Clear dropdown selections when page loads
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // dropdownProvider.clearSelectedItem('class');
@@ -295,11 +295,11 @@ class _EditPaymentScreenState extends State<EditPaymentScreen> {
                       //     .read<StudentIdController>()
                       //     .getSelectedStudentId();
 
-                      log(">>>>>>>>>>>>${widget.payment.userId}");
+                      log(">>>>>>>>>>>>${widget.payment.studentId}");
                       context.read<PaymentController>().editPayment(
                             context,
                             paymentId: widget.payment.id ?? 0,
-                            studentId: widget.payment.userId ?? 0,
+                            studentId: widget.payment.studentId ?? 0,
                             amount_paid: _amountController.text,
                             payment_date: _dateController.text,
                             month: selectedMonth,

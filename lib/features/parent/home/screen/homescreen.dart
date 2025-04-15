@@ -1,10 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
-import 'package:school_app/base/services/secure_storage_services.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/responsive.dart';
@@ -27,27 +25,33 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String? _parentName;
-  String? _profilePhoto;
+  // String? _parentName;
+  // String? _profilePhoto;
+  late NoticeController noticeController;
+  late StudentController studentController;
   @override
   void initState() {
-    context.read<NoticeController>().getEvents();
-    context.read<NoticeController>().getNotices();
-    // context.read<StudentController>().getIndividualStudentDetails();
-    context.read<StudentController>().getStudentsByParentEmail();
-    _fetchStudentData();
+    noticeController = context.read<NoticeController>();
+    studentController = context.read<StudentController>();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      noticeController.getEvents();
+      noticeController.getNotices();
+      // context.read<StudentController>().getIndividualStudentDetails();
+      context.read<StudentController>().getStudentsByParentEmail();
+      // _fetchStudentData();
+    });
     super.initState();
   }
 
-  Future<void> _fetchStudentData() async {
-    final name = await SecureStorageService.getParentName();
-    final photo = await SecureStorageService.getParentProfilePhoto();
-    setState(() {
-      _parentName = name ?? 'Parent'; // Fallback if name is null
-      _profilePhoto =
-          photo != null ? '$baseUrl${Urls.parentPhotos}$photo' : null;
-    });
-  }
+  // Future<void> _fetchStudentData() async {
+  //   final name = await SecureStorageService.getParentName();
+  //   final photo = await SecureStorageService.getParentProfilePhoto();
+  //   setState(() {
+  //     _parentName = name ?? 'Parent'; // Fallback if name is null
+  //     _profilePhoto =
+  //         photo != null ? '$baseUrl${Urls.parentPhotos}$photo' : null;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +69,7 @@ class _HomePageState extends State<HomePage> {
                 Padding(
                   padding: EdgeInsets.only(left: 10),
                   child: Text(
-                    "Hi, \n${_parentName}",
+                    "Hi, \nParent",
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 22,
@@ -73,33 +77,19 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 Spacer(),
-                GestureDetector(
-                  onTap: () {
-                    // Navigate to the desired page
-                    context.pushNamed(AppRouteConst.logoutRouteName,
-                        extra: UserType.parent);
-                  },
-                  child: SizedBox(
-                    width: 50,
-                    height: 50,
-                    child: ClipOval(
-                      child: CachedNetworkImage(
-                        imageUrl: _profilePhoto ?? "",
-                        placeholder: (context, url) =>
-                            const CircularProgressIndicator(
-                          color: Colors.grey,
-                        ),
-                        errorWidget: (context, url, error) => CircleAvatar(
-                          radius: 26,
-                          backgroundColor: Colors.transparent,
-                          backgroundImage: AssetImage(
-                            "assets/icons/avatar.png",
-                          ),
-                        ),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 30),
+                  child: GestureDetector(
+                      onTap: () {
+                        // Navigate to the desired page
+                        // context.pushNamed(AppRouteConst.logoutRouteName,
+                        //     extra: UserType.parent);
+                        context.pushNamed(AppRouteConst.profileRouteName);
+                      },
+                      child: Icon(
+                        Icons.settings,
+                        color: Color(0xFFEDEDED),
+                      )),
                 ),
                 SizedBox(
                   width: Responsive.width * 2,
@@ -197,7 +187,7 @@ class _HomePageState extends State<HomePage> {
                                             AppRouteConst
                                                 .AdminstudentdetailsRouteName,
                                             extra: StudentDetailArguments(
-                                                student: student,
+                                                studentId: student.id ?? 0,
                                                 userType: UserType.parent));
                                       },
                                     ),

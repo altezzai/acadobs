@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/utils/date_formatter.dart';
-
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/features/parent/leave_request/controller/studentLeaveReq_controller.dart';
 
@@ -86,7 +85,7 @@ class _StudentLeaveRequestScreenState extends State<StudentLeaveRequestScreen> {
             //       style: TextStyle(fontSize: 18, color: Colors.white),
             //     ),
             //   ),
-            const SizedBox(height: 40),
+            const SizedBox(height: 60),
             Expanded(
               child: Consumer<StudentLeaveRequestController>(
                 builder: (context, value, child) {
@@ -115,7 +114,7 @@ class _StudentLeaveRequestScreenState extends State<StudentLeaveRequestScreen> {
                               ),
                               leading: Container(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 4),
+                                    horizontal: 6, vertical: 4),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8),
                                   color:
@@ -142,8 +141,7 @@ class _StudentLeaveRequestScreenState extends State<StudentLeaveRequestScreen> {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                  fontSize:
-                                      MediaQuery.of(context).size.width * 0.045,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -151,9 +149,9 @@ class _StudentLeaveRequestScreenState extends State<StudentLeaveRequestScreen> {
                                 alignment: Alignment.centerLeft,
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 8, vertical: 4),
+                                      horizontal: 6, vertical: 2),
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
+                                    borderRadius: BorderRadius.circular(4),
                                     color: leaveRequest.approvalStatus ==
                                             "Approved"
                                         ? Colors.green.withOpacity(.1)
@@ -165,6 +163,7 @@ class _StudentLeaveRequestScreenState extends State<StudentLeaveRequestScreen> {
                                   child: Text(
                                     leaveRequest.approvalStatus ?? "",
                                     style: TextStyle(
+                                      fontSize: 10,
                                       color: leaveRequest.approvalStatus ==
                                               "Approved"
                                           ? Colors.green

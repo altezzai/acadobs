@@ -30,24 +30,55 @@ class PaymentController extends ChangeNotifier {
   List<Donation> _filtereddonations = [];
   List<Donation> get filtereddonations => _filtereddonations;
 
+  late ScrollController scrollController;
+  int pageNo = 1;
+  bool isLoadingMore = false;
+  PaymentController() {
+    scrollController = ScrollController();
+    scrollController.addListener(paymentScrollListner);
+  }
+
+  Future<void> paymentScrollListner() async {
+    if (scrollController.position.atEdge) {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        log("Scroll listner called");
+        _isloading = true;
+        pageNo++;
+        await getPayments();
+      } else {
+        log("Scroll listner not called");
+      }
+      _isloading = false;
+      notifyListeners();
+    }
+  }
+
 // Get all Payments
   Future<void> getPayments() async {
     _isloading = true;
+    _payments.clear();
     try {
-      final response = await PaymentServices().getPayments();
+      final response = await PaymentServices().getPayments(pageNo: pageNo);
       print("***********${response.statusCode}");
       // print(response.toString());
       if (response.statusCode == 200) {
-        _payments.clear();
-        _payments = (response.data as List<dynamic>)
+        // _payments.clear();
+        List<Payment> newPayments = (response.data['data'] as List<dynamic>)
             .map((result) => Payment.fromJson(result))
             .toList();
+
+        if (pageNo == 1) {
+          _payments = newPayments;
+        } else {
+        _payments.addAll(newPayments);
+        }
       }
     } catch (e) {
       // print(e);
     }
     _isloading = false;
-    notifyListeners();
+    // notifyListeners();
   }
 
   // Get individual student payments
@@ -260,6 +291,7 @@ class PaymentController extends ChangeNotifier {
       );
       if (response.statusCode == 201) {
         log(">>>>>>${response.statusMessage}");
+        await getPayments();
         CustomSnackbar.show(context,
             message: "Payment Added Successfully", type: SnackbarType.success);
         Navigator.pop(context);
@@ -305,6 +337,7 @@ class PaymentController extends ChangeNotifier {
       );
       if (response.statusCode == 201 || response.statusCode == 200) {
         log(">>>>>>${response.statusMessage}");
+        await getDonations();
         CustomSnackbar.show(context,
             message: "Payment Edited Successfully", type: SnackbarType.success);
         Navigator.pop(context);
@@ -401,12 +434,14 @@ class PaymentController extends ChangeNotifier {
   }
 
   // Delete payment
-  Future<void> deletePayment({ required BuildContext context,required int paymentId}) async {
+  Future<void> deletePayment(
+      {required BuildContext context, required int paymentId}) async {
     _isloading = true;
     notifyListeners();
     LoadingDialog.show(context, message: "Deleting payment...");
     try {
-      final response = await PaymentServices().deletePayment(paymentId: paymentId);
+      final response =
+          await PaymentServices().deletePayment(paymentId: paymentId);
       print("***********${response.statusCode}");
       // print(response.toString());
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -416,7 +451,7 @@ class PaymentController extends ChangeNotifier {
             message: 'Deleted Payment successfully', type: SnackbarType.info);
       }
     } catch (e) {
-     log("Deleting error: ${e.toString()}");
+      log("Deleting error: ${e.toString()}");
     } finally {
       _isloading = false;
       notifyListeners();
@@ -424,13 +459,15 @@ class PaymentController extends ChangeNotifier {
     }
   }
 
-   // Delete payment
-  Future<void> deleteDoantion({ required BuildContext context,required int donationId}) async {
+  // Delete payment
+  Future<void> deleteDoantion(
+      {required BuildContext context, required int donationId}) async {
     _isloading = true;
     notifyListeners();
     LoadingDialog.show(context, message: "Deleting donation...");
     try {
-      final response = await PaymentServices().deleteDonation(donationId: donationId);
+      final response =
+          await PaymentServices().deleteDonation(donationId: donationId);
       print("***********${response.statusCode}");
       // print(response.toString());
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -440,7 +477,7 @@ class PaymentController extends ChangeNotifier {
             message: 'Deleted Donation successfully', type: SnackbarType.info);
       }
     } catch (e) {
-     log("Deleting error: ${e.toString()}");
+      log("Deleting error: ${e.toString()}");
     } finally {
       _isloading = false;
       notifyListeners();

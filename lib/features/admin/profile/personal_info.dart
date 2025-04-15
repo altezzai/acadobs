@@ -18,22 +18,34 @@ class _PersonalInfoState extends State<PersonalInfo> {
         padding: EdgeInsets.symmetric(horizontal: Responsive.width * 6),
         child: Column(
           children: [
+            SizedBox(
+              height: Responsive.height * 2,
+            ),
             CustomAppbar(
               title: 'Personal Informations',
               isProfileIcon: false,
+              onTap: () {
+                Navigator.pop(context);
+              },
             ),
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(47),
-                border: Border.all(color: Colors.black, width: 1.5),
+                border: Border.all(
+                  color: Colors.black,
+                ),
               ),
               child: Row(
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: CircleAvatar(
+                      backgroundColor: Colors.white,
                       radius: 45,
-                      backgroundImage: AssetImage('assets/icons/admin.png'),
+                      child: Icon(
+                        Icons.person_outline_sharp,
+                        size: 50,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -59,7 +71,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(47),
                   borderSide: BorderSide(
-                      color: Colors.black, width: 1.5), // Black border
+                    color: Colors.black,
+                  ), // Black border
                 ),
               ),
             ),
@@ -77,7 +90,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(47),
                   borderSide: BorderSide(
-                      color: Colors.black, width: 1.5), // Black border
+                    color: Colors.black,
+                  ), // Black border
                 ),
               ),
             ),

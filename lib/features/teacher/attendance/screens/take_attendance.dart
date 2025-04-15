@@ -12,7 +12,7 @@ import 'package:school_app/features/admin/subjects/model/subject_model.dart';
 //import 'package:school_app/features/admin/subjects/model/subject_model.dart';
 import 'package:school_app/features/teacher/attendance/controller/attendance_controller.dart';
 import 'package:school_app/features/teacher/attendance/model/attendance_data.dart';
-import 'package:school_app/features/teacher/attendance/screens/attendance.dart';
+import 'package:school_app/features/teacher/attendance/utils/attendance_action.dart';
 import 'package:school_app/features/teacher/attendance/widgets/already_taken_tile.dart';
 import 'package:school_app/features/teacher/attendance/widgets/attendance_tile.dart';
 

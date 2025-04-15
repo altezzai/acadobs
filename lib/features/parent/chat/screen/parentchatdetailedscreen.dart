@@ -19,7 +19,7 @@ class ChatDetailPage extends StatefulWidget {
 
 class _ChatDetailPageState extends State<ChatDetailPage> {
   // ChatDetailPage({
-  final TextEditingController _chatController = TextEditingController();
+  // final TextEditingController _chatController = TextEditingController();
   late NotesController notesController;
 
   @override
@@ -55,7 +55,8 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                   imageUrl:
                       "${baseUrl}${Urls.teacherPhotos}${widget.studentNote.teacherProfilePhoto ?? ""}",
                   placeholder: (context, url) => CircularProgressIndicator(),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
+                  errorWidget: (context, url, error) =>
+                      Image.asset('assets/icons/avatar.png'),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -162,58 +163,58 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                         },
                       ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: _chatController,
-                        maxLines: null, // Allows multiline input
-                        decoration: InputDecoration(
-                          hintText: "Type a message...",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                            borderSide: BorderSide.none,
-                          ),
-                          filled: true,
-                          fillColor: Colors.grey[200],
-                          contentPadding: EdgeInsets.symmetric(
-                            horizontal: 16.0,
-                            vertical: 10.0,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    CircleAvatar(
-                      backgroundColor: Colors.black,
-                      child: IconButton(
-                        icon: Icon(Icons.send, color: Colors.white),
-                        onPressed: () async {
-                          final message = _chatController.text.trim();
-                          if (message.isNotEmpty) {
-                            final teacherReceiverId =
-                                context.read<NotesController>().teacherChatId;
+              // Padding(
+              //   padding: const EdgeInsets.all(8.0),
+              //   child: Row(
+              //     children: [
+              //       Expanded(
+              //         child: TextField(
+              //           controller: _chatController,
+              //           maxLines: null, // Allows multiline input
+              //           decoration: InputDecoration(
+              //             hintText: "Type a message...",
+              //             border: OutlineInputBorder(
+              //               borderRadius: BorderRadius.circular(20.0),
+              //               borderSide: BorderSide.none,
+              //             ),
+              //             filled: true,
+              //             fillColor: Colors.grey[200],
+              //             contentPadding: EdgeInsets.symmetric(
+              //               horizontal: 16.0,
+              //               vertical: 10.0,
+              //             ),
+              //           ),
+              //         ),
+              //       ),
+              //       SizedBox(width: 10),
+              //       CircleAvatar(
+              //         backgroundColor: Colors.black,
+              //         child: IconButton(
+              //           icon: Icon(Icons.send, color: Colors.white),
+              //           onPressed: () async {
+              //             final message = _chatController.text.trim();
+              //             if (message.isNotEmpty) {
+              //               final teacherReceiverId =
+              //                   context.read<NotesController>().teacherChatId;
 
-                            context
-                                .read<NotesController>()
-                                .sendParentNoteChatParent(
-                                  isTeacher: false,
-                                  parentNoteId: widget.studentNote.id,
-                                  receiverId: teacherReceiverId,
-                                  studentId: widget.studentId,
-                                  message: message,
-                                  senderRole: "student",
-                                );
-                            _chatController.clear();
-                          }
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              //               context
+              //                   .read<NotesController>()
+              //                   .sendParentNoteChatParent(
+              //                     isTeacher: false,
+              //                     parentNoteId: widget.studentNote.id,
+              //                     receiverId: teacherReceiverId,
+              //                     studentId: widget.studentId,
+              //                     message: message,
+              //                     senderRole: "student",
+              //                   );
+              //               _chatController.clear();
+              //             }
+              //           },
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
             ],
           );
         },

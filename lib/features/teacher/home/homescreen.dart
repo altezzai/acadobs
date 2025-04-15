@@ -1,4 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -9,10 +10,12 @@ import 'package:school_app/base/utils/date_formatter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/urls.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
+import 'package:school_app/core/shared_widgets/custom_container.dart';
 import 'package:school_app/core/shared_widgets/custom_name_container.dart';
 import 'package:school_app/features/admin/duties/widgets/duty_card.dart';
 import 'package:school_app/features/admin/notices/controller/notice_controller.dart';
 import 'package:school_app/features/parent/events/widget/eventcard.dart';
+import 'package:school_app/features/teacher/attendance/widgets/attendance_bottomsheet.dart';
 
 class TeacherScreen extends StatefulWidget {
   TeacherScreen({super.key});
@@ -23,7 +26,71 @@ class TeacherScreen extends StatefulWidget {
 
 class _TeacherScreenState extends State<TeacherScreen> {
   String? _teacherName;
-  String? _profilePhoto;
+  // String? _profilePhoto;
+  OverlayEntry? _popupEntry; // Store the overlay entry
+
+  void _togglePopup(BuildContext context) {
+    if (_popupEntry == null) {
+      _popupEntry = _createPopupEntry(context);
+      Overlay.of(context).insert(_popupEntry!);
+    } else {
+      _popupEntry?.remove();
+      _popupEntry = null;
+    }
+  }
+
+  OverlayEntry _createPopupEntry(BuildContext context) {
+    return OverlayEntry(
+      builder: (context) {
+        return Stack(
+          children: [
+            // Blurred Background
+            Positioned.fill(
+              child: GestureDetector(
+                onTap: () {
+                  _togglePopup(context);
+                },
+                behavior: HitTestBehavior.opaque,
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5), // Blur effect
+                  child: Container(
+                    color: Colors.black.withOpacity(0.3), // Dim the background
+                  ),
+                ),
+              ),
+            ),
+            // Positioned Popup Above FAB
+            Positioned(
+              right: 16, // Align with FAB
+              bottom: Responsive.height * 20, // Adjust to appear above FAB
+              child: Material(
+                color: Colors.transparent,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    _customContainer(
+                        text: 'Leave Requests',
+                        iconPath: 'assets/icons/leave_request.png',
+                        iconSize: 26,
+                        ontap: () {
+                          _togglePopup(
+                              context); // Close the overlay before navigating
+                          context.pushNamed(
+                              AppRouteConst.TeacherLeaveRequestScreenRouteName);
+                        }),
+                    SizedBox(
+                      height: 2,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   late NoticeController noticeController;
 
   @override
@@ -39,11 +106,11 @@ class _TeacherScreenState extends State<TeacherScreen> {
 
   Future<void> _fetchTeacherData() async {
     final name = await SecureStorageService.getTeacherName();
-    final photo = await SecureStorageService.getTeacherProfilePhoto();
+    // final photo = await SecureStorageService.getTeacherProfilePhoto();
     setState(() {
       _teacherName = name ?? 'Teacher'; // Fallback if name is null
-      _profilePhoto =
-          photo != null ? '$baseUrl${Urls.teacherPhotos}$photo' : null;
+      // _profilePhoto =
+      //     photo != null ? '$baseUrl${Urls.teacherPhotos}$photo' : null;
     });
   }
 
@@ -83,37 +150,46 @@ class _TeacherScreenState extends State<TeacherScreen> {
                   const Spacer(),
                   GestureDetector(
                     onTap: () {
-                      context.pushNamed(AppRouteConst.logoutRouteName,
-                          extra: UserType.teacher);
+                      context.pushNamed(AppRouteConst.profileRouteName);
                     },
-                    child: SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: ClipOval(
-                        child: CachedNetworkImage(
-                          imageUrl: _profilePhoto ?? "",
-                          placeholder: (context, url) =>
-                              const CircularProgressIndicator(
-                            color: Colors.grey,
+                    child: Container(
+                      padding: EdgeInsets.only(
+                          top: 4, bottom: 4, left: 10, right: 4),
+                      height: Responsive.height * 4.2,
+                      width: Responsive.width * 22,
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 221, 219, 219),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Profile",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall!
+                                .copyWith(color: Color(0xFF555555)),
                           ),
-                          errorWidget: (context, url, error) => CircleAvatar(
-                            radius: 26,
-                            backgroundColor: Colors.transparent,
-                            backgroundImage: AssetImage(
-                              "assets/icons/avatar.png",
+                          Container(
+                            padding: EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                                color: Colors.white, shape: BoxShape.circle),
+                            child: Image.asset(
+                              'assets/icons/profile_icon.png',
+                              height: 30,
                             ),
-                          ),
-                          fit: BoxFit.cover,
-                        ),
+                          )
+                        ],
                       ),
                     ),
-                  ),
+                  )
                 ],
               ),
               SizedBox(
                 height: Responsive.height * 10,
               ),
-              _customContainer(
+              CustomContainer(
                 color: Colors.green,
                 text: 'Homework',
                 icon: Icons.note_alt,
@@ -122,14 +198,13 @@ class _TeacherScreenState extends State<TeacherScreen> {
                 },
               ),
               SizedBox(height: Responsive.height * 1),
-              _customContainer(
-                  color: Colors.red,
-                  text: 'Leave Request',
+              CustomContainer(
+                  color: Colors.black,
+                  text: 'Attendance',
                   icon: Icons.assignment_add,
-                  ontap: () {
-                    context.pushNamed(
-                        AppRouteConst.TeacherLeaveRequestScreenRouteName);
-                  }),
+                  ontap: ()  {
+    showAttendanceBottomSheet(context);
+  },),
               SizedBox(height: Responsive.height * 1),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -286,35 +361,61 @@ class _TeacherScreenState extends State<TeacherScreen> {
           ),
         ),
       ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(
+          bottom: 16,
+          right: 16,
+        ),
+        child: FloatingActionButton(
+          onPressed: () {
+            _togglePopup(context);
+          },
+          backgroundColor: Colors.black, // Customize color
+          shape: CircleBorder(),
+          child: const Icon(Icons.add, color: Colors.white), // Icon inside FAB
+        ),
+      ),
     );
   }
 
   Widget _customContainer({
-    required Color color,
     required String text,
-    IconData icon = Icons.dashboard_customize_outlined,
+    IconData? icon,
+    String? iconPath,
+    double iconSize = 35,
     required VoidCallback ontap,
   }) {
     return InkWell(
       onTap: ontap,
       child: Container(
         padding: EdgeInsets.all(Responsive.height * 3),
+        width: Responsive.width * 80,
         decoration: BoxDecoration(
-          color: color,
+          color: Colors.white,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Row(
           children: [
             Padding(
               padding: EdgeInsets.symmetric(horizontal: Responsive.width * 3),
-              child: Icon(
-                icon,
-                color: Colors.white,
-              ),
+              child: iconPath == null
+                  ? Icon(
+                      // Show Material icon if iconPath is null
+                      icon ??
+                          Icons.dashboard_customize_outlined, // Default icon
+                      color: Colors.white,
+                      size: iconSize,
+                    )
+                  : Image.asset(
+                      // Show image if iconPath is provided
+                      iconPath,
+                      height: iconSize,
+                      width: iconSize,
+                    ),
             ),
             Text(
               text,
-              style: const TextStyle(color: Colors.white, fontSize: 18),
+              style: const TextStyle(color: Color(0xFF444444), fontSize: 18),
             ),
           ],
         ),

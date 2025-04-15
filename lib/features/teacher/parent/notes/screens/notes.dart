@@ -149,10 +149,14 @@ import 'package:school_app/base/routes/app_route_const.dart';
 //import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
+import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/navbar/screen/bottom_nav.dart';
 import 'package:school_app/core/shared_widgets/common_floating_action_button.dart';
 //import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
+import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
+//import 'package:school_app/core/shared_widgets/profile_tile.dart';
+import 'package:school_app/features/admin/student/controller/student_controller.dart';
 import 'package:school_app/features/teacher/parent/controller/notes_controller.dart';
 
 class NotesScreen extends StatefulWidget {
@@ -184,8 +188,7 @@ class _NotesScreenState extends State<NotesScreen> {
                 title: "Notes",
                 isProfileIcon: false,
                 onTap: () {
-                  context.pushNamed(AppRouteConst.bottomNavRouteName,
-                      extra: UserType.teacher);
+                  context.pushNamed(AppRouteConst.bottomNavRouteName, extra: UserType.teacher);
                   // Navigator.pop(context);
                 },
               ),
@@ -328,49 +331,50 @@ class _NotesScreenState extends State<NotesScreen> {
             text: "Add New Note"));
   }
 
-  // Widget _buildParentTile(BuildContext context, {int notificationCount = 0}) {
-  //   return Column(
-  //     children: [
-  //       Row(
-  //         children: [
-  //           Expanded(
-  //             child: CustomDropdown(
-  //               dropdownKey: 'class',
-  //               label: 'Class',
-  //               items: ['8', '9', '10'],
-  //               icon: Icons.school,
-  //               onChanged: (selectedClass) {
-  //                 // Automatically fetch students when division is selected
-  //                 final selectedDivision = context
-  //                     .read<DropdownProvider>()
-  //                     .getSelectedItem(
-  //                         'division'); // Get the currently selected class
-  //                 context.read<StudentController>().getParentByClassAndDivision(
-  //                     classname: selectedClass, section: selectedDivision);
-  //               },
-  //             ),
-  //           ),
-  //           const SizedBox(width: 5),
-  //           Expanded(
-  //             child: CustomDropdown(
-  //               dropdownKey: 'division',
-  //               label: 'Division',
-  //               items: ['A', 'B', 'C'],
-  //               icon: Icons.group,
-  //               onChanged: (selectedDivision) {
-  //                 // Automatically fetch students when division is selected
-  //                 final selectedClass = context
-  //                     .read<DropdownProvider>()
-  //                     .getSelectedItem(
-  //                         'class'); // Get the currently selected class
-  //                 context.read<StudentController>().getParentByClassAndDivision(
-  //                     classname: selectedClass, section: selectedDivision);
-  //               },
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //     ],
-  //   );
-  // }
+  // ignore: unused_element
+  Widget _buildParentTile(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: CustomDropdown(
+                dropdownKey: 'class',
+                label: 'Class',
+                items: ['8', '9', '10'],
+                icon: Icons.school,
+                onChanged: (selectedClass) {
+                  // Automatically fetch students when division is selected
+                  final selectedDivision = context
+                      .read<DropdownProvider>()
+                      .getSelectedItem(
+                          'division'); // Get the currently selected class
+                  context.read<StudentController>().getParentByClassAndDivision(
+                      classname: selectedClass, section: selectedDivision);
+                },
+              ),
+            ),
+            const SizedBox(width: 5),
+            Expanded(
+              child: CustomDropdown(
+                dropdownKey: 'division',
+                label: 'Division',
+                items: ['A', 'B', 'C'],
+                icon: Icons.group,
+                onChanged: (selectedDivision) {
+                  // Automatically fetch students when division is selected
+                  final selectedClass = context
+                      .read<DropdownProvider>()
+                      .getSelectedItem(
+                          'class'); // Get the currently selected class
+                  context.read<StudentController>().getParentByClassAndDivision(
+                      classname: selectedClass, section: selectedDivision);
+                },
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
 }

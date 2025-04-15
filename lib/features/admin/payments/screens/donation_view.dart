@@ -27,7 +27,7 @@ class DonationView extends StatefulWidget {
 }
 
 class _DonationViewState extends State<DonationView> {
-  // ignore: unused_element - need to use this in the future
+  // ignore: unused_element
   Future<void> _downloadFile(BuildContext context, String fileName) async {
     try {
       // Check and request storage permission
