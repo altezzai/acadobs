@@ -30,7 +30,7 @@ class _AdminhomeworkDetailState extends State<AdminhomeworkDetail> {
               },
             ),
             ViewContainer(
-              bcolor: Colors.green.withOpacity(0.2),
+              bcolor: Colors.green.withValues(alpha: 51),
               icolor: Colors.green,
               icon: Icons.military_tech,
             ),

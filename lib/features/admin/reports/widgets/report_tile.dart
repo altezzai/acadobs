@@ -22,7 +22,8 @@ class ReportTile extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 2), // Tile spacing
+        margin: const EdgeInsets.symmetric(
+            vertical: 4, horizontal: 2), // Tile spacing
         decoration: BoxDecoration(
           border: Border.all(
             color: Colors.grey.shade300, // Border color
@@ -37,7 +38,8 @@ class ReportTile extends StatelessWidget {
         ),
         child: ListTile(
           leading: CircleAvatar(
-            backgroundColor: Colors.blue.withOpacity(0.2), // Icon background
+            backgroundColor:
+                Colors.blue.withValues(alpha: 51), // Icon background
             child: Icon(icon, color: Colors.blue), // Icon with primary color
           ),
           title: Text(
@@ -48,7 +50,7 @@ class ReportTile extends StatelessWidget {
             ),
           ),
           subtitle: Text(
-            subtitle??"",
+            subtitle ?? "",
             style: TextStyle(
               fontSize: 14,
               color: Colors.grey[600], // Subdued subtitle color

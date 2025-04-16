@@ -188,7 +188,8 @@ class _NotesScreenState extends State<NotesScreen> {
                 title: "Notes",
                 isProfileIcon: false,
                 onTap: () {
-                  context.pushNamed(AppRouteConst.bottomNavRouteName, extra: UserType.teacher);
+                  context.pushNamed(AppRouteConst.bottomNavRouteName,
+                      extra: UserType.teacher);
                   // Navigator.pop(context);
                 },
               ),
@@ -243,7 +244,7 @@ class _NotesScreenState extends State<NotesScreen> {
                                       borderRadius: BorderRadius.circular(12),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: Colors.grey.withOpacity(0.2),
+                                          // color: Colors.grey.withOpacity(0.2),
                                           spreadRadius: 2,
                                           blurRadius: 5,
                                           offset: Offset(0,

@@ -54,7 +54,8 @@ class _TeacherScreenState extends State<TeacherScreen> {
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5), // Blur effect
                   child: Container(
-                    color: Colors.black.withOpacity(0.3), // Dim the background
+                    color: Color.fromRGBO(0, 0, 0, 0.3),
+                    // Dim the background
                   ),
                 ),
               ),
@@ -199,12 +200,13 @@ class _TeacherScreenState extends State<TeacherScreen> {
               ),
               SizedBox(height: Responsive.height * 1),
               CustomContainer(
-                  color: Colors.black,
-                  text: 'Attendance',
-                  icon: Icons.assignment_add,
-                  ontap: ()  {
-    showAttendanceBottomSheet(context);
-  },),
+                color: Colors.black,
+                text: 'Attendance',
+                icon: Icons.assignment_add,
+                ontap: () {
+                  showAttendanceBottomSheet(context);
+                },
+              ),
               SizedBox(height: Responsive.height * 1),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

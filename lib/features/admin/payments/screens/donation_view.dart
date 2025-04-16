@@ -198,7 +198,7 @@ class _DonationViewState extends State<DonationView> {
               padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
-                color: Colors.green.shade100.withOpacity(0.2),
+                color: Colors.green.shade100.withValues(alpha: 51),
               ),
               child: Text(
                 '₹${widget.donation.amountDonated}',

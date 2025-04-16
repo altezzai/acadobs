@@ -259,7 +259,7 @@ class ActivityCard extends StatelessWidget {
             height: 40,
             width: 40,
             decoration: BoxDecoration(
-              color: iconColor?.withOpacity(0.2),
+              color: iconColor?.withValues(alpha: 51),
               shape: BoxShape.circle,
             ),
             alignment: Alignment.center, // Ensure text stays in the center

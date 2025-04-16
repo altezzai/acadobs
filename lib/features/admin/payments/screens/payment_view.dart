@@ -228,7 +228,7 @@ class _PaymentViewState extends State<PaymentView> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 color: _getStatusColor(widget.payment.paymentStatus)
-                    .withOpacity(0.2),
+                    .withValues(alpha: 51),
               ),
               child: Text(
                 '₹${widget.payment.amountPaid}',

@@ -52,7 +52,7 @@ class PaymentItem extends StatelessWidget {
         ),
         child: ListTile(
           leading: CircleAvatar(
-            backgroundColor: _getStatusColor().withOpacity(0.2),
+            backgroundColor: _getStatusColor().withValues(alpha: 51),
             radius: 20,
             child: Image.asset(
               'assets/icons/money.png',
@@ -96,7 +96,7 @@ class PaymentItem extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: _getStatusColor().withOpacity(0.2),
+                    color: _getStatusColor().withValues(alpha: 51),
                     borderRadius: BorderRadius.circular(5),
                   ),
                   child: Text(

@@ -117,13 +117,14 @@ class _StudentLeaveRequestScreenState extends State<StudentLeaveRequestScreen> {
                                     horizontal: 6, vertical: 4),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8),
-                                  color:
-                                      leaveRequest.approvalStatus == "Approved"
-                                          ? Colors.green.withOpacity(.1)
-                                          : (leaveRequest.approvalStatus ==
-                                                  "Pending"
-                                              ? Colors.orange.withOpacity(.1)
-                                              : Colors.red.withOpacity(.1)),
+                                  color: leaveRequest.approvalStatus ==
+                                          "Approved"
+                                      ? const Color.fromRGBO(76, 175, 80, 1)
+                                      : (leaveRequest.approvalStatus ==
+                                              "Pending"
+                                          ? const Color.fromRGBO(255, 152, 0, 1)
+                                          : const Color.fromRGBO(
+                                              244, 67, 54, 1)),
                                 ),
                                 child: Icon(
                                   Icons.assignment_add,
@@ -154,11 +155,13 @@ class _StudentLeaveRequestScreenState extends State<StudentLeaveRequestScreen> {
                                     borderRadius: BorderRadius.circular(4),
                                     color: leaveRequest.approvalStatus ==
                                             "Approved"
-                                        ? Colors.green.withOpacity(.1)
+                                        ? const Color.fromRGBO(76, 175, 80, 1)
                                         : (leaveRequest.approvalStatus ==
                                                 "Pending"
-                                            ? Colors.orange.withOpacity(.1)
-                                            : Colors.blue.withOpacity(.1)),
+                                            ? const Color.fromRGBO(
+                                                255, 152, 0, 1)
+                                            : const Color.fromRGBO(
+                                                33, 150, 243, 1)),
                                   ),
                                   child: Text(
                                     leaveRequest.approvalStatus ?? "",

@@ -553,7 +553,7 @@ Widget _buildHomeworkItem(String title, String subject) {
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
+            // color: Colors.grey.withOpacity(0.3),
             spreadRadius: 1,
             blurRadius: 3,
             offset: Offset(0, 1),
@@ -578,9 +578,7 @@ Widget _buildHomeworkItem(String title, String subject) {
           style: TextStyle(fontSize: 16),
         ),
         trailing: TextButton(
-          onPressed: () {
-            
-          },
+          onPressed: () {},
           child: Text(
             'View',
             style: TextStyle(

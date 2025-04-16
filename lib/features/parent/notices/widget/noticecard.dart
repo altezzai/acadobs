@@ -44,14 +44,14 @@ class NoticeCard extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    color: Colors.blue.withOpacity(0.1)),
+                    color: const Color.fromRGBO(33, 150, 243, 1)),
                 child: Text(date, style: const TextStyle(color: Colors.blue))),
           ),
           trailing: Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
-                  color: Colors.blue.withOpacity(0.1)),
+                  color: const Color.fromRGBO(33, 150, 243, 1)),
               child: Text(time, style: const TextStyle(color: Colors.blue))),
           // trailing: Text(time),
         ),

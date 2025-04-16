@@ -49,7 +49,8 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5), // Blur effect
                   child: Container(
-                    color: Colors.black.withOpacity(0.3), // Dim the background
+                    color: Colors.black.withValues(alpha: 77),
+                    // Dim the background
                   ),
                 ),
               ),

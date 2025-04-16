@@ -170,7 +170,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                           horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        color: Colors.orange.withOpacity(0.1),
+                        color: Color(0xffFFDFCE),
                       ),
                       child: Text(
                         event.eventDate.toString(),

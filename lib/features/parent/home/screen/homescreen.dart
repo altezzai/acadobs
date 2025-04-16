@@ -108,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                      colors: [Colors.transparent, Colors.green.withOpacity(1)],
+                      colors: [Colors.transparent, const Color(0xff2ADC51)],
                     ),
                   ),
                   child: const Column(

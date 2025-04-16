@@ -160,8 +160,8 @@ class _DutyPageState extends State<DutyPage> {
                             BorderRadius.circular(12.0), // Add rounded corners
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.grey.withOpacity(
-                                0.3), // Shadow color with some transparency
+                            // color: Colors.grey.withOpacity(
+                            //     0.3),
                             spreadRadius: 2, // How much the shadow spreads
                             blurRadius: 5, // Blur radius for the shadow
                             offset:

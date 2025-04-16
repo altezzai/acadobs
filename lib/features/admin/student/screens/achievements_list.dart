@@ -88,7 +88,7 @@ class AchievementsList extends StatelessWidget {
                               work: achievement.achievementTitle ?? "",
                               iconPath: 'assets/icons/achievement.png',
                               icolor: Colors.green,
-                              bcolor: Colors.green.withOpacity(0.2),
+                              bcolor: Colors.green.withValues(alpha: 51),
                               onTap: () {
                                 context.pushNamed(
                                   AppRouteConst.AchivementDetailRouteName,
