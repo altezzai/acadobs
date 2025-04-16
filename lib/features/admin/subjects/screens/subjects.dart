@@ -85,14 +85,14 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
         ];
         return ListView.builder(
           padding: EdgeInsets.zero,
-          itemCount: value.subjects.length,
+          itemCount: value.subject.subjects?.length,
           itemBuilder: (context, index) {
             final isFirst = index == 0;
-            final isLast = index == value.subjects.length - 1;
+            final isLast = index == value.subject.subjects!.length - 1;
 
             final topRadius = isFirst ? 16 : 0;
             final bottomRadius = isLast ? 16 : 0;
-            final subject = value.subjects[index];
+            final subject = value.subject.subjects?[index];
             final color = subjectColors[
                 index % subjectColors.length]; // Assign color dynamically
             return Padding(
@@ -102,8 +102,8 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
               child: SubjectTile(
                 bottomRadius: bottomRadius.toDouble(),
                 topRadius: topRadius.toDouble(),
-                subjectName: subject.subject ?? "",
-                description: subject.description ?? "",
+                subjectName: subject?.subjectName ?? "",
+                description: subject?.classRange ?? "",
                 iconPath: ('assets/icons/subject_tile_icon.png'),
                 iconColor: color,
                 onEdit: () {

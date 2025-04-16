@@ -1,11 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:school_app/base/services/api_services.dart';
+import 'package:school_app/base/utils/urls.dart';
 
 class SubjectServices {
   // GET request for fetching subjects
   Future<Response> getsubject() async {
     try {
-      final Response response = await ApiServices.get('/subjects');
+      final Response response = await ApiServices.get(Urls.subject);
       return response;
     } on DioException catch (e) {
       throw Exception('Failed to load data: $e');

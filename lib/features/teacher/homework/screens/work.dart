@@ -215,35 +215,35 @@ class _HomeWorkState extends State<HomeWork> {
                   ],
                 ),
                 SizedBox(height: Responsive.height * 1),
-                Consumer<SubjectController>(
-                  builder: (context, subjectProvider, child) {
-                    return InkWell(
-                      onTap: () {
-                        context.pushNamed(
-                          AppRouteConst.subjectSelectionRouteName,
-                          extra: _subjectController,
-                        );
-                      },
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          hintText: subjectProvider.selectedSubjectId != null
-                              ? capitalizeEachWord(subjectProvider.subjects
-                                      .firstWhere((subject) =>
-                                          subject.id ==
-                                          subjectProvider.selectedSubjectId)
-                                      .subject ??
-                                  "") // Fetch the selected subject name
-                              : "Select Subject*", // Default hint text when no subject is selected
-                        ),
-                        enabled:
-                            false, // Prevent editing as it's controlled by selection
-                        // validator: (value) => FormValidator.validateNotEmpty(
-                        //     value,
-                        //     fieldName: "Subject"),
-                      ),
-                    );
-                  },
-                ),
+                // Consumer<SubjectController>(
+                //   builder: (context, subjectProvider, child) {
+                //     return InkWell(
+                //       onTap: () {
+                //         context.pushNamed(
+                //           AppRouteConst.subjectSelectionRouteName,
+                //           extra: _subjectController,
+                //         );
+                //       },
+                //       child: TextFormField(
+                //         decoration: InputDecoration(
+                //           hintText: subjectProvider.selectedSubjectId != null
+                //               ? capitalizeEachWord(subjectProvider.subjects
+                //                       .firstWhere((subject) =>
+                //                           subject.id ==
+                //                           subjectProvider.selectedSubjectId)
+                //                       .subject ??
+                //                   "") // Fetch the selected subject name
+                //               : "Select Subject*", // Default hint text when no subject is selected
+                //         ),
+                //         enabled:
+                //             false, // Prevent editing as it's controlled by selection
+                //         // validator: (value) => FormValidator.validateNotEmpty(
+                //         //     value,
+                //         //     fieldName: "Subject"),
+                //       ),
+                //     );
+                //   },
+                // ),
                 SizedBox(height: Responsive.height * 1),
                 CustomTextfield(
                   hintText: "Total Mark*",

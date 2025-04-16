@@ -12,8 +12,7 @@ class SubjectController extends ChangeNotifier {
   bool get isloading => _isloading;
   bool _isloadingTwo = false;
   bool get isloadingTwo => _isloadingTwo;
-  List<Subject> _subjects = [];
-  List<Subject> get subjects => _subjects;
+  Subject subject = Subject();
 
 // **********Get all teachers*****************
   Future<void> getSubjects() async {
@@ -22,11 +21,10 @@ class SubjectController extends ChangeNotifier {
     try {
       final response = await SubjectServices().getsubject();
       print("***********${response.statusCode}");
-      print(response.toString());
+      log(response.toString());
       if (response.statusCode == 200) {
-        _subjects = (response.data as List<dynamic>)
-            .map((result) => Subject.fromJson(result))
-            .toList();
+        final _data = response.data;
+        subject = Subject.fromJson(_data);
       }
     } catch (e) {
       print(e);
@@ -37,7 +35,7 @@ class SubjectController extends ChangeNotifier {
 
   //Clear subjects
   void clearSubjects() {
-    _subjects = [];
+    // _subjects = [];
     notifyListeners();
   }
 

@@ -63,21 +63,21 @@ class TakeAttendance extends StatelessWidget {
                       : SizedBox()
                 ],
               ),
-              Text(
-                context
-                        .read<SubjectController>()
-                        .subjects
-                        .firstWhere(
-                          (subject) => subject.id == attendanceData.subject,
-                          orElse: () => Subject(
-                              id: -1, subject: 'Unknown', description: ''),
-                        )
-                        .subject ??
-                    'Unknown', // Default to 'Unknown' if subject is null
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
+              // Text(
+              //   context
+              //           .read<SubjectController>()
+              //           .subjects
+              //           .firstWhere(
+              //             (subject) => subject.subjects?[0].id == attendanceData.subject,
+              //             orElse: () => Subject(
+              //                 id: -1, subject: 'Unknown', description: ''),
+              //           )
+              //           .subject ??
+              //       'Unknown', // Default to 'Unknown' if subject is null
+              //   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+              //         fontWeight: FontWeight.bold,
+              //       ),
+              // ),
               SizedBox(height: Responsive.height * 2),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

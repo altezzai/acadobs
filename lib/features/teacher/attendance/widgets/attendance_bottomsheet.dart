@@ -21,16 +21,16 @@ void showAttendanceBottomSheet(BuildContext context) {
 
   // Set initial value to today's date
   dateController.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
-   late SubjectController subjectController;
-   final dropdownProvider = context.read<DropdownProvider>();
-      subjectController = context.read<SubjectController>();
-      
+  late SubjectController subjectController;
+  final dropdownProvider = context.read<DropdownProvider>();
+  subjectController = context.read<SubjectController>();
+
   dropdownProvider.clearSelectedItem('class');
-      dropdownProvider.clearSelectedItem('division');
-      dropdownProvider.clearSelectedItem('period');
-      dropdownProvider.clearSelectedItem('subject');
-      // subjectController.clearSubjects();
-      subjectController.clearSelection();
+  dropdownProvider.clearSelectedItem('division');
+  dropdownProvider.clearSelectedItem('period');
+  dropdownProvider.clearSelectedItem('subject');
+  // subjectController.clearSubjects();
+  subjectController.clearSelection();
 
   showModalBottomSheet(
     context: context,
@@ -111,31 +111,30 @@ void showAttendanceBottomSheet(BuildContext context) {
                 SizedBox(height: 12),
 
                 /// **Subject Selection**
-                Consumer<SubjectController>(
-                  builder: (context, subjectProvider, child) {
-                    return InkWell(
-                      onTap: () {
-                        context.pushNamed(
-                          AppRouteConst.subjectSelectionRouteName,
-                          extra: _subjectController,
-                        );
-                      },
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          hintText: subjectProvider.selectedSubjectId != null
-                              ? capitalizeEachWord(subjectProvider.subjects
-                                      .firstWhere((subject) =>
-                                          subject.id ==
-                                          subjectProvider.selectedSubjectId)
-                                      .subject ??
-                                  "")
-                              : "Select Subject*",
-                        ),
-                        enabled: false, // Prevent manual editing
-                      ),
-                    );
-                  },
-                ),
+                // Consumer<SubjectController>(
+                //   builder: (context, subjectProvider, child) {
+                //     return InkWell(
+                //       onTap: () {
+                //         context.pushNamed(
+                //           AppRouteConst.subjectSelectionRouteName,
+                //           extra: _subjectController,
+                //         );
+                //       },
+                //       child: TextFormField(
+                //         decoration: InputDecoration(
+                //           hintText: subjectProvider.selectedSubjectId != null
+                //               ? capitalizeEachWord(subjectProvider.subjects
+                //                       .firstWhere((subject) =>
+                //                           subject.subjects?[0].subjectName ==
+                //                           subjectProvider.selectedSubjectId)
+                //                       .subjects?[0].id)
+                //               : "Select Subject*",
+                //         ),
+                //         enabled: false, // Prevent manual editing
+                //       ),
+                //     );
+                //   },
+                // ),
 
                 SizedBox(height: 16),
 

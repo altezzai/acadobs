@@ -32,9 +32,9 @@ class _EditSubjectPageState extends State<EditSubjectPage> {
     super.initState();
     // Initialize text controllers with existing data
     _editedSubjectNameController.text =
-        capitalizeEachWord(widget.subjects.subject ?? '');
+        capitalizeEachWord(widget.subjects.subjects?[0].subjectName ?? '');
     _editedSubjectDescriptionController.text =
-        capitalizeEachWord(widget.subjects.description ?? '');
+        capitalizeEachWord(widget.subjects.subjects?[0].classRange ?? '');
     context.read<SubjectController>().getSubjects();
   }
 
@@ -89,7 +89,7 @@ class _EditSubjectPageState extends State<EditSubjectPage> {
                 onPressed: () {
                   context.read<SubjectController>().editSubjects(
                         context,
-                        subjectid: widget.subjects.id!,
+                        subjectid: widget.subjects.subjects?[0].id ?? 0,
                         subject: _editedSubjectNameController.text,
                         description: _editedSubjectDescriptionController.text,
                       );

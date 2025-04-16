@@ -101,32 +101,32 @@ class _ProgressReportState extends State<ProgressReport> {
                     FormValidator.validateNotEmpty(value, fieldName: "Title"),
               ),
               SizedBox(height: Responsive.height * 1),
-              Consumer<SubjectController>(
-                builder: (context, subjectProvider, child) {
-                  return InkWell(
-                    onTap: () {
-                      context.pushNamed(
-                        AppRouteConst.subjectSelectionRouteName,
-                        extra: _subjectController,
-                      );
-                    },
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        hintText: subjectProvider.selectedSubjectId != null
-                            ? capitalizeEachWord(subjectProvider.subjects
-                                    .firstWhere((subject) =>
-                                        subject.id ==
-                                        subjectProvider.selectedSubjectId)
-                                    .subject ??
-                                "") // Fetch the selected subject name
-                            : "Select Subject*", // Default hint text when no subject is selected
-                      ),
-                      enabled:
-                          false, // Prevent editing as it's controlled by selection
-                    ),
-                  );
-                },
-              ),
+              // Consumer<SubjectController>(
+              //   builder: (context, subjectProvider, child) {
+              //     return InkWell(
+              //       onTap: () {
+              //         context.pushNamed(
+              //           AppRouteConst.subjectSelectionRouteName,
+              //           extra: _subjectController,
+              //         );
+              //       },
+              //       child: TextFormField(
+              //         decoration: InputDecoration(
+              //           hintText: subjectProvider.selectedSubjectId != null
+              //               ? capitalizeEachWord(subjectProvider.subjects
+              //                       .firstWhere((subject) =>
+              //                           subject.id ==
+              //                           subjectProvider.selectedSubjectId)
+              //                       .subject ??
+              //                   "") // Fetch the selected subject name
+              //               : "Select Subject*", // Default hint text when no subject is selected
+              //         ),
+              //         enabled:
+              //             false, // Prevent editing as it's controlled by selection
+              //       ),
+              //     );
+              //   },
+              // ),
               SizedBox(height: Responsive.height * 1),
               CustomDatePicker(
                 label: "Date",

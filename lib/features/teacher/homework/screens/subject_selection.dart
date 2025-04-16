@@ -41,49 +41,49 @@ class _SubjectSelectionPageState extends State<SubjectSelectionPage> {
               SizedBox(
                 height: Responsive.height * 2,
               ),
-              Consumer<SubjectController>(
-                  builder: (context, subjectProvider, child) {
-                return subjectProvider.isloading
-                    ? Column(
-                        children: [
-                          SizedBox(
-                            height: Responsive.height * 35,
-                          ),
-                          Loading(),
-                        ],
-                      )
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: subjectProvider.subjects.length,
-                        itemBuilder: (context, index) {
-                          final subject = subjectProvider.subjects[index];
-                          return Padding(
-                            padding: EdgeInsets.only(
-                              bottom:
-                                  index == subjectProvider.subjects.length - 1
-                                      ? 80.0
-                                      : 0.0, // Extra space for last item
-                            ),
-                            child: SubjectSelectionCard(
-                              subjectName:
-                                  capitalizeEachWord(subject.subject ?? ""),
-                              subjectId: subject.id ?? 0,
-                              isSelected: subjectProvider.selectedSubjectId ==
-                                  subject.id,
-                              onSelect: (bool? selected) {
-                                if (selected == true) {
-                                  subjectProvider
-                                      .selectSubject(subject.id ?? 0);
-                                  widget.subjectTextEditingController.text =
-                                      subject.subject ?? "";
-                                }
-                              },
-                            ),
-                          );
-                        },
-                      );
-              }),
+              // Consumer<SubjectController>(
+              //     builder: (context, subjectProvider, child) {
+              //   return subjectProvider.isloading
+              //       ? Column(
+              //           children: [
+              //             SizedBox(
+              //               height: Responsive.height * 35,
+              //             ),
+              //             Loading(),
+              //           ],
+              //         )
+              //       : ListView.builder(
+              //           shrinkWrap: true,
+              //           physics: NeverScrollableScrollPhysics(),
+              //           itemCount: subjectProvider.subjects.length,
+              //           itemBuilder: (context, index) {
+              //             final subject = subjectProvider.subjects[index];
+              //             return Padding(
+              //               padding: EdgeInsets.only(
+              //                 bottom:
+              //                     index == subjectProvider.subjects.length - 1
+              //                         ? 80.0
+              //                         : 0.0, // Extra space for last item
+              //               ),
+              //               child: SubjectSelectionCard(
+              //                 subjectName:
+              //                     capitalizeEachWord(subject.subject ?? ""),
+              //                 subjectId: subject.id ?? 0,
+              //                 isSelected: subjectProvider.selectedSubjectId ==
+              //                     subject.id,
+              //                 onSelect: (bool? selected) {
+              //                   if (selected == true) {
+              //                     subjectProvider
+              //                         .selectSubject(subject.id ?? 0);
+              //                     widget.subjectTextEditingController.text =
+              //                         subject.subject ?? "";
+              //                   }
+              //                 },
+              //               ),
+              //             );
+              //           },
+              //         );
+              // }),
             ],
           ),
         ),

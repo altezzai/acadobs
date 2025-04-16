@@ -20,7 +20,6 @@ import 'package:school_app/features/teacher/attendance/controller/attendance_con
 import 'package:school_app/features/teacher/attendance/model/attendance_data.dart';
 import 'package:school_app/features/teacher/attendance/utils/attendance_action.dart';
 
-
 class AttendanceScreen extends StatefulWidget {
   AttendanceScreen({Key? key}) : super(key: key);
 
@@ -99,36 +98,37 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                             SizedBox(height: Responsive.height * 2),
                             _buildDateAndPeriodRow(),
                             SizedBox(height: Responsive.height * 2),
-                            Consumer<SubjectController>(
-                              builder: (context, subjectProvider, child) {
-                                return InkWell(
-                                  onTap: () {
-                                    context.pushNamed(
-                                      AppRouteConst.subjectSelectionRouteName,
-                                      extra: _subjectController,
-                                    );
-                                  },
-                                  child: TextFormField(
-                                    decoration: InputDecoration(
-                                      hintText: subjectProvider
-                                                  .selectedSubjectId !=
-                                              null
-                                          ? capitalizeEachWord(subjectProvider
-                                                  .subjects
-                                                  .firstWhere((subject) =>
-                                                      subject.id ==
-                                                      subjectProvider
-                                                          .selectedSubjectId)
-                                                  .subject ??
-                                              "") // Fetch the selected subject name
-                                          : "Select Subject*", // Default hint text when no subject is selected
-                                    ),
-                                    enabled:
-                                        false, // Prevent editing as it's controlled by selection
-                                  ),
-                                );
-                              },
-                            ),
+                            // Consumer<SubjectController>(
+                            //   builder: (context, subjectProvider, child) {
+                            //     return InkWell(
+                            //       onTap: () {
+                            //         context.pushNamed(
+                            //           AppRouteConst.subjectSelectionRouteName,
+                            //           extra: _subjectController,
+                            //         );
+                            //       },
+                            //       child: TextFormField(
+                            //         decoration: InputDecoration(
+                            //           hintText: subjectProvider
+                            //                       .selectedSubjectId !=
+                            //                   null
+                            //               ? capitalizeEachWord(subjectProvider
+                            //                       .subjects
+                            //                       .firstWhere((subject) =>
+                            //                           subject.subjects?[0].id ==
+                            //                           subjectProvider
+                            //                               .selectedSubjectId)
+                            //                       .subjects?[0]
+                            //                       .subjectName ??
+                            //                   "") // Fetch the selected subject name
+                            //               : "Select Subject*", // Default hint text when no subject is selected
+                            //         ),
+                            //         enabled:
+                            //             false, // Prevent editing as it's controlled by selection
+                            //       ),
+                            //     );
+                            //   },
+                            // ),
                           ],
                         ),
                         SizedBox(height: Responsive.height * 3),
@@ -388,5 +388,3 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
         );
   }
 }
-
-
