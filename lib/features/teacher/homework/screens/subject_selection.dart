@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
-import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/features/admin/subjects/controller/subject_controller.dart';
-import 'package:school_app/features/teacher/homework/widgets/subject_selection_card.dart';
 
 class SubjectSelectionPage extends StatefulWidget {
   final TextEditingController subjectTextEditingController;

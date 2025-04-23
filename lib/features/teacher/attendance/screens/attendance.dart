@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/app_route_config.dart';
 import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/app_constants.dart';
-import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
@@ -39,7 +38,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _dateControllerForList = TextEditingController();
-  final TextEditingController _subjectController = TextEditingController();
+  // final TextEditingController _subjectController = TextEditingController();
   late SubjectController subjectController;
   late TeacherController teacherController;
   late AttendanceController attendanceController;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/utils/custom_snackbar.dart';
 import 'package:school_app/base/utils/responsive.dart';
@@ -51,14 +52,9 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
       return [
         HomePage(),
         EventsPage(),
-        NoticePage(
-          // forNavbar: true,
-        ),
+        NoticePage(),
         PaymentSelection(),
-        // ParentChatPage()
-        Center(
-          child: Text("Chats Available Soon"),
-        )
+        Center(child: Text("Chats Available Soon")),
       ];
     } else {
       return [];
@@ -69,87 +65,27 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
   List<BottomNavigationBarItem> _getBottomNavItems(UserType userType) {
     if (userType == UserType.admin) {
       return [
-        _bottomNavItem(
-          iconPath: 'assets/icons/home.png',
-          activeIconPath: 'assets/icons/home_active.png',
-          label: 'Home',
-        ),
-        _bottomNavItem(
-          iconPath: 'assets/icons/duties.png',
-          activeIconPath: 'assets/icons/duties_active.png',
-          label: 'Duties',
-        ),
-        _bottomNavItem(
-          iconPath: 'assets/icons/reports.png',
-          activeIconPath: 'assets/icons/reports_active.png',
-          label: 'Reports',
-        ),
-        _bottomNavItem(
-          iconPath: 'assets/icons/notice_nav.png',
-          activeIconPath: 'assets/icons/notice_nav_active.png',
-          label: 'Notice',
-        ),
-        _bottomNavItem(
-          iconPath: 'assets/icons/payment_nav.png',
-          activeIconPath: 'assets/icons/payments_active.png',
-          label: 'Payments',
-        ),
+        _bottomNavItem(icon: LucideIcons.home, label: 'Home'),
+        _bottomNavItem(icon: LucideIcons.listTodo, label: 'Duties'),
+        _bottomNavItem(icon: LucideIcons.fileBarChart2, label: 'Reports'),
+        _bottomNavItem(icon: LucideIcons.bell, label: 'Notice'),
+        _bottomNavItem(icon: LucideIcons.creditCard, label: 'Payments'),
       ];
     } else if (userType == UserType.teacher) {
       return [
-        _bottomNavItem(
-          iconPath: 'assets/icons/home.png',
-          activeIconPath: 'assets/icons/home_active.png',
-          label: 'Home',
-        ),
-        _bottomNavItem(
-          iconPath: 'assets/icons/attendance.png',
-          activeIconPath: 'assets/icons/attendance_active.png',
-          label: 'Attendance',
-        ),
-        _bottomNavItem(
-          iconPath: 'assets/icons/mark.png',
-          activeIconPath: 'assets/icons/mark_active.png',
-          label: 'Marks',
-        ),
-        _bottomNavItem(
-          iconPath: 'assets/icons/duties.png',
-          activeIconPath: 'assets/icons/duties_active.png',
-          label: 'Duties',
-        ),
-        _bottomNavItem(
-          iconPath: 'assets/icons/payment_nav.png',
-          activeIconPath: 'assets/icons/payments_active.png',
-          label: 'Payments',
-        ),
+        _bottomNavItem(icon: LucideIcons.home, label: 'Home'),
+        _bottomNavItem(icon: LucideIcons.calendarCheck, label: 'Attendance'),
+        _bottomNavItem(icon: LucideIcons.fileText, label: 'Marks'),
+        _bottomNavItem(icon: LucideIcons.listTodo, label: 'Duties'),
+        _bottomNavItem(icon: LucideIcons.creditCard, label: 'Payments'),
       ];
     } else if (userType == UserType.parent) {
       return [
-        _bottomNavItem(
-          iconPath: 'assets/icons/home.png',
-          activeIconPath: 'assets/icons/home_active.png',
-          label: 'Home',
-        ),
-        _bottomNavItem(
-          iconPath: 'assets/icons/event_parent_nav.png',
-          activeIconPath: 'assets/icons/event_parent_active.png',
-          label: 'Events',
-        ),
-        _bottomNavItem(
-          iconPath: 'assets/icons/notice_nav.png',
-          activeIconPath: 'assets/icons/notice_nav_active.png',
-          label: 'Notice',
-        ),
-        _bottomNavItem(
-          iconPath: 'assets/icons/payment_nav.png',
-          activeIconPath: 'assets/icons/payments_active.png',
-          label: 'Payment',
-        ),
-        _bottomNavItem(
-          iconPath: 'assets/icons/reports.png',
-          activeIconPath: 'assets/icons/reports_active.png',
-          label: 'Chat',
-        ),
+        _bottomNavItem(icon: LucideIcons.home, label: 'Home'),
+        _bottomNavItem(icon: LucideIcons.calendarDays, label: 'Events'),
+        _bottomNavItem(icon: LucideIcons.bell, label: 'Notice'),
+        _bottomNavItem(icon: LucideIcons.creditCard, label: 'Payment'),
+        _bottomNavItem(icon: LucideIcons.messageSquare, label: 'Chat'),
       ];
     } else {
       return [];
@@ -167,24 +103,14 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
     return WillPopScope(
       onWillPop: () async {
         final now = DateTime.now();
-
         if (lastPressed == null ||
             now.difference(lastPressed!) > const Duration(seconds: 2)) {
           lastPressed = now;
           CustomSnackbar.show(context,
               message: "Press back again to exit", type: SnackbarType.warning);
-          // Fluttertoast.showToast(
-          //   msg: "Press back again to exit",
-          //   toastLength: Toast.LENGTH_SHORT,
-          //   gravity: ToastGravity.BOTTOM,
-          //   backgroundColor: Colors.black54,
-          //   textColor: Colors.white,
-          // );
-
-          return false; // Prevent exiting
+          return false;
         }
-
-        return true; // Exit the app
+        return true;
       },
       child: Scaffold(
         body: _pages[currentIndex],
@@ -193,7 +119,8 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
           child: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
             currentIndex: currentIndex,
-            selectedItemColor: Colors.black,
+            selectedItemColor:
+                Colors.black, // handled by BottomNavigationBar itself
             unselectedItemColor: Color(0xFF848484),
             selectedFontSize: 12,
             unselectedFontSize: 12,
@@ -210,31 +137,12 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
   }
 
   BottomNavigationBarItem _bottomNavItem({
-    required String iconPath,
-    required String activeIconPath,
+    required IconData icon,
     required String label,
   }) {
     return BottomNavigationBarItem(
-      icon: Column(
-        children: [
-          Image.asset(
-            iconPath,
-            width: 22,
-            height: 22,
-          ),
-          SizedBox(height: 6),
-        ],
-      ),
-      activeIcon: Column(
-        children: [
-          Image.asset(
-            activeIconPath,
-            width: 23,
-            height: 23,
-          ),
-          SizedBox(height: 6),
-        ],
-      ),
+      icon: Icon(icon, size: 24),
+      activeIcon: Icon(icon, size: 26),
       label: label,
     );
   }
