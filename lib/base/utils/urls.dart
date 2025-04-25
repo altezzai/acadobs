@@ -6,5 +6,11 @@ class Urls {
   static const String parentPhotos = "/parents/photos/";
   static const String eventPhotos = "/admin/events/";
 
-  static const String subject = "/schooladmin/subjects";
+  // SUPER ADMIN URLS
+  static const String schools = "/superadmin/schools";
+  static const String classes = "/superadmin/classes";
+  static const String subjects = "/superadmin/subjects";
+
+  // SCHOOL ADMIN URLS
+  static const String schoolAdminSubject = "/schooladmin/subjects";
 }

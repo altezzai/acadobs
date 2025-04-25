@@ -6,7 +6,7 @@ class SubjectServices {
   // GET request for fetching subjects
   Future<Response> getsubject() async {
     try {
-      final Response response = await ApiServices.get(Urls.subject);
+      final Response response = await ApiServices.get(Urls.schoolAdminSubject);
       return response;
     } on DioException catch (e) {
       throw Exception('Failed to load data: $e');

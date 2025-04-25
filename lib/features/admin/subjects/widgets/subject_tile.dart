@@ -92,14 +92,6 @@ class SubjectTile extends StatelessWidget {
               if (value == 'edit') {
                 onEdit();
               }
-              // else if (value == 'delete') {
-              //   showConfirmationDialog(
-              //     context: context,
-              //     title: "Delete Subject",
-              //     content: "Are you sure you want to delete this subject?",
-              //     onConfirm: onDelete,
-              //   );
-              // }
             },
             itemBuilder: (context) => [
               PopupMenuItem(
