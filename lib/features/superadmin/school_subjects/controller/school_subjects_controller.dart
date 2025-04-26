@@ -51,7 +51,7 @@ class SchoolSubjectsController extends ChangeNotifier {
     }
   }
 
-//   Add a new subject
+// Add a new subject
   Future<void> addNewSubject(
     context, {
     required String subjectName,
@@ -104,7 +104,8 @@ class SchoolSubjectsController extends ChangeNotifier {
         print('Subject edited successfully.');
         await getAllSchoolSubjects();
         CustomSnackbar.show(context,
-            message: 'Subject edited successfully!', type: SnackbarType.success);
+            message: 'Subject edited successfully!',
+            type: SnackbarType.success);
         Navigator.pop(context);
       } else {
         print('Failed to edit subject: ${response.statusCode}');

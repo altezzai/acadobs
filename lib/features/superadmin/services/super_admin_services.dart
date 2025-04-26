@@ -10,6 +10,24 @@ class SuperAdminServices {
     return response;
   }
 
+  // Add school
+  Future<Response> addSchool({
+    required String name,
+    required String email,
+    required String phone,
+    required String address,
+    required String adminPassword,
+  }) async {
+    final response = await ApiServices.post(Urls.schools, {
+      "name": name,
+      "email": email,
+      "phone": phone,
+      "address": address,
+      "admin_password": adminPassword,
+    });
+    return response;
+  }
+
   // Delete a school
   Future<Response> deleteSchool({required int schoolId}) async {
     final response = await ApiServices.delete(Urls.schools + '/$schoolId');
@@ -23,17 +41,52 @@ class SuperAdminServices {
     return response;
   }
 
+  // Delete a class
+  Future<Response> deleteClass({required int classId}) async {
+    final response = await ApiServices.delete(Urls.classes + '/$classId');
+    return response;
+  }
+
+  // Add a class
+  Future<Response> addClass({
+    required String year,
+    required String division,
+    required String classname,
+  }) async {
+    final response = await ApiServices.post(Urls.classes, {
+      'year': year,
+      'division': division,
+      'classname': classname,
+    });
+    return response;
+  }
+
+  // Edit a class
+  Future<Response> editClass({
+    required int classId,
+    required String year,
+    required String division,
+    required String classname,
+  }) async {
+    final response = await ApiServices.put(Urls.classes + '/$classId', {
+      'year': year,
+      'division': division,
+      'classname': classname,
+    });
+    return response;
+  }
+
   // **********SUBJECTS********* //
   // Get all subjects
   Future<Response> getAllSubjects({required int pageNo}) async {
     final response = await ApiServices.get(Urls.subjects + '?page=$pageNo');
     return response;
   }
+
   // Add a subject
   Future<Response> addSubject({
     required String subjectName,
     required String classRange,
-    
   }) async {
     final response = await ApiServices.post(Urls.subjects, {
       'subject_name': subjectName,
@@ -41,6 +94,7 @@ class SuperAdminServices {
     });
     return response;
   }
+
   // Edit a subject
   Future<Response> editSubject({
     required int subjectId,
@@ -53,7 +107,8 @@ class SuperAdminServices {
     });
     return response;
   }
-   // Delete a subject
+
+  // Delete a subject
   Future<Response> deleteSubject({required int subjectId}) async {
     final response = await ApiServices.delete(Urls.subjects + '/$subjectId');
     return response;

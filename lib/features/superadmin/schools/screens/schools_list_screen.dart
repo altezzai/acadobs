@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/routes/route_constants.dart';
 import 'package:school_app/base/utils/show_confirmation_dialog.dart';
 import 'package:school_app/features/superadmin/presentation/screens/generic_list_screen.dart';
 import 'package:school_app/features/superadmin/presentation/widgets/custom_tile_widget.dart';
@@ -55,7 +57,7 @@ class _SchoolsListScreenState extends State<SchoolsListScreen> {
           title: 'Schools List',
           buttonText: 'School',
           onAddTap: () {
-            // Handle add school
+            context.pushNamed(RouteConstants.addSchool, extra: false);
           },
           isLoading: controller.isLoading,
           isLoadingMore: controller.isLoadingMore,
@@ -72,7 +74,7 @@ class _SchoolsListScreenState extends State<SchoolsListScreen> {
                 title: "Delete School?",
                 content: "Are you sure you want to delete this school?",
                 onConfirm: () {
-                  controller.deleteSchool(context,schoolId: school.id);
+                  controller.deleteSchool(context, schoolId: school.id);
                 }),
           ),
         );

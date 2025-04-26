@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:school_app/base/routes/route_constants.dart';
 import 'package:school_app/features/superadmin/presentation/screens/generic_list_screen.dart';
 import 'package:school_app/features/superadmin/presentation/widgets/custom_tile_widget.dart';
 import 'package:school_app/features/superadmin/school_classes/controller/school_classes_controller.dart';
+import 'package:school_app/base/utils/show_confirmation_dialog.dart'; // Make sure to import this
 
 class SchoolClassesScreen extends StatefulWidget {
   const SchoolClassesScreen({super.key});
@@ -17,7 +20,6 @@ class _SchoolClassesScreenState extends State<SchoolClassesScreen> {
   @override
   void initState() {
     super.initState();
-
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -54,18 +56,30 @@ class _SchoolClassesScreenState extends State<SchoolClassesScreen> {
           title: 'Classes List',
           buttonText: 'Class',
           onAddTap: () {
-            // Handle add school
+            context.pushNamed(RouteConstants.addClass, extra: false);
           },
           isLoading: controller.isLoading,
           isLoadingMore: controller.isLoadingMore,
           scrollController: _scrollController,
           items: controller.schoolClasses,
-          itemBuilder: (schoolClasses) => CustomTileWidget(
-            name: schoolClasses.classname,
-            subtitle: schoolClasses.division,
+          itemBuilder: (schoolClass) => CustomTileWidget(
+            name: schoolClass.classname,
+            subtitle: schoolClass.division,
             onTap: () {
               // Handle tile tap
             },
+            onEdit: () => context.pushNamed(
+              RouteConstants.editClass,
+              extra: schoolClass,
+            ),
+            onDelete: () => showConfirmationDialog(
+              context: context,
+              title: 'Delete Class',
+              content: 'Are you sure you want to delete this class?',
+              onConfirm: () {
+                controller.deleteClass(context, classId: schoolClass.id);
+              },
+            ),
           ),
         );
       },
