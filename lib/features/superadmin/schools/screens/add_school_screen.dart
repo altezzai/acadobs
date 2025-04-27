@@ -108,7 +108,7 @@ class _AddSchoolPageState extends State<AddSchoolPage> {
                               );
                         }
                       },
-                      widget: controller.isLoading
+                      widget: controller.isLoadingTwo
                           ? Loading()
                           : const Text('Create School'),
                     );
