@@ -87,6 +87,43 @@ class SchoolController extends ChangeNotifier {
     }
   }
 
+  // Edit a school
+  Future<void> editSchool(
+    context, {
+    required int schoolId,
+    required String name,
+    required String email,
+    required String phone,
+    required String address,
+  }) async {
+    _isLoadingTwo = true;
+    notifyListeners();
+
+    try {
+      final response = await SuperAdminServices().editSchool(context,
+          schoolId: schoolId,
+          name: name,
+          email: email,
+          phone: phone,
+          address: address);
+
+      if (response.statusCode == 200) {
+        print('School edited successfully.');
+        await getAllSchools();
+        CustomSnackbar.show(context,
+            message: 'School edited successfully!', type: SnackbarType.success);
+        Navigator.pop(context);
+      } else {
+        print('Failed to edit school: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error editing school: $e');
+    } finally {
+      _isLoadingTwo = false;
+      notifyListeners();
+    }
+  }
+
   // Delete a school
   Future<void> deleteSchool(context, {required int schoolId}) async {
     try {

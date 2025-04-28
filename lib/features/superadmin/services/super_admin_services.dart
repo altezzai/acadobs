@@ -45,7 +45,7 @@ class SuperAdminServices {
       "email": email,
       "phone": phone,
       "address": address,
-      '_method': 'put',
+      // '_method': 'put',
       if (fileUploadPath != null)
         'file_upload': await MultipartFile.fromFile(fileUploadPath,
             filename: fileUploadPath.split('/').last),

@@ -76,6 +76,10 @@ class _SchoolsListScreenState extends State<SchoolsListScreen> {
                 onConfirm: () {
                   controller.deleteSchool(context, schoolId: school.id);
                 }),
+            onEdit: () => context.pushNamed(
+              RouteConstants.editSchool,
+              extra: school,
+            ),
           ),
         );
       },
