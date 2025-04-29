@@ -8,4 +8,5 @@ class RouteConstants {
   static const String addClass = '/addClass';
   static const String editClass = '/editClass';
   static const String addSchool = '/addSchool';
+  static const String editSchool = '/editSchool';
 }

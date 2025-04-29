@@ -5,10 +5,12 @@ import 'package:school_app/features/admin/subjects/screens/add_subject.dart';
 import 'package:school_app/features/admin/subjects/screens/edit_subject.dart';
 import 'package:school_app/features/superadmin/bottom_nav/bottom_nav_scaffold.dart';
 import 'package:school_app/features/superadmin/models/classes_model.dart';
+import 'package:school_app/features/superadmin/models/school_model.dart';
 import 'package:school_app/features/superadmin/models/school_subject_model.dart';
 import 'package:school_app/features/superadmin/school_classes/screens/add_class.dart';
 import 'package:school_app/features/superadmin/school_classes/screens/edit_class.dart';
 import 'package:school_app/features/superadmin/schools/screens/add_school_screen.dart';
+import 'package:school_app/features/superadmin/schools/screens/edit_school.dart';
 
 class AppRouter {
   GoRouter router = GoRouter(
@@ -65,6 +67,16 @@ class AppRouter {
         pageBuilder: (context, state) {
           return const MaterialPage(
             child: AddSchoolPage(),
+          );
+        },
+      ),
+      GoRoute(
+        name: RouteConstants.editSchool,
+        path: '/editschool',
+        pageBuilder: (context, state) {
+          final School school = state.extra as School;
+          return MaterialPage(
+            child: EditSchoolPage(school: school),
           );
         },
       ),
