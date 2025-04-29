@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/routes/route_constants.dart';
+import 'package:school_app/base/utils/image_urls.dart';
 import 'package:school_app/base/utils/show_confirmation_dialog.dart';
 import 'package:school_app/features/superadmin/presentation/screens/generic_list_screen.dart';
 import 'package:school_app/features/superadmin/presentation/widgets/custom_tile_widget.dart';
@@ -14,32 +17,31 @@ class SchoolsListScreen extends StatefulWidget {
   State<SchoolsListScreen> createState() => _SchoolsListScreenState();
 }
 
-class _SchoolsListScreenState extends State<SchoolsListScreen> {
+
+class _SchoolsListScreenState extends State<SchoolsListScreen>
+    with AutomaticKeepAliveClientMixin {
   late ScrollController _scrollController;
+
+  @override
+  bool get wantKeepAlive => true; // 🔁 Preserve state on tab switch
 
   @override
   void initState() {
     super.initState();
+    _scrollController = ScrollController()..addListener(_scrollListener);
 
-    _scrollController = ScrollController();
-    _scrollController.addListener(_scrollListener);
+    // Fetch only once after first build
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final schoolController =
-          Provider.of<SchoolController>(context, listen: false);
-      schoolController.getAllSchools();
+      final controller = Provider.of<SchoolController>(context, listen: false);
+      controller.getAllSchools(); // ✅ Won't re-fetch if already done
     });
   }
 
   void _scrollListener() {
-    final schoolController =
-        Provider.of<SchoolController>(context, listen: false);
+    final controller = Provider.of<SchoolController>(context, listen: false);
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 200) {
-      print('Scrolled near bottom, loading more...');
-      schoolController.getAllSchools(loadMore: true);
-    } else if (_scrollController.position.pixels <=
-        _scrollController.position.minScrollExtent + 200) {
-      print('Scrolled near top, loading more...');
+      controller.getAllSchools(loadMore: true);
     }
   }
 
@@ -51,31 +53,47 @@ class _SchoolsListScreenState extends State<SchoolsListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Consumer<SchoolController>(
       builder: (context, controller, child) {
-        return GenericListScreen(
-          title: 'Schools List',
-          buttonText: 'School',
-          onAddTap: () {
-            context.pushNamed(RouteConstants.addSchool, extra: false);
+        return RefreshIndicator(
+          onRefresh: () async {
+            await controller.getAllSchools(
+                forceRefresh: true); // Pull to refresh (resets list)
           },
-          isLoading: controller.isLoading,
-          isLoadingMore: controller.isLoadingMore,
-          scrollController: _scrollController,
-          items: controller.schools,
-          itemBuilder: (school) => CustomTileWidget(
-            name: school.name,
-            subtitle: school.email,
-            onTap: () {
-              // Handle tile tap
+          child: GenericListScreen(
+            title: 'Schools List',
+            buttonText: 'School',
+            onAddTap: () {
+              context.pushNamed(RouteConstants.addSchool, extra: false);
             },
-            onDelete: () => showConfirmationDialog(
+            isLoading: controller.isLoading,
+            isLoadingMore: controller.isLoadingMore,
+            scrollController: _scrollController,
+            items: controller.schools,
+            itemBuilder: (school) => CustomTileWidget(
+              isImageIcon: true,
+              imageUrl: ImageUrls.imageBaseUrl +
+                  ImageUrls.schoolLogos +
+                  school.logo.toString(),
+              name: school.name,
+              subtitle: school.email,
+              onTap: () {
+                log("Tapped: ${school.name}");
+              },
+              onDelete: () => showConfirmationDialog(
                 context: context,
                 title: "Delete School?",
                 content: "Are you sure you want to delete this school?",
                 onConfirm: () {
                   controller.deleteSchool(context, schoolId: school.id);
-                }),
+                },
+              ),
+              onEdit: () => context.pushNamed(
+                RouteConstants.editSchool,
+                extra: school,
+              ),
+            ),
           ),
         );
       },

@@ -1,8 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:school_app/base/utils/custom_cache_manager.dart';
 
 class CustomTileWidget extends StatelessWidget {
   final String name;
   final String? subtitle;
+  final bool isImageIcon;
+  final String? imageUrl;
   final IconData icon;
   final VoidCallback? onTap;
   final VoidCallback? onEdit;
@@ -12,6 +16,8 @@ class CustomTileWidget extends StatelessWidget {
     super.key,
     required this.name,
     this.subtitle,
+    this.isImageIcon = false,
+    this.imageUrl,
     this.icon = Icons.school,
     this.onTap,
     this.onEdit,
@@ -38,10 +44,28 @@ class CustomTileWidget extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Icon(
-              icon,
-              color: const Color(0xFF3F51B5),
-            ),
+            isImageIcon && imageUrl != null && imageUrl!.isNotEmpty
+                ? SizedBox(
+                    height: 50,
+                    width: 50,
+                    child: CachedNetworkImage(
+                      imageUrl: imageUrl!,
+                      fadeInDuration: Duration.zero,
+                      fadeOutDuration: Duration.zero,
+                      cacheKey: imageUrl, // 👈 Important
+                      fit: BoxFit.fill,
+                      cacheManager: CustomImageCacheManager.instance,
+
+                      errorWidget: (context, url, error) => const Icon(
+                        Icons.broken_image,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  )
+                : Icon(
+                    icon,
+                    color: const Color(0xFF3F51B5),
+                  ),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
