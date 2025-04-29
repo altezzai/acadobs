@@ -12,20 +12,29 @@ class SuperAdminServices {
   }
 
   // Add school
-  Future<Response> addSchool({
+  Future<Response> addSchool(
+    context, {
     required String name,
     required String email,
     required String phone,
     required String address,
     required String adminPassword,
   }) async {
-    final response = await ApiServices.post(Urls.schools, {
+     final fileUpload = context.read<FilePickerProvider>().getFile('logo');
+    final fileUploadPath = fileUpload?.path;
+    final formData = FormData.fromMap({
       "name": name,
       "email": email,
       "phone": phone,
       "address": address,
       "admin_password": adminPassword,
+      '_method': 'put',
+      if (fileUploadPath != null)
+        'file_upload': await MultipartFile.fromFile(fileUploadPath,
+            filename: fileUploadPath.split('/').last),
     });
+    final response = await ApiServices.post(Urls.schools, formData,
+        isFormData: true);
     return response;
   }
 

@@ -64,11 +64,14 @@ class SchoolController extends ChangeNotifier {
 
     try {
       final response = await SuperAdminServices().addSchool(
+        context,
           name: name,
           email: email,
           phone: phone,
           address: address,
-          adminPassword: adminPassword);
+          adminPassword: adminPassword,
+          
+          );
 
       if (response.statusCode == 201) {
         print('School added successfully.');
