@@ -17,6 +17,10 @@ import 'package:school_app/features/admin/student/controller/student_controller.
 import 'package:school_app/features/admin/subjects/controller/subject_controller.dart';
 import 'package:school_app/features/admin/teacher_section/controller/teacher_controller.dart';
 import 'package:school_app/features/parent/leave_request/controller/studentLeaveReq_controller.dart';
+import 'package:school_app/features/superadmin/bottom_nav/bottom_navbar_controller.dart';
+import 'package:school_app/features/superadmin/school_classes/controller/school_classes_controller.dart';
+import 'package:school_app/features/superadmin/school_subjects/controller/school_subjects_controller.dart';
+import 'package:school_app/features/superadmin/schools/controller/school_controller.dart';
 import 'package:school_app/features/teacher/attendance/controller/attendance_controller.dart';
 import 'package:school_app/features/teacher/attendance/controller/tile_selection.dart';
 import 'package:school_app/features/teacher/homework/controller/homework_controller.dart';
@@ -26,6 +30,12 @@ import 'package:school_app/features/teacher/parent/controller/notes_controller.d
 
 getProviders() {
   return [
+    //**********SUPER ADMIN************//
+    ChangeNotifierProvider(create: (_) => BottomNavbarController()),
+    ChangeNotifierProvider(create: (_) => SchoolController()),
+    ChangeNotifierProvider(create: (_) => SchoolClassController()),
+    ChangeNotifierProvider(create: (_) => SchoolSubjectsController()),
+
     ChangeNotifierProvider(create: (_) => DropdownProvider()),
     ChangeNotifierProvider(create: (_) => AttendanceController()),
     ChangeNotifierProvider(create: (_) => StudentController()),
@@ -49,7 +59,7 @@ getProviders() {
     ChangeNotifierProvider(create: (_) => SubjectController()),
     ChangeNotifierProvider(create: (_) => ExamController()),
     ChangeNotifierProvider(create: (_) => StudentReportController()),
-     ChangeNotifierProvider(create: (_) => TeacherReportController()),
-      ChangeNotifierProvider(create: (_) => NotesController()),
+    ChangeNotifierProvider(create: (_) => TeacherReportController()),
+    ChangeNotifierProvider(create: (_) => NotesController()),
   ];
 }

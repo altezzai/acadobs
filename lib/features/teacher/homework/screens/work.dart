@@ -34,7 +34,7 @@ class _HomeWorkState extends State<HomeWork> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
-  final TextEditingController _subjectController = TextEditingController();
+  // final TextEditingController _subjectController = TextEditingController();
   final TextEditingController _markController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();

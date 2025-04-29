@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/providers/providers.dart';
-import 'package:school_app/base/routes/app_route_config.dart';
+import 'package:school_app/base/routes/route_config.dart';
 import 'package:school_app/base/theme/app_theme.dart';
 import 'package:school_app/base/utils/responsive.dart';
 
 void main() {
-  Approuter appRouter = Approuter();
+  AppRouter appRouter = AppRouter();
   runApp(MyApp(
     appRouter: appRouter,
   ));
 }
 
 class MyApp extends StatelessWidget {
-  final Approuter appRouter;
+  final AppRouter appRouter;
   const MyApp({
     super.key,
     required this.appRouter,

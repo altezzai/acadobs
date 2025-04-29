@@ -1,4 +1,4 @@
-package com.example.le_carrello_app
+package com.example.acadobs
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/form_validators.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
+import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
+import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
 import 'package:school_app/features/admin/subjects/controller/subject_controller.dart';
+import 'package:school_app/features/superadmin/school_subjects/controller/school_subjects_controller.dart';
 
 class AddSubject extends StatefulWidget {
-  const AddSubject({super.key});
+  final bool fromSchoolAdmin;
+  const AddSubject({super.key, required this.fromSchoolAdmin});
 
   @override
   State<AddSubject> createState() => _AddSubjectState();
@@ -20,13 +22,20 @@ class AddSubject extends StatefulWidget {
 class _AddSubjectState extends State<AddSubject> {
   final _formKey = GlobalKey<FormState>(); // Key for form validation
   final TextEditingController _subjectNameController = TextEditingController();
-  final TextEditingController _subjectDescriptionController =
-      TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Clear the selected item in the dropdown when the widget is built
+      context.read<DropdownProvider>().clearSelectedItem('classRange');
+    });
+  }
 
   @override
   void dispose() {
     _subjectNameController.dispose();
-    _subjectDescriptionController.dispose();
+
     super.dispose();
   }
 
@@ -47,7 +56,7 @@ class _AddSubjectState extends State<AddSubject> {
                 title: 'Add Subject',
                 isProfileIcon: false,
                 onTap: () {
-                  context.pushNamed(AppRouteConst.SubjectsPageRouteName);
+                  Navigator.pop(context);
                 },
               ),
               SizedBox(height: Responsive.height * 2),
@@ -60,37 +69,49 @@ class _AddSubjectState extends State<AddSubject> {
                     FormValidator.validateNotEmpty(value, fieldName: "Name"),
               ),
               SizedBox(height: Responsive.height * 2),
-              CustomTextfield(
-                iconData: Icon(Icons.title),
-                // hintText: 'Description',
-                label: "Description*",
-                controller: _subjectDescriptionController,
-              ),
+              CustomDropdown(
+                  dropdownKey: 'classRange',
+                  label: "Class Range",
+                  icon: Icons.school,
+                  items: ["1-4", "5-7", "8-10", "11-12", "other"]),
+
               SizedBox(height: Responsive.height * 2),
               // Add button
               Padding(
                 padding: EdgeInsets.only(bottom: Responsive.height * 4),
-                child: Consumer<SubjectController>(
-                  builder: (context, value, child) {
+                child: Consumer2<SubjectController, SchoolSubjectsController>(
+                  builder: (context, schoolAdminController,
+                      superAdminController, child) {
                     return CommonButton(
                       onPressed: () {
+                        final classRange = context
+                            .read<DropdownProvider>()
+                            .getSelectedItem('classRange');
                         if (_formKey.currentState?.validate() ?? false) {
-                          context.read<SubjectController>().addNewSubjects(
-                                context,
-                                subject: _subjectNameController.text,
-                                description: _subjectDescriptionController.text,
-                              );
+                          widget.fromSchoolAdmin
+                              ? context
+                                  .read<SubjectController>()
+                                  .addNewSubjects(
+                                    context,
+                                    subject: _subjectNameController.text,
+                                    description: classRange,
+                                  )
+                              : context
+                                  .read<SchoolSubjectsController>()
+                                  .addNewSubject(
+                                    context,
+                                    subjectName: _subjectNameController.text,
+                                    classRange: classRange,
+                                  );
                         }
-                        // else {
-                        //   ScaffoldMessenger.of(context).showSnackBar(
-                        //     SnackBar(
-                        //       content:
-                        //           Text('Please fill in all required fields.'),
-                        //     ),
-                        //   );
-                        // }
                       },
-                      widget: value.isloadingTwo ? Loading() : Text('Add'),
+                      widget: widget.fromSchoolAdmin
+                          ? schoolAdminController.isloadingTwo
+                              ? Loading()
+                              : Text('Add')
+                          : superAdminController.isLoadingTwo
+                              ? Loading()
+                              : Text('Add'),
                     );
                   },
                 ),

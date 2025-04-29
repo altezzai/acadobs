@@ -7,8 +7,6 @@ import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
-import 'package:school_app/features/admin/subjects/controller/subject_controller.dart';
-import 'package:school_app/features/admin/subjects/model/subject_model.dart';
 //import 'package:school_app/features/admin/subjects/model/subject_model.dart';
 import 'package:school_app/features/teacher/attendance/controller/attendance_controller.dart';
 import 'package:school_app/features/teacher/attendance/model/attendance_data.dart';

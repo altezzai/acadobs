@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
+import 'package:provider/provider.dart';
+import 'package:school_app/base/utils/app_constants.dart';
 import 'package:school_app/core/controller/dropdown_provider.dart';
+import 'package:school_app/core/shared_widgets/add_button.dart';
 import 'package:school_app/core/shared_widgets/custom_datepicker.dart';
 import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/features/admin/subjects/controller/subject_controller.dart';
-import 'package:school_app/base/utils/app_constants.dart';
-import 'package:school_app/base/utils/capitalize_first_letter.dart';
-import 'package:school_app/core/shared_widgets/add_button.dart';
 import 'package:school_app/features/teacher/attendance/controller/attendance_controller.dart';
 import 'package:school_app/features/teacher/attendance/model/attendance_data.dart';
 import 'package:school_app/features/teacher/attendance/utils/attendance_action.dart';
 
 void showAttendanceBottomSheet(BuildContext context) {
-  final TextEditingController _subjectController = TextEditingController();
+  // final TextEditingController _subjectController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 

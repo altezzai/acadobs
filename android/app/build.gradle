@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.school_app"
+    namespace = "com.example.acadobs"
     compileSdk = 35 // Replace with your desired SDK version
 
     ndkVersion = "25.1.8937393" // Specify the NDK version if needed, or remove if not required
@@ -20,7 +20,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.school_app"
+        applicationId = "com.example.acadobs"
         minSdk = 21 // Replace with your minimum SDK version
         targetSdk = 33 // Replace with your target SDK version
         versionCode = 1 // Manually set the version code

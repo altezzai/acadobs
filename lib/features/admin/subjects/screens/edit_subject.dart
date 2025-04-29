@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:school_app/base/routes/app_route_const.dart';
 import 'package:school_app/base/utils/capitalize_first_letter.dart';
 import 'package:school_app/base/utils/responsive.dart';
+import 'package:school_app/base/utils/show_loading.dart';
+import 'package:school_app/core/controller/dropdown_provider.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
+import 'package:school_app/core/shared_widgets/custom_dropdown.dart';
 import 'package:school_app/core/shared_widgets/custom_textfield.dart';
-import 'package:school_app/features/admin/subjects/controller/subject_controller.dart';
-import 'package:school_app/features/admin/subjects/model/subject_model.dart';
+import 'package:school_app/features/superadmin/models/school_subject_model.dart';
+import 'package:school_app/features/superadmin/school_subjects/controller/school_subjects_controller.dart';
 
 class EditSubjectPage extends StatefulWidget {
-  final Subject subjects;
+  final SchoolSubject subjects;
   const EditSubjectPage({
     super.key,
     required this.subjects,
@@ -26,16 +27,20 @@ class _EditSubjectPageState extends State<EditSubjectPage> {
       TextEditingController();
   final TextEditingController _editedSubjectDescriptionController =
       TextEditingController();
+  late DropdownProvider dropdownProvider;
 
   @override
   void initState() {
     super.initState();
-    // Initialize text controllers with existing data
+    dropdownProvider = Provider.of<DropdownProvider>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      dropdownProvider.setSelectedItem(
+          'classRange', widget.subjects.classRange);
+    });
     _editedSubjectNameController.text =
-        capitalizeEachWord(widget.subjects.subjects?[0].subjectName ?? '');
+        capitalizeEachWord(widget.subjects.subjectName);
     _editedSubjectDescriptionController.text =
-        capitalizeEachWord(widget.subjects.subjects?[0].classRange ?? '');
-    context.read<SubjectController>().getSubjects();
+        capitalizeEachWord(widget.subjects.classRange);
   }
 
   @override
@@ -57,8 +62,7 @@ class _EditSubjectPageState extends State<EditSubjectPage> {
             CustomAppbar(
               title: 'Edit Subject',
               isProfileIcon: false,
-              onTap: () =>
-                  context.pushNamed(AppRouteConst.SubjectsPageRouteName),
+              onTap: () => Navigator.pop(context),
             ),
             // SizedBox(height: Responsive.height * 2),
             Padding(
@@ -74,28 +78,33 @@ class _EditSubjectPageState extends State<EditSubjectPage> {
             SizedBox(height: Responsive.height * 2),
             Padding(
               padding: const EdgeInsets.only(left: 4.0),
-              child: Text("Description:"),
+              child: Text("Class Range:"),
             ),
             SizedBox(height: Responsive.height * 1),
-            CustomTextfield(
-              iconData: Icon(Icons.description),
-              hintText: 'Enter Subject Description',
-              controller: _editedSubjectDescriptionController,
-            ),
+            CustomDropdown(
+                dropdownKey: 'classRange',
+                label: "Class Range",
+                icon: Icons.school,
+                items: ["1-4", "5-7", "8-10", "11-12", "other"]),
             Spacer(),
             Padding(
               padding: EdgeInsets.only(bottom: Responsive.height * 4),
-              child: CommonButton(
-                onPressed: () {
-                  context.read<SubjectController>().editSubjects(
-                        context,
-                        subjectid: widget.subjects.subjects?[0].id ?? 0,
-                        subject: _editedSubjectNameController.text,
-                        description: _editedSubjectDescriptionController.text,
-                      );
-                },
-                widget: Text('Update'),
-              ),
+              child: Consumer<SchoolSubjectsController>(
+                  builder: (context, value, child) {
+                return CommonButton(
+                  onPressed: () {
+                    final selectedClassRange =
+                        dropdownProvider.getSelectedItem('classRange');
+                    context.read<SchoolSubjectsController>().editSubject(
+                          context,
+                          subjectId: widget.subjects.id,
+                          subjectName: _editedSubjectNameController.text,
+                          classRange: selectedClassRange,
+                        );
+                  },
+                  widget: value.isLoadingTwo ? Loading() : Text('Update'),
+                );
+              }),
             ),
           ],
         ),
