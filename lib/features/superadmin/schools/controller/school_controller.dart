@@ -14,17 +14,25 @@ class SchoolController extends ChangeNotifier {
   int currentPage = 1;
   int lastPage = 1;
   bool isLoadingMore = false;
+  bool _hasFetchedOnce = false;
 
-  // Get all schools - Pagination
-  Future<void> getAllSchools({bool loadMore = false}) async {
+// Get all schools - with pagination and first-load guard
+  Future<void> getAllSchools(
+      {bool loadMore = false, bool forceRefresh = false}) async {
+    if (!loadMore && _hasFetchedOnce && !forceRefresh) {
+      return; // ✅ prevent refetching on screen rebuild
+    }
+
     if (loadMore) {
       if (currentPage >= lastPage || isLoadingMore) return;
+
       isLoadingMore = true;
-      currentPage += 1; // ✅ move increment here
+      currentPage += 1;
       notifyListeners();
     } else {
       _isloading = true;
       currentPage = 1;
+      lastPage = 1;
       schools.clear();
       notifyListeners();
     }
@@ -39,8 +47,9 @@ class SchoolController extends ChangeNotifier {
           schoolList.map((json) => School.fromJson(json)).toList();
 
       schools.addAll(fetchedSchools);
-
       lastPage = data['totalPages'];
+
+      _hasFetchedOnce = true; // ✅ set after first success
     } catch (e) {
       print('Error fetching schools: $e');
     } finally {
@@ -64,15 +73,17 @@ class SchoolController extends ChangeNotifier {
 
     try {
       final response = await SuperAdminServices().addSchool(
-          name: name,
-          email: email,
-          phone: phone,
-          address: address,
-          adminPassword: adminPassword);
+        context,
+        name: name,
+        email: email,
+        phone: phone,
+        address: address,
+        adminPassword: adminPassword,
+      );
 
       if (response.statusCode == 201) {
         print('School added successfully.');
-        await getAllSchools();
+        await getAllSchools(forceRefresh: true);
         CustomSnackbar.show(context,
             message: 'School added successfully!', type: SnackbarType.success);
         Navigator.pop(context);

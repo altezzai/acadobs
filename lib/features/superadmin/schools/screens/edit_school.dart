@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:school_app/base/utils/responsive.dart';
 import 'package:school_app/base/utils/show_loading.dart';
+import 'package:school_app/core/controller/file_picker_provider.dart';
 import 'package:school_app/core/shared_widgets/common_button.dart';
 import 'package:school_app/core/shared_widgets/custom_appbar.dart';
 import 'package:school_app/core/shared_widgets/custom_filepicker.dart';
@@ -26,6 +27,7 @@ class _EditSchoolPageState extends State<EditSchoolPage> {
   late TextEditingController _emailController;
   late TextEditingController _phoneController;
   late TextEditingController _addressController;
+  late FilePickerProvider filePickerProvider;
 
   @override
   void initState() {
@@ -34,6 +36,10 @@ class _EditSchoolPageState extends State<EditSchoolPage> {
     _emailController = TextEditingController(text: widget.school.email);
     _phoneController = TextEditingController(text: widget.school.phone);
     _addressController = TextEditingController(text: widget.school.address);
+    filePickerProvider = context.read<FilePickerProvider>();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      filePickerProvider.clearFile('logo');
+    });
   }
 
   @override
@@ -111,10 +117,6 @@ class _EditSchoolPageState extends State<EditSchoolPage> {
               controller: _addressController,
             ),
             SizedBox(height: Responsive.height * 2),
-
-            // File Picker (Optional)
-
-            SizedBox(height: Responsive.height * 1),
             CustomFilePicker(
               label: "Upload Logo:",
               fieldName: "logo",
@@ -139,8 +141,9 @@ class _EditSchoolPageState extends State<EditSchoolPage> {
                             address: _addressController.text.trim(),
                           );
                     },
-                    widget:
-                        controller.isLoading ? Loading() : const Text('Update'),
+                    widget: controller.isLoadingTwo
+                        ? Loading()
+                        : const Text('Update'),
                   );
                 },
               ),
